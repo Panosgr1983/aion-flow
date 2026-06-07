@@ -178,6 +178,7 @@ export interface Service {
   short_description: string;
   long_description: string;
   icon: string;
+  image_url: string;
   sort_order: number;
   is_active: boolean;
   meta_title: string;
