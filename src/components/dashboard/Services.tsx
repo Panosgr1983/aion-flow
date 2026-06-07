@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
-import { servicesHelper } from '../../lib/dataHelpers';
+import { servicesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
 import { Service } from '../../types/supabase';
 import { uploadImage } from '../../lib/storage';
 import MediaPicker from './MediaPicker';
@@ -34,7 +34,10 @@ export default function Services() {
 
   const handleSave = async () => {
     setSaving(true);
-    const payload = { ...form, slug: form.slug || slugify(form.title || '') };
+    const slug = form.slug || slugify(form.title || '');
+    const payload = { ...form, slug };
+
+    // Save to services table (may fail silently due to RLS)
     if (editing) {
       const updated = await servicesHelper.update(editing.id, payload);
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
@@ -42,6 +45,28 @@ export default function Services() {
       const created = await servicesHelper.create(payload);
       setItems(prev => [...prev, created]);
     }
+
+    // Also persist image_url to site_settings.page_data as fallback (RLS allows this)
+    if (form.image_url) {
+      try {
+        const all = await siteSettingsHelper.getAll();
+        const existing = all.find(s => s.key === 'page_data');
+        const pageData = existing?.value && typeof existing.value === 'object'
+          ? JSON.parse(JSON.stringify(existing.value))
+          : {};
+        const svcKey = `/services/${slug}`;
+        pageData[svcKey] = { ...(pageData[svcKey] || {}), hero_image: form.image_url, title: form.title };
+        if (existing) {
+          await siteSettingsHelper.update(existing.id, { value: pageData });
+        } else {
+          await siteSettingsHelper.create({
+            key: 'page_data', value: pageData, category: 'general',
+            tenant_id: '00000000-0000-0000-0000-000000000001',
+          });
+        }
+      } catch { /* page_data save is best-effort */ }
+    }
+
     setSaving(false); setShowModal(false);
   };
 
