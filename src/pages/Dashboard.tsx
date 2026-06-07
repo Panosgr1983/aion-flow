@@ -18,6 +18,7 @@ import CoreValues from '../components/dashboard/CoreValues';
 import AboutPanel from '../components/dashboard/AboutPanel';
 import CtaPanel from '../components/dashboard/CtaPanel';
 import SiteSettingsPanel from '../components/dashboard/SiteSettingsPanel';
+import Pages from '../components/dashboard/Pages';
 import AnalyticsDashboard from '../components/dashboard/AnalyticsDashboard';
 
 export default function Dashboard() {
@@ -50,6 +51,7 @@ export default function Dashboard() {
             <Route path="core-values" element={<CoreValues />} />
             <Route path="about" element={<AboutPanel />} />
             <Route path="cta" element={<CtaPanel />} />
+            <Route path="pages" element={<Pages />} />
             <Route path="site-settings" element={<SiteSettingsPanel />} />
             <Route path="analytics" element={<AnalyticsDashboard />} />
           </Routes>

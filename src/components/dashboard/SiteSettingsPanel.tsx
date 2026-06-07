@@ -206,6 +206,24 @@ export default function SiteSettingsPanel() {
               {renderField('about_section_cta_text', 'CTA Button Text')}
               {renderField('about_section_portrait', 'Portrait Image URL', { isImage: true })}
 
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Books Showcase Section</h3>
+              <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-xl">
+                <label className="text-sm text-gray-300">Εμφάνιση βιβλίων στην Αρχική</label>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={getValue('home_books_showcase_enabled') === 'true'}
+                  onClick={() => setValue('home_books_showcase_enabled', getValue('home_books_showcase_enabled') === 'true' ? 'false' : 'true')}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${getValue('home_books_showcase_enabled') === 'true' ? 'bg-blue-600' : 'bg-gray-700'}`}
+                >
+                  <span className={`inline-block size-4 rounded-full bg-white transition-transform ${getValue('home_books_showcase_enabled') === 'true' ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('home_books_showcase_title', 'Section Title')}
+                {renderField('home_books_showcase_link_text', '"View All" Link Text')}
+              </div>
+
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Other Sections</h3>
               {renderField('testimonials_section_title', 'Testimonials Section Title')}
               {renderField('blog_section_title', 'Blog Section Title')}
