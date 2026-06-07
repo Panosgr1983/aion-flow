@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Save, RefreshCw, Upload, Plus, Trash2 } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical } from 'lucide-react';
 import { siteSettingsHelper, productsHelper } from '../../lib/dataHelpers';
 import { uploadImage } from '../../lib/storage';
 import MediaPicker from './MediaPicker';
@@ -15,6 +15,24 @@ export default function AboutPanel() {
   const [achievements, setAchievements] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [pickerTarget, setPickerTarget] = useState<string | null>(null);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+
+  const handleBookDragStart = (idx: number) => setDragIdx(idx);
+  const handleBookDragOver = (e: React.DragEvent, idx: number) => {
+    e.preventDefault();
+    if (dragIdx === null || dragIdx === idx) return;
+    const reordered = [...books];
+    const [moved] = reordered.splice(dragIdx, 1);
+    reordered.splice(idx, 0, moved);
+    setBooks(reordered.map((b, i) => ({ ...b, sort_order: (i + 1) * 10 })));
+    setDragIdx(idx);
+  };
+  const handleBookDragEnd = () => {
+    setDragIdx(null);
+    const updated = books.map((b, i) => ({ ...b, sort_order: (i + 1) * 10 }));
+    setBooks(updated);
+    setVal('about_books', updated);
+  };
 
   const ALL_KEYS = [
     'about_hero_eyebrow', 'about_hero_title', 'about_hero_subtitle',
@@ -218,7 +236,15 @@ export default function AboutPanel() {
         </div>
         <div className="space-y-3">
           {books.map((b, i) => (
-            <div key={i} className="flex gap-3 items-start bg-gray-900/30 rounded-xl p-3">
+            <div
+              key={i}
+              draggable
+              onDragStart={() => handleBookDragStart(i)}
+              onDragOver={(e) => handleBookDragOver(e, i)}
+              onDragEnd={handleBookDragEnd}
+              className={`flex gap-3 items-start bg-gray-900/30 rounded-xl p-3 ${dragIdx === i ? 'opacity-50 ring-1 ring-blue-500/30' : ''}`}
+            >
+              <div className="mt-1 cursor-grab active:cursor-grabbing text-gray-600 hover:text-gray-400 shrink-0"><GripVertical size={16} /></div>
               <div className="flex-1 space-y-2">
                 <div className="grid grid-cols-2 gap-2">
                   <input value={b.title} onChange={e => updateBook(i, 'title', e.target.value)} className="input text-sm" placeholder="Τίτλος βιβλίου" />

@@ -117,7 +117,28 @@ export default function Products() {
     setDragIdx(null);
     const updated = sorted.map((p, i) => ({ ...p, sort_order: (i + 1) * 10 }));
     setProducts(updated);
-    updated.forEach(p => productsHelper.update(p.id, { sort_order: p.sort_order }).catch(() => {}));
+    const promises = updated.map(p => productsHelper.update(p.id, { sort_order: p.sort_order }));
+    // Sync sort_order to about_books so frontend reflects the change
+    Promise.all(promises).then(() => {
+      siteSettingsHelper.getAll().then(all => {
+        const bs = all.find(s => s.key === 'about_books');
+        if (!bs || !Array.isArray(bs.value)) return;
+        const books = [...bs.value];
+        let changed = false;
+        for (const p of updated) {
+          if (!p.sku?.startsWith('BOOK-')) continue;
+          const match = books.find((b: any) =>
+            b.title.toLowerCase().includes(p.name.toLowerCase().replace(/\s*\(.*?\)\s*/g, '').trim()) ||
+            p.name.toLowerCase().includes(b.title.toLowerCase())
+          );
+          if (match && match.sort_order !== p.sort_order) {
+            match.sort_order = p.sort_order;
+            changed = true;
+          }
+        }
+        if (changed) siteSettingsHelper.update(bs.id, { value: books }).catch(() => {});
+      });
+    });
   };
 
   const formatter = new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' });
