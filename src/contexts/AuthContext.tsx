@@ -8,6 +8,7 @@ interface AuthContextType {
   loading: boolean;
   isDemoMode: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string) => Promise<{ error: string | null; needsEmailConfirm?: boolean }>;
   signOut: () => Promise<void>;
 }
 
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   isDemoMode: false,
   signIn: async () => ({ error: null }),
+  signUp: async () => ({ error: null }),
   signOut: async () => {},
 });
 
@@ -68,15 +70,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
+    return { error: error?.message ?? null };
+  };
 
-    if (error?.message === 'Invalid login credentials') {
-      const { error: signUpError } = await supabase.auth.signUp({ email, password });
-      if (signUpError) return { error: signUpError.message };
-      const { error: retryError } = await supabase.auth.signInWithPassword({ email, password });
-      return { error: retryError?.message ?? null };
+  const signUp = async (email: string, password: string): Promise<{ error: string | null; needsEmailConfirm?: boolean }> => {
+    if (isDemoMode) {
+      return { error: 'Δεν διαθέσιμο σε demo mode' };
     }
 
-    return { error: error?.message ?? null };
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: 'http://localhost:5173/login' },
+    });
+
+    if (error) return { error: error.message };
+
+    const needsEmailConfirm = !data.session && !!data.user;
+    return { error: null, needsEmailConfirm };
   };
 
   const signOut = async () => {
@@ -89,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, isDemoMode, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, isDemoMode, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );

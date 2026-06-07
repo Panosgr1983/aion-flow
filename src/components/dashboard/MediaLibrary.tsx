@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Search, Trash2, Image as ImageIcon, Grid2x2 as Grid, List, CheckSquare, Square } from 'lucide-react';
-import { mediaHelper } from '../../lib/dataHelpers';
+import { useEffect, useState, useRef } from 'react';
+import { Search, Trash2, Grid2x2 as Grid, List, CheckSquare, Square, Upload } from 'lucide-react';
+import { mediaHelper, FOLDER_OPTIONS, FOLDER_LABELS, MEDIA_FOLDERS, FolderCategory } from '../../lib/dataHelpers';
 import { Media } from '../../types/supabase';
 
 function formatSize(bytes: number) {
@@ -9,19 +9,29 @@ function formatSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function MediaLibrary() {
+interface MediaLibraryProps {
+  onSelect?: (media: Media) => void;
+}
+
+export default function MediaLibrary({ onSelect }: MediaLibraryProps) {
   const [media, setMedia] = useState<Media[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [folderFilter, setFolderFilter] = useState<string>('all');
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [preview, setPreview] = useState<Media | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    mediaHelper.getAll().then(m => { setMedia(m); setLoading(false); });
-  }, []);
+  const load = () => mediaHelper.getAll().then(m => { setMedia(m); setLoading(false); });
+  useEffect(() => { load(); }, []);
 
-  const filtered = media.filter(m => m.name.toLowerCase().includes(search.toLowerCase()) || m.folder.toLowerCase().includes(search.toLowerCase()));
+  const filtered = media.filter(m => {
+    const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase()) || m.folder.toLowerCase().includes(search.toLowerCase());
+    const matchesFolder = folderFilter === 'all' || m.folder === folderFilter;
+    return matchesSearch && matchesFolder;
+  });
 
   const toggleSelect = (id: string) => {
     setSelected(prev => {
@@ -31,10 +41,23 @@ export default function MediaLibrary() {
     });
   };
 
-  const handleDeleteSelected = async () => {
-    for (const id of selected) {
-      await mediaHelper.delete(id);
+  const handleUpload = async (file: File) => {
+    setUploading(true);
+    const folder = window.prompt('Φάκελος προορισμού:\n\nΔιαθέσιμοι: ' + FOLDER_OPTIONS.map(f => FOLDER_LABELS[f] || f).join(', '), 'general') || 'general';
+    const normalizedFolder = FOLDER_OPTIONS.includes(folder as any) ? folder : 'general';
+    try {
+      await mediaHelper.upload(file, normalizedFolder);
+      await load();
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert('Αποτυχία μεταφόρτωσης.');
+    } finally {
+      setUploading(false);
     }
+  };
+
+  const handleDeleteSelected = async () => {
+    for (const id of selected) { await mediaHelper.delete(id); }
     setMedia(prev => prev.filter(m => !selected.has(m.id)));
     setSelected(new Set());
   };
@@ -50,52 +73,55 @@ export default function MediaLibrary() {
         </div>
         <div className="flex items-center gap-2">
           {selected.size > 0 && (
-            <button onClick={handleDeleteSelected} className="btn-danger">
-              <Trash2 size={14} /> Διαγραφή ({selected.size})
-            </button>
+            <button onClick={handleDeleteSelected} className="btn-danger"><Trash2 size={14} /> Διαγραφή ({selected.size})</button>
           )}
-          <button onClick={() => setView('grid')} className={`p-2.5 rounded-xl transition-colors ${view === 'grid' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-500 hover:bg-gray-800'}`}>
-            <Grid size={16} />
+          <button onClick={() => fileInputRef.current?.click()} disabled={uploading} className="btn-primary">
+            {uploading ? <span className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Upload size={14} />} Μεταφόρτωση
           </button>
-          <button onClick={() => setView('list')} className={`p-2.5 rounded-xl transition-colors ${view === 'list' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-500 hover:bg-gray-800'}`}>
-            <List size={16} />
-          </button>
+          <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={e => { const files = Array.from(e.target.files || []); files.forEach(handleUpload); e.target.value = ''; }} />
+          <button onClick={() => setView('grid')} className={`p-2.5 rounded-xl transition-colors ${view === 'grid' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-500 hover:bg-gray-800'}`}><Grid size={16} /></button>
+          <button onClick={() => setView('list')} className={`p-2.5 rounded-xl transition-colors ${view === 'list' ? 'bg-blue-500/20 text-blue-400' : 'text-gray-500 hover:bg-gray-800'}`}><List size={16} /></button>
         </div>
       </div>
 
       <div className="card p-4">
-        <div className="relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Αναζήτηση αρχείων..." className="input pl-9" />
+        <div className="flex gap-3 items-center">
+          <div className="relative flex-1">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Αναζήτηση αρχείων..." className="input pl-9" />
+          </div>
+          <div className="flex gap-1">
+            {[['all', 'Όλα'] as const, ...MEDIA_FOLDERS.map(f => [f.value, f.label] as const)].map(([value, label]) => (
+              <button key={value} onClick={() => setFolderFilter(value)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${folderFilter === value ? 'bg-blue-600/20 text-blue-400' : 'text-gray-500 hover:text-gray-300 bg-gray-800/50'}`}>
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {view === 'grid' ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {filtered.map(item => (
-            <div
-              key={item.id}
-              className={`card overflow-hidden group cursor-pointer transition-all duration-200 ${selected.has(item.id) ? 'border-blue-500/50 ring-1 ring-blue-500/30' : 'hover:border-gray-700'}`}
-              onClick={() => setPreview(item)}
+            <div key={item.id} className={`card overflow-hidden group cursor-pointer transition-all duration-200 ${selected.has(item.id) ? 'border-blue-500/50 ring-1 ring-blue-500/30' : 'hover:border-gray-700'}`}
+              onClick={() => { if (onSelect) onSelect(item); else setPreview(item); }}
             >
               <div className="relative aspect-square bg-gray-800">
                 <img src={item.url} alt={item.alt_text || item.name} className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                <button
-                  onClick={e => { e.stopPropagation(); toggleSelect(item.id); }}
-                  className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
+                <button onClick={e => { e.stopPropagation(); toggleSelect(item.id); }} className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   {selected.has(item.id) ? <CheckSquare size={18} className="text-blue-400" /> : <Square size={18} className="text-white/70" />}
                 </button>
               </div>
-              <div className="p-2">
+              <div className="p-2.5">
                 <div className="text-xs font-medium truncate">{item.name}</div>
-                <div className="text-xs text-gray-500">{formatSize(item.size)}</div>
+                <div className="flex items-center justify-between mt-1">
+                  <span className="text-xs text-gray-500">{formatSize(item.size)}</span>
+                  {item.folder && <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-800 text-gray-400">{FOLDER_LABELS[item.folder] || item.folder}</span>}
+                </div>
               </div>
             </div>
           ))}
-          {filtered.length === 0 && (
-            <div className="col-span-5 text-center py-12 text-gray-500 card p-8">Δεν βρέθηκαν αρχεία</div>
-          )}
+          {filtered.length === 0 && <div className="col-span-5 text-center py-12 text-gray-500 card p-8">Δεν βρέθηκαν αρχεία</div>}
         </div>
       ) : (
         <div className="card overflow-hidden">
@@ -104,7 +130,7 @@ export default function MediaLibrary() {
               <tr className="border-b border-gray-800">
                 <th className="px-4 py-3 w-10" />
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Αρχείο</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Φάκελος</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase">Φάκελος</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">Μέγεθος</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">Διαστάσεις</th>
                 <th className="px-4 py-3" />
@@ -112,9 +138,9 @@ export default function MediaLibrary() {
             </thead>
             <tbody className="divide-y divide-gray-800/50">
               {filtered.map(item => (
-                <tr key={item.id} className="hover:bg-gray-800/30 transition-colors">
+                <tr key={item.id} className="hover:bg-gray-800/30 transition-colors" onClick={() => { if (onSelect) onSelect(item); }}>
                   <td className="px-4 py-3">
-                    <button onClick={() => toggleSelect(item.id)}>
+                    <button onClick={e => { e.stopPropagation(); toggleSelect(item.id); }}>
                       {selected.has(item.id) ? <CheckSquare size={16} className="text-blue-400" /> : <Square size={16} className="text-gray-600" />}
                     </button>
                   </td>
@@ -127,11 +153,11 @@ export default function MediaLibrary() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 hidden md:table-cell"><span className="text-xs text-gray-500">{item.folder || '—'}</span></td>
+                  <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded bg-gray-800 text-gray-400">{FOLDER_LABELS[item.folder] || item.folder || '—'}</span></td>
                   <td className="px-4 py-3 hidden sm:table-cell"><span className="text-xs text-gray-400">{formatSize(item.size)}</span></td>
                   <td className="px-4 py-3 hidden lg:table-cell"><span className="text-xs text-gray-400">{item.width && item.height ? `${item.width}×${item.height}` : '—'}</span></td>
                   <td className="px-4 py-3">
-                    <button onClick={() => mediaHelper.delete(item.id).then(() => setMedia(m => m.filter(x => x.id !== item.id)))} className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                    <button onClick={e => { e.stopPropagation(); mediaHelper.delete(item.id).then(load); }} className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
                       <Trash2 size={13} />
                     </button>
                   </td>

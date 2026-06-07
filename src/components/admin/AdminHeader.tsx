@@ -12,6 +12,12 @@ const titles: Record<string, string> = {
   '/dashboard/media': 'Πολυμέσα',
   '/dashboard/profile': 'Προφίλ',
   '/dashboard/settings': 'Ρυθμίσεις',
+  '/dashboard/services': 'Υπηρεσίες',
+  '/dashboard/blog': 'Blog',
+  '/dashboard/testimonials': 'Κριτικές',
+  '/dashboard/credentials': 'Πιστοποιήσεις',
+  '/dashboard/core-values': 'Αξίες',
+  '/dashboard/site-settings': 'Ρυθμίσεις Περιεχομένου',
 };
 
 export default function AdminHeader() {

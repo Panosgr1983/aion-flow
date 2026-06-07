@@ -153,3 +153,129 @@ export interface Setting {
   created_at: string;
   updated_at: string;
 }
+
+// ============================================================
+// AION BUSINESS CMS — Content Types
+// ============================================================
+
+export interface Tenant {
+  id: string;
+  name: string;
+  slug: string;
+  logo_url: string;
+  domain: string;
+  is_active: boolean;
+  settings: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Service {
+  id: string;
+  tenant_id: string | null;
+  title: string;
+  slug: string;
+  short_description: string;
+  long_description: string;
+  icon: string;
+  sort_order: number;
+  is_active: boolean;
+  meta_title: string;
+  meta_description: string;
+  og_image: string;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlogPost {
+  id: string;
+  tenant_id: string | null;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: Record<string, unknown>;
+  category: string;
+  image_url: string;
+  is_published: boolean;
+  published_at: string | null;
+  is_featured: boolean;
+  meta_title: string;
+  meta_description: string;
+  og_image: string;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Testimonial {
+  id: string;
+  tenant_id: string | null;
+  name: string;
+  title: string;
+  content: string;
+  rating: number;
+  avatar_url: string;
+  sort_order: number;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Credential {
+  id: string;
+  tenant_id: string | null;
+  title: string;
+  description: string;
+  icon: string;
+  image_url: string;
+  sort_order: number;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CoreValue {
+  id: string;
+  tenant_id: string | null;
+  title: string;
+  description: string;
+  icon: string;
+  sort_order: number;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Pageview {
+  id: string;
+  tenant_id: string;
+  path: string;
+  referrer: string;
+  user_agent: string;
+  ip_hash: string;
+  created_at: string;
+}
+
+export interface DailyStat {
+  id: string;
+  tenant_id: string;
+  date: string;
+  pageviews: number;
+  unique_visitors: number;
+  top_pages: { path: string; count: number }[];
+}
+
+export interface SiteSetting {
+  id: string;
+  tenant_id: string | null;
+  key: string;
+  value: unknown;
+  category: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+}

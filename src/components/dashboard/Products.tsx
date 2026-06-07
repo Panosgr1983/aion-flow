@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Plus, Search, CreditCard as Edit2, Trash2, X, Package, Star } from 'lucide-react';
-import { productsHelper, categoriesHelper } from '../../lib/dataHelpers';
+import { useEffect, useState, useRef } from 'react';
+import { Plus, Search, CreditCard as Edit2, Trash2, X, Package, Star, Upload, Image as ImageIcon } from 'lucide-react';
+import { productsHelper, categoriesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
+import { uploadImage } from '../../lib/storage';
 import { Product, Category } from '../../types/supabase';
+import MediaPicker from './MediaPicker';
 
 const emptyForm = { name: '', slug: '', description: '', price: '', compare_price: '', sku: '', stock_quantity: '', category_id: '', image_url: '', is_active: true, is_featured: false };
 
@@ -15,6 +17,9 @@ export default function Products() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     Promise.all([productsHelper.getAll(), categoriesHelper.getAll()]).then(([prods, cats]) => {
@@ -46,6 +51,23 @@ export default function Products() {
     setShowModal(true);
   };
 
+  const syncImageToAboutBooks = async (imageUrl: string, name: string) => {
+    if (!imageUrl || !name) return;
+    const all = await siteSettingsHelper.getAll();
+    const booksSetting = all.find(s => s.key === 'about_books');
+    if (!booksSetting || !Array.isArray(booksSetting.value)) return;
+    const books = booksSetting.value;
+    const slug = name.toLowerCase().replace(/[^a-z0-9α-ωάέήίόύώϊϋΐΰ]+/g, '-').replace(/^-|-$/g, '');
+    let idx = -1;
+    for (let i = 0; i < books.length; i++) {
+      const bSlug = (books[i].title || '').toLowerCase().replace(/[^a-z0-9α-ωάέήίόύώϊϋΐΰ]+/g, '-').replace(/^-|-$/g, '');
+      if (bSlug === slug || bSlug.includes(slug) || slug.includes(bSlug)) { idx = i; break; }
+    }
+    if (idx === -1) return;
+    books[idx] = { ...books[idx], cover_image: imageUrl };
+    await siteSettingsHelper.update(booksSetting.id, { value: books });
+  };
+
   const handleSave = async () => {
     setSaving(true);
     const payload = {
@@ -62,6 +84,9 @@ export default function Products() {
     } else {
       const created = await productsHelper.create(payload);
       setProducts(prev => [created, ...prev]);
+    }
+    if (form.image_url && form.sku?.startsWith('BOOK-')) {
+      try { await syncImageToAboutBooks(form.image_url, form.name); } catch {}
     }
     setSaving(false);
     setShowModal(false);
@@ -219,8 +244,22 @@ export default function Products() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-1.5">URL Εικόνας</label>
-                <input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input" placeholder="https://..." />
+                <label className="block text-sm text-gray-400 mb-1.5">Εικόνα</label>
+                <div className="flex gap-2">
+                  <input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" placeholder="https://..." />
+                  <button type="button" onClick={() => imageInputRef.current?.click()} disabled={imageUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs" title="Μεταφόρτωση"><Upload size={14} /></button>
+                  <button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs" title="Από τη βιβλιοθήκη"><ImageIcon size={14} /></button>
+                </div>
+                <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setImageUploading(true);
+                  try {
+                    const url = await uploadImage(file, 'site-images');
+                    setForm(f => ({ ...f, image_url: url }));
+                  } catch { alert('Αποτυχία μεταφόρτωσης'); }
+                  finally { setImageUploading(false); e.target.value = ''; }
+                }} />
               </div>
               <div>
                 <label className="block text-sm text-gray-400 mb-1.5">Περιγραφή</label>
@@ -247,6 +286,8 @@ export default function Products() {
           </div>
         </div>
       )}
+
+      <MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm(f => ({ ...f, image_url: url }))} />
 
       {deleteId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">

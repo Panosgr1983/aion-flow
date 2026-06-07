@@ -1,16 +1,28 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Zap, LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Wifi, WifiOff } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
-const navItems = [
+const shopItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/dashboard/products', icon: Package, label: 'Προϊόντα' },
   { path: '/dashboard/categories', icon: Tag, label: 'Κατηγορίες' },
   { path: '/dashboard/orders', icon: ShoppingCart, label: 'Παραγγελίες' },
   { path: '/dashboard/customers', icon: Users, label: 'Πελάτες' },
-  { path: '/dashboard/analytics', icon: BarChart3, label: 'Αναλυτικά' },
+];
+
+const contentItems = [
+  { path: '/dashboard/products', icon: Package, label: 'Βιβλία / Προϊόντα' },
   { path: '/dashboard/media', icon: Image, label: 'Πολυμέσα' },
+  { path: '/dashboard/services', icon: FileText, label: 'Υπηρεσίες' },
+  { path: '/dashboard/blog', icon: Globe, label: 'Blog' },
+  { path: '/dashboard/testimonials', icon: MessageSquare, label: 'Κριτικές' },
+  { path: '/dashboard/credentials', icon: Award, label: 'Πιστοποιήσεις' },
+  { path: '/dashboard/core-values', icon: Heart, label: 'Αξίες' },
+  { path: '/dashboard/about', icon: User, label: 'Σχετικά' },
+  { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA' },
+  { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
+  { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site' },
 ];
 
 const bottomItems = [
@@ -73,7 +85,23 @@ export default function AdminSidebar() {
       )}
 
       <nav className="flex-1 overflow-y-auto p-3 space-y-1">
-        {navItems.map(({ path, icon: Icon, label }) => (
+        {isDemoMode && shopItems.map(({ path, icon: Icon, label }) => (
+          <Link
+            key={path}
+            to={path}
+            title={collapsed ? label : undefined}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+              isActive(path)
+                ? 'bg-blue-600/20 text-blue-400 border border-blue-500/20'
+                : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/60'
+            } ${collapsed ? 'justify-center' : ''}`}
+          >
+            <Icon size={18} className="shrink-0" />
+            {!collapsed && <span>{label}</span>}
+          </Link>
+        ))}
+        {!collapsed && <div className="text-[10px] text-gray-600 uppercase tracking-wider px-3 pt-4 pb-1">Περιεχόμενο</div>}
+        {contentItems.map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}

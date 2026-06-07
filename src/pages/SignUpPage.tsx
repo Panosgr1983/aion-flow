@@ -1,15 +1,16 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Zap, Eye, EyeOff, AlertCircle, Info } from 'lucide-react';
+import { Zap, Eye, EyeOff, AlertCircle, MailCheck } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { signIn, isDemoMode } = useAuth();
+  const [success, setSuccess] = useState(false);
+  const { signUp, isDemoMode } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -17,20 +18,62 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    const { error: signInError } = await signIn(email, password);
+    const { error: signUpError, needsEmailConfirm } = await signUp(email, password);
 
-    if (signInError) {
-      setError(signInError);
+    if (signUpError) {
+      setError(signUpError);
+      setLoading(false);
+    } else if (needsEmailConfirm) {
+      setSuccess(true);
       setLoading(false);
     } else {
       navigate('/dashboard');
     }
   };
 
-  const fillDemo = () => {
-    setEmail('demo@aionflow.gr');
-    setPassword('demo123');
-  };
+  if (isDemoMode) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center px-6">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-blue-600/8 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-cyan-600/6 rounded-full blur-3xl" />
+        </div>
+        <div className="relative w-full max-w-sm text-center">
+          <div className="card p-8">
+            <h1 className="text-xl font-bold mb-4">Μη διαθέσιμο</h1>
+            <p className="text-gray-500 text-sm mb-6">Η εγγραφή είναι διαθέσιμη μόνο σε live mode (με Supabase).</p>
+            <Link to="/login" className="text-blue-400 hover:text-blue-300 text-sm">← Επιστροφή στη σύνδεση</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (success) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center px-6">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-blue-600/8 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-cyan-600/6 rounded-full blur-3xl" />
+        </div>
+        <div className="relative w-full max-w-sm text-center animate-fade-in">
+          <div className="card p-8">
+            <div className="size-14 mx-auto mb-5 rounded-full bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+              <MailCheck size={28} />
+            </div>
+            <h1 className="text-xl font-bold mb-3">Επιβεβαίωση email</h1>
+            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+              Στείλαμε ένα email επιβεβαίωσης στο <strong className="text-gray-200">{email}</strong>.
+              Κάνε κλικ στο link που λάβες για να ενεργοποιήσεις τον λογαριασμό σου.
+            </p>
+            <Link to="/login" className="text-blue-400 hover:text-blue-300 text-sm">
+              ← Παω στη συνδεση
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-950 flex items-center justify-center px-6">
@@ -46,24 +89,9 @@ export default function LoginPage() {
               <Zap size={20} className="text-white" />
             </div>
           </Link>
-          <h1 className="text-2xl font-bold mb-1">Σύνδεση</h1>
+          <h1 className="text-2xl font-bold mb-1">Δημιουργία λογαριασμού</h1>
           <p className="text-gray-500 text-sm">AION FLOW Admin Panel</p>
         </div>
-
-        {isDemoMode && (
-          <div className="card p-3 mb-4 border-blue-500/20 bg-blue-500/5">
-            <div className="flex items-start gap-2">
-              <Info size={14} className="text-blue-400 mt-0.5 shrink-0" />
-              <div className="text-xs text-blue-300">
-                <div className="font-medium mb-1">Demo Πρόσβαση</div>
-                <div className="text-blue-400/80">demo@aionflow.gr / demo123</div>
-                <button onClick={fillDemo} className="text-blue-400 underline mt-1 hover:text-blue-300 transition-colors">
-                  Συμπλήρωση αυτόματα →
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="card p-6 space-y-4">
           {error && (
@@ -94,6 +122,7 @@ export default function LoginPage() {
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
+                minLength={6}
                 className="input pr-10"
               />
               <button
@@ -114,16 +143,16 @@ export default function LoginPage() {
             {loading ? (
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : null}
-            {loading ? 'Σύνδεση...' : 'Σύνδεση'}
+            {loading ? 'Εγγραφή...' : 'Εγγραφή'}
           </button>
         </form>
 
         <p className="text-center mt-4 text-sm text-gray-500">
-          Δεν εχεις λογαριασμο;{' '}
-          <Link to="/signup" className="text-blue-400 hover:text-blue-300">Δημιουργησε εναν</Link>
+          Εχεις ήδη λογαριασμό;{' '}
+          <Link to="/login" className="text-blue-400 hover:text-blue-300">Συνδέσου</Link>
         </p>
 
-        <p className="text-center mt-2 text-xs text-gray-600">
+        <p className="text-center mt-4 text-xs text-gray-600">
           <Link to="/" className="hover:text-gray-400 transition-colors">← Επιστροφή στην αρχική</Link>
         </p>
       </div>
