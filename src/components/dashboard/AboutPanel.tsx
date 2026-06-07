@@ -27,11 +27,15 @@ export default function AboutPanel() {
     setBooks(reordered.map((b, i) => ({ ...b, sort_order: (i + 1) * 10 })));
     setDragIdx(idx);
   };
-  const handleBookDragEnd = () => {
+  const handleBookDragEnd = async () => {
     setDragIdx(null);
     const updated = books.map((b, i) => ({ ...b, sort_order: (i + 1) * 10 }));
     setBooks(updated);
     setVal('about_books', updated);
+    // Auto-save immediately so frontend sees the change
+    const all = await siteSettingsHelper.getAll();
+    const bs = all.find(s => s.key === 'about_books');
+    if (bs) await siteSettingsHelper.update(bs.id, { value: updated });
   };
 
   const ALL_KEYS = [
