@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
-import { Plus, Search, CreditCard as Edit2, Trash2, X, Package, Star, Upload, Image as ImageIcon } from 'lucide-react';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { Plus, Search, CreditCard as Edit2, Trash2, X, Package, Star, Upload, Image as ImageIcon, GripVertical } from 'lucide-react';
 import { productsHelper, categoriesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
 import { uploadImage } from '../../lib/storage';
 import { Product, Category } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
 
-const emptyForm = { name: '', slug: '', description: '', price: '', compare_price: '', sku: '', stock_quantity: '', category_id: '', image_url: '', is_active: true, is_featured: false };
+const emptyForm = { name: '', slug: '', description: '', price: '', compare_price: '', sku: '', stock_quantity: '', category_id: '', image_url: '', is_active: true, is_featured: false, sort_order: 0 };
 
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -46,7 +46,7 @@ export default function Products() {
       name: p.name, slug: p.slug, description: p.description, price: p.price.toString(),
       compare_price: p.compare_price?.toString() ?? '', sku: p.sku,
       stock_quantity: p.stock_quantity.toString(), category_id: p.category_id ?? '',
-      image_url: p.image_url, is_active: p.is_active, is_featured: p.is_featured,
+      image_url: p.image_url, is_active: p.is_active, is_featured: p.is_featured, sort_order: p.sort_order ?? 0,
     });
     setShowModal(true);
   };
@@ -76,7 +76,7 @@ export default function Products() {
       compare_price: form.compare_price ? parseFloat(form.compare_price) : null,
       sku: form.sku, stock_quantity: parseInt(form.stock_quantity) || 0,
       category_id: form.category_id || null, image_url: form.image_url,
-      is_active: form.is_active, is_featured: form.is_featured,
+      is_active: form.is_active, is_featured: form.is_featured, sort_order: parseInt(form.sort_order as any) || 0,
     };
     if (editing) {
       const updated = await productsHelper.update(editing.id, payload);
@@ -97,6 +97,27 @@ export default function Products() {
     await productsHelper.delete(deleteId);
     setProducts(prev => prev.filter(p => p.id !== deleteId));
     setDeleteId(null);
+  };
+
+  const sorted = [...filtered].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+
+  const handleDragStart = (idx: number) => setDragIdx(idx);
+  const handleDragOver = useCallback((e: React.DragEvent, idx: number) => {
+    e.preventDefault();
+    if (dragIdx === null || dragIdx === idx) return;
+    const reordered = [...sorted];
+    const [moved] = reordered.splice(dragIdx, 1);
+    reordered.splice(idx, 0, moved);
+    setProducts(reordered.map((p, i) => ({ ...p, sort_order: (i + 1) * 10 })));
+    setDragIdx(idx);
+  }, [dragIdx, sorted]);
+
+  const handleDragEnd = () => {
+    setDragIdx(null);
+    const updated = sorted.map((p, i) => ({ ...p, sort_order: (i + 1) * 10 }));
+    setProducts(updated);
+    updated.forEach(p => productsHelper.update(p.id, { sort_order: p.sort_order }).catch(() => {}));
   };
 
   const formatter = new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' });
@@ -143,10 +164,18 @@ export default function Products() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800/50">
-              {filtered.map(product => (
-                <tr key={product.id} className="hover:bg-gray-800/30 transition-colors">
+              {sorted.map((product, idx) => (
+                <tr
+                  key={product.id}
+                  draggable
+                  onDragStart={() => handleDragStart(idx)}
+                  onDragOver={(e) => handleDragOver(e, idx)}
+                  onDragEnd={handleDragEnd}
+                  className={`hover:bg-gray-800/30 transition-colors ${dragIdx === idx ? 'opacity-50 bg-gray-800/50' : ''}`}
+                >
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="cursor-grab active:cursor-grabbing text-gray-600 hover:text-gray-400 shrink-0"><GripVertical size={16} /></span>
                       {product.image_url ? (
                         <img src={product.image_url} alt={product.name} className="w-10 h-10 rounded-lg object-cover bg-gray-800" />
                       ) : (
@@ -198,6 +227,9 @@ export default function Products() {
           </table>
           {filtered.length === 0 && (
             <div className="text-center py-12 text-gray-500">Δεν βρέθηκαν προϊόντα</div>
+          )}
+          {sorted.length > 0 && (
+            <div className="px-4 py-2 text-[10px] text-gray-600 border-t border-gray-800/50 text-center">Σύρετε τις γραμμές για αλλαγή σειράς</div>
           )}
         </div>
       </div>
@@ -274,6 +306,10 @@ export default function Products() {
                   <input type="checkbox" checked={form.is_featured} onChange={e => setForm(f => ({ ...f, is_featured: e.target.checked }))} className="w-4 h-4 accent-blue-500" />
                   <span className="text-sm text-gray-300">Επιλεγμένο</span>
                 </label>
+                <div className="ml-auto">
+                  <label className="text-xs text-gray-500 block mb-0.5">Σειρά</label>
+                  <input type="number" value={form.sort_order} onChange={e => setForm(f => ({ ...f, sort_order: parseInt(e.target.value) || 0 }))} className="input w-20 text-xs" />
+                </div>
               </div>
               <div className="flex gap-3 pt-2">
                 <button onClick={() => setShowModal(false)} className="btn-secondary flex-1 justify-center">Ακύρωση</button>
