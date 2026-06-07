@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical } from 'lucide-react';
+import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical, ImageIcon } from 'lucide-react';
 import { siteSettingsHelper, productsHelper } from '../../lib/dataHelpers';
 import { uploadImage } from '../../lib/storage';
 import MediaPicker from './MediaPicker';
@@ -16,6 +16,8 @@ export default function AboutPanel() {
   const [books, setBooks] = useState<any[]>([]);
   const [pickerTarget, setPickerTarget] = useState<string | null>(null);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [uploadingBookIdx, setUploadingBookIdx] = useState<number | null>(null);
+  const bookUploadRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleBookDragStart = (idx: number) => setDragIdx(idx);
   const handleBookDragOver = (e: React.DragEvent, idx: number) => {
@@ -27,6 +29,18 @@ export default function AboutPanel() {
     setBooks(reordered.map((b, i) => ({ ...b, sort_order: (i + 1) * 10 })));
     setDragIdx(idx);
   };
+  const handleBookCoverUpload = async (idx: number, file: File) => {
+    setUploadingBookIdx(idx);
+    try {
+      const url = await uploadImage(file, 'site-images');
+      updateBook(idx, 'cover_image', url);
+    } catch (err) {
+      alert('Αποτυχία μεταφόρτωσης εικόνας');
+    } finally {
+      setUploadingBookIdx(null);
+    }
+  };
+
   const handleBookDragEnd = async () => {
     setDragIdx(null);
     const updated = books.map((b, i) => ({ ...b, sort_order: (i + 1) * 10 }));
@@ -258,7 +272,9 @@ export default function AboutPanel() {
                 <div className="grid grid-cols-2 gap-2">
                   <div className="flex gap-2">
                     <input value={b.cover_image} onChange={e => updateBook(i, 'cover_image', e.target.value)} className="input flex-1 text-sm font-mono" placeholder="URL εξωφύλλου" />
+                    <button type="button" onClick={() => bookUploadRefs.current[i]?.click()} disabled={uploadingBookIdx === i} className="px-2 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 text-xs disabled:opacity-50" title="Μεταφόρτωση"><Upload size={13} /></button>
                     <button type="button" onClick={() => setPickerTarget(`book_cover_${i}`)} className="px-2 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 text-xs">Βιβλ.</button>
+                    <input ref={el => bookUploadRefs.current[i] = el} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) handleBookCoverUpload(i, f); e.target.value = ''; }} />
                   </div>
                   <input value={b.url} onChange={e => updateBook(i, 'url', e.target.value)} className="input text-sm font-mono" placeholder="URL αγοράς" />
                 </div>
