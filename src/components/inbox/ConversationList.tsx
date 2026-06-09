@@ -34,7 +34,7 @@ const FOLDERS: { key: FolderMode; icon: any; label: string }[] = [
   { key: 'trash', icon: Trash2, label: 'Κάδος' },
 ];
 
-export default function ConversationList({ conversations, drafts, selectedId, onSelect, onSelectDraft, search, onSearchChange, folder, onFolderChange, filter, onFilterChange, counts, onRefresh, onHealthClick, onDeleteConversation, onRestoreConversation, onComposeClick }: Props) {
+export default function ConversationList({ conversations, drafts, selectedId, onSelect, onSelectDraft, search, onSearchChange, folder, onFolderChange, filter, onFilterChange, counts, onRefresh, onHealthClick, onDeleteConversation, onRestoreConversation, onArchiveConversation, onDeleteSelected, onArchiveSelected, onComposeClick }: Props) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [showConfirm, setShowConfirm] = useState<'delete' | null>(null);
 
@@ -53,8 +53,25 @@ export default function ConversationList({ conversations, drafts, selectedId, on
     <div className="w-[340px] shrink-0 border-r border-gray-800/50 flex flex-col bg-gray-950/50">
       <div className="p-4 border-b border-gray-800/50">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold">{FOLDERS.find(f => f.key === folder)?.label}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold">{FOLDERS.find(f => f.key === folder)?.label}</h2>
+            {selected.size > 0 && (
+              <span className="text-[11px] text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">{selected.size}</span>
+            )}
+          </div>
           <div className="flex gap-1">
+            {selected.size > 0 && (
+              <>
+                {folder !== 'archive' && (
+                  <button onClick={() => { onArchiveSelected?.(Array.from(selected)); setSelected(new Set()); }} className="p-1.5 text-gray-500 hover:text-blue-400 rounded-lg hover:bg-blue-500/10 transition-colors" title="Αρχειοθέτηση επιλεγμένων">
+                    <ArchiveIcon size={14} />
+                  </button>
+                )}
+                <button onClick={() => { onDeleteSelected?.(Array.from(selected)); setSelected(new Set()); }} className="p-1.5 text-gray-500 hover:text-red-400 rounded-lg hover:bg-red-500/10 transition-colors" title="Διαγραφή επιλεγμένων">
+                  <Trash2 size={14} />
+                </button>
+              </>
+            )}
             <button onClick={onComposeClick} className="p-1.5 text-blue-400 hover:text-blue-300 rounded-lg hover:bg-blue-500/10 transition-colors" title="Νέο Email">
               <Plus size={16} />
             </button>
@@ -130,9 +147,16 @@ export default function ConversationList({ conversations, drafts, selectedId, on
                       <RotateCcw size={12} />
                     </button>
                   ) : (
-                    <button onClick={e => { e.stopPropagation(); onDeleteConversation?.(conv.id); }} className="p-1 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100" title="Διαγραφή">
-                      <Trash2 size={12} />
-                    </button>
+                    <>
+                      {folder !== 'archive' && (
+                        <button onClick={e => { e.stopPropagation(); onArchiveConversation?.(conv.id); }} className="p-1 text-gray-600 hover:text-blue-400 opacity-0 group-hover:opacity-100" title="Αρχειοθέτηση">
+                          <ArchiveIcon size={12} />
+                        </button>
+                      )}
+                      <button onClick={e => { e.stopPropagation(); onDeleteConversation?.(conv.id); }} className="p-1 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100" title="Διαγραφή">
+                        <Trash2 size={12} />
+                      </button>
+                    </>
                   )}
                   <span className="text-[10px] text-gray-600 whitespace-nowrap">{timeAgo(conv.last_message_at)}</span>
                 </div>
