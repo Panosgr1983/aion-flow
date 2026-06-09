@@ -7,11 +7,18 @@ export default function EmailSyncManager() {
   const [accounts, setAccounts] = useState<EmailAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
+  const [error, setError] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
-    const data = await emailAccountsHelper.getAll();
-    setAccounts(data);
+    setError('');
+    try {
+      const data = await emailAccountsHelper.getAll();
+      setAccounts(data || []);
+    } catch (e: any) {
+      // In demo mode (non-authenticated), just show empty state
+      setAccounts([]);
+    }
     setLoading(false);
   }, []);
 
@@ -42,6 +49,26 @@ export default function EmailSyncManager() {
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
+
+  if (error) return (
+    <div className="space-y-5 animate-fade-in">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold">Email Sync</h2>
+          <p className="text-sm text-gray-500">Σύνδεση Gmail για αμφίδρομο συγχρονισμό email</p>
+        </div>
+        <button onClick={load} className="btn-ghost p-2"><RefreshCw size={14} /></button>
+      </div>
+      <div className="card p-8 text-center">
+        <Mail size={48} className="mx-auto mb-4 text-gray-600 opacity-30" />
+        <h3 className="font-medium text-gray-300 mb-2">Δεν ήταν δυνατή η φόρτωση</h3>
+        <p className="text-sm text-gray-500 mb-2">{error}</p>
+        <button onClick={connectGmail} className="btn-primary mt-4">
+          <ExternalLink size={16} /> Σύνδεση Gmail
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-6 animate-fade-in">
