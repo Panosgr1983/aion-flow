@@ -1,4 +1,4 @@
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContentHistory, ContentBackup, ContactSubmission, Conversation, ContactMessage } from '../types/supabase';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContentHistory, ContentBackup, ContactSubmission, Conversation, ContactMessage, FollowUpTask } from '../types/supabase';
 
 export const mockCategories: Category[] = [
   { id: 'a1000000-0000-0000-0000-000000000001', name: 'Ηλεκτρονικά', slug: 'ilektronika', description: 'Smartphones, laptops, tablets και αξεσουάρ', seo_title: '', seo_description: '', parent_id: null, sort_order: 1, is_active: true, created_by: null, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z', product_count: 4 },
@@ -238,6 +238,12 @@ export const mockContactMessages: ContactMessage[] = [
     direction: 'incoming', status: 'new', parent_id: null, attachments: [],
     last_message_at: '2026-06-09T12:16:39Z', created_at: '2026-06-09T12:16:39Z',
   },
+];
+
+export const mockFollowUpTasks: FollowUpTask[] = [
+  { id: 'task-0001', conversation_id: 'conv-0001', title: 'Αποστολή email με τιμοκατάλογο', completed: false, due_at: '2026-06-12T10:00:00Z', created_at: '2026-06-09T15:00:00Z' },
+  { id: 'task-0002', conversation_id: 'conv-0001', title: 'Υπενθύμιση ραντεβού', completed: true, due_at: null, created_at: '2026-06-09T15:00:00Z' },
+  { id: 'task-0003', conversation_id: 'conv-0002', title: 'Αναζήτηση βιβλίου στη βάση', completed: false, due_at: '2026-06-14T12:00:00Z', created_at: '2026-06-07T12:00:00Z' },
 ];
 
 export const mockContentHistory: ContentHistory[] = [];

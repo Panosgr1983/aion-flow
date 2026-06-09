@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { Conversation, LeadStage } from '../../types/supabase';
 import { Plus, Euro, User, MessageSquare, TrendingUp, Trophy, XCircle, Mail, Phone } from 'lucide-react';
+import FollowUpTasks from './FollowUpTasks';
 
 const STAGES: { key: LeadStage; label: string; icon: any; color: string }[] = [
   { key: 'new', label: 'Νέο', icon: User, color: 'border-t-blue-500' },
@@ -19,6 +20,8 @@ const NEXT_STAGE: Record<LeadStage, LeadStage | null> = {
 export default function PipelinePage() {
   const [leads, setLeads] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editValueId, setEditValueId] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState('');
   const navigate = useNavigate();
 
   const load = useCallback(async () => {
@@ -48,6 +51,13 @@ export default function PipelinePage() {
     if (!next) return;
     await conversationsHelper.setLeadStage(id, next);
     setLeads(prev => prev.map(c => c.id === id ? { ...c, lead_stage: next } : c));
+  };
+
+  const saveValue = async (id: string) => {
+    const val = parseFloat(editValue) || 0;
+    await conversationsHelper.setLeadValue(id, val);
+    setLeads(prev => prev.map(c => c.id === id ? { ...c, lead_value: val } : c));
+    setEditValueId(null);
   };
 
   const groupedLeads = (stage: LeadStage) => leads.filter(l => l.lead_stage === stage);
@@ -100,8 +110,26 @@ export default function PipelinePage() {
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium text-gray-200 truncate">{lead.name}</p>
                         <p className="text-xs text-gray-500 truncate">{lead.email}</p>
-                        {lead.lead_value > 0 && (
-                          <p className="text-xs text-green-400 mt-1 font-medium">{lead.lead_value}€</p>
+                        {editValueId === lead.id ? (
+                          <div className="flex gap-1 mt-1">
+                            <input
+                              value={editValue}
+                              onChange={e => setEditValue(e.target.value)}
+                              className="input text-xs py-0.5 w-20"
+                              type="number"
+                              step="0.01"
+                              autoFocus
+                              onKeyDown={e => { if (e.key === 'Enter') saveValue(lead.id); if (e.key === 'Escape') setEditValueId(null); }}
+                            />
+                            <button onClick={() => saveValue(lead.id)} className="text-xs text-blue-400">✓</button>
+                          </div>
+                        ) : (
+                          <p
+                            className={`text-xs mt-1 font-medium cursor-pointer hover:text-blue-400 transition-colors ${lead.lead_value > 0 ? 'text-green-400' : 'text-gray-600'}`}
+                            onClick={() => { setEditValueId(lead.id); setEditValue(String(lead.lead_value || '')); }}
+                          >
+                            {lead.lead_value > 0 ? `${lead.lead_value}€` : 'Προσθήκη αξίας'}
+                          </p>
                         )}
                       </div>
                       <button
@@ -121,6 +149,7 @@ export default function PipelinePage() {
                         Μετακίνηση σε {STAGES.find(s => s.key === NEXT_STAGE[lead.lead_stage])?.label}
                       </button>
                     )}
+                    <FollowUpTasks conversationId={lead.id} />
                   </div>
                 ))}
               </div>

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, ShoppingCart, Users, Package, DollarSign, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { analyticsHelper } from '../../lib/dataHelpers';
-import { ordersHelper } from '../../lib/dataHelpers';
+import { analyticsHelper, ordersHelper } from '../../lib/dataHelpers';
 import { Order } from '../../types/supabase';
+import DashboardMetrics from './DashboardMetrics';
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-amber-500/20 text-amber-400',
@@ -74,6 +74,8 @@ export default function Overview() {
         <StatCard icon={Users} label="Πελάτες" value={analytics.totalCustomers.toString()} change={`+${analytics.customersChange}%`} positive color="bg-amber-500/15 text-amber-400" />
         <StatCard icon={Package} label="Μ.Ο. Παραγγελίας" value={formatter.format(analytics.averageOrderValue)} change={`+${analytics.aovChange}%`} positive color="bg-cyan-500/15 text-cyan-400" />
       </div>
+
+      <DashboardMetrics />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 card p-5">

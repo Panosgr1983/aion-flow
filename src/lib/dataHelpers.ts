@@ -1,6 +1,6 @@
 import { supabase, isSupabaseAvailable } from './supabase';
-import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages } from './mockData';
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, ContentHistory } from '../types/supabase';
+import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, ContentHistory } from '../types/supabase';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -521,6 +521,39 @@ export const crmHealthHelper = {
       storage: { ok: true, fileCount },
       edgeFunction: { ok: edgeOk },
     };
+  },
+};
+
+export const tasksHelper = createMockHelper<FollowUpTask>(mockFollowUpTasks, 'follow_up_tasks');
+
+export const crmMetricsHelper = {
+  async getMetrics(): Promise<{
+    newLeads30d: number;
+    contacted: number;
+    proposals: number;
+    won: number;
+    lost: number;
+    pipelineValue: number;
+    wonValue: number;
+    conversionRate: number;
+  }> {
+    if (!isSupabaseAvailable()) {
+      await delay(200);
+      return { newLeads30d: 0, contacted: 0, proposals: 0, won: 0, lost: 0, pipelineValue: 0, wonValue: 0, conversionRate: 0 };
+    }
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString();
+    const all = await supabase.from('contact_conversations').select('*');
+    const convs = all.data || [];
+    const new30d = convs.filter(c => c.created_at >= thirtyDaysAgo).length;
+    const contacted = convs.filter(c => c.lead_stage === 'contacted').length;
+    const proposals = convs.filter(c => c.lead_stage === 'proposal').length;
+    const won = convs.filter(c => c.lead_stage === 'won').length;
+    const lost = convs.filter(c => c.lead_stage === 'lost').length;
+    const pipelineValue = convs.filter(c => ['new', 'contacted', 'proposal'].includes(c.lead_stage)).reduce((s, c) => s + (Number(c.lead_value) || 0), 0);
+    const wonValue = convs.filter(c => c.lead_stage === 'won').reduce((s, c) => s + (Number(c.lead_value) || 0), 0);
+    const totalClosed = won + lost;
+    const conversionRate = totalClosed > 0 ? Math.round((won / totalClosed) * 100) : 0;
+    return { newLeads30d: new30d, contacted, proposals, won, lost, pipelineValue, wonValue, conversionRate };
   },
 };
 

@@ -325,6 +325,15 @@ export interface ContactMessage {
   created_at: string;
 }
 
+export interface FollowUpTask {
+  id: string;
+  conversation_id: string;
+  title: string;
+  completed: boolean;
+  due_at: string | null;
+  created_at: string;
+}
+
 export interface ContactSubmission {
   id: string;
   name: string;
