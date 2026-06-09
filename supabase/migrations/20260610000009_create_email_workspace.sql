@@ -40,7 +40,8 @@ CREATE POLICY "Authenticated users can manage drafts"
 -- SOFT DELETE for conversations
 -- ============================================================
 ALTER TABLE contact_conversations
-  ADD COLUMN IF NOT EXISTS deleted_at timestamptz;
+  ADD COLUMN IF NOT EXISTS deleted_at timestamptz,
+  ADD COLUMN IF NOT EXISTS updated_at timestamptz;
 
 CREATE INDEX IF NOT EXISTS idx_conv_deleted ON contact_conversations(deleted_at);
 
