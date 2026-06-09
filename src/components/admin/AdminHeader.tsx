@@ -14,6 +14,7 @@ const titles: Record<string, string> = {
   '/dashboard/settings': 'Ρυθμίσεις',
   '/dashboard/settings/users': 'Διαχείριση Χρηστών',
   '/dashboard/settings/backup': 'Backup Manager',
+  '/dashboard/settings/observability': 'Observability',
   '/dashboard/services': 'Υπηρεσίες',
   '/dashboard/blog': 'Blog',
   '/dashboard/testimonials': 'Κριτικές',

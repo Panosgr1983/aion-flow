@@ -25,6 +25,7 @@ import InboxPage from '../components/inbox/InboxPage';
 import PipelinePage from '../components/inbox/PipelinePage';
 import UsersManager from '../components/settings/UsersManager';
 import BackupManager from '../components/settings/BackupManager';
+import ObservabilityDashboard from '../components/settings/ObservabilityDashboard';
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();
@@ -51,6 +52,7 @@ export default function Dashboard() {
             <Route path="settings" element={<DashboardSettings />} />
             <Route path="settings/users" element={<UsersManager />} />
             <Route path="settings/backup" element={<BackupManager />} />
+            <Route path="settings/observability" element={<ObservabilityDashboard />} />
             <Route path="services" element={<Services />} />
             <Route path="blog" element={<BlogPosts />} />
             <Route path="testimonials" element={<Testimonials />} />

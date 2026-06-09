@@ -526,6 +526,50 @@ export const crmHealthHelper = {
 
 export const tasksHelper = createMockHelper<FollowUpTask>(mockFollowUpTasks, 'follow_up_tasks');
 
+export const monitoringHelper = {
+  async getStatus(): Promise<{
+    errors24h: number;
+    smtp: { sent24h: number; failed24h: number; lastFailure?: string };
+    edgeFunctions: { name: string; lastRun?: string; lastStatus?: string; duration?: number }[];
+    storage: { totalFiles: number; uploaded24h: number; totalSizeMB: number };
+    frontendErrors: { critical: number; warning: number };
+  }> {
+    if (!isSupabaseAvailable()) {
+      await delay(200);
+      return { errors24h: 0, smtp: { sent24h: 0, failed24h: 0 }, edgeFunctions: [], storage: { totalFiles: 0, uploaded24h: 0, totalSizeMB: 0 }, frontendErrors: { critical: 0, warning: 0 } };
+    }
+    const since24h = new Date(Date.now() - 86400000).toISOString();
+
+    // SMTP via contact_messages
+    const outgoing24h = await supabase.from('contact_messages').select('id', { count: 'exact', head: true }).eq('direction', 'outgoing').gte('created_at', since24h);
+    const smtpSent = outgoing24h.count || 0;
+
+    // Backup jobs as proxy for edge function runs
+    const { data: recentJobs } = await supabase.from('backup_jobs').select('*').order('created_at', { ascending: false }).limit(10);
+    const failedJobs = (recentJobs || []).filter(j => j.status === 'failed' && j.created_at >= since24h).length;
+
+    // Storage
+    let storageFiles = 0; let storageSize = 0;
+    try {
+      const { data: files } = await supabase.storage.from('contact-attachments').list();
+      storageFiles = files?.length ?? 0;
+    } catch {}
+
+    const edgeFunctions = [
+      { name: 'send-contact-email', lastRun: recentJobs?.[0]?.created_at, lastStatus: recentJobs?.[0]?.status, duration: recentJobs?.[0]?.completed_at ? Math.round((new Date(recentJobs[0].completed_at!).getTime() - new Date(recentJobs[0].started_at).getTime()) / 1000) : undefined },
+      { name: 'crm-backup', lastRun: recentJobs?.[0]?.created_at, lastStatus: recentJobs?.[0]?.status, duration: recentJobs?.[0]?.completed_at ? Math.round((new Date(recentJobs[0].completed_at!).getTime() - new Date(recentJobs[0].started_at).getTime()) / 1000) : undefined },
+    ];
+
+    return {
+      errors24h: failedJobs,
+      smtp: { sent24h: smtpSent, failed24h: failedJobs, lastFailure: recentJobs?.find(j => j.status === 'failed')?.created_at },
+      edgeFunctions,
+      storage: { totalFiles: storageFiles, uploaded24h: storageFiles, totalSizeMB: Math.round(storageSize / 1024 / 1024) },
+      frontendErrors: { critical: 0, warning: 0 },
+    };
+  },
+};
+
 export const crmMetricsHelper = {
   async getMetrics(): Promise<{
     newLeads30d: number;

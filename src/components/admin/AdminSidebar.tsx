@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users as UsersIcon, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users as UsersIcon, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
@@ -40,6 +40,7 @@ const bottomItems: NavItem[] = [
   { path: '/dashboard/settings', icon: Settings, label: 'Ρυθμίσεις', permission: 'settings.all' },
   { path: '/dashboard/settings/users', icon: UsersIcon, label: 'Χρήστες', permission: 'users.manage' },
   { path: '/dashboard/settings/backup', icon: Shield, label: 'Backup', permission: 'users.manage' },
+  { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
 ];
 
 export default function AdminSidebar() {
