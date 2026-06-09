@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Mail, Phone, Clock, Archive, Trash2, Forward as ForwardIcon, Paperclip, MessageSquare, Send, X, Download } from 'lucide-react';
+import { Mail, Phone, Clock, Archive, Trash2, Forward as ForwardIcon, Paperclip, MessageSquare, Send, X, Download, Reply as ReplyIcon } from 'lucide-react';
 import { contactMessagesHelper } from '../../lib/dataHelpers';
 import { uploadFile } from '../../lib/storage';
 import { Conversation, ContactMessage, Attachment } from '../../types/supabase';
@@ -8,9 +8,11 @@ interface Props {
   conversation: Conversation | null;
   thread: ContactMessage[];
   onThreadUpdate?: () => void;
+  onReply?: () => void;
+  onForward?: () => void;
 }
 
-export default function ThreadView({ conversation, thread, onThreadUpdate }: Props) {
+export default function ThreadView({ conversation, thread, onThreadUpdate, onReply, onForward }: Props) {
   const [replyText, setReplyText] = useState('');
   const [sending, setSending] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
@@ -167,7 +169,8 @@ export default function ThreadView({ conversation, thread, onThreadUpdate }: Pro
             </div>
           </div>
           <div className="px-4 pb-3 flex gap-3">
-            <button onClick={() => setForwardMode(true)} className="text-xs text-gray-500 flex items-center gap-1 hover:text-gray-300 transition-colors"><ForwardIcon size={12} /> Forward</button>
+            <button onClick={onReply} className="text-xs text-gray-500 flex items-center gap-1 hover:text-gray-300 transition-colors"><ReplyIcon size={12} /> Απάντηση</button>
+            <button onClick={onForward} className="text-xs text-gray-500 flex items-center gap-1 hover:text-gray-300 transition-colors"><ForwardIcon size={12} /> Forward</button>
             <button onClick={handleDelete} className="text-xs text-gray-500 flex items-center gap-1 hover:text-red-400 transition-colors"><Trash2 size={12} /> Διαγραφή</button>
             <button onClick={handleArchive} className="text-xs text-gray-500 flex items-center gap-1 hover:text-gray-300 transition-colors"><Archive size={12} /> Αρχειοθέτηση</button>
           </div>

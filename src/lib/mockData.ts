@@ -1,4 +1,4 @@
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContentHistory, ContentBackup, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount } from '../types/supabase';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContentHistory, ContentBackup, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft } from '../types/supabase';
 
 export const mockCategories: Category[] = [
   { id: 'a1000000-0000-0000-0000-000000000001', name: 'Ηλεκτρονικά', slug: 'ilektronika', description: 'Smartphones, laptops, tablets και αξεσουάρ', seo_title: '', seo_description: '', parent_id: null, sort_order: 1, is_active: true, created_by: null, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z', product_count: 4 },
@@ -197,9 +197,9 @@ export const mockContactSubmissions: ContactSubmission[] = [
 ];
 
 export const mockConversations: Conversation[] = [
-  { id: 'conv-0001', email: 'maria.pap@gmail.com', name: 'Μαρία Παπαδοπούλου', phone: '+30 697 123 4567', status: 'active', lead_stage: 'contacted', lead_value: 120, won_at: null, last_message_at: '2026-06-09T14:30:00Z', assigned_to: null, created_at: '2026-06-08T15:30:00Z' },
-  { id: 'conv-0002', email: 'giorgos@example.com', name: 'Γιώργος Αλεξίου', phone: '', status: 'active', lead_stage: 'new', lead_value: 0, won_at: null, last_message_at: '2026-06-07T10:15:00Z', assigned_to: null, created_at: '2026-06-07T10:15:00Z' },
-  { id: 'conv-0003', email: 'Panosgr83@gmail.com', name: 'Παναγιώτης Χολιασμένος', phone: '+306977086945', status: 'active', lead_stage: 'new', lead_value: 0, won_at: null, last_message_at: '2026-06-09T12:16:39Z', assigned_to: null, created_at: '2026-06-09T12:16:39Z' },
+  { id: 'conv-0001', email: 'maria.pap@gmail.com', name: 'Μαρία Παπαδοπούλου', phone: '+30 697 123 4567', status: 'active', lead_stage: 'contacted', lead_value: 120, won_at: null, last_message_at: '2026-06-09T14:30:00Z', assigned_to: null, deleted_at: null, created_at: '2026-06-08T15:30:00Z' },
+  { id: 'conv-0002', email: 'giorgos@example.com', name: 'Γιώργος Αλεξίου', phone: '', status: 'active', lead_stage: 'new', lead_value: 0, won_at: null, last_message_at: '2026-06-07T10:15:00Z', assigned_to: null, deleted_at: null, created_at: '2026-06-07T10:15:00Z' },
+  { id: 'conv-0003', email: 'Panosgr83@gmail.com', name: 'Παναγιώτης Χολιασμένος', phone: '+306977086945', status: 'active', lead_stage: 'new', lead_value: 0, won_at: null, last_message_at: '2026-06-09T12:16:39Z', assigned_to: null, deleted_at: null, created_at: '2026-06-09T12:16:39Z' },
 ];
 
 export const mockContactMessages: ContactMessage[] = [
@@ -207,35 +207,35 @@ export const mockContactMessages: ContactMessage[] = [
     id: 'msg-0001', conversation_id: 'conv-0001',
     name: 'Μαρία Παπαδοπούλου', email: 'maria.pap@gmail.com', phone: '+30 697 123 4567',
     subject: 'Ενδιαφέρον για σεμινάριο Reiki', message: 'Ενδιαφέρομαι για το σεμινάριο Reiki που αναφέρετε. Θα ήθελα περισσότερες πληροφορίες για ημερομηνίες και κόστος.',
-    direction: 'incoming', status: 'replied', parent_id: null, attachments: [],
+    direction: 'incoming', status: 'replied', parent_id: null, attachments: [], is_starred: false,
     last_message_at: '2026-06-08T15:30:00Z', created_at: '2026-06-08T15:30:00Z',
   },
   {
     id: 'msg-0002', conversation_id: 'conv-0001',
     name: 'Νικόλας Κολοκοτρώνης', email: 'info@kolokotronis.gr', phone: '',
     subject: 'Re: Ενδιαφέρον για σεμινάριο Reiki', message: 'Αγαπητή Μαρία, ευχαριστώ για το ενδιαφέρον σας. Το επόμενο σεμινάριο Reiki Level 1 ξεκινά στις 15 Ιουλίου. Κόστος συμμετοχής: 120€. Παρακαλώ επικοινωνήστε για να κλείσετε θέση.',
-    direction: 'outgoing', status: 'read', parent_id: 'msg-0001', attachments: [],
+    direction: 'outgoing', status: 'read', parent_id: 'msg-0001', attachments: [], is_starred: false,
     last_message_at: '2026-06-08T16:00:00Z', created_at: '2026-06-08T16:00:00Z',
   },
   {
     id: 'msg-0003', conversation_id: 'conv-0001',
     name: 'Μαρία Παπαδοπούλου', email: 'maria.pap@gmail.com', phone: '+30 697 123 4567',
     subject: 'Re: Ενδιαφέρον για σεμινάριο Reiki', message: 'Σας ευχαριστώ πολύ για την άμεση απάντηση! Θα ήθελα να κλείσω θέση για το σεμινάριο. Παρακαλώ στείλτε μου τα στοιχεία πληρωμής.',
-    direction: 'incoming', status: 'new', parent_id: 'msg-0002', attachments: [],
+    direction: 'incoming', status: 'new', parent_id: 'msg-0002', attachments: [], is_starred: false,
     last_message_at: '2026-06-09T14:30:00Z', created_at: '2026-06-09T14:30:00Z',
   },
   {
     id: 'msg-0004', conversation_id: 'conv-0002',
     name: 'Γιώργος Αλεξίου', email: 'giorgos@example.com', phone: '',
     subject: '', message: 'Καλημέρα, θα ήθελα να με ενημερώσετε για τα βιβλία σας. Υπάρχει δυνατότητα αποστολής στο εξωτερικό;',
-    direction: 'incoming', status: 'new', parent_id: null, attachments: [],
+    direction: 'incoming', status: 'new', parent_id: null, attachments: [], is_starred: false,
     last_message_at: '2026-06-07T10:15:00Z', created_at: '2026-06-07T10:15:00Z',
   },
   {
     id: 'msg-0005', conversation_id: 'conv-0003',
     name: 'Παναγιώτης Χολιασμένος', email: 'Panosgr83@gmail.com', phone: '+306977086945',
     subject: '', message: 'Καλησπέρα σας.\n\nΘα ήθελα να κλείσω ένα ραντεβού για ψυχοθεραπεία. Παρακαλώ επικοινωνήστε μαζί μου.',
-    direction: 'incoming', status: 'new', parent_id: null, attachments: [],
+    direction: 'incoming', status: 'new', parent_id: null, attachments: [], is_starred: false,
     last_message_at: '2026-06-09T12:16:39Z', created_at: '2026-06-09T12:16:39Z',
   },
 ];

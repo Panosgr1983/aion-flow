@@ -1,6 +1,6 @@
 import { supabase, isSupabaseAvailable } from './supabase';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, ContentHistory } from '../types/supabase';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory } from '../types/supabase';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -340,13 +340,25 @@ export const conversationsHelper = {
   ...createMockHelper<Conversation>(mockConversations, 'contact_conversations'),
   async getAll(): Promise<Conversation[]> {
     if (!isSupabaseAvailable()) { await delay(300); return [...mockConversations]; }
-    const { data, error } = await supabase.from('contact_conversations').select('*').order('last_message_at', { ascending: false });
+    const { data, error } = await supabase.from('contact_conversations').select('*').is('deleted_at', null).order('last_message_at', { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  },
+  async getTrash(): Promise<Conversation[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return []; }
+    const { data, error } = await supabase.from('contact_conversations').select('*').not('deleted_at', 'is', null).order('deleted_at', { ascending: false });
     if (error) throw error;
     return data ?? [];
   },
   async getActiveByEmail(email: string): Promise<Conversation | null> {
     const all = await this.getAll();
     return all.find(c => c.email.toLowerCase() === email.toLowerCase() && c.status === 'active') ?? null;
+  },
+  async softDelete(id: string): Promise<void> {
+    await this.update(id, { deleted_at: new Date().toISOString() } as any);
+  },
+  async restore(id: string): Promise<void> {
+    await this.update(id, { deleted_at: null } as any);
   },
   async getUnreadCount(): Promise<number> {
     if (!isSupabaseAvailable()) { await delay(100); return mockContactMessages.filter(m => m.status === 'new').length; }
@@ -531,6 +543,28 @@ export const crmHealthHelper = {
       storage: { ok: true, fileCount },
       edgeFunction: { ok: edgeOk },
     };
+  },
+};
+
+export const draftsHelper = {
+  ...createMockHelper<EmailDraft>([], 'email_drafts'),
+  async getAll(): Promise<EmailDraft[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return []; }
+    const { data, error } = await supabase.from('email_drafts').select('*').order('updated_at', { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  },
+  async getDrafts(): Promise<EmailDraft[]> {
+    const all = await this.getAll();
+    return all.filter(d => d.status === 'draft');
+  },
+  async getScheduled(): Promise<EmailDraft[]> {
+    const all = await this.getAll();
+    return all.filter(d => d.status === 'scheduled');
+  },
+  async save(id: string | null, data: Partial<EmailDraft>): Promise<EmailDraft> {
+    if (id) return this.update(id, { ...data, updated_at: new Date().toISOString() } as any);
+    return this.create({ ...data, status: 'draft', updated_at: new Date().toISOString() } as any);
   },
 };
 

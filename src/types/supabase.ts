@@ -287,12 +287,30 @@ export type MessageDirection = 'incoming' | 'outgoing';
 export type MessageStatus = 'new' | 'read' | 'replied' | 'archived';
 export type ConversationStatus = 'active' | 'closed' | 'archived' | 'spam';
 export type LeadStage = 'new' | 'contacted' | 'proposal' | 'won' | 'lost';
+export type DraftStatus = 'draft' | 'scheduled' | 'sending' | 'sent' | 'failed';
 
 export interface Attachment {
   name: string;
   url: string;
   size: number;
   mime_type: string;
+}
+
+export interface EmailDraft {
+  id: string;
+  conversation_id: string | null;
+  from_email: string;
+  reply_to: string;
+  to: string;
+  cc: string;
+  bcc: string;
+  subject: string;
+  body: string;
+  attachments: Attachment[];
+  status: DraftStatus;
+  scheduled_at: string | null;
+  updated_at: string;
+  created_at: string;
 }
 
 export interface Conversation {
@@ -306,6 +324,7 @@ export interface Conversation {
   won_at: string | null;
   last_message_at: string;
   assigned_to: string | null;
+  deleted_at: string | null;
   created_at: string;
 }
 
@@ -321,6 +340,7 @@ export interface ContactMessage {
   status: MessageStatus;
   parent_id: string | null;
   attachments: Attachment[];
+  is_starred: boolean;
   last_message_at: string;
   created_at: string;
 }
