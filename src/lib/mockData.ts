@@ -197,9 +197,9 @@ export const mockContactSubmissions: ContactSubmission[] = [
 ];
 
 export const mockConversations: Conversation[] = [
-  { id: 'conv-0001', email: 'maria.pap@gmail.com', name: 'Μαρία Παπαδοπούλου', phone: '+30 697 123 4567', status: 'active', last_message_at: '2026-06-09T14:30:00Z', assigned_to: null, created_at: '2026-06-08T15:30:00Z' },
-  { id: 'conv-0002', email: 'giorgos@example.com', name: 'Γιώργος Αλεξίου', phone: '', status: 'active', last_message_at: '2026-06-07T10:15:00Z', assigned_to: null, created_at: '2026-06-07T10:15:00Z' },
-  { id: 'conv-0003', email: 'Panosgr83@gmail.com', name: 'Παναγιώτης Χολιασμένος', phone: '+306977086945', status: 'active', last_message_at: '2026-06-09T12:16:39Z', assigned_to: null, created_at: '2026-06-09T12:16:39Z' },
+  { id: 'conv-0001', email: 'maria.pap@gmail.com', name: 'Μαρία Παπαδοπούλου', phone: '+30 697 123 4567', status: 'active', lead_stage: 'contacted', lead_value: 120, won_at: null, last_message_at: '2026-06-09T14:30:00Z', assigned_to: null, created_at: '2026-06-08T15:30:00Z' },
+  { id: 'conv-0002', email: 'giorgos@example.com', name: 'Γιώργος Αλεξίου', phone: '', status: 'active', lead_stage: 'new', lead_value: 0, won_at: null, last_message_at: '2026-06-07T10:15:00Z', assigned_to: null, created_at: '2026-06-07T10:15:00Z' },
+  { id: 'conv-0003', email: 'Panosgr83@gmail.com', name: 'Παναγιώτης Χολιασμένος', phone: '+306977086945', status: 'active', lead_stage: 'new', lead_value: 0, won_at: null, last_message_at: '2026-06-09T12:16:39Z', assigned_to: null, created_at: '2026-06-09T12:16:39Z' },
 ];
 
 export const mockContactMessages: ContactMessage[] = [

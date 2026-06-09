@@ -21,6 +21,7 @@ const titles: Record<string, string> = {
   '/dashboard/history': 'Ιστορικό',
   '/dashboard/contact-messages': 'Inbox',
   '/dashboard/inbox': 'Inbox',
+  '/dashboard/pipeline': 'Leads Pipeline',
 };
 
 export default function AdminHeader() {

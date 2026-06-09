@@ -286,6 +286,7 @@ export type HistoryOperation = 'create' | 'update' | 'delete' | 'restore' | 'bac
 export type MessageDirection = 'incoming' | 'outgoing';
 export type MessageStatus = 'new' | 'read' | 'replied' | 'archived';
 export type ConversationStatus = 'active' | 'closed' | 'archived' | 'spam';
+export type LeadStage = 'new' | 'contacted' | 'proposal' | 'won' | 'lost';
 
 export interface Attachment {
   name: string;
@@ -300,6 +301,9 @@ export interface Conversation {
   name: string;
   phone: string;
   status: ConversationStatus;
+  lead_stage: LeadStage;
+  lead_value: number;
+  won_at: string | null;
   last_message_at: string;
   assigned_to: string | null;
   created_at: string;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 
@@ -26,6 +26,7 @@ const contentItems = [
   { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
   { path: '/dashboard/history', icon: History, label: 'Ιστορικό' },
   { path: '/dashboard/inbox', icon: Mail, label: 'Inbox' },
+  { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline' },
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site' },
 ];
 

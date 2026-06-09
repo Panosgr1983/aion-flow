@@ -1,14 +1,18 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { conversationsHelper, contactMessagesHelper } from '../../lib/dataHelpers';
 import { Conversation, ContactMessage } from '../../types/supabase';
 import ConversationList from './ConversationList';
 import ThreadView from './ThreadView';
+import HealthPanel from './HealthPanel';
 
 export type FilterMode = 'all' | 'new' | 'replied' | 'archived';
 
 export default function InboxPage() {
+  const [searchParams] = useSearchParams();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConv, setSelectedConv] = useState<string | null>(null);
+  const [showHealth, setShowHealth] = useState(false);
   const [thread, setThread] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -19,9 +23,29 @@ export default function InboxPage() {
     const data = await conversationsHelper.getAll();
     setConversations(data);
     setLoading(false);
+    const convParam = searchParams.get('conv');
+    if (convParam && !selectedConv) {
+      const match = data.find(c => c.id === convParam);
+      if (match) {
+        setSelectedConv(match.id);
+        const msgs = await contactMessagesHelper.getByConversation(match.id);
+        setThread(msgs);
+        for (const m of msgs) {
+          if (m.status === 'new') contactMessagesHelper.markRead(m.id).catch(() => {});
+        }
+      }
+    }
   }, []);
 
   useEffect(() => { loadConversations(); }, [loadConversations]);
+
+  useEffect(() => {
+    const convParam = searchParams.get('conv');
+    if (convParam && conversations.length > 0 && !selectedConv) {
+      const match = conversations.find(c => c.id === convParam);
+      if (match) selectConversation(match.id);
+    }
+  }, [conversations, searchParams, selectedConv]);
 
   const refreshThread = useCallback(async () => {
     if (!selectedConv) return;
@@ -86,7 +110,9 @@ export default function InboxPage() {
         filter={filter}
         onFilterChange={setFilter}
         onRefresh={loadConversations}
+        onHealthClick={() => setShowHealth(true)}
       />
+      <HealthPanel open={showHealth} onClose={() => setShowHealth(false)} />
       <ThreadView
         conversation={conversations.find(c => c.id === selectedConv) || null}
         thread={thread}

@@ -354,6 +354,18 @@ export const conversationsHelper = {
     if (error) throw error;
     return data?.length ?? 0;
   },
+  async getLeads(): Promise<Conversation[]> {
+    const all = await this.getAll();
+    return all.filter(c => c.lead_stage);
+  },
+  async setLeadStage(id: string, stage: string): Promise<void> {
+    const updates: any = { lead_stage: stage };
+    if (stage === 'won') updates.won_at = new Date().toISOString();
+    await this.update(id, updates as any);
+  },
+  async setLeadValue(id: string, value: number): Promise<void> {
+    await this.update(id, { lead_value: value } as any);
+  },
 };
 
 export const contactMessagesHelper = {
@@ -458,6 +470,57 @@ export const siteSettingsHelper = {
     const { data, error } = await supabase.from('site_settings').select('*').order('category').order('key');
     if (error) throw error;
     return data ?? [];
+  },
+};
+
+export const crmHealthHelper = {
+  async getStatus(): Promise<{
+    smtp: { ok: boolean; lastCheck?: string; error?: string };
+    sync: { ok: boolean; submissions: number; messages: number; lastSync?: string };
+    storage: { ok: boolean; fileCount: number };
+    edgeFunction: { ok: boolean };
+  }> {
+    if (!isSupabaseAvailable()) {
+      await delay(200);
+      return { smtp: { ok: false }, sync: { ok: true, submissions: 0, messages: 0 }, storage: { ok: true, fileCount: 0 }, edgeFunction: { ok: false } };
+    }
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+    const smtpSettings = await supabase.from('site_settings').select('key, value').in('key', ['smtp_host', 'smtp_user', 'smtp_pass']);
+    const smtpMap: Record<string, string> = {};
+    (smtpSettings.data || []).forEach(s => { smtpMap[s.key] = String(s.value || ''); });
+    const smtpOk = !!(smtpMap['smtp_host'] && smtpMap['smtp_user'] && smtpMap['smtp_pass']);
+
+    const subCount = await supabase.from('contact_submissions').select('id', { count: 'exact', head: true });
+    const msgCount = await supabase.from('contact_messages').select('id', { count: 'exact', head: true });
+    const lastMsg = await supabase.from('contact_messages').select('created_at').order('created_at', { ascending: false }).limit(1);
+
+    let fileCount = 0;
+    try {
+      const { data: files, error } = await supabase.storage.from('contact-attachments').list('', { limit: 0 });
+      if (!error) fileCount = files?.length ?? 0;
+    } catch {}
+
+    let edgeOk = false;
+    try {
+      const res = await fetch(`${supabaseUrl}/functions/v1/send-contact-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'new', name: 'health', email: 'health@check.com', message: 'health' }),
+      });
+      edgeOk = res.status === 200 || res.status === 400;
+    } catch {}
+
+    return {
+      smtp: { ok: smtpOk, lastCheck: new Date().toISOString() },
+      sync: {
+        ok: Math.abs((subCount.count || 0) - (msgCount.count || 0)) <= 1,
+        submissions: subCount.count || 0,
+        messages: msgCount.count || 0,
+        lastSync: lastMsg.data?.[0]?.created_at || undefined,
+      },
+      storage: { ok: true, fileCount },
+      edgeFunction: { ok: edgeOk },
+    };
   },
 };
 

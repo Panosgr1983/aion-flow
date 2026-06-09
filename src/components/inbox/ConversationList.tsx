@@ -1,4 +1,4 @@
-import { Search, RefreshCw, Mail, MailOpen, Archive, MessageSquare } from 'lucide-react';
+import { Search, RefreshCw, Mail, MailOpen, Archive, MessageSquare, Activity } from 'lucide-react';
 import { Conversation } from '../../types/supabase';
 import { FilterMode } from './InboxPage';
 
@@ -11,6 +11,7 @@ interface Props {
   filter: FilterMode;
   onFilterChange: (v: FilterMode) => void;
   onRefresh: () => void;
+  onHealthClick?: () => void;
 }
 
 const FILTERS: { key: FilterMode; label: string }[] = [
@@ -20,15 +21,20 @@ const FILTERS: { key: FilterMode; label: string }[] = [
   { key: 'archived', label: 'Αρχείο' },
 ];
 
-export default function ConversationList({ conversations, selectedId, onSelect, search, onSearchChange, filter, onFilterChange, onRefresh }: Props) {
+export default function ConversationList({ conversations, selectedId, onSelect, search, onSearchChange, filter, onFilterChange, onRefresh, onHealthClick }: Props) {
   return (
     <div className="w-[380px] shrink-0 border-r border-gray-800/50 flex flex-col bg-gray-950/50">
       <div className="p-4 border-b border-gray-800/50">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold">Εισερχόμενα</h2>
-          <button onClick={onRefresh} className="p-1.5 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors">
-            <RefreshCw size={14} />
-          </button>
+          <div className="flex gap-1">
+            <button onClick={onHealthClick} className="p-1.5 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors" title="CRM Health">
+              <Activity size={14} />
+            </button>
+            <button onClick={onRefresh} className="p-1.5 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors">
+              <RefreshCw size={14} />
+            </button>
+          </div>
         </div>
         <div className="relative">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />

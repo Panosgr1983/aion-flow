@@ -22,6 +22,7 @@ import Pages from '../components/dashboard/Pages';
 import AnalyticsDashboard from '../components/dashboard/AnalyticsDashboard';
 import History from '../components/dashboard/History';
 import InboxPage from '../components/inbox/InboxPage';
+import PipelinePage from '../components/inbox/PipelinePage';
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();
@@ -59,6 +60,7 @@ export default function Dashboard() {
             <Route path="history" element={<History />} />
             <Route path="contact-messages" element={<Navigate to="/dashboard/inbox" replace />} />
             <Route path="inbox" element={<InboxPage />} />
+            <Route path="pipeline" element={<PipelinePage />} />
           </Routes>
         </main>
       </div>
