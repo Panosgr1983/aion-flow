@@ -1,6 +1,6 @@
 import { supabase, isSupabaseAvailable } from './supabase';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, ContentHistory } from '../types/supabase';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, ContentHistory } from '../types/supabase';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -472,6 +472,8 @@ export const siteSettingsHelper = {
     return data ?? [];
   },
 };
+
+export const emailAccountsHelper = createMockHelper<EmailAccount>([], 'email_accounts');
 
 export const crmHealthHelper = {
   async getStatus(): Promise<{

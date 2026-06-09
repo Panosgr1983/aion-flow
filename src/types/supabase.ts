@@ -325,6 +325,20 @@ export interface ContactMessage {
   created_at: string;
 }
 
+export interface EmailAccount {
+  id: string;
+  email: string;
+  provider: 'gmail' | 'imap';
+  access_token: string;
+  refresh_token: string;
+  token_expires_at: string | null;
+  last_sync_at: string | null;
+  sync_enabled: boolean;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+}
+
 export interface FollowUpTask {
   id: string;
   conversation_id: string;
