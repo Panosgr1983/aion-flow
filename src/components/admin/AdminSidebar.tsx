@@ -24,7 +24,7 @@ const contentItems = [
   { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες' },
   { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
   { path: '/dashboard/history', icon: History, label: 'Ιστορικό' },
-  { path: '/dashboard/contact-messages', icon: Mail, label: 'Μηνύματα' },
+  { path: '/dashboard/inbox', icon: Mail, label: 'Inbox' },
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site' },
 ];
 

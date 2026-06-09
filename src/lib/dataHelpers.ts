@@ -1,6 +1,6 @@
 import { supabase, isSupabaseAvailable } from './supabase';
-import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions } from './mockData';
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, ContentHistory } from '../types/supabase';
+import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages } from './mockData';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, ContentHistory } from '../types/supabase';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -11,6 +11,8 @@ const ENTITY_NAME_FIELDS: Record<string, string> = {
   credentials: 'title',
   core_values: 'title',
   site_settings: 'key',
+  contact_conversations: 'email',
+  contact_messages: 'email',
 };
 
 function getEntityName(tableName: string, record: any): string {
@@ -331,6 +333,101 @@ export const contactSubmissionsHelper = {
     const { data, error } = await supabase.from('contact_submissions').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data ?? [];
+  },
+};
+
+export const conversationsHelper = {
+  ...createMockHelper<Conversation>(mockConversations, 'contact_conversations'),
+  async getAll(): Promise<Conversation[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockConversations]; }
+    const { data, error } = await supabase.from('contact_conversations').select('*').order('last_message_at', { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  },
+  async getActiveByEmail(email: string): Promise<Conversation | null> {
+    const all = await this.getAll();
+    return all.find(c => c.email.toLowerCase() === email.toLowerCase() && c.status === 'active') ?? null;
+  },
+};
+
+export const contactMessagesHelper = {
+  ...createMockHelper<ContactMessage>(mockContactMessages, 'contact_messages'),
+  async getAll(): Promise<ContactMessage[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockContactMessages]; }
+    const { data, error } = await supabase.from('contact_messages').select('*').order('last_message_at', { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  },
+  async getByConversation(conversationId: string): Promise<ContactMessage[]> {
+    if (!isSupabaseAvailable()) { await delay(200); return mockContactMessages.filter(m => m.conversation_id === conversationId).sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()); }
+    const { data, error } = await supabase.from('contact_messages').select('*').eq('conversation_id', conversationId).order('created_at', { ascending: true });
+    if (error) throw error;
+    return data ?? [];
+  },
+  async createIncoming(msg: { name: string; email: string; phone?: string; subject?: string; message: string }): Promise<ContactMessage> {
+    const existingConv = await conversationsHelper.getActiveByEmail(msg.email);
+    let conversationId: string;
+    if (existingConv) {
+      conversationId = existingConv.id;
+      await conversationsHelper.update(existingConv.id, { last_message_at: new Date().toISOString() });
+    } else {
+      conversationId = crypto.randomUUID();
+      await conversationsHelper.create({
+        id: conversationId,
+        email: msg.email,
+        name: msg.name,
+        phone: msg.phone || '',
+        status: 'active',
+        last_message_at: new Date().toISOString(),
+      } as any);
+    }
+    const newMsg = await this.create({
+      conversation_id: conversationId,
+      name: msg.name,
+      email: msg.email,
+      phone: msg.phone || '',
+      subject: msg.subject || '',
+      message: msg.message,
+      direction: 'incoming',
+      status: 'new',
+      attachments: [],
+      last_message_at: new Date().toISOString(),
+    } as any);
+    await conversationsHelper.update(conversationId, { last_message_at: newMsg.created_at });
+    return newMsg;
+  },
+  async reply(parentId: string, data: { message: string; attachments?: any[] }): Promise<ContactMessage> {
+    const parent = await this.getById(parentId);
+    if (!parent) throw new Error('Parent message not found');
+    const reply = await this.create({
+      conversation_id: parent.conversation_id,
+      name: parent.name,
+      email: parent.email,
+      phone: parent.phone,
+      subject: parent.subject.startsWith('Re:') ? parent.subject : `Re: ${parent.subject}`,
+      message: data.message,
+      direction: 'outgoing',
+      status: 'read',
+      parent_id: parentId,
+      attachments: data.attachments || [],
+      last_message_at: new Date().toISOString(),
+    } as any);
+    await this.update(parentId, { status: 'replied' });
+    await conversationsHelper.update(parent.conversation_id, { last_message_at: reply.created_at });
+    return reply;
+  },
+  async markRead(id: string): Promise<void> {
+    await this.update(id, { status: 'read' } as any);
+  },
+  async archive(id: string): Promise<void> {
+    const msg = await this.getById(id);
+    if (!msg) return;
+    await this.update(id, { status: 'archived' } as any);
+    if (msg.conversation_id) {
+      const allMsgs = await this.getByConversation(msg.conversation_id);
+      const allArchived = allMsgs.every(m => (m.id === id ? true : m.status === 'archived'));
+      if (allArchived) await conversationsHelper.update(msg.conversation_id, { status: 'archived' });
+    }
   },
 };
 

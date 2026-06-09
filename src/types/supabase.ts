@@ -283,6 +283,44 @@ export interface SiteSetting {
 
 export type HistoryOperation = 'create' | 'update' | 'delete' | 'restore' | 'backup';
 
+export type MessageDirection = 'incoming' | 'outgoing';
+export type MessageStatus = 'new' | 'read' | 'replied' | 'archived';
+export type ConversationStatus = 'active' | 'closed' | 'archived' | 'spam';
+
+export interface Attachment {
+  name: string;
+  url: string;
+  size: number;
+  mime_type: string;
+}
+
+export interface Conversation {
+  id: string;
+  email: string;
+  name: string;
+  phone: string;
+  status: ConversationStatus;
+  last_message_at: string;
+  assigned_to: string | null;
+  created_at: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  conversation_id: string;
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+  direction: MessageDirection;
+  status: MessageStatus;
+  parent_id: string | null;
+  attachments: Attachment[];
+  last_message_at: string;
+  created_at: string;
+}
+
 export interface ContactSubmission {
   id: string;
   name: string;

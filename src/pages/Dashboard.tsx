@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import AdminSidebar from '../components/admin/AdminSidebar';
 import AdminHeader from '../components/admin/AdminHeader';
@@ -22,6 +22,7 @@ import Pages from '../components/dashboard/Pages';
 import AnalyticsDashboard from '../components/dashboard/AnalyticsDashboard';
 import History from '../components/dashboard/History';
 import ContactMessages from '../components/dashboard/ContactMessages';
+import InboxPage from '../components/inbox/InboxPage';
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();
@@ -57,7 +58,8 @@ export default function Dashboard() {
             <Route path="site-settings" element={<SiteSettingsPanel />} />
             <Route path="analytics" element={<AnalyticsDashboard />} />
             <Route path="history" element={<History />} />
-            <Route path="contact-messages" element={<ContactMessages />} />
+            <Route path="contact-messages" element={<Navigate to="/dashboard/inbox" replace />} />
+            <Route path="inbox" element={<InboxPage />} />
           </Routes>
         </main>
       </div>
