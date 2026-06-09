@@ -1,4 +1,4 @@
-import { Search, RefreshCw, Mail, MailOpen, Archive, MessageSquare, Activity } from 'lucide-react';
+import { Search, RefreshCw, Mail, MailOpen, Archive, MessageSquare, Activity, Trash2, Archive as ArchiveIcon } from 'lucide-react';
 import { Conversation } from '../../types/supabase';
 import { FilterMode } from './InboxPage';
 
@@ -12,6 +12,9 @@ interface Props {
   onFilterChange: (v: FilterMode) => void;
   onRefresh: () => void;
   onHealthClick?: () => void;
+  onDeleteConversation?: (id: string) => void;
+  onArchiveConversation?: (id: string) => void;
+  onDeleteAll?: () => void;
 }
 
 const FILTERS: { key: FilterMode; label: string }[] = [
@@ -21,7 +24,7 @@ const FILTERS: { key: FilterMode; label: string }[] = [
   { key: 'archived', label: 'Αρχείο' },
 ];
 
-export default function ConversationList({ conversations, selectedId, onSelect, search, onSearchChange, filter, onFilterChange, onRefresh, onHealthClick }: Props) {
+export default function ConversationList({ conversations, selectedId, onSelect, search, onSearchChange, filter, onFilterChange, onRefresh, onHealthClick, onDeleteConversation, onArchiveConversation, onDeleteAll }: Props) {
   return (
     <div className="w-[380px] shrink-0 border-r border-gray-800/50 flex flex-col bg-gray-950/50">
       <div className="p-4 border-b border-gray-800/50">
@@ -31,6 +34,11 @@ export default function ConversationList({ conversations, selectedId, onSelect, 
             <button onClick={onHealthClick} className="p-1.5 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors" title="CRM Health">
               <Activity size={14} />
             </button>
+            {conversations.length > 0 && (
+              <button onClick={onDeleteAll} className="p-1.5 text-gray-500 hover:text-red-400 rounded-lg hover:bg-red-500/10 transition-colors" title="Διαγραφή όλων">
+                <Trash2 size={14} />
+              </button>
+            )}
             <button onClick={onRefresh} className="p-1.5 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors">
               <RefreshCw size={14} />
             </button>
@@ -65,14 +73,14 @@ export default function ConversationList({ conversations, selectedId, onSelect, 
           conversations.map(conv => {
             const isSelected = selectedId === conv.id;
             return (
-              <button
+              <div
                 key={conv.id}
-                onClick={() => onSelect(conv.id)}
-                className={`w-full text-left px-4 py-3.5 border-b border-gray-800/30 transition-colors hover:bg-gray-900/50 ${
+                className={`group flex items-start px-4 py-3.5 border-b border-gray-800/30 transition-colors hover:bg-gray-900/50 cursor-pointer ${
                   isSelected ? 'bg-blue-600/10 border-l-2 border-l-blue-500' : ''
                 }`}
+                onClick={() => onSelect(conv.id)}
               >
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className={`size-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                       conv.status === 'archived' ? 'bg-gray-800 text-gray-500' : 'bg-blue-600/20 text-blue-400'
@@ -84,16 +92,30 @@ export default function ConversationList({ conversations, selectedId, onSelect, 
                       <p className="text-xs text-gray-500 truncate">{conv.email}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {conv.status === 'active' && (
-                      <span className="size-2 rounded-full bg-blue-500" />
-                    )}
-                    <span className="text-[11px] text-gray-600 whitespace-nowrap">
-                      {timeAgo(conv.last_message_at)}
-                    </span>
-                  </div>
                 </div>
-              </button>
+                <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                  <button
+                    onClick={e => { e.stopPropagation(); onArchiveConversation?.(conv.id); }}
+                    className="p-1 text-gray-600 hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Αρχειοθέτηση"
+                  >
+                    <ArchiveIcon size={13} />
+                  </button>
+                  <button
+                    onClick={e => { e.stopPropagation(); onDeleteConversation?.(conv.id); }}
+                    className="p-1 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Διαγραφή"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                  {conv.status === 'active' && (
+                    <span className="size-2 rounded-full bg-blue-500 shrink-0" />
+                  )}
+                  <span className="text-[11px] text-gray-600 whitespace-nowrap ml-1">
+                    {timeAgo(conv.last_message_at)}
+                  </span>
+                </div>
+              </div>
             );
           })
         )}

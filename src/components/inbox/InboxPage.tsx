@@ -85,6 +85,32 @@ export default function InboxPage() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [conversations, selectedConv]);
 
+  const handleDeleteConversation = async (id: string) => {
+    const msgs = await contactMessagesHelper.getByConversation(id);
+    for (const m of msgs) await contactMessagesHelper.delete(m.id);
+    if (selectedConv === id) { setSelectedConv(null); setThread([]); }
+    await conversationsHelper.delete(id);
+    await loadConversations();
+  };
+
+  const handleArchiveConversation = async (id: string) => {
+    const msgs = await contactMessagesHelper.getByConversation(id);
+    for (const m of msgs) await contactMessagesHelper.archive(m.id);
+    if (selectedConv === id) { setSelectedConv(null); setThread([]); }
+    await conversationsHelper.update(id, { status: 'archived' } as any);
+    await loadConversations();
+  };
+
+  const handleDeleteAll = async () => {
+    for (const conv of conversations) {
+      const msgs = await contactMessagesHelper.getByConversation(conv.id);
+      for (const m of msgs) await contactMessagesHelper.delete(m.id);
+      await conversationsHelper.delete(conv.id);
+    }
+    setSelectedConv(null); setThread([]);
+    await loadConversations();
+  };
+
   const filtered = conversations.filter(c => {
     const q = search.toLowerCase();
     if (q && !c.name.toLowerCase().includes(q) && !c.email.toLowerCase().includes(q)) return false;
@@ -111,6 +137,9 @@ export default function InboxPage() {
         onFilterChange={setFilter}
         onRefresh={loadConversations}
         onHealthClick={() => setShowHealth(true)}
+        onDeleteConversation={handleDeleteConversation}
+        onArchiveConversation={handleArchiveConversation}
+        onDeleteAll={handleDeleteAll}
       />
       <HealthPanel open={showHealth} onClose={() => setShowHealth(false)} />
       <ThreadView
