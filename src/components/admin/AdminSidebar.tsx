@@ -3,6 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
+import { supabase } from '../../lib/supabase';
+import { hasPermission, Permission } from '../../lib/permissions';
+import { UserRole } from '../../types/supabase';
 
 const shopItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -12,44 +15,52 @@ const shopItems = [
   { path: '/dashboard/customers', icon: Users, label: 'Πελάτες' },
 ];
 
-const contentItems = [
-  { path: '/dashboard/products', icon: Package, label: 'Βιβλία / Προϊόντα' },
-  { path: '/dashboard/media', icon: Image, label: 'Πολυμέσα' },
-  { path: '/dashboard/services', icon: FileText, label: 'Υπηρεσίες' },
-  { path: '/dashboard/blog', icon: Globe, label: 'Blog' },
-  { path: '/dashboard/testimonials', icon: MessageSquare, label: 'Κριτικές' },
-  { path: '/dashboard/credentials', icon: Award, label: 'Πιστοποιήσεις' },
-  { path: '/dashboard/core-values', icon: Heart, label: 'Αξίες' },
-  { path: '/dashboard/about', icon: User, label: 'Σχετικά' },
-  { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA' },
-  { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες' },
-  { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
-  { path: '/dashboard/history', icon: History, label: 'Ιστορικό' },
-  { path: '/dashboard/inbox', icon: Mail, label: 'Inbox' },
-  { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline' },
-  { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site' },
+interface NavItem { path: string; icon: any; label: string; permission?: Permission; }
+
+const contentItems: NavItem[] = [
+  { path: '/dashboard/products', icon: Package, label: 'Βιβλία / Προϊόντα', permission: 'cms.edit' },
+  { path: '/dashboard/media', icon: Image, label: 'Πολυμέσα', permission: 'cms.edit' },
+  { path: '/dashboard/services', icon: FileText, label: 'Υπηρεσίες', permission: 'cms.edit' },
+  { path: '/dashboard/blog', icon: Globe, label: 'Blog', permission: 'cms.edit' },
+  { path: '/dashboard/testimonials', icon: MessageSquare, label: 'Κριτικές', permission: 'cms.edit' },
+  { path: '/dashboard/credentials', icon: Award, label: 'Πιστοποιήσεις', permission: 'cms.edit' },
+  { path: '/dashboard/core-values', icon: Heart, label: 'Αξίες', permission: 'cms.edit' },
+  { path: '/dashboard/about', icon: User, label: 'Σχετικά', permission: 'cms.edit' },
+  { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA', permission: 'cms.edit' },
+  { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες', permission: 'cms.edit' },
+  { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics', permission: 'cms.view' },
+  { path: '/dashboard/history', icon: History, label: 'Ιστορικό', permission: 'history.view' },
+  { path: '/dashboard/inbox', icon: Mail, label: 'Inbox', permission: 'crm.inbox' },
+  { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline', permission: 'crm.pipeline' },
+  { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site', permission: 'settings.all' },
 ];
 
-const bottomItems = [
+const bottomItems: NavItem[] = [
   { path: '/dashboard/profile', icon: User, label: 'Προφίλ' },
-  { path: '/dashboard/settings', icon: Settings, label: 'Ρυθμίσεις' },
+  { path: '/dashboard/settings', icon: Settings, label: 'Ρυθμίσεις', permission: 'settings.all' },
+  { path: '/dashboard/settings/users', icon: Users, label: 'Χρήστες', permission: 'users.manage' },
 ];
 
 export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [userRole, setUserRole] = useState<UserRole | undefined>(undefined);
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut, isDemoMode, user } = useAuth();
 
   useEffect(() => {
-    const fetchUnread = async () => {
+    const fetchData = async () => {
       try { setUnreadCount(await conversationsHelper.getUnreadCount()); } catch {}
+      if (user?.id) {
+        const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        if (data) setUserRole(data.role as UserRole);
+      }
     };
-    fetchUnread();
-    const interval = setInterval(fetchUnread, 15000);
+    fetchData();
+    const interval = setInterval(fetchData, 15000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user?.id]);
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
@@ -116,7 +127,7 @@ export default function AdminSidebar() {
           </Link>
         ))}
         {!collapsed && <div className="text-[10px] text-gray-600 uppercase tracking-wider px-3 pt-4 pb-1">Περιεχόμενο</div>}
-        {contentItems.map(({ path, icon: Icon, label }) => (
+        {contentItems.filter(item => !item.permission || hasPermission(userRole, item.permission)).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}
@@ -142,7 +153,7 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="p-3 border-t border-gray-800/50 space-y-1">
-        {bottomItems.map(({ path, icon: Icon, label }) => (
+        {bottomItems.filter(item => !item.permission || hasPermission(userRole, item.permission)).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}
