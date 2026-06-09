@@ -190,7 +190,11 @@ export const mockSiteSettings: SiteSetting[] = [
   { id: 'ss000001-0000-0000-0000-000000000021', tenant_id: mockTenantId, key: 'smtp_from_name', value: '', category: 'contact', description: 'SMTP from name', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
 ];
 
-export const mockContactSubmissions: ContactSubmission[] = [];
+export const mockContactSubmissions: ContactSubmission[] = [
+  { id: 'cm-0001', name: 'Παναγιώτης Χολιασμένος', email: 'Panosgr83@gmail.com', phone: '+306977086945', message: 'Καλησπέρα σας.\n\nΘα ήθελα να κλείσω ένα ραντεβού για ψυχοθεραπεία. Παρακαλώ επικοινωνήστε μαζί μου.', read: false, created_at: '2026-06-09T12:16:39.847Z' },
+  { id: 'cm-0002', name: 'Μαρία Παπαδοπούλου', email: 'maria.pap@gmail.com', phone: '+30 697 123 4567', message: 'Ενδιαφέρομαι για το σεμινάριο Reiki που αναφέρετε. Θα ήθελα περισσότερες πληροφορίες.', read: false, created_at: '2026-06-08T15:30:00.000Z' },
+  { id: 'cm-0003', name: 'Γιώργος Αλεξίου', email: 'giorgos@example.com', phone: '', message: 'Καλημέρα, θα ήθελα να με ενημερώσετε για τα βιβλία σας.', read: false, created_at: '2026-06-07T10:15:00.000Z' },
+];
 
 export const mockContentHistory: ContentHistory[] = [];
 export const mockContentBackups: ContentBackup[] = [];

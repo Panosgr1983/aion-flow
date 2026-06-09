@@ -324,7 +324,15 @@ export const blogPostsHelper = {
 export const testimonialsHelper = createMockHelper<Testimonial>(mockTestimonials, 'testimonials');
 export const credentialsHelper = createMockHelper<Credential>(mockCredentials, 'credentials');
 export const coreValuesHelper = createMockHelper<CoreValue>(mockCoreValues, 'core_values');
-export const contactSubmissionsHelper = createMockHelper<ContactSubmission>(mockContactSubmissions, 'contact_submissions');
+export const contactSubmissionsHelper = {
+  ...createMockHelper<ContactSubmission>(mockContactSubmissions, 'contact_submissions'),
+  async getAll(): Promise<ContactSubmission[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockContactSubmissions]; }
+    const { data, error } = await supabase.from('contact_submissions').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  },
+};
 
 export const siteSettingsHelper = {
   ...createMockHelper<SiteSetting>(mockSiteSettings, 'site_settings'),
