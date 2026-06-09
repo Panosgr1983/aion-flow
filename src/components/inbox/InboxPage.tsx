@@ -23,26 +23,32 @@ export default function InboxPage() {
 
   useEffect(() => { loadConversations(); }, [loadConversations]);
 
+  const refreshThread = useCallback(async () => {
+    if (!selectedConv) return;
+    const msgs = await contactMessagesHelper.getByConversation(selectedConv);
+    setThread(msgs);
+    await loadConversations();
+  }, [selectedConv, loadConversations]);
+
   const selectConversation = async (id: string) => {
     setSelectedConv(id);
     const msgs = await contactMessagesHelper.getByConversation(id);
     setThread(msgs);
-
-    msgs.forEach(m => {
-      if (m.status === 'new') contactMessagesHelper.markRead(m.id);
-    });
+    for (const m of msgs) {
+      if (m.status === 'new') contactMessagesHelper.markRead(m.id).catch(() => {});
+    }
   };
 
   const filtered = conversations.filter(c => {
     const q = search.toLowerCase();
     if (q && !c.name.toLowerCase().includes(q) && !c.email.toLowerCase().includes(q)) return false;
+    if (filter === 'all') return c.status !== 'archived';
     if (filter === 'new') {
-      const hasNew = thread.find(m => m.conversation_id === c.id && m.status === 'new');
-      if (!hasNew) return false;
+      const convMsgs = thread.filter(m => m.conversation_id === c.id);
+      return convMsgs.some(m => m.status === 'new');
     }
-    if (filter === 'replied') return c.status === 'active' && conversations.find(cc => cc.id === c.id) !== undefined;
+    if (filter === 'replied') return c.status === 'active';
     if (filter === 'archived') return c.status === 'archived';
-    if (filter === 'all' && c.status === 'archived') return false;
     return true;
   });
 
@@ -63,6 +69,7 @@ export default function InboxPage() {
       <ThreadView
         conversation={conversations.find(c => c.id === selectedConv) || null}
         thread={thread}
+        onThreadUpdate={refreshThread}
       />
     </div>
   );

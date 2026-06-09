@@ -47,6 +47,23 @@ async function pngToJpeg(file: File, quality: number): Promise<Blob> {
   });
 }
 
+export async function uploadFile(file: File, bucket: string = 'contact-attachments'): Promise<string> {
+  const ext = file.name.split('.').pop() || 'bin';
+  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+  const { error } = await supabase.storage
+    .from(bucket)
+    .upload(fileName, file, { cacheControl: '3600', upsert: true });
+
+  if (error) throw error;
+
+  const { data: { publicUrl } } = supabase.storage
+    .from(bucket)
+    .getPublicUrl(fileName);
+
+  return publicUrl;
+}
+
 export async function deleteImage(url: string): Promise<void> {
   const match = url.match(/\/([^/]+)$/);
   if (!match) return;

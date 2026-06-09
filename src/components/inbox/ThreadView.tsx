@@ -1,14 +1,25 @@
-import { useRef, useEffect } from 'react';
-import { Mail, Phone, Clock, Archive, Trash2, Forward, Reply as ReplyIcon, Paperclip, MessageSquare } from 'lucide-react';
-import { Conversation, ContactMessage } from '../../types/supabase';
+import { useState, useRef, useEffect } from 'react';
+import { Mail, Phone, Clock, Archive, Trash2, Forward as ForwardIcon, Reply as ReplyIcon, Paperclip, MessageSquare, Send, X, Download } from 'lucide-react';
+import { contactMessagesHelper } from '../../lib/dataHelpers';
+import { uploadFile } from '../../lib/storage';
+import { Conversation, ContactMessage, Attachment } from '../../types/supabase';
 
 interface Props {
   conversation: Conversation | null;
   thread: ContactMessage[];
+  onThreadUpdate?: () => void;
 }
 
-export default function ThreadView({ conversation, thread }: Props) {
+export default function ThreadView({ conversation, thread, onThreadUpdate }: Props) {
+  const [replyText, setReplyText] = useState('');
+  const [sending, setSending] = useState(false);
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const [forwardMode, setForwardMode] = useState(false);
+  const [forwardTo, setForwardTo] = useState('');
+  const [forwardText, setForwardText] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [thread.length]);
 
   if (!conversation) {
@@ -25,6 +36,76 @@ export default function ThreadView({ conversation, thread }: Props) {
   const incoming = thread.filter(m => m.direction === 'incoming');
   const lastIncomingStatus = incoming.length > 0 ? incoming[incoming.length - 1].status : null;
 
+  const handleSendReply = async () => {
+    if (!replyText.trim() || sending) return;
+    setSending(true);
+    const lastIncoming = [...thread].reverse().find(m => m.direction === 'incoming');
+    if (!lastIncoming) return;
+    try {
+      await contactMessagesHelper.reply(lastIncoming.id, {
+        message: replyText.trim(),
+        attachments: await uploadAttachments(attachments),
+      });
+      setReplyText('');
+      setAttachments([]);
+      onThreadUpdate?.();
+    } catch (err) {
+      console.error(err);
+    }
+    setSending(false);
+  };
+
+  const handleForward = async () => {
+    if (!forwardTo.trim() || !forwardText.trim() || sending) return;
+    setSending(true);
+    const lastMsg = thread[thread.length - 1];
+    try {
+      const atts = await uploadAttachments(attachments);
+      const res = await fetch('https://qhbgptlklsavezxpksao.supabase.co/functions/v1/send-contact-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
+        body: JSON.stringify({
+          type: 'forward',
+          to: forwardTo.trim(),
+          subject: `Fwd: ${lastMsg.subject || 'Μήνυμα'}`,
+          message: forwardText.trim(),
+          originalMessage: lastMsg.message,
+          attachments: atts,
+        }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setForwardMode(false);
+      setForwardTo('');
+      setForwardText('');
+      setAttachments([]);
+    } catch (err) {
+      console.error(err);
+    }
+    setSending(false);
+  };
+
+  const handleArchive = async () => {
+    if (!conversation) return;
+    for (const msg of thread) {
+      await contactMessagesHelper.archive(msg.id);
+    }
+    onThreadUpdate?.();
+  };
+
+  const handleDelete = async () => {
+    if (!conversation) return;
+    for (const msg of thread) {
+      await contactMessagesHelper.delete(msg.id);
+    }
+    onThreadUpdate?.();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) setAttachments(prev => [...prev, ...Array.from(e.target.files!)]);
+  };
+
+  const removeFile = (idx: number) => setAttachments(prev => prev.filter((_, i) => i !== idx));
+
   return (
     <div className="flex-1 flex flex-col min-w-0">
       <div className="p-5 border-b border-gray-800/50">
@@ -38,27 +119,75 @@ export default function ThreadView({ conversation, thread }: Props) {
         <div ref={bottomRef} />
       </div>
 
-      <div className="p-4 border-t border-gray-800/50 flex items-center gap-2">
-        <textarea
-          placeholder="Γράψτε μια απάντηση..."
-          className="input flex-1 resize-none text-sm"
-          rows={2}
-          disabled
-        />
-        <div className="flex gap-1">
-          <button disabled className="p-2 text-gray-600 rounded-lg" title="Επισύναψη"><Paperclip size={16} /></button>
-          <button disabled className="btn-primary text-xs px-4 py-2 opacity-50 cursor-not-allowed">Αποστολή</button>
+      {forwardMode ? (
+        <div className="border-t border-gray-800/50 p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-gray-200 flex items-center gap-2"><ForwardIcon size={14} /> Forward</h3>
+            <button onClick={() => setForwardMode(false)} className="text-gray-500 hover:text-gray-300"><X size={16} /></button>
+          </div>
+          <input value={forwardTo} onChange={e => setForwardTo(e.target.value)} placeholder="Προς: email" className="input text-sm" />
+          <textarea value={forwardText} onChange={e => setForwardText(e.target.value)} placeholder="Γράψτε το μήνυμά σας..." className="input text-sm resize-none" rows={4} />
+          <div className="flex gap-2 items-center">
+            <button onClick={() => fileRef.current?.click()} className="text-xs text-gray-400 hover:text-gray-200 flex items-center gap-1"><Paperclip size={12} /> Συνημμένα</button>
+            {attachments.map((f, i) => (
+              <span key={i} className="text-xs text-gray-500 flex items-center gap-1 bg-gray-800 rounded px-2 py-0.5">
+                {f.name} <button onClick={() => removeFile(i)} className="hover:text-red-400"><X size={10} /></button>
+              </span>
+            ))}
+            <div className="flex-1" />
+            <button onClick={handleForward} disabled={sending} className="btn-primary text-xs px-4 py-2">
+              {sending ? 'Αποστολή...' : 'Αποστολή'}
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="px-4 pb-3 -mt-1">
-        <div className="flex gap-2">
-          <button disabled className="text-xs text-gray-600 flex items-center gap-1 hover:text-gray-400 transition-colors"><Forward size={12} /> Forward</button>
-          <button disabled className="text-xs text-gray-600 flex items-center gap-1 hover:text-red-400 transition-colors"><Trash2 size={12} /> Διαγραφή</button>
-          <button disabled className="text-xs text-gray-600 flex items-center gap-1 hover:text-gray-400 transition-colors"><Archive size={12} /> Αρχειοθέτηση</button>
-        </div>
-      </div>
+      ) : (
+        <>
+          <div className="p-4 border-t border-gray-800/50">
+            <textarea
+              value={replyText}
+              onChange={e => setReplyText(e.target.value)}
+              placeholder="Γράψτε μια απάντηση..."
+              className="input w-full resize-none text-sm"
+              rows={2}
+            />
+            <div className="flex items-center gap-2 mt-2">
+              <button onClick={() => fileRef.current?.click()} className="text-xs text-gray-400 hover:text-gray-200 flex items-center gap-1"><Paperclip size={12} /> Συνημμένα</button>
+              {attachments.map((f, i) => (
+                <span key={i} className="text-xs text-gray-500 flex items-center gap-1 bg-gray-800 rounded px-2 py-0.5">
+                  {f.name} <button onClick={() => removeFile(i)} className="hover:text-red-400"><X size={10} /></button>
+                </span>
+              ))}
+              <div className="flex-1" />
+              <button onClick={handleSendReply} disabled={!replyText.trim() || sending} className="btn-primary text-xs px-4 py-2 flex items-center gap-1.5">
+                <Send size={12} /> {sending ? 'Αποστολή...' : 'Αποστολή'}
+              </button>
+            </div>
+          </div>
+          <div className="px-4 pb-3 flex gap-3">
+            <button onClick={() => setForwardMode(true)} className="text-xs text-gray-500 flex items-center gap-1 hover:text-gray-300 transition-colors"><ForwardIcon size={12} /> Forward</button>
+            <button onClick={handleDelete} className="text-xs text-gray-500 flex items-center gap-1 hover:text-red-400 transition-colors"><Trash2 size={12} /> Διαγραφή</button>
+            <button onClick={handleArchive} className="text-xs text-gray-500 flex items-center gap-1 hover:text-gray-300 transition-colors"><Archive size={12} /> Αρχειοθέτηση</button>
+          </div>
+        </>
+      )}
+
+      <input ref={fileRef} type="file" multiple className="hidden" onChange={handleFileChange} />
     </div>
   );
+}
+
+async function uploadAttachments(files: File[]): Promise<Attachment[]> {
+  if (files.length === 0) return [];
+  const results: Attachment[] = [];
+  for (const file of files) {
+    try {
+      const url = await uploadFile(file, 'contact-attachments');
+      results.push({ name: file.name, url, size: file.size, mime_type: file.type });
+    } catch (err) {
+      console.error('Failed to upload attachment:', err);
+    }
+  }
+  return results;
 }
 
 function ConversationHeader({ conversation, lastStatus }: { conversation: Conversation; lastStatus: string | null }) {
@@ -71,7 +200,7 @@ function ConversationHeader({ conversation, lastStatus }: { conversation: Conver
   const st = lastStatus ? statusLabels[lastStatus] || statusLabels.new : statusLabels.new;
 
   return (
-    <div className="flex items-start justify-between">
+    <div className="flex items-start justify-between flex-wrap gap-2">
       <div className="flex items-center gap-3 min-w-0">
         <div className="size-10 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm font-bold shrink-0">
           {conversation.name.charAt(0).toUpperCase()}
@@ -123,7 +252,7 @@ function MessageBubble({ message }: { message: ContactMessage }) {
           <div className="mt-2 pt-2 border-t border-gray-700/50 space-y-1">
             {message.attachments.map((att, i) => (
               <a key={i} href={att.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300">
-                <Paperclip size={12} /> {att.name}
+                <Download size={12} /> {att.name}
               </a>
             ))}
           </div>
