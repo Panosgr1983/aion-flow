@@ -18,6 +18,8 @@ const titles: Record<string, string> = {
   '/dashboard/credentials': 'Πιστοποιήσεις',
   '/dashboard/core-values': 'Αξίες',
   '/dashboard/site-settings': 'Ρυθμίσεις Περιεχομένου',
+  '/dashboard/history': 'Ιστορικό',
+  '/dashboard/contact-messages': 'Μηνύματα Επικοινωνίας',
 };
 
 export default function AdminHeader() {

@@ -282,7 +282,13 @@ INSERT INTO site_settings (tenant_id, key, value, category, description) VALUES
   ('00000000-0000-0000-0000-000000000001', 'google_maps_url', '""', 'contact', 'Google Maps embed URL'),
   ('00000000-0000-0000-0000-000000000001', 'facebook_url', '""', 'social', 'Facebook page URL'),
   ('00000000-0000-0000-0000-000000000001', 'instagram_url', '""', 'social', 'Instagram profile URL'),
-  ('00000000-0000-0000-0000-000000000001', 'whatsapp', '""', 'social', 'WhatsApp number')
+  ('00000000-0000-0000-0000-000000000001', 'whatsapp', '""', 'social', 'WhatsApp number'),
+  ('00000000-0000-0000-0000-000000000001', 'smtp_host', '"smtp.gmail.com"', 'contact', 'SMTP server hostname'),
+  ('00000000-0000-0000-0000-000000000001', 'smtp_port', '"587"', 'contact', 'SMTP server port'),
+  ('00000000-0000-0000-0000-000000000001', 'smtp_user', '""', 'contact', 'SMTP username'),
+  ('00000000-0000-0000-0000-000000000001', 'smtp_pass', '""', 'contact', 'SMTP password'),
+  ('00000000-0000-0000-0000-000000000001', 'smtp_from_email', '""', 'contact', 'SMTP from email'),
+  ('00000000-0000-0000-0000-000000000001', 'smtp_from_name', '""', 'contact', 'SMTP from name')
 ON CONFLICT (tenant_id, key) DO NOTHING;
 
 -- ============================================================

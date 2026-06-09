@@ -23,6 +23,24 @@ interface HeroSlides { slide: { image: string; heading: string; subtitle: string
 
 interface SettingsMap { [key: string]: any; }
 
+function PageHiddenBanner({ pageKey }: { pageKey: string }) {
+  return (
+    <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-400 text-xs mb-5">
+      Η σελίδα είναι αποκρυμμένη. Ενεργοποιήστε την από το panel <strong>Σελίδες</strong> για να εμφανίζεται στο site.
+    </div>
+  );
+}
+
+function TabVisibilityGuard({ children, visibility, pageKey }: { children: React.ReactNode; visibility: Record<string, boolean>; pageKey: string }) {
+  const isHidden = visibility[pageKey] === false;
+  return (
+    <div className={isHidden ? 'opacity-50 pointer-events-none select-none' : ''}>
+      {isHidden && <PageHiddenBanner pageKey={pageKey} />}
+      {children}
+    </div>
+  );
+}
+
 export default function SiteSettingsPanel() {
   const [settings, setSettings] = useState<SiteSetting[]>([]);
   const [loading, setLoading] = useState(true);
@@ -129,7 +147,16 @@ export default function SiteSettingsPanel() {
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
 
-  const renderField = (key: string, label: string, opts?: { isUrl?: boolean; isImage?: boolean; rows?: number }) => {
+  const pageVisibilitySetting = settings.find(s => s.key === 'page_visibility');
+  const pageVisibility: Record<string, boolean> = (pageVisibilitySetting?.value as Record<string, boolean>) || {};
+
+  const TAB_PAGE_MAP: Record<string, string> = {
+    home: '/',
+    about: '/about',
+    contact: '/contact',
+  };
+
+  const renderField = (key: string, label: string, opts?: { isUrl?: boolean; isImage?: boolean; rows?: number; isPassword?: boolean }) => {
     const val = getValue(key);
     return (
       <div key={key}>
@@ -148,7 +175,7 @@ export default function SiteSettingsPanel() {
           ) : isTextarea(key) ? (
             <textarea value={val} onChange={e => setValue(key, e.target.value)} className="input flex-1 resize-none" style={{ minHeight: opts?.rows ? `${opts.rows * 1.5}rem` : '5rem' }} />
           ) : (
-            <input value={val} onChange={e => setValue(key, e.target.value)} className="input flex-1" />
+            <input value={val} onChange={e => setValue(key, e.target.value)} type={opts?.isPassword ? 'password' : 'text'} className="input flex-1" />
           )}
         </div>
         <div className="text-[10px] text-gray-700 mt-0.5 font-mono">{key}</div>
@@ -233,7 +260,7 @@ export default function SiteSettingsPanel() {
 
           {/* ABOUT */}
           {activeTab === 'about' && (
-            <>
+            <TabVisibilityGuard visibility={pageVisibility} pageKey="/about">
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Hero Section</h3>
               {renderField('about_hero_eyebrow', 'Eyebrow')}
               {renderField('about_hero_title', 'Title')}
@@ -254,15 +281,19 @@ export default function SiteSettingsPanel() {
               {renderField('about_portrait', 'Portrait Image URL', { isImage: true })}
               {renderField('credentials_section_title', 'Credentials Section Title')}
 
-              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Books Page Hero</h3>
-              {renderField('books_hero_title', 'Books Page Hero Title')}
-              {renderField('books_hero_subtitle', 'Books Page Hero Subtitle', { rows: 2 })}
-            </>
+              <h3 className={`text-sm font-semibold border-b border-gray-800 pb-2 mt-8 ${pageVisibility['/books'] === false ? 'text-amber-500' : 'text-blue-400'}`}>
+                Books Page Hero {pageVisibility['/books'] === false && <span className="text-amber-500/70 font-normal">(αποκρυμμένο)</span>}
+              </h3>
+              <div className={pageVisibility['/books'] === false ? 'opacity-40 pointer-events-none' : ''}>
+                {renderField('books_hero_title', 'Books Page Hero Title')}
+                {renderField('books_hero_subtitle', 'Books Page Hero Subtitle', { rows: 2 })}
+              </div>
+            </TabVisibilityGuard>
           )}
 
           {/* CONTACT */}
           {activeTab === 'contact' && (
-            <>
+            <TabVisibilityGuard visibility={pageVisibility} pageKey="/contact">
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Hero Section</h3>
               {renderField('contact_hero_eyebrow', 'Eyebrow')}
               {renderField('contact_hero_title', 'Title')}
@@ -289,7 +320,21 @@ export default function SiteSettingsPanel() {
               </div>
               {renderField('contact_map_embed_url', 'Google Maps Embed URL', { isUrl: true, rows: 3 })}
               {renderField('contact_form_heading', 'Form Heading')}
-            </>
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Email Configuration</h3>
+              {renderField('contact_email', 'Email λήψης (στο email αυτό θα στέλνονται τα μηνύματα)')}
+
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">SMTP Server (για αποστολή email)</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('smtp_host', 'SMTP Host (π.χ. smtp.gmail.com)')}
+                {renderField('smtp_port', 'SMTP Port (π.χ. 587)')}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('smtp_user', 'SMTP Username')}
+                {renderField('smtp_pass', 'SMTP Password', { isPassword: true })}
+              </div>
+              {renderField('smtp_from_email', 'From Email (αποστολέας)')}
+              {renderField('smtp_from_name', 'From Name (όνομα αποστολέα)')}
+            </TabVisibilityGuard>
           )}
 
           {/* SITE */}

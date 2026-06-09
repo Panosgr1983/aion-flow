@@ -20,6 +20,8 @@ import CtaPanel from '../components/dashboard/CtaPanel';
 import SiteSettingsPanel from '../components/dashboard/SiteSettingsPanel';
 import Pages from '../components/dashboard/Pages';
 import AnalyticsDashboard from '../components/dashboard/AnalyticsDashboard';
+import History from '../components/dashboard/History';
+import ContactMessages from '../components/dashboard/ContactMessages';
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();
@@ -54,6 +56,8 @@ export default function Dashboard() {
             <Route path="pages" element={<Pages />} />
             <Route path="site-settings" element={<SiteSettingsPanel />} />
             <Route path="analytics" element={<AnalyticsDashboard />} />
+            <Route path="history" element={<History />} />
+            <Route path="contact-messages" element={<ContactMessages />} />
           </Routes>
         </main>
       </div>

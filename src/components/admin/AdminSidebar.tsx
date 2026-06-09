@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const shopItems = [
@@ -23,6 +23,8 @@ const contentItems = [
   { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA' },
   { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες' },
   { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics' },
+  { path: '/dashboard/history', icon: History, label: 'Ιστορικό' },
+  { path: '/dashboard/contact-messages', icon: Mail, label: 'Μηνύματα' },
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site' },
 ];
 

@@ -280,3 +280,44 @@ export interface SiteSetting {
   created_at: string;
   updated_at: string;
 }
+
+export type HistoryOperation = 'create' | 'update' | 'delete' | 'restore' | 'backup';
+
+export interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  read: boolean;
+  created_at: string;
+}
+
+export interface ContentHistory {
+  id: string;
+  tenant_id: string | null;
+  table_name: string;
+  record_id: string | null;
+  entity_name: string | null;
+  operation: HistoryOperation;
+  changed_fields: string[] | null;
+  snapshot_before: any | null;
+  snapshot_after: any | null;
+  restored_from_history_id: string | null;
+  metadata: Record<string, unknown> | null;
+  summary: string | null;
+  user_id: string | null;
+  expired_at: string | null;
+  created_at: string;
+}
+
+export interface ContentBackup {
+  id: string;
+  tenant_id: string | null;
+  name: string | null;
+  snapshot: any | null;
+  snapshot_version: number;
+  size_bytes: number | null;
+  user_id: string | null;
+  created_at: string;
+}

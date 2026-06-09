@@ -1,4 +1,4 @@
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting } from '../types/supabase';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContentHistory, ContentBackup, ContactSubmission } from '../types/supabase';
 
 export const mockCategories: Category[] = [
   { id: 'a1000000-0000-0000-0000-000000000001', name: 'Ηλεκτρονικά', slug: 'ilektronika', description: 'Smartphones, laptops, tablets και αξεσουάρ', seo_title: '', seo_description: '', parent_id: null, sort_order: 1, is_active: true, created_by: null, created_at: '2024-01-01T00:00:00Z', updated_at: '2024-01-01T00:00:00Z', product_count: 4 },
@@ -181,4 +181,16 @@ export const mockSiteSettings: SiteSetting[] = [
   { id: 'ss000001-0000-0000-0000-000000000079', tenant_id: mockTenantId, key: 'books_hero_subtitle', value: 'Τα βιβλία & οι εκδόσεις μου', category: 'about', description: 'Books page hero subtitle', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
   { id: 'ss000001-0000-0000-0000-000000000013', tenant_id: mockTenantId, key: 'about_pull_quote', value: '', category: 'about', description: 'Pull quote text', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
   { id: 'ss000001-0000-0000-0000-000000000014', tenant_id: mockTenantId, key: 'about_pull_quote_author', value: '', category: 'about', description: 'Pull quote author', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
+  { id: 'ss000001-0000-0000-0000-000000000015', tenant_id: mockTenantId, key: 'contact_email', value: 'info@kolokotronis.gr', category: 'contact', description: 'Contact form email recipient', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
+  { id: 'ss000001-0000-0000-0000-000000000016', tenant_id: mockTenantId, key: 'smtp_host', value: 'smtp.gmail.com', category: 'contact', description: 'SMTP server hostname', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
+  { id: 'ss000001-0000-0000-0000-000000000017', tenant_id: mockTenantId, key: 'smtp_port', value: '587', category: 'contact', description: 'SMTP server port', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
+  { id: 'ss000001-0000-0000-0000-000000000018', tenant_id: mockTenantId, key: 'smtp_user', value: '', category: 'contact', description: 'SMTP username', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
+  { id: 'ss000001-0000-0000-0000-000000000019', tenant_id: mockTenantId, key: 'smtp_pass', value: '', category: 'contact', description: 'SMTP password', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
+  { id: 'ss000001-0000-0000-0000-000000000020', tenant_id: mockTenantId, key: 'smtp_from_email', value: '', category: 'contact', description: 'SMTP from email', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
+  { id: 'ss000001-0000-0000-0000-000000000021', tenant_id: mockTenantId, key: 'smtp_from_name', value: '', category: 'contact', description: 'SMTP from name', created_at: '2026-01-01T00:00:00Z', updated_at: '2026-01-01T00:00:00Z' },
 ];
+
+export const mockContactSubmissions: ContactSubmission[] = [];
+
+export const mockContentHistory: ContentHistory[] = [];
+export const mockContentBackups: ContentBackup[] = [];
