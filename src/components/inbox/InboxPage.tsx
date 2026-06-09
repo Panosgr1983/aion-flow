@@ -101,13 +101,23 @@ export default function InboxPage() {
     await loadConversations();
   };
 
-  const handleDeleteAll = async () => {
-    for (const conv of conversations) {
-      const msgs = await contactMessagesHelper.getByConversation(conv.id);
+  const deleteConversations = async (ids: string[]) => {
+    for (const id of ids) {
+      const msgs = await contactMessagesHelper.getByConversation(id);
       for (const m of msgs) await contactMessagesHelper.delete(m.id);
-      await conversationsHelper.delete(conv.id);
+      if (selectedConv === id) { setSelectedConv(null); setThread([]); }
+      await conversationsHelper.delete(id);
     }
-    setSelectedConv(null); setThread([]);
+    await loadConversations();
+  };
+
+  const archiveConversations = async (ids: string[]) => {
+    for (const id of ids) {
+      const msgs = await contactMessagesHelper.getByConversation(id);
+      for (const m of msgs) await contactMessagesHelper.archive(m.id);
+      if (selectedConv === id) { setSelectedConv(null); setThread([]); }
+      await conversationsHelper.update(id, { status: 'archived' } as any);
+    }
     await loadConversations();
   };
 
@@ -139,7 +149,8 @@ export default function InboxPage() {
         onHealthClick={() => setShowHealth(true)}
         onDeleteConversation={handleDeleteConversation}
         onArchiveConversation={handleArchiveConversation}
-        onDeleteAll={handleDeleteAll}
+        onDeleteSelected={deleteConversations}
+        onArchiveSelected={archiveConversations}
       />
       <HealthPanel open={showHealth} onClose={() => setShowHealth(false)} />
       <ThreadView
