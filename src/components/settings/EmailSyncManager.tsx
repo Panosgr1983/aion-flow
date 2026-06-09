@@ -17,18 +17,8 @@ export default function EmailSyncManager() {
 
   useEffect(() => { load(); }, [load]);
 
-  const connectGmail = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gmail-sync`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
-        body: JSON.stringify({ action: 'auth' }),
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch (err) {
-      console.error('Failed to get auth URL:', err);
-    }
+  const connectGmail = () => {
+    window.location.href = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gmail-sync?action=auth`;
   };
 
   const disconnect = async (id: string) => {
