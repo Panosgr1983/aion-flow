@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Mail, Phone, Clock, Archive, Trash2, Forward as ForwardIcon, Reply as ReplyIcon, Paperclip, MessageSquare, Send, X, Download } from 'lucide-react';
+import { Mail, Phone, Clock, Archive, Trash2, Forward as ForwardIcon, Paperclip, MessageSquare, Send, X, Download } from 'lucide-react';
 import { contactMessagesHelper } from '../../lib/dataHelpers';
 import { uploadFile } from '../../lib/storage';
 import { Conversation, ContactMessage, Attachment } from '../../types/supabase';
@@ -17,10 +17,13 @@ export default function ThreadView({ conversation, thread, onThreadUpdate }: Pro
   const [forwardMode, setForwardMode] = useState(false);
   const [forwardTo, setForwardTo] = useState('');
   const [forwardText, setForwardText] = useState('');
+  const [optimisticMsgs, setOptimisticMsgs] = useState<ContactMessage[]>([]);
   const bottomRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [thread.length]);
+  const allMessages = [...thread, ...optimisticMsgs];
+
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [allMessages.length]);
 
   if (!conversation) {
     return (
@@ -33,26 +36,37 @@ export default function ThreadView({ conversation, thread, onThreadUpdate }: Pro
     );
   }
 
-  const incoming = thread.filter(m => m.direction === 'incoming');
+  const incoming = allMessages.filter(m => m.direction === 'incoming');
   const lastIncomingStatus = incoming.length > 0 ? incoming[incoming.length - 1].status : null;
 
   const handleSendReply = async () => {
     if (!replyText.trim() || sending) return;
-    setSending(true);
-    const lastIncoming = [...thread].reverse().find(m => m.direction === 'incoming');
+    const lastIncoming = [...allMessages].reverse().find(m => m.direction === 'incoming');
     if (!lastIncoming) return;
+
+    const optimistic: ContactMessage = {
+      id: `opt-${Date.now()}`,
+      conversation_id: conversation.id,
+      name: '', email: '', phone: '',
+      subject: lastIncoming.subject.startsWith('Re:') ? lastIncoming.subject : `Re: ${lastIncoming.subject}`,
+      message: replyText.trim(),
+      direction: 'outgoing', status: 'read', parent_id: lastIncoming.id,
+      attachments: [], last_message_at: new Date().toISOString(), created_at: new Date().toISOString(),
+    };
+    setOptimisticMsgs(prev => [...prev, optimistic]);
+
+    const text = replyText.trim();
+    const atts = attachments;
+    setReplyText(''); setAttachments([]);
+
     try {
-      await contactMessagesHelper.reply(lastIncoming.id, {
-        message: replyText.trim(),
-        attachments: await uploadAttachments(attachments),
-      });
-      setReplyText('');
-      setAttachments([]);
+      await contactMessagesHelper.reply(lastIncoming.id, { message: text, attachments: await uploadAttachments(atts) });
+      setOptimisticMsgs([]);
       onThreadUpdate?.();
     } catch (err) {
       console.error(err);
+      setOptimisticMsgs(prev => prev.filter(m => m.id !== optimistic.id));
     }
-    setSending(false);
   };
 
   const handleForward = async () => {
@@ -65,38 +79,27 @@ export default function ThreadView({ conversation, thread, onThreadUpdate }: Pro
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
         body: JSON.stringify({
-          type: 'forward',
-          to: forwardTo.trim(),
+          type: 'forward', to: forwardTo.trim(),
           subject: `Fwd: ${lastMsg.subject || 'Μήνυμα'}`,
-          message: forwardText.trim(),
-          originalMessage: lastMsg.message,
+          message: forwardText.trim(), originalMessage: lastMsg.message,
           attachments: atts,
         }),
       });
       if (!res.ok) throw new Error(await res.text());
-      setForwardMode(false);
-      setForwardTo('');
-      setForwardText('');
-      setAttachments([]);
-    } catch (err) {
-      console.error(err);
-    }
+      setForwardMode(false); setForwardTo(''); setForwardText(''); setAttachments([]);
+    } catch (err) { console.error(err); }
     setSending(false);
   };
 
   const handleArchive = async () => {
     if (!conversation) return;
-    for (const msg of thread) {
-      await contactMessagesHelper.archive(msg.id);
-    }
+    for (const msg of thread) await contactMessagesHelper.archive(msg.id);
     onThreadUpdate?.();
   };
 
   const handleDelete = async () => {
     if (!conversation) return;
-    for (const msg of thread) {
-      await contactMessagesHelper.delete(msg.id);
-    }
+    for (const msg of thread) await contactMessagesHelper.delete(msg.id);
     onThreadUpdate?.();
   };
 
@@ -113,7 +116,7 @@ export default function ThreadView({ conversation, thread, onThreadUpdate }: Pro
       </div>
 
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
-        {thread.map(msg => (
+        {allMessages.map(msg => (
           <MessageBubble key={msg.id} message={msg} />
         ))}
         <div ref={bottomRef} />
@@ -158,8 +161,8 @@ export default function ThreadView({ conversation, thread, onThreadUpdate }: Pro
                 </span>
               ))}
               <div className="flex-1" />
-              <button onClick={handleSendReply} disabled={!replyText.trim() || sending} className="btn-primary text-xs px-4 py-2 flex items-center gap-1.5">
-                <Send size={12} /> {sending ? 'Αποστολή...' : 'Αποστολή'}
+              <button onClick={handleSendReply} disabled={!replyText.trim() || optimisticMsgs.length > 0} className="btn-primary text-xs px-4 py-2 flex items-center gap-1.5">
+                <Send size={12} /> {optimisticMsgs.length > 0 ? 'Αποστολή...' : 'Αποστολή'}
               </button>
             </div>
           </div>
@@ -232,10 +235,11 @@ function ConversationHeader({ conversation, lastStatus }: { conversation: Conver
 }
 
 function MessageBubble({ message }: { message: ContactMessage }) {
+  const isOptimistic = message.id.startsWith('opt-');
   const isOutgoing = message.direction === 'outgoing';
 
   return (
-    <div className={`flex ${isOutgoing ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex ${isOutgoing ? 'justify-end' : 'justify-start'} ${isOptimistic ? 'opacity-60' : ''}`}>
       <div className={`max-w-[75%] min-w-0 rounded-2xl px-4 py-3 ${
         isOutgoing
           ? 'bg-blue-600/20 border border-blue-500/20 rounded-tr-md'
@@ -257,7 +261,10 @@ function MessageBubble({ message }: { message: ContactMessage }) {
             ))}
           </div>
         )}
-        <p className="text-[11px] text-gray-600 mt-1.5">{new Date(message.created_at).toLocaleString('el-GR')}</p>
+        <p className="text-[11px] text-gray-600 mt-1.5">
+          {new Date(message.created_at).toLocaleString('el-GR')}
+          {isOptimistic && <span className="text-blue-400 ml-1">• αποστολή...</span>}
+        </p>
       </div>
     </div>
   );

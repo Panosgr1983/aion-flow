@@ -39,15 +39,36 @@ export default function InboxPage() {
     }
   };
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
+
+      if (e.key === 'j' || e.key === 'k') {
+        e.preventDefault();
+        const idx = conversations.findIndex(c => c.id === selectedConv);
+        if (e.key === 'j' && idx < conversations.length - 1) selectConversation(conversations[idx + 1].id);
+        if (e.key === 'k' && idx > 0) selectConversation(conversations[idx - 1].id);
+      }
+      if (e.key === 'r' && selectedConv) {
+        e.preventDefault();
+        const replyEl = document.querySelector('textarea');
+        replyEl?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [conversations, selectedConv]);
+
   const filtered = conversations.filter(c => {
     const q = search.toLowerCase();
     if (q && !c.name.toLowerCase().includes(q) && !c.email.toLowerCase().includes(q)) return false;
     if (filter === 'all') return c.status !== 'archived';
-    if (filter === 'new') {
-      const convMsgs = thread.filter(m => m.conversation_id === c.id);
-      return convMsgs.some(m => m.status === 'new');
+    if (filter === 'new' || filter === 'replied' || filter === 'read') {
+      if (c.status === 'archived') return false;
+      if (filter === 'new' && c.status !== 'active') return false;
     }
-    if (filter === 'replied') return c.status === 'active';
     if (filter === 'archived') return c.status === 'archived';
     return true;
   });

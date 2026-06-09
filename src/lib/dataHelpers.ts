@@ -348,6 +348,12 @@ export const conversationsHelper = {
     const all = await this.getAll();
     return all.find(c => c.email.toLowerCase() === email.toLowerCase() && c.status === 'active') ?? null;
   },
+  async getUnreadCount(): Promise<number> {
+    if (!isSupabaseAvailable()) { await delay(100); return mockContactMessages.filter(m => m.status === 'new').length; }
+    const { data, error } = await supabase.from('contact_messages').select('id', { count: 'exact', head: true }).eq('status', 'new');
+    if (error) throw error;
+    return data?.length ?? 0;
+  },
 };
 
 export const contactMessagesHelper = {

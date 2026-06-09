@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { conversationsHelper } from '../../lib/dataHelpers';
 
 const shopItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -35,9 +36,19 @@ const bottomItems = [
 
 export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut, isDemoMode, user } = useAuth();
+
+  useEffect(() => {
+    const fetchUnread = async () => {
+      try { setUnreadCount(await conversationsHelper.getUnreadCount()); } catch {}
+    };
+    fetchUnread();
+    const interval = setInterval(fetchUnread, 15000);
+    return () => clearInterval(interval);
+  }, []);
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
@@ -113,10 +124,18 @@ export default function AdminSidebar() {
               isActive(path)
                 ? 'bg-blue-600/20 text-blue-400 border border-blue-500/20'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/60'
-            } ${collapsed ? 'justify-center' : ''}`}
+            } ${collapsed ? 'justify-center' : ''} ${path === '/dashboard/inbox' ? 'relative' : ''}`}
           >
             <Icon size={18} className="shrink-0" />
             {!collapsed && <span>{label}</span>}
+            {!collapsed && path === '/dashboard/inbox' && unreadCount > 0 && (
+              <span className="ml-auto bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-tight">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+            {collapsed && path === '/dashboard/inbox' && unreadCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-blue-500 rounded-full ring-2 ring-gray-950" />
+            )}
           </Link>
         ))}
       </nav>

@@ -21,7 +21,6 @@ import SiteSettingsPanel from '../components/dashboard/SiteSettingsPanel';
 import Pages from '../components/dashboard/Pages';
 import AnalyticsDashboard from '../components/dashboard/AnalyticsDashboard';
 import History from '../components/dashboard/History';
-import ContactMessages from '../components/dashboard/ContactMessages';
 import InboxPage from '../components/inbox/InboxPage';
 
 export default function Dashboard() {
