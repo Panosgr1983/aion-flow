@@ -1,6 +1,12 @@
 import nodemailer from 'npm:nodemailer@6.9.14';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
 interface BasePayload {
   type: 'new' | 'reply' | 'forward';
   name?: string;
@@ -14,6 +20,9 @@ interface BasePayload {
 }
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
   try {
     const payload: BasePayload = await req.json();
 
@@ -42,7 +51,7 @@ Deno.serve(async (req) => {
     const fromName = map['smtp_from_name'] || map['site_name'] || '';
 
     if (!host || !user || !pass) {
-      return new Response(JSON.stringify({ error: 'SMTP not configured' }), { status: 400 });
+      return new Response(JSON.stringify({ error: 'SMTP not configured' }), { status: 400, headers: CORS_HEADERS });
     }
 
     const transporter = nodemailer.createTransport({
@@ -81,7 +90,7 @@ Deno.serve(async (req) => {
     } else {
       // type === 'new' (contact form notification)
       const toEmail = map['contact_email'];
-      if (!toEmail) return new Response(JSON.stringify({ error: 'No recipient email configured' }), { status: 400 });
+      if (!toEmail) return new Response(JSON.stringify({ error: 'No recipient email configured' }), { status: 400, headers: CORS_HEADERS });
 
       mailOptions = {
         from: fromName ? `"${fromName}" <${fromEmail}>` : fromEmail,
@@ -113,9 +122,9 @@ Deno.serve(async (req) => {
 
     await transporter.sendMail(mailOptions);
 
-    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    return new Response(JSON.stringify({ ok: true }), { status: 200, headers: CORS_HEADERS });
   } catch (err) {
     console.error(err);
-    return new Response(JSON.stringify({ error: String(err) }), { status: 500 });
+    return new Response(JSON.stringify({ error: String(err) }), { status: 500, headers: CORS_HEADERS });
   }
 });

@@ -55,8 +55,8 @@ export default function AdminSidebar() {
     const fetchData = async () => {
       try { setUnreadCount(await conversationsHelper.getUnreadCount()); } catch {}
       if (user?.id) {
-        const { data } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-        if (data) setUserRole(data.role as UserRole);
+        const { data } = await supabase.from('profiles').select('role').eq('id', user.id).maybeSingle();
+        setUserRole((data?.role as UserRole) || 'admin');
       }
     };
     fetchData();

@@ -1,5 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
 const TABLES = ['services', 'blog_posts', 'testimonials', 'credentials', 'core_values', 'site_settings', 'contact_messages', 'contact_conversations', 'follow_up_tasks'];
 
 const RETENTION: Record<string, { days: number }> = {
@@ -9,10 +15,13 @@ const RETENTION: Record<string, { days: number }> = {
 };
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
   try {
     const { type = 'manual' } = await req.json().catch(() => ({ type: 'manual' }));
     if (!['manual', 'daily', 'weekly'].includes(type)) {
-      return new Response(JSON.stringify({ error: 'Invalid type' }), { status: 400 });
+      return new Response(JSON.stringify({ error: 'Invalid type' }), { status: 400, headers: CORS_HEADERS });
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -87,7 +96,7 @@ Deno.serve(async (req) => {
         }
       }
 
-      return new Response(JSON.stringify({ ok: true, backup_id: backup.id, size: totalBytes }), { status: 200 });
+      return new Response(JSON.stringify({ ok: true, backup_id: backup.id, size: totalBytes }), { status: 200, headers: CORS_HEADERS });
 
     } catch (err: any) {
       // Mark job as failed
@@ -96,9 +105,9 @@ Deno.serve(async (req) => {
         .update({ status: 'failed', error_message: err.message, completed_at: new Date().toISOString() })
         .eq('id', jobId);
 
-      return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+      return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS_HEADERS });
     }
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: String(err) }), { status: 500 });
+    return new Response(JSON.stringify({ error: String(err) }), { status: 500, headers: CORS_HEADERS });
   }
 });
