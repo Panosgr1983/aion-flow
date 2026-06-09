@@ -415,7 +415,7 @@ export const contactMessagesHelper = {
     await this.update(parentId, { status: 'replied' });
     await conversationsHelper.update(parent.conversation_id, { last_message_at: reply.created_at });
     if (typeof window !== 'undefined') {
-      fetch('https://qhbgptlklsavezxpksao.supabase.co/functions/v1/send-contact-email', {
+      fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
         body: JSON.stringify({

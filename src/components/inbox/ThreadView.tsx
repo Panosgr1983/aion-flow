@@ -61,7 +61,7 @@ export default function ThreadView({ conversation, thread, onThreadUpdate }: Pro
     const lastMsg = thread[thread.length - 1];
     try {
       const atts = await uploadAttachments(attachments);
-      const res = await fetch('https://qhbgptlklsavezxpksao.supabase.co/functions/v1/send-contact-email', {
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
         body: JSON.stringify({
