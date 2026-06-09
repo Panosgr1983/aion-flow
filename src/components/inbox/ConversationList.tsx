@@ -87,22 +87,29 @@ export default function ConversationList({ conversations, drafts, selectedId, on
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
           <input value={search} onChange={e => onSearchChange(e.target.value)} placeholder="Αναζήτηση..." className="input pl-9 text-sm" />
         </div>
-        <div className="flex flex-wrap gap-1">
-          {FOLDERS.map(f => (
-            <button
-              key={f.key}
-              onClick={() => onFolderChange(f.key)}
-              className={`flex items-center gap-1 px-2 py-1 text-xs rounded-lg font-medium transition-colors ${
-                folder === f.key ? 'bg-blue-600/20 text-blue-400 border border-blue-500/20' : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800'
-              }`}
-            >
-              <f.icon size={12} />
-              {f.label}
-              {(counts[f.key as keyof typeof counts] || 0) > 0 && (
-                <span className="text-[10px] bg-blue-600/30 text-blue-300 px-1 rounded-full">{counts[f.key as keyof typeof counts]}</span>
-              )}
+        <div className="flex items-center gap-1">
+          <div className="flex flex-wrap gap-1 flex-1">
+            {FOLDERS.map(f => (
+              <button
+                key={f.key}
+                onClick={() => onFolderChange(f.key)}
+                className={`flex items-center gap-1 px-2 py-1 text-xs rounded-lg font-medium transition-colors ${
+                  folder === f.key ? 'bg-blue-600/20 text-blue-400 border border-blue-500/20' : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800'
+                }`}
+              >
+                <f.icon size={12} />
+                {f.label}
+                {(counts[f.key as keyof typeof counts] || 0) > 0 && (
+                  <span className="text-[10px] bg-blue-600/30 text-blue-300 px-1 rounded-full">{counts[f.key as keyof typeof counts]}</span>
+                )}
+              </button>
+            ))}
+          </div>
+          {!isDraftMode && conversations.length > 0 && (
+            <button onClick={toggleSelectAll} className="p-1 text-gray-500 hover:text-blue-400 transition-colors shrink-0" title="Επιλογή όλων">
+              {selected.size === conversations.length ? <CheckSquare size={14} className="text-blue-400" /> : <Square size={14} />}
             </button>
-          ))}
+          )}
         </div>
       </div>
 
