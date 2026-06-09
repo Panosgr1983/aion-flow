@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, RefreshCw, Mail, MailOpen, Archive, MessageSquare, Activity, Trash2, Archive as ArchiveIcon, CheckSquare, Square, AlertTriangle } from 'lucide-react';
+import { Search, RefreshCw, Mail, MailOpen, Archive, MessageSquare, Activity, Trash2, Archive as ArchiveIcon, CheckSquare, Square, AlertTriangle, Plus } from 'lucide-react';
 import { Conversation } from '../../types/supabase';
 import { FilterMode } from './InboxPage';
 
@@ -17,6 +17,7 @@ interface Props {
   onArchiveConversation?: (id: string) => void;
   onDeleteSelected?: (ids: string[]) => void;
   onArchiveSelected?: (ids: string[]) => void;
+  onComposeClick?: () => void;
 }
 
 const FILTERS: { key: FilterMode; label: string }[] = [
@@ -26,7 +27,7 @@ const FILTERS: { key: FilterMode; label: string }[] = [
   { key: 'archived', label: 'Αρχείο' },
 ];
 
-export default function ConversationList({ conversations, selectedId, onSelect, search, onSearchChange, filter, onFilterChange, onRefresh, onHealthClick, onDeleteConversation, onArchiveConversation, onDeleteSelected, onArchiveSelected }: Props) {
+export default function ConversationList({ conversations, selectedId, onSelect, search, onSearchChange, filter, onFilterChange, onRefresh, onHealthClick, onDeleteConversation, onArchiveConversation, onDeleteSelected, onArchiveSelected, onComposeClick }: Props) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [showConfirm, setShowConfirm] = useState<'delete' | 'archive' | null>(null);
 
@@ -65,6 +66,9 @@ export default function ConversationList({ conversations, selectedId, onSelect, 
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold">Εισερχόμενα</h2>
           <div className="flex gap-1">
+            <button onClick={onComposeClick} className="p-1.5 text-blue-400 hover:text-blue-300 rounded-lg hover:bg-blue-500/10 transition-colors" title="Νέο Email">
+              <Plus size={16} />
+            </button>
             <button onClick={onHealthClick} className="p-1.5 text-gray-500 hover:text-gray-300 rounded-lg hover:bg-gray-800 transition-colors" title="CRM Health">
               <Activity size={14} />
             </button>

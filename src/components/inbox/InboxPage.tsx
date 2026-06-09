@@ -5,6 +5,7 @@ import { Conversation, ContactMessage } from '../../types/supabase';
 import ConversationList from './ConversationList';
 import ThreadView from './ThreadView';
 import HealthPanel from './HealthPanel';
+import ComposeEmail from './ComposeEmail';
 
 export type FilterMode = 'all' | 'new' | 'replied' | 'archived';
 
@@ -13,6 +14,7 @@ export default function InboxPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConv, setSelectedConv] = useState<string | null>(null);
   const [showHealth, setShowHealth] = useState(false);
+  const [showCompose, setShowCompose] = useState(false);
   const [thread, setThread] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -151,13 +153,18 @@ export default function InboxPage() {
         onArchiveConversation={handleArchiveConversation}
         onDeleteSelected={deleteConversations}
         onArchiveSelected={archiveConversations}
+        onComposeClick={() => setShowCompose(true)}
       />
       <HealthPanel open={showHealth} onClose={() => setShowHealth(false)} />
-      <ThreadView
-        conversation={conversations.find(c => c.id === selectedConv) || null}
-        thread={thread}
-        onThreadUpdate={refreshThread}
-      />
+      {showCompose ? (
+        <ComposeEmail onClose={() => setShowCompose(false)} onSent={refreshThread} />
+      ) : (
+        <ThreadView
+          conversation={conversations.find(c => c.id === selectedConv) || null}
+          thread={thread}
+          onThreadUpdate={refreshThread}
+        />
+      )}
     </div>
   );
 }
