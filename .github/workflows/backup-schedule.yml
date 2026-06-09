@@ -1,0 +1,41 @@
+name: Scheduled Backups
+
+on:
+  schedule:
+    # Daily backup at 03:00 AM
+    - cron: "0 3 * * *"
+    # Weekly backup on Sunday at 03:00 AM
+    - cron: "0 3 * * 0"
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Backup type'
+        required: true
+        default: 'manual'
+        type: choice
+        options:
+          - manual
+          - daily
+          - weekly
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine backup type
+        id: type
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "type=${{ github.event.inputs.type }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event.schedule }}" == "0 3 * * 0" ]]; then
+            echo "type=weekly" >> $GITHUB_OUTPUT
+          else
+            echo "type=daily" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger backup via Edge Function
+        run: |
+          curl -s -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/crm-backup" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -d "{\"type\": \"${{ steps.type.outputs.type }}\"}"

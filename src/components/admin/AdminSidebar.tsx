@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users as UsersIcon, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
@@ -38,7 +38,8 @@ const contentItems: NavItem[] = [
 const bottomItems: NavItem[] = [
   { path: '/dashboard/profile', icon: User, label: 'Προφίλ' },
   { path: '/dashboard/settings', icon: Settings, label: 'Ρυθμίσεις', permission: 'settings.all' },
-  { path: '/dashboard/settings/users', icon: Users, label: 'Χρήστες', permission: 'users.manage' },
+  { path: '/dashboard/settings/users', icon: UsersIcon, label: 'Χρήστες', permission: 'users.manage' },
+  { path: '/dashboard/settings/backup', icon: Shield, label: 'Backup', permission: 'users.manage' },
 ];
 
 export default function AdminSidebar() {

@@ -24,6 +24,7 @@ import History from '../components/dashboard/History';
 import InboxPage from '../components/inbox/InboxPage';
 import PipelinePage from '../components/inbox/PipelinePage';
 import UsersManager from '../components/settings/UsersManager';
+import BackupManager from '../components/settings/BackupManager';
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();
@@ -49,6 +50,7 @@ export default function Dashboard() {
             <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<DashboardSettings />} />
             <Route path="settings/users" element={<UsersManager />} />
+            <Route path="settings/backup" element={<BackupManager />} />
             <Route path="services" element={<Services />} />
             <Route path="blog" element={<BlogPosts />} />
             <Route path="testimonials" element={<Testimonials />} />
