@@ -473,7 +473,15 @@ export const siteSettingsHelper = {
   },
 };
 
-export const emailAccountsHelper = createMockHelper<EmailAccount>([], 'email_accounts');
+export const emailAccountsHelper = {
+  ...createMockHelper<EmailAccount>([], 'email_accounts'),
+  async getAll(): Promise<EmailAccount[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return []; }
+    const { data, error } = await supabase.from('email_accounts').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return data ?? [];
+  },
+};
 
 export const crmHealthHelper = {
   async getStatus(): Promise<{
