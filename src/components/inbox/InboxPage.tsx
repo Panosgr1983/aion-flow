@@ -68,6 +68,14 @@ export default function InboxPage() {
 
   useEffect(() => { loadConversations(); }, [loadConversations]);
 
+  // Auto-refresh every 15s
+  useEffect(() => {
+    const interval = setInterval(() => {
+      loadConversations();
+    }, 15000);
+    return () => clearInterval(interval);
+  }, [loadConversations]);
+
   const loadTrash = useCallback(async () => {
     setLoading(true);
     const data = await conversationsHelper.getTrash();
