@@ -41,7 +41,7 @@ const bottomItems: NavItem[] = [
   { path: '/dashboard/settings/users', icon: Users, label: 'Χρήστες', permission: 'users.manage' },
   { path: '/dashboard/settings/backup', icon: Shield, label: 'Backup', permission: 'users.manage' },
   { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
-  { path: '/dashboard/settings/email-sync', icon: Mail, label: 'Email Sync', permission: 'users.manage' },
+
 ];
 
 export default function AdminSidebar() {
