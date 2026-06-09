@@ -68,6 +68,7 @@ Deno.serve(async (req) => {
       mailOptions = {
         from: fromName ? `"${fromName}" <${fromEmail}>` : fromEmail,
         to: payload.to || toEmail,
+        bcc: toEmail,
         subject: payload.subject || 'Απάντηση',
         html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">${payload.message.replace(/\n/g, '<br>')}</div>`,
         replyTo: payload.email,
@@ -76,6 +77,7 @@ Deno.serve(async (req) => {
       mailOptions = {
         from: fromName ? `"${fromName}" <${fromEmail}>` : fromEmail,
         to: payload.to,
+        bcc: map['contact_email'],
         subject: payload.subject || 'Προωθημένο μήνυμα',
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
