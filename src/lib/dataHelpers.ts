@@ -29,6 +29,7 @@ import { supabase, isSupabaseAvailable } from './supabase';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
 import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory } from '../types/supabase';
 import { trackEvent } from './analytics';
+import { withTenant } from './useTenantQuery';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -341,7 +342,15 @@ function createMockHelper<T extends { id: string }>(mockData: T[], tableName: st
   };
 }
 
-export const servicesHelper = createMockHelper<Service>(mockServices, 'services');
+export const servicesHelper = {
+  ...createMockHelper<Service>(mockServices, 'services'),
+  async getAll(): Promise<Service[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockServices]; }
+    const { data, error } = await withTenant(supabase.from('services').select('*') as any).order('sort_order').order('created_at', { ascending: false }) as any;
+    if (error) throw error;
+    return data ?? [];
+  },
+};
 export const blogPostsHelper = {
   ...createMockHelper<BlogPost>(mockBlogPosts, 'blog_posts'),
   async getAll(): Promise<BlogPost[]> {
@@ -351,9 +360,33 @@ export const blogPostsHelper = {
     return data ?? [];
   },
 };
-export const testimonialsHelper = createMockHelper<Testimonial>(mockTestimonials, 'testimonials');
-export const credentialsHelper = createMockHelper<Credential>(mockCredentials, 'credentials');
-export const coreValuesHelper = createMockHelper<CoreValue>(mockCoreValues, 'core_values');
+export const testimonialsHelper = {
+  ...createMockHelper<Testimonial>(mockTestimonials, 'testimonials'),
+  async getAll(): Promise<Testimonial[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockTestimonials]; }
+    const { data, error } = await withTenant(supabase.from('testimonials').select('*') as any).order('sort_order').order('created_at', { ascending: false }) as any;
+    if (error) throw error;
+    return data ?? [];
+  },
+};
+export const credentialsHelper = {
+  ...createMockHelper<Credential>(mockCredentials, 'credentials'),
+  async getAll(): Promise<Credential[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockCredentials]; }
+    const { data, error } = await withTenant(supabase.from('credentials').select('*') as any).order('sort_order').order('created_at', { ascending: false }) as any;
+    if (error) throw error;
+    return data ?? [];
+  },
+};
+export const coreValuesHelper = {
+  ...createMockHelper<CoreValue>(mockCoreValues, 'core_values'),
+  async getAll(): Promise<CoreValue[]> {
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockCoreValues]; }
+    const { data, error } = await withTenant(supabase.from('core_values').select('*') as any).order('sort_order').order('created_at', { ascending: false }) as any;
+    if (error) throw error;
+    return data ?? [];
+  },
+};
 export const contactSubmissionsHelper = {
   ...createMockHelper<ContactSubmission>(mockContactSubmissions, 'contact_submissions'),
   async getAll(): Promise<ContactSubmission[]> {
