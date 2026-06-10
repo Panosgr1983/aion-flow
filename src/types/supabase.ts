@@ -12,9 +12,18 @@ export interface Profile {
   timezone: string;
   locale: string;
   is_active: boolean;
+  is_super_admin: boolean;
+  tenant_id: string | null;
   last_login_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface TenantFeatureEntry {
+  id: string;
+  tenant_id: string;
+  feature: TenantFeature;
+  enabled: boolean;
 }
 
 export interface Category {
@@ -286,6 +295,8 @@ export type HistoryOperation = 'create' | 'update' | 'delete' | 'restore' | 'bac
 export type MessageDirection = 'incoming' | 'outgoing';
 export type MessageStatus = 'new' | 'read' | 'replied' | 'archived';
 export type ConversationStatus = 'active' | 'closed' | 'archived' | 'spam';
+export type TenantStatus = 'trial' | 'active' | 'suspended' | 'cancelled';
+export type TenantFeature = 'cms' | 'crm' | 'inbox' | 'pipeline' | 'email_workspace' | 'eshop' | 'bookings';
 export type LeadStage = 'new' | 'contacted' | 'proposal' | 'won' | 'lost';
 export type DraftStatus = 'draft' | 'scheduled' | 'sending' | 'sent' | 'failed';
 

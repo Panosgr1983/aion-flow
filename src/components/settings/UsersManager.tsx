@@ -3,19 +3,24 @@ import { supabase } from '../../lib/supabase';
 import { Profile } from '../../types/supabase';
 import { getRoleLabel } from '../../lib/permissions';
 import { UserRole } from '../../types/supabase';
-import { RefreshCw, Shield, User, Mail, Clock, Check, X } from 'lucide-react';
+import { RefreshCw, Shield, User, Mail, Clock, Check, X, Star } from 'lucide-react';
 
 const ALL_ROLES: UserRole[] = ['admin', 'editor', 'sales', 'viewer'];
 
 export default function UsersManager() {
   const [users, setUsers] = useState<Profile[]>([]);
+  const [tenants, setTenants] = useState<{id: string; name: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
-    if (data) setUsers(data);
+    const [uData, tData] = await Promise.all([
+      supabase.from('profiles').select('*').order('created_at', { ascending: false }),
+      supabase.from('tenants').select('id, name').order('name'),
+    ]);
+    if (uData.data) setUsers(uData.data);
+    if (tData.data) setTenants(tData.data);
     setLoading(false);
   };
 
@@ -25,6 +30,20 @@ export default function UsersManager() {
     setUpdating(userId);
     const { error } = await supabase.from('profiles').update({ role }).eq('id', userId);
     if (!error) setUsers(prev => prev.map(u => u.id === userId ? { ...u, role } : u));
+    setUpdating(null);
+  };
+
+  const toggleSuperAdmin = async (userId: string, current: boolean) => {
+    setUpdating(userId);
+    await supabase.from('profiles').update({ is_super_admin: !current }).eq('id', userId);
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, is_super_admin: !current } : u));
+    setUpdating(null);
+  };
+
+  const setTenant = async (userId: string, tenantId: string | null) => {
+    setUpdating(userId);
+    await supabase.from('profiles').update({ tenant_id: tenantId }).eq('id', userId);
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, tenant_id: tenantId } : u));
     setUpdating(null);
   };
 
@@ -48,6 +67,8 @@ export default function UsersManager() {
                 <th className="text-left py-3 px-4">Χρήστης</th>
                 <th className="text-left py-3 px-4">Email</th>
                 <th className="text-left py-3 px-4">Ρόλος</th>
+                <th className="text-left py-3 px-4">Super Admin</th>
+                <th className="text-left py-3 px-4">Tenant</th>
                 <th className="text-left py-3 px-4">Κατάσταση</th>
                 <th className="text-left py-3 px-4">Τελευταία Σύνδεση</th>
                 <th className="text-left py-3 px-4">Εγγραφή</th>
@@ -73,6 +94,27 @@ export default function UsersManager() {
                       className="input text-xs py-1 px-2 min-w-[120px]"
                     >
                       {ALL_ROLES.map(r => <option key={r} value={r}>{getRoleLabel(r)}</option>)}
+                    </select>
+                  </td>
+                  <td className="py-3 px-4">
+                    <button
+                      onClick={() => toggleSuperAdmin(u.id, u.is_super_admin)}
+                      disabled={updating === u.id}
+                      className={`p-1.5 rounded-lg transition-colors ${u.is_super_admin ? 'text-amber-400 bg-amber-500/10' : 'text-gray-600 hover:text-gray-400'}`}
+                      title={u.is_super_admin ? 'Αφαίρεση Super Admin' : 'Ορισμός Super Admin'}
+                    >
+                      <Star size={14} />
+                    </button>
+                  </td>
+                  <td className="py-3 px-4">
+                    <select
+                      value={u.tenant_id || ''}
+                      onChange={e => setTenant(u.id, e.target.value || null)}
+                      disabled={updating === u.id}
+                      className="input text-xs py-1 px-2 min-w-[120px]"
+                    >
+                      <option value="">— Καμία —</option>
+                      {tenants.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                     </select>
                   </td>
                   <td className="py-3 px-4">

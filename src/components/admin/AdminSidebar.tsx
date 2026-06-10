@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
 import { hasPermission, Permission } from '../../lib/permissions';
 import { UserRole } from '../../types/supabase';
+import { useTenant } from '../../lib/useTenant';
+import { FEATURE_MODULES } from '../../lib/access';
 
 const shopItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -48,9 +50,12 @@ export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [userRole, setUserRole] = useState<UserRole | undefined>(undefined);
+  const [showProjects, setShowProjects] = useState(false);
+  const [tenants, setTenants] = useState<{id: string; name: string}[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut, isDemoMode, user } = useAuth();
+  const tenant = useTenant();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,6 +69,31 @@ export default function AdminSidebar() {
     const interval = setInterval(fetchData, 15000);
     return () => clearInterval(interval);
   }, [user?.id]);
+
+  // Load tenants for project switcher (super admins only)
+  useEffect(() => {
+    if (tenant.isSuperAdmin && !tenant.loading) {
+      supabase.from('tenants').select('id, name').order('name').then(({ data }) => {
+        if (data) setTenants(data);
+      });
+    }
+  }, [tenant.isSuperAdmin, tenant.loading]);
+
+  // Feature check: combines role permission + feature flag
+  const canAccessModule = (item: NavItem): boolean => {
+    if (!hasPermission(userRole, item.permission)) return false;
+    const path = item.path.split('/').pop() || '';
+    // Platform-level items (settings, users, backup, observability) — super admin only
+    if (['settings', 'users', 'backup', 'observability'].includes(path)) {
+      return tenant.isSuperAdmin;
+    }
+    // Check feature flag for content/CRM modules
+    const feature = FEATURE_MODULES[path];
+    if (feature && tenant.featureMap) {
+      return tenant.featureMap[feature] === true;
+    }
+    return true;
+  };
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
@@ -82,11 +112,30 @@ export default function AdminSidebar() {
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-800/50 min-h-[64px]">
         {!collapsed && (
-          <div className="flex items-center gap-2 overflow-hidden">
+          <div className="flex items-center gap-2 overflow-hidden flex-1 min-w-0">
             <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center shrink-0">
               <Zap size={14} className="text-white" />
             </div>
-            <span className="font-bold text-sm tracking-tight" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>AION FLOW</span>
+            <div className="min-w-0 flex-1">
+              <span className="font-bold text-sm tracking-tight block truncate" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>AION FLOW</span>
+              {tenant.isSuperAdmin && tenants.length > 0 && (
+                <div className="relative">
+                  <button onClick={() => setShowProjects(!showProjects)} className="flex items-center gap-1 text-[10px] text-gray-500 hover:text-gray-300 transition-colors w-full">
+                    <span className="truncate">{tenants[0]?.name || 'Select project'}</span>
+                    <ChevronDown size={10} className="shrink-0" />
+                  </button>
+                  {showProjects && (
+                    <div className="absolute left-0 top-full mt-1 w-48 bg-gray-900 border border-gray-800 rounded-xl shadow-xl z-50 py-1 max-h-48 overflow-y-auto">
+                      {tenants.map(t => (
+                        <button key={t.id} onClick={() => setShowProjects(false)} className="w-full text-left px-3 py-1.5 text-xs text-gray-400 hover:text-gray-200 hover:bg-gray-800 transition-colors">
+                          {t.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         )}
         {collapsed && (
@@ -130,7 +179,7 @@ export default function AdminSidebar() {
           </Link>
         ))}
         {!collapsed && <div className="text-[10px] text-gray-600 uppercase tracking-wider px-3 pt-4 pb-1">Περιεχόμενο</div>}
-        {contentItems.filter(item => !item.permission || hasPermission(userRole, item.permission)).map(({ path, icon: Icon, label }) => (
+        {contentItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}
@@ -156,7 +205,7 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="p-3 border-t border-gray-800/50 space-y-1">
-        {bottomItems.filter(item => !item.permission || hasPermission(userRole, item.permission)).map(({ path, icon: Icon, label }) => (
+        {bottomItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}

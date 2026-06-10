@@ -1,7 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTenant } from '../lib/useTenant';
 import AdminSidebar from '../components/admin/AdminSidebar';
 import AdminHeader from '../components/admin/AdminHeader';
+import SuspensionBanner from '../components/dashboard/SuspensionBanner';
 import Overview from '../components/dashboard/Overview';
 import Products from '../components/dashboard/Products';
 import Categories from '../components/dashboard/Categories';
@@ -30,9 +32,11 @@ import ObservabilityDashboard from '../components/settings/ObservabilityDashboar
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();
+  const tenant = useTenant();
 
   return (
     <div className="min-h-screen bg-gray-950 flex">
+      <SuspensionBanner status={tenant.tenantStatus} />
       <AdminSidebar />
 
       <div className="flex-1 flex flex-col min-w-0 pl-[260px] transition-all duration-300">
