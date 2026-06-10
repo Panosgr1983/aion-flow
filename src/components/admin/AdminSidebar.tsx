@@ -43,6 +43,7 @@ const bottomItems: NavItem[] = [
   { path: '/dashboard/settings/users', icon: Users, label: 'Χρήστες', permission: 'users.manage' },
   { path: '/dashboard/settings/backup', icon: Shield, label: 'Backup', permission: 'users.manage' },
   { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
+  { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'users.manage' },
 
 ];
 
