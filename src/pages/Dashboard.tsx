@@ -29,6 +29,8 @@ import UsersManager from '../components/settings/UsersManager';
 import BackupManager from '../components/settings/BackupManager';
 import ObservabilityDashboard from '../components/settings/ObservabilityDashboard';
 import UsageDashboard from '../components/settings/UsageDashboard';
+import TenantOverview from '../components/dashboard/TenantOverview';
+import ErrorBoundary from '../components/dashboard/ErrorBoundary';
 // import EmailSyncManager from '../components/settings/EmailSyncManager';
 
 export default function Dashboard() {
@@ -43,8 +45,9 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col min-w-0 pl-[260px] transition-all duration-300">
         <AdminHeader />
         <main className="flex-1 p-6 overflow-auto">
+          <ErrorBoundary>
           <Routes>
-            <Route index element={isDemoMode ? <Overview /> : <Services />} />
+            <Route index element={<TenantOverview />} />
             {isDemoMode && (
               <>
                 <Route path="categories" element={<Categories />} />
@@ -75,7 +78,9 @@ export default function Dashboard() {
             <Route path="contact-messages" element={<Navigate to="/dashboard/inbox" replace />} />
             <Route path="inbox" element={<InboxPage />} />
             <Route path="pipeline" element={<PipelinePage />} />
+            <Route path="tenant" element={<TenantOverview />} />
           </Routes>
+          </ErrorBoundary>
         </main>
       </div>
     </div>

@@ -16,13 +16,14 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
 import { hasPermission, Permission } from '../../lib/permissions';
 import { UserRole } from '../../types/supabase';
 import { useTenant } from '../../lib/useTenant';
+import { useTenantContext } from '../../lib/TenantContext';
 import { FEATURE_MODULES } from '../../lib/access';
 
 const shopItems = [
@@ -36,6 +37,7 @@ const shopItems = [
 interface NavItem { path: string; icon: any; label: string; permission?: Permission; }
 
 const contentItems: NavItem[] = [
+  { path: '/dashboard/tenant', icon: Home, label: 'Αρχική', permission: 'cms.view' },
   { path: '/dashboard/products', icon: Package, label: 'Βιβλία / Προϊόντα', permission: 'cms.edit' },
   { path: '/dashboard/media', icon: Image, label: 'Πολυμέσα', permission: 'cms.edit' },
   { path: '/dashboard/services', icon: FileText, label: 'Υπηρεσίες', permission: 'cms.edit' },
@@ -68,11 +70,12 @@ export default function AdminSidebar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [userRole, setUserRole] = useState<UserRole | undefined>(undefined);
   const [showProjects, setShowProjects] = useState(false);
-  const [tenants, setTenants] = useState<{id: string; name: string}[]>([]);
+  const [tenants, setTenants] = useState<{id: string; name: string; plan: string}[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut, isDemoMode, user } = useAuth();
   const tenant = useTenant();
+  const { setSelectedTenantId, selectedTenantId } = useTenantContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +93,7 @@ export default function AdminSidebar() {
   // Load tenants for project switcher (super admins only)
   useEffect(() => {
     if (tenant.isSuperAdmin && !tenant.loading) {
-      supabase.from('tenants').select('id, name').order('name').then(({ data }) => {
+      supabase.from('tenants').select('id, name, plan_name').order('name').then(({ data }) => {
         if (data) setTenants(data);
       });
     }
@@ -138,14 +141,30 @@ export default function AdminSidebar() {
               {tenant.isSuperAdmin && tenants.length > 0 && (
                 <div className="relative">
                   <button onClick={() => setShowProjects(!showProjects)} className="flex items-center gap-1 text-[10px] text-gray-500 hover:text-gray-300 transition-colors w-full">
-                    <span className="truncate">{tenants[0]?.name || 'Select project'}</span>
+                    <span className="truncate">
+                      {selectedTenantId
+                        ? tenants.find(t => t.id === selectedTenantId)?.name || 'Επιλέξτε project'
+                        : '🌐 Όλοι οι tenants'}
+                    </span>
                     <ChevronDown size={10} className="shrink-0" />
                   </button>
                   {showProjects && (
-                    <div className="absolute left-0 top-full mt-1 w-48 bg-gray-900 border border-gray-800 rounded-xl shadow-xl z-50 py-1 max-h-48 overflow-y-auto">
+                    <div className="absolute left-0 top-full mt-1 w-52 bg-gray-900 border border-gray-800 rounded-xl shadow-xl z-50 py-1 max-h-60 overflow-y-auto">
+                      <button
+                        onClick={() => { setSelectedTenantId(null); setShowProjects(false); }}
+                        className={`w-full text-left px-3 py-2 text-xs transition-colors ${!selectedTenantId ? 'text-blue-400 bg-blue-500/10' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'}`}
+                      >
+                        🌐 Όλοι οι tenants
+                      </button>
+                      <div className="border-t border-gray-800/50 mx-2" />
                       {tenants.map(t => (
-                        <button key={t.id} onClick={() => setShowProjects(false)} className="w-full text-left px-3 py-1.5 text-xs text-gray-400 hover:text-gray-200 hover:bg-gray-800 transition-colors">
-                          {t.name}
+                        <button
+                          key={t.id}
+                          onClick={() => { setSelectedTenantId(t.id); setShowProjects(false); }}
+                          className={`w-full text-left px-3 py-2 text-xs transition-colors ${selectedTenantId === t.id ? 'text-blue-400 bg-blue-500/10' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'}`}
+                        >
+                          <span className="font-medium">{t.name}</span>
+                          {t.plan && <span className="ml-1 text-[10px] text-gray-600">· {t.plan}</span>}
                         </button>
                       ))}
                     </div>

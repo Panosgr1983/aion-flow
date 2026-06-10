@@ -19,6 +19,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTenantContext } from './TenantContext';
 
 /** Δομή tenant context που επιστρέφει το hook */
 interface TenantState {
@@ -30,15 +31,17 @@ interface TenantState {
 }
 
 /**
- * Διαβάζει tenant context από JWT claims.
+ * Διαβάζει tenant context από JWT claims + TenantContext.
  * 
- * Τα claims μπαίνουν στο JWT από το Supabase Access Token Hook
- * (custom_access_token_hook, migration 11).
+ * Για super admin: το tenantId προέρχεται από το selectedTenantId
+ * του TenantContext (Project Switcher). Αν δεν έχει επιλέξει,
+ * χρησιμοποιεί το JWT tenant_id (null = όλοι οι tenants).
  * 
- * Για demo mode χωρίς JWT, επιστρέφει default (isSuperAdmin=false).
+ * Για κανονικούς χρήστες: χρησιμοποιεί το tenant_id από το JWT.
  */
 export function useTenant(): TenantState {
   const { user, isDemoMode } = useAuth();
+  const { selectedTenantId } = useTenantContext();
   const [state, setState] = useState<TenantState>({
     isSuperAdmin: false,
     tenantId: null,
@@ -54,16 +57,16 @@ export function useTenant(): TenantState {
     }
     setState(s => ({ ...s, loading: true }));
 
-    // Διάβασμα claims από το JWT (custom_access_token_hook τα injects)
     const { data } = user as any;
-    const jwtRole = data?.role as string | undefined;
-    const jwtTenantId = data?.tenant_id as string | undefined;
     const jwtSuperAdmin = data?.is_super_admin as boolean | undefined;
+    const jwtTenantId = data?.tenant_id as string | undefined;
 
     const isSuperAdmin = jwtSuperAdmin === true;
-    const tenantId = jwtTenantId || null;
 
-    // Για super admins, όλα τα features είναι ενεργά
+    // Για super admin: χρησιμοποιώ το selectedTenantId αν υπάρχει
+    // Αλλιώς JWT tenant_id (null = όλοι)
+    const tenantId = isSuperAdmin ? (selectedTenantId || jwtTenantId || null) : (jwtTenantId || null);
+
     const featureMap: Record<string, boolean> = isSuperAdmin
       ? { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true }
       : null;
@@ -75,7 +78,7 @@ export function useTenant(): TenantState {
       tenantStatus: 'active',
       loading: false,
     });
-  }, [user, isDemoMode]);
+  }, [user, isDemoMode, selectedTenantId]);
 
   return state;
 }
