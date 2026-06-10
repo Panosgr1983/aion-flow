@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { Conversation, LeadStage } from '../../types/supabase';
+import { trackEvent } from '../../lib/analytics';
 import { Plus, Euro, User, MessageSquare, TrendingUp, Trophy, XCircle, Mail, Phone } from 'lucide-react';
 import FollowUpTasks from './FollowUpTasks';
 
@@ -37,8 +38,12 @@ export default function PipelinePage() {
     e.preventDefault();
     const id = e.dataTransfer.getData('text/lead-id');
     if (!id || !stage) return;
+    const currentLead = leads.find(l => l.id === id);
     await conversationsHelper.setLeadStage(id, stage);
     setLeads(prev => prev.map(c => c.id === id ? { ...c, lead_stage: stage } : c));
+    if (currentLead) {
+      trackEvent('crm.lead_stage_changed', { from_stage: currentLead.lead_stage, to_stage: stage }).catch(() => {});
+    }
   };
 
   const handleDragStart = (e: React.DragEvent, id: string) => {
@@ -51,6 +56,7 @@ export default function PipelinePage() {
     if (!next) return;
     await conversationsHelper.setLeadStage(id, next);
     setLeads(prev => prev.map(c => c.id === id ? { ...c, lead_stage: next } : c));
+    trackEvent('crm.lead_stage_changed', { from_stage: current, to_stage: next }).catch(() => {});
   };
 
   const saveValue = async (id: string) => {

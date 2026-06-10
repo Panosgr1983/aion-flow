@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseAvailable } from '../lib/supabase';
+import { trackEvent, createSessionId } from '../lib/analytics';
 
 interface AuthContextType {
   user: User | null;
@@ -50,7 +51,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        const jwtTenantId = (session.user as any).tenant_id as string | undefined;
+        trackEvent('cms.login', { session_source: 'dashboard' }, {
+          userId: session.user.id,
+          tenantId: jwtTenantId,
+          sessionId: createSessionId(),
+        });
+      }
       setSession(session);
       setUser(session?.user ?? null);
     });

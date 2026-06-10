@@ -77,6 +77,16 @@ Deno.serve(async (req) => {
         .update({ status: 'success', backup_id: backup.id, size_bytes: totalBytes, completed_at: new Date().toISOString() })
         .eq('id', jobId);
 
+      // Track usage event
+      await supabase.from('usage_events').insert({
+        tenant_id: tenantId,
+        user_id: userId,
+        event_name: 'platform.backup_created',
+        event_version: 1,
+        metadata: { size_mb: Math.round(totalBytes / 1024 / 1024), status: 'success' },
+        source: 'worker',
+      }).catch(e => console.error('Usage event error:', e));
+
       // Retention cleanup
       const retentionDays = RETENTION[type].days;
       const cutoff = new Date(Date.now() - retentionDays * 86400000).toISOString();
@@ -104,6 +114,15 @@ Deno.serve(async (req) => {
         .from('backup_jobs')
         .update({ status: 'failed', error_message: err.message, completed_at: new Date().toISOString() })
         .eq('id', jobId);
+
+      await supabase.from('usage_events').insert({
+        tenant_id: tenantId,
+        user_id: userId,
+        event_name: 'platform.backup_created',
+        event_version: 1,
+        metadata: { size_mb: 0, status: 'failed', error: err.message },
+        source: 'worker',
+      }).catch(() => {});
 
       return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS_HEADERS });
     }
