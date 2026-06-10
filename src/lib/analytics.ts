@@ -1,24 +1,58 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Usage Telemetry (MT-2)
+  
+  Σύστημα καταγραφής γεγονότων χρήσης (events) για:
+    - Μέτρηση ενεργών χρηστών (Active Days)
+    - Ανίχνευση churn (Churn Risk)
+    - Feature adoption metrics
+    - Business intelligence (αργότερα)
+  
+  Κεντρική αρχή: trackEvent() ΠΟΤΕ δεν πετάει exception.
+  Αν αποτύχει, το σφάλμα καταγράφεται στο console μόνο.
+  
+  Τύποι events:
+    cms.*        → Ενέργειες CMS (login, page_updated, blog_published)
+    crm.*        → Ενέργειες CRM (lead_created, message_sent)
+    platform.*   → Ενέργειες συστήματος (backup_created, user_created)
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { supabase } from './supabase';
 
+/** Προέλευση του event (για filtering στο dashboard) */
 export type EventSource = 'dashboard' | 'public_site' | 'api' | 'worker' | 'system';
 
+/**
+ * Χάρτης όλων των events με strict typing για τα metadata.
+ * 
+ * Διαχωρισμός:
+ * - CMS: διαχείριση περιεχομένου (σελίδες, υπηρεσίες, blog, media)
+ * - CRM: επικοινωνίες και πωλήσεις (leads, μηνύματα, tasks)
+ * - Platform: λειτουργίες συστήματος (backups, χρήστες)
+ */
 export type UsageEventMap = {
-  'cms.login': { session_source?: string };
-  'cms.logout': { session_duration_seconds?: number };
+  /* ═══ CMS ═══ */
+  'cms.login': { session_source?: string };                          // Είσοδος χρήστη
+  'cms.logout': { session_duration_seconds?: number };               // Αποσύνδεση
   'cms.page_updated': { page_slug: string; fields_changed: string[] };
   'cms.service_created': { service_title: string };
   'cms.service_updated': { service_title: string; fields_changed: string[] };
   'cms.service_deleted': { service_title: string };
   'cms.blog_created': { title: string };
   'cms.blog_updated': { title: string };
-  'cms.blog_published': { title: string; word_count: number };
+  'cms.blog_published': { title: string; word_count: number };       // Δημοσίευση άρθρου
   'cms.media_uploaded': { file_size: number; file_type: string };
-  'crm.lead_created': { source: string };
-  'crm.lead_stage_changed': { from_stage: string; to_stage: string };
-  'crm.message_sent': { channel: 'email' | 'form' | 'chat' };
-  'crm.message_received': { channel: 'email' | 'form' | 'chat' };
+
+  /* ═══ CRM ═══ */
+  'crm.lead_created': { source: string };                             // Νέο lead από φόρμα/booking
+  'crm.lead_stage_changed': { from_stage: string; to_stage: string }; // Μετακίνηση σε pipeline
+  'crm.message_sent': { channel: 'email' | 'form' | 'chat' };        // Αποστολή απάντησης
+  'crm.message_received': { channel: 'email' | 'form' | 'chat' };    // Λήψη μηνύματος
   'crm.task_created': { due_date?: string };
   'crm.task_completed': { days_to_complete: number };
+
+  /* ═══ PLATFORM ═══ */
   'platform.backup_created': { size_mb: number; status: 'success' | 'failed' };
   'platform.user_created': { role: string };
   'platform.feature_enabled': { feature_name: string; enabled_by: 'admin' | 'user' };

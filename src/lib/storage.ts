@@ -1,5 +1,29 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Storage Helpers (Supabase Storage)
+  
+  Διαχείριση αρχείων:
+    - uploadImage:  Ανέβασμα εικόνας με auto-convert PNG→JPEG
+    - uploadFile:   Ανέβασμα οποιουδήποτε αρχείου (attachments)
+    - deleteImage:  Διαγραφή από Storage
+  
+  Buckets:
+    - blog-images:         Εικόνες για άρθρα blog
+    - site-images:         Εικόνες για το site (hero, κλπ)
+    - contact-attachments: Συνημμένα από Inbox/Email
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { supabase } from './supabase';
 
+/**
+ * Ανέβασμα εικόνας σε bucket.
+ * Αυτόματα μετατρέπει PNG→JPEG για βελτιστοποίηση μεγέθους.
+ * 
+ * @param file - Το αρχείο προς ανέβασμα
+ * @param bucket - Το bucket προορισμού (default: blog-images)
+ * @returns Public URL του αρχείου
+ */
 export async function uploadImage(file: File, bucket: string = 'blog-images'): Promise<string> {
   let uploadFile = file;
   let ext = file.name.split('.').pop() || 'jpg';
@@ -26,6 +50,10 @@ export async function uploadImage(file: File, bucket: string = 'blog-images'): P
   return publicUrl;
 }
 
+/**
+ * Μετατροπή PNG σε JPEG για μείωση μεγέθους.
+ * Χρησιμοποιεί canvas API (client-side).
+ */
 async function pngToJpeg(file: File, quality: number): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -47,6 +75,14 @@ async function pngToJpeg(file: File, quality: number): Promise<Blob> {
   });
 }
 
+/**
+ * Ανέβασμα οποιουδήποτε αρχείου (για email attachments).
+ * ΔΕΝ κάνει conversion όπως το uploadImage.
+ * 
+ * @param file - Το αρχείο προς ανέβασμα
+ * @param bucket - Το bucket προορισμού (default: contact-attachments)
+ * @returns Public URL του αρχείου
+ */
 export async function uploadFile(file: File, bucket: string = 'contact-attachments'): Promise<string> {
   const ext = file.name.split('.').pop() || 'bin';
   const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
@@ -64,6 +100,11 @@ export async function uploadFile(file: File, bucket: string = 'contact-attachmen
   return publicUrl;
 }
 
+/**
+ * Διαγραφή αρχείου από Storage.
+ * 
+ * @param url - Το public URL του αρχείου προς διαγραφή
+ */
 export async function deleteImage(url: string): Promise<void> {
   const match = url.match(/\/([^/]+)$/);
   if (!match) return;

@@ -1,18 +1,41 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Tenant Context Hook
+  
+  Διαβάζει το tenant context από τα JWT claims 
+  (injected από custom_access_token_hook στο Supabase Auth).
+  
+  Τα claims περιλαμβάνουν:
+    - tenant_id     → Σε ποιο tenant ανήκει ο χρήστης
+    - role          → admin / editor / sales / viewer
+    - is_super_admin → Bypass όλων των ελέγχων
+  
+  Χρησιμοποιείται από:
+    - AdminSidebar  → Feature-based nav hiding
+    - Dashboard     → Suspension banner
+    - Route guards  → Feature protection
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { TenantFeatureEntry } from '../types/supabase';
 
+/** Δομή tenant context που επιστρέφει το hook */
 interface TenantState {
-  isSuperAdmin: boolean;
-  tenantId: string | null;
-  featureMap: Record<string, boolean> | null;
-  tenantStatus: string | null;
+  isSuperAdmin: boolean;              // Αν ο χρήστης bypasses όλους τους ελέγχους
+  tenantId: string | null;            // UUID του tenant (null για super admins)
+  featureMap: Record<string, boolean> | null;  // Ενεργά features (π.χ. {cms: true, crm: false})
+  tenantStatus: string | null;        // active / suspended / cancelled
   loading: boolean;
 }
 
 /**
- * Reads tenant context from JWT claims (injected by custom_access_token_hook).
- * Falls back to DB query if JWT claims aren't available (e.g., demo mode).
+ * Διαβάζει tenant context από JWT claims.
+ * 
+ * Τα claims μπαίνουν στο JWT από το Supabase Access Token Hook
+ * (custom_access_token_hook, migration 11).
+ * 
+ * Για demo mode χωρίς JWT, επιστρέφει default (isSuperAdmin=false).
  */
 export function useTenant(): TenantState {
   const { user, isDemoMode } = useAuth();
@@ -31,17 +54,16 @@ export function useTenant(): TenantState {
     }
     setState(s => ({ ...s, loading: true }));
 
-    // Try to get claims from JWT (available when custom_access_token_hook is active)
+    // Διάβασμα claims από το JWT (custom_access_token_hook τα injects)
     const { data } = user as any;
     const jwtRole = data?.role as string | undefined;
     const jwtTenantId = data?.tenant_id as string | undefined;
     const jwtSuperAdmin = data?.is_super_admin as boolean | undefined;
 
-    // Build result
     const isSuperAdmin = jwtSuperAdmin === true;
     const tenantId = jwtTenantId || null;
 
-    // For super admins, all features are available
+    // Για super admins, όλα τα features είναι ενεργά
     const featureMap: Record<string, boolean> = isSuperAdmin
       ? { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true }
       : null;

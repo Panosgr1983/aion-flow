@@ -1,3 +1,20 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Authentication Context
+  
+  Διαχειρίζεται:
+    - Κατάσταση σύνδεσης (user/session)
+    - Demo mode (χωρίς Supabase Auth)
+    - Sign in / Sign up / Sign out
+    - Telemetry: καταγραφή cms.login event
+  
+  Παρέχει σε όλη την εφαρμογή:
+    - user: Το τρέχον user object (ή null)
+    - isDemoMode: Αν είμαστε σε demo mode
+    - signIn / signUp / signOut: Μέθοδοι αυθεντικοποίησης
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseAvailable } from '../lib/supabase';
