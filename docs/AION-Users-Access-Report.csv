@@ -1,0 +1,59 @@
+AION Platform - Users & Access Levels Report
+Generated: June 2026
+
+,,,,,,,,,,
+SECTION 1: USERS & CREDENTIALS,,,,,,,,,,
+Email,Password/Role,Super Admin,Tenant,Tenant Status,Plan,Plan Price,Status,Last Login,Created
+admin@kolokotronis.gr,role: editor,No,Kolokotronis Nikolas,active,CMS Basic,49.00 €,active,Jun 07 2026,Jun 06 2026
+choliasmenos.panos@gmail.com,password: !@#AionWeb1983?@#,YES,Global (Super Admin),-,Super Admin,-,active,just now,Jun 10 2026
+info@aionweb.gr,password: !@#AionWeb1983?@#,YES,Global (Super Admin),-,Super Admin,-,active,just now,Jun 10 2026
+
+,,,,,,,,,,
+SECTION 2: TENANTS,,,,,,,,,,
+Tenant Name,Slug,Status,Plan,Price,Modules Enabled,,,,,
+AION Internal,aion-internal,active,-,0 €,ALL: cms/crm/inbox/pipeline/email_workspace/eshop/bookings,,,,,
+Kolokotronis Nikolas,kolokotronis,active,CMS Basic,49 €,cms only,,,,,
+Melisa,melisa,trial,-,0 €,(none - pending setup),,,,,
+Angelus,angelus,trial,-,0 €,(none - pending setup),,,,,
+
+,,,,,,,,,,
+SECTION 3: FEATURE ACCESS BY USER/TENANT,,,,,,,,,,
+Feature,Super Admin (Global),admin@kolokotronis.gr (Kolokotronis),Melisa,Angelus,Explanation,,,,,
+CMS (services/blog/pages/media/settings),YES,YES,NO,NO,Website content management,,,,,
+CRM (inbox/threading/attachments),YES,NO,NO,NO,Customer communication inbox,,,,,
+Pipeline (leads/stages/tasks),YES,NO,NO,NO,Sales pipeline with stages,,,,,
+Email Workspace (compose/drafts/sent),YES,NO,NO,NO,Full email client inside AION,,,,,
+Eshop (products/orders/customers),YES,NO,NO,NO,E-commerce management,,,,,
+Bookings (appointments/scheduling),YES,NO,NO,NO,Future booking system,,,,,
+
+,,,,,,,,,,
+SECTION 4: PLATFORM TOOLS (Super Admin Only),,,,,,,,,,,
+Tool,Super Admin,admin@kolokotronis.gr,Explanation,,,,,,
+Users & Roles,YES,NO,Add/edit users and assign roles,,,,,,
+Backup Manager,YES,NO,Create and restore system backups,,,,,,
+Observability,YES,NO,System health monitoring,,,,,,
+SMTP Settings,YES,NO,Email server configuration,,,,,,
+Tenant Management,YES,NO,Multi-tenant project settings,,,,,,
+Storage,YES,NO,File storage management,,,,,,
+
+,,,,,,,,,,
+SECTION 5: ROLE PERMISSIONS MATRIX,,,,,,,,,,
+Action,Admin,Editor,Sales,Viewer,,,,,,
+Edit CMS Content,YES,YES,NO,NO,,,,,,
+View CMS Content,YES,YES,NO,YES,,,,,,
+CRM Inbox,YES,NO,YES,NO,,,,,,
+Pipeline,YES,NO,YES,NO,,,,,,
+Tasks,YES,NO,YES,NO,,,,,,
+History View,YES,YES,YES,YES,,,,,,
+History Restore,YES,NO,NO,NO,,,,,,
+Settings,YES,YES,NO,NO,,,,,,
+Users Management,YES,NO,NO,NO,,,,,,
+
+,,,,,,,,,,
+SECTION 6: HIERARCHY OVERVIEW,,,,,,,,,,
+Level,Users,Tenants,Access,,,,,,
+Super Admin,choliasmenos.panos@gmail.com, info@aionweb.gr,ALL (Global),ALL modules,ALL tenants,Platform tools,,,,,
+Tenant Admin,admin@kolokotronis.gr,Kolokotronis Nikolas,Enabled modules only,No platform tools,,,,,
+Editor,(future),Any tenant,Content only,,,,,,
+Sales,(future),Any tenant,CRM + Pipeline only,,,,,,
+Viewer,(future),Any tenant,Read only,,,,,,
