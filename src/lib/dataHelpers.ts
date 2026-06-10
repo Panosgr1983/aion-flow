@@ -1,3 +1,30 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Data Helpers (CRUD για όλους τους πίνακες)
+  
+  Παρέχει typed CRUD operations για κάθε entity της πλατφόρμας.
+  
+  Κάθε helper ακολουθεί το ίδιο pattern:
+    - getAll()      → SELECT * (με ordering)
+    - getById()     → SELECT με id
+    - create()      → INSERT
+    - update()      → UPDATE + history logging
+    - delete()      → DELETE (ή soft delete όπου υποστηρίζεται)
+  
+  Τα helpers λειτουργούν και σε live mode (Supabase) 
+  και σε demo mode (mock data in memory).
+  
+  Περιλαμβάνει:
+    conversationsHelper    → Συνομιλίες CRM (με soft delete + trash)
+    contactMessagesHelper → Μηνύματα (με reply, archive, auto-conversation)
+    draftsHelper          → Προσχέδια email (με auto-save)
+    crmHealthHelper       → Έλεγχοι συστήματος (SMTP, sync, edge functions)
+    crmMetricsHelper      → Μετρικές pipeline (leads, conversion, revenue)
+    monitoringHelper      → Monitoring (errors, SMTP stats, storage)
+    emailAccountsHelper   → Συνδεδεμένα email accounts
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { supabase, isSupabaseAvailable } from './supabase';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
 import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory } from '../types/supabase';

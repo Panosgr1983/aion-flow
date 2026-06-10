@@ -1,3 +1,20 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Conversation List (Αριστερό Panel Inbox)
+  
+  Εμφανίζει:
+    - Λίστα συνομιλιών ή drafts ανάλογα με το folder
+    - Search bar + φίλτρα (All / New / Replied / Archived)
+    - Folder tabs: Inbox / Sent / Drafts / Archive / Trash
+    - Checkboxes για bulk select
+    - Individual archive/delete (hover)
+    - Select all checkbox
+    - Unread counters ανά folder
+    - Draft mode: εμφάνιση drafts αντί για conversations
+    - Trash mode: restore button + permanent delete
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useState } from 'react';
 import { Search, RefreshCw, Mail, MailOpen, Archive, MessageSquare, Activity, Trash2, Archive as ArchiveIcon, CheckSquare, Square, AlertTriangle, Plus, Inbox, Send, FileText, Star, RotateCcw } from 'lucide-react';
 import { Conversation, EmailDraft } from '../../types/supabase';

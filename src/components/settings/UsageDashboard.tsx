@@ -1,3 +1,21 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Usage & Telemetry Dashboard (MT-3)
+  
+  Super Admin dashboard για παρακολούθηση:
+    - Churn Risk: Ανάλυση ενεργών ημερών ανά tenant
+    - Early Warning Alerts: Tenants με ≥14 ημέρες αδράνειας
+    - Tenant Activity: Active days, events, last activity
+    - Top Events: Πιο συχνά events (30 days)
+    - Health signals: 🟢🟡🟠🔴 ανά tenant
+  
+  Πηγές δεδομένων:
+    - v_churn_risk (materialized view)
+    - v_tenant_active_days (aggregated view)
+    - v_tenant_top_events (ranking view)
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { RefreshCw, Activity, Users, Calendar, BarChart3, TrendingUp, Clock, CheckCircle, AlertTriangle, AlertOctagon, Eye, EyeOff } from 'lucide-react';

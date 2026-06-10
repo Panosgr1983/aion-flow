@@ -1,3 +1,19 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Admin Sidebar
+  
+  Κύριο navigation της πλατφόρμας.
+  
+  Λειτουργίες:
+    - Collapse/expand (για μικρές οθόνες)
+    - Role-based: απόκρυψη items ανά permission
+    - Feature-based: απόκρυψη modules ανά tenant_features
+    - Project Switcher (για super admins)
+    - Unread badge στο Inbox (polling κάθε 15s)
+    - Demo mode indicator
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown } from 'lucide-react';

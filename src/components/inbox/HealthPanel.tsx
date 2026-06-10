@@ -1,3 +1,15 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — CRM Health Modal
+  
+  Modal που εμφανίζει την κατάσταση των υποσυστημάτων:
+    - SMTP: Αν είναι ρυθμισμένο το email
+    - Contact Sync: Συγχρονισμός contact_submissions → contact_messages
+    - Storage: Αριθμός αρχείων στο bucket
+    - Edge Function: Αν ανταποκρίνεται το send-contact-email
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useEffect, useState } from 'react';
 import { crmHealthHelper } from '../../lib/dataHelpers';
 import { X, RefreshCw, Activity } from 'lucide-react';

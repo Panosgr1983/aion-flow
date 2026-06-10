@@ -1,3 +1,25 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Compose Window (Νέο Email / Reply / Forward / Draft)
+  
+  Ενιαίο component για όλες τις λειτουργίες σύνταξης email.
+  
+  Modes:
+    - new:     Νέο μήνυμα (κενό)
+    - reply:   Απάντηση (προσυμπληρωμένο to + subject)
+    - forward: Προώθηση (προσυμπληρωμένο subject + quoted body)
+    - draft:   Συνέχεια αποθηκευμένου προσχεδίου
+  
+  Λειτουργίες:
+    - Rich text toolbar (Bold / Italic / Link)
+    - Cc / Bcc fields (expandable)
+    - Attachment upload (Supabase Storage)
+    - Auto-save draft κάθε 3 δευτερόλεπτα
+    - Email signature auto-append (από Site Settings)
+    - Δημιουργία conversation + outgoing message + SMTP send
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Send, X, Paperclip, Bold, Italic, Link, ChevronDown, Mail, Plus, Trash2, Clock } from 'lucide-react';
 import { uploadFile } from '../../lib/storage';

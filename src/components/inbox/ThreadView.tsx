@@ -1,3 +1,17 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Thread View (Δεξί Panel Inbox)
+  
+  Εμφανίζει το thread μιας συνομιλίας:
+    - Conversation header (όνομα, email, status, last activity)
+    - Message bubbles (incoming/outgoing styling)
+    - Attachments (download links)
+    - Inline reply editor (με Rich Text toolbar)
+    - Reply / Forward / Delete / Archive buttons
+    - Optimistic updates (άμεση εμφάνιση reply)
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useState, useRef, useEffect } from 'react';
 import { Mail, Phone, Clock, Archive, Trash2, Forward as ForwardIcon, Paperclip, MessageSquare, Send, X, Download, Reply as ReplyIcon } from 'lucide-react';
 import { contactMessagesHelper } from '../../lib/dataHelpers';

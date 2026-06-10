@@ -1,3 +1,18 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Inbox Page (Κύρια σελίδα Inbox)
+  
+  Διαχειρίζεται:
+    - Folders: Inbox / Sent / Drafts / Archive / Trash
+    - Compose: Νέο Email / Reply / Forward / Draft
+    - Search & filters
+    - Bulk select & delete/archive
+    - Keyboard shortcuts (j/k navigate, c compose, r reply)
+    - Auto-refresh κάθε 15 δευτερόλεπτα
+    - Health modal
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { conversationsHelper, contactMessagesHelper, draftsHelper } from '../../lib/dataHelpers';

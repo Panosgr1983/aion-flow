@@ -1,3 +1,21 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Pipeline Page (Leads Pipeline)
+  
+  Kanban board για διαχείριση leads σε 5 stages:
+    New → Contacted → Proposal → Won / Lost
+  
+  Λειτουργίες:
+    - Drag & Drop μεταξύ stages
+    - Advance button ("Μετακίνηση σε...")
+    - Lead value editing (inline click)
+    - Follow-Up Tasks (checklist per lead)
+    - Pipeline metrics (total, won, open, value)
+    - Inbox link (άνοιγμα conversation)
+    - Telemetry: crm.lead_stage_changed events
+  ═══════════════════════════════════════════════════════════════
+*/
+
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { conversationsHelper } from '../../lib/dataHelpers';
