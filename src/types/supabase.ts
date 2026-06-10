@@ -1,4 +1,29 @@
+/*
+  ═══════════════════════════════════════════════════════════════
+  AION Flow — Τύποι & Διεπαφές TypeScript
+  Κεντρικό αρχείο: όλοι οι τύποι δεδομένων της πλατφόρμας.
+  
+  Δομή:
+    1. Χρήστες & Roles
+    2. Es hop / Παραγγελίες
+    3. Multi-Tenant (SaaS)
+    4. CRM (Inbox, Pipeline, Tasks)
+    5. Email Workspace
+    6. Ιστορικό & Backups
+  ═══════════════════════════════════════════════════════════════
+*/
+
+// ──────────────────────────────────────────────────────────────
+// 1. ΧΡΗΣΤΕΣ & ΔΙΚΑΙΩΜΑΤΑ
+// ──────────────────────────────────────────────────────────────
+
+/** Επίπεδα πρόσβασης χρηστών (ανά tenant) */
 export type UserRole = 'admin' | 'editor' | 'sales' | 'viewer';
+/*  admin  = Πλήρης πρόσβαση σε όλα τα modules του tenant
+ *  editor = Μόνο CMS modules (services, blog, pages)
+ *  sales  = CRM, Pipeline, Tasks (όχι CMS edit)
+ *  viewer = Μόνο ανάγνωση */
+
 export type MembershipLevel = 'bronze' | 'silver' | 'gold' | 'platinum';
 export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'refunded';
 export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded' | 'partially_refunded';
