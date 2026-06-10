@@ -15,7 +15,9 @@ ALTER TABLE tenants
   ADD COLUMN IF NOT EXISTS plan_name text DEFAULT '',
   ADD COLUMN IF NOT EXISTS plan_price numeric(10,2) DEFAULT 0,
   ADD COLUMN IF NOT EXISTS renewal_date timestamptz,
-  ADD COLUMN IF NOT EXISTS trial_ends_at timestamptz;
+  ADD COLUMN IF NOT EXISTS trial_ends_at timestamptz,
+  ADD COLUMN IF NOT EXISTS industry text,
+  ADD COLUMN IF NOT EXISTS sub_industry text;
 
 -- ============================================================
 -- TENANT FEATURES
