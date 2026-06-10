@@ -4,6 +4,7 @@ import { useTenant } from '../lib/useTenant';
 import AdminSidebar from '../components/admin/AdminSidebar';
 import AdminHeader from '../components/admin/AdminHeader';
 import SuspensionBanner from '../components/dashboard/SuspensionBanner';
+import TenantSelector from '../components/admin/TenantSelector';
 import Overview from '../components/dashboard/Overview';
 import Products from '../components/dashboard/Products';
 import Categories from '../components/dashboard/Categories';
@@ -39,6 +40,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-950 flex">
+      {tenant.isSuperAdmin && !tenant.loading && <TenantSelector />}
       <SuspensionBanner status={tenant.tenantStatus} />
       <AdminSidebar />
 
