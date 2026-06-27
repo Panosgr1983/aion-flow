@@ -12,6 +12,9 @@
 | [ROADMAP.md](./docs/ROADMAP.md) | v0.1 → v1.0 milestones |
 | [VERSIONS.md](./docs/VERSIONS.md) | Version history & conventions |
 | [CHANGELOG.md](./docs/CHANGELOG.md) | Per-release changes |
+| [FEATURES.md](./docs/FEATURES.md) | Complete feature catalog with status |
+| [KNOWN_ISSUES.md](./docs/KNOWN_ISSUES.md) | Known issues & workarounds |
+| [TECH_DEBT.md](./docs/TECH_DEBT.md) | Technical debt register |
 | [DATABASE.md](./docs/DATABASE.md) | Database schema & RLS |
 | [DEPLOYMENT.md](./docs/DEPLOYMENT.md) | Deployment & release flow |
 | [BACKUP.md](./docs/BACKUP.md) | Backup & disaster recovery |
