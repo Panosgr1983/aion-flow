@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useTenant } from '../../lib/useTenant';
-import { getCurrentTenantContext } from '../../lib/TenantContext';
-import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight } from 'lucide-react';
+import { useTenantContext, getCurrentTenantContext } from '../../lib/TenantContext';
+import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users } from 'lucide-react';
 
 interface RecentActivity {
   id: string;
@@ -16,9 +16,11 @@ interface RecentActivity {
 
 export default function TenantOverview() {
   const tenant = useTenant();
+  const { setSelectedTenantId } = useTenantContext();
   const [tenantInfo, setTenantInfo] = useState<any>(null);
   const [stats, setStats] = useState<{ services: number; blog: number; pages: number; media: number } | null>(null);
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
+  const [allTenants, setAllTenants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -26,6 +28,13 @@ export default function TenantOverview() {
   const tenantId = tenant.isSuperAdmin ? getCurrentTenantContext() : tenant.tenantId;
 
   useEffect(() => {
+    if (tenant.isSuperAdmin && !tenantId) {
+      supabase.from('tenants').select('id, name, plan_name, industry, status').order('name').then(({ data }) => {
+        if (data) setAllTenants(data);
+        setLoading(false);
+      });
+      return;
+    }
     if (!tenantId) { setLoading(false); return; }
     setLoading(true);
     setError('');
@@ -167,13 +176,45 @@ export default function TenantOverview() {
     return (
       <div className="space-y-5 animate-fade-in">
         <div className="flex items-center justify-between">
-          <div><h2 className="text-xl font-semibold">Dashboard</h2><p className="text-sm text-gray-500">Επιλέξτε ένα tenant από το Project Switcher</p></div>
+          <div><h2 className="text-xl font-semibold">AION Platform</h2><p className="text-sm text-gray-500">Επιλέξτε έναν tenant για να δείτε τα δεδομένα του</p></div>
           <button onClick={() => setLoading(true)} className="btn-ghost p-2"><RefreshCw size={14} /></button>
         </div>
-        <div className="card p-12 text-center">
-          <Activity size={48} className="mx-auto mb-4 text-gray-600 opacity-30" />
-          <h3 className="font-medium text-gray-300 mb-2">Κανένα tenant δεν έχει επιλεγεί</h3>
-          <p className="text-sm text-gray-500">Χρησιμοποιήστε το Project Switcher στην αριστερή μπάρα για να δείτε τα δεδομένα ενός tenant.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {allTenants.map(t => (
+            <button
+              key={t.id}
+              onClick={() => setSelectedTenantId(t.id)}
+              className="card p-5 text-left hover:bg-gray-800/40 transition-all group border border-transparent hover:border-blue-500/30"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="size-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                  <Building2 size={18} className="text-blue-400" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-medium text-gray-200 group-hover:text-white transition-colors truncate">{t.name}</p>
+                  {t.plan_name && <p className="text-xs text-gray-500">{t.plan_name}</p>}
+                </div>
+              </div>
+              <div className="flex items-center gap-3 text-xs text-gray-600">
+                {t.industry && <span>{t.industry}</span>}
+                <span className={t.status === 'active' ? 'text-green-500' : 'text-amber-500'}>
+                  {t.status === 'active' ? 'Ενεργό' : t.status}
+                </span>
+              </div>
+            </button>
+          ))}
+          {allTenants.length === 0 && !loading && (
+            <div className="col-span-full card p-12 text-center">
+              <Users size={48} className="mx-auto mb-4 text-gray-600 opacity-30" />
+              <h3 className="font-medium text-gray-300 mb-2">Δεν βρέθηκαν tenants</h3>
+              <p className="text-sm text-gray-500">Δεν υπάρχουν ακόμη εγγεγραμμένοι tenants στην πλατφόρμα.</p>
+            </div>
+          )}
+          {loading && allTenants.length === 0 && (
+            <div className="col-span-full flex items-center justify-center h-32">
+              <div className="w-6 h-6 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+            </div>
+          )}
         </div>
       </div>
     );
