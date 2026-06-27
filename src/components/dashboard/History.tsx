@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { History as HistoryIcon, RotateCcw, Upload, Trash2, ChevronDown, ChevronRight, AlertTriangle, Search, Download, User, Filter, Calendar } from 'lucide-react';
+import { History as HistoryIcon, RotateCcw, Upload, Trash2, ChevronDown, ChevronRight, AlertTriangle, Search, Download, User, Filter, Calendar, Building2 } from 'lucide-react';
 import type { ContentHistory, ContentBackup } from '../../types/supabase';
 import { supabase, isSupabaseAvailable } from '../../lib/supabase';
 import { restoreHelper } from '../../lib/dataHelpers';
+import { useTenantContext } from '../../lib/TenantContext';
+import { trackEvent } from '../../lib/analytics';
 
 const TABLE_LABELS: Record<string, string> = {
   services: 'Υπηρεσίες', blog_posts: 'Blog', testimonials: 'Κριτικές',
@@ -40,6 +42,9 @@ function formatDate(date: string): string {
 
 export default function AuditDashboard() {
   const live = isSupabaseAvailable();
+  const { selectedTenantId } = useTenantContext();
+  const [tenantFilter, setTenantFilter] = useState<string>('all');
+  const [tenants, setTenants] = useState<{ id: string; name: string }[]>([]);
   const [entries, setEntries] = useState<ContentHistory[]>([]);
   const [backups, setBackups] = useState<ContentBackup[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,18 +59,34 @@ export default function AuditDashboard() {
   const [cleaning, setCleaning] = useState(false);
   const [error, setError] = useState('');
 
+  const activeTenantId = selectedTenantId && selectedTenantId !== '00000000-0000-0000-0000-000000000001'
+    ? selectedTenantId
+    : tenantFilter !== 'all' ? tenantFilter : null;
+
+  const loadTenants = useCallback(async () => {
+    if (!live) return;
+    const { data } = await supabase.from('tenants').select('id, name').order('name');
+    if (data) setTenants(data);
+  }, [live]);
+
   const load = useCallback(async () => {
     if (!live) { setLoading(false); return; }
     try {
-      const { data: h } = await supabase.from('content_history').select('*').order('created_at', { ascending: false }).limit(500);
+      let query = supabase.from('content_history').select('*').order('created_at', { ascending: false }).limit(500);
+      if (activeTenantId) query = query.eq('tenant_id', activeTenantId);
+      const { data: h } = await query;
       if (h) setEntries(h);
     } catch {}
     try {
-      const { data: b } = await supabase.from('content_backups').select('*').order('created_at', { ascending: false }).limit(50);
+      let query = supabase.from('content_backups').select('*').order('created_at', { ascending: false }).limit(50);
+      if (activeTenantId) query = query.eq('tenant_id', activeTenantId);
+      const { data: b } = await query;
       if (b) setBackups(b);
     } catch {}
     setLoading(false);
-  }, [live]);
+  }, [live, activeTenantId]);
+
+  useEffect(() => { loadTenants(); load(); }, [load, loadTenants]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -96,22 +117,26 @@ export default function AuditDashboard() {
 
   const handleBackup = async () => {
     setBackingUp(true); setError('');
+    const backupTenantId = activeTenantId || '00000000-0000-0000-0000-000000000001';
     try {
       const tables = ['services', 'blog_posts', 'testimonials', 'credentials', 'core_values', 'site_settings'];
       const snapshot: Record<string, unknown> = {};
       let totalBytes = 0;
       for (const t of tables) {
-        const { data } = await supabase.from(t).select('*');
+        let query = supabase.from(t).select('*');
+        if (selectedTenantId) query = query.eq('tenant_id', selectedTenantId);
+        const { data } = await query;
         snapshot[t] = data || [];
         totalBytes += new Blob([JSON.stringify(data || [])]).size;
       }
       const dateStr = new Date().toISOString().slice(0, 10);
       const { data: { user } } = await supabase.auth.getUser();
       await supabase.from('content_backups').insert({
-        tenant_id: '00000000-0000-0000-0000-000000000001',
+        tenant_id: backupTenantId,
         name: `Backup ${dateStr}`, snapshot, snapshot_version: 1,
         size_bytes: totalBytes, user_id: user?.id || user?.email || null,
       });
+      trackEvent('platform.backup_created', { size_mb: Math.round(totalBytes / (1024 * 1024) * 100) / 100, status: 'success' }).catch(() => {});
       await load();
     } catch (e: any) { setError(e?.message || 'Σφάλμα backup'); }
     setBackingUp(false);
@@ -155,10 +180,17 @@ export default function AuditDashboard() {
           <p className="text-sm text-gray-500">{filtered.length} από {entries.length} καταχωρήσεις · {backups.length} backups</p>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Building2 size={14} className="text-gray-500" />
+            <select value={tenantFilter} onChange={e => setTenantFilter(e.target.value)} className="input text-xs py-1.5 w-auto">
+              <option value="all">Όλοι οι tenants</option>
+              {tenants.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+            </select>
+          </div>
           <button onClick={exportCSV} disabled={filtered.length === 0} className="btn-ghost text-xs px-3 py-1.5">
             <Download size={14} /> CSV
           </button>
-          <button onClick={handleBackup} disabled={backingUp} className="btn-primary text-xs">
+          <button onClick={handleBackup} disabled={backingUp || !activeTenantId} className="btn-primary text-xs" title={!activeTenantId ? 'Επίλεξε tenant για backup' : ''}>
             <Upload size={14} /> {backingUp ? 'Δημιουργία...' : 'Backup'}
           </button>
           <button onClick={handleCleanup} disabled={cleaning} className="px-3 py-1.5 bg-red-500/10 text-red-400 rounded-xl hover:bg-red-500/20 transition-colors text-xs font-medium">
