@@ -31,6 +31,7 @@ import BackupManager from '../components/settings/BackupManager';
 import ObservabilityDashboard from '../components/settings/ObservabilityDashboard';
 import UsageDashboard from '../components/settings/UsageDashboard';
 import SystemDebug from '../components/settings/SystemDebug';
+import PlatformOverview from '../components/settings/PlatformOverview';
 import PlatformGuard from '../components/settings/PlatformGuard';
 import TenantOverview from '../components/dashboard/TenantOverview';
 import ErrorBoundary from '../components/dashboard/ErrorBoundary';
@@ -52,6 +53,7 @@ export default function Dashboard() {
           <ErrorBoundary>
           <Routes>
             <Route index element={<TenantOverview />} />
+            <Route path="platform" element={<PlatformGuard><PlatformOverview /></PlatformGuard>} />
             {isDemoMode && (
               <>
                 <Route path="categories" element={<Categories />} />

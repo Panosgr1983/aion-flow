@@ -16,11 +16,11 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal, Building2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
-import { hasPermission, Permission } from '../../lib/permissions';
+import { can, Permission } from '../../lib/permissions';
 import { UserRole } from '../../types/supabase';
 import { useTenant } from '../../lib/useTenant';
 import { useTenantContext } from '../../lib/TenantContext';
@@ -57,9 +57,11 @@ const contentItems: NavItem[] = [
 
 // Platform — μόνο για super admin (operator)
 const platformItems: NavItem[] = [
-  { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
-  { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'users.manage' },
-  { path: '/dashboard/settings/system', icon: Terminal, label: 'System', permission: 'users.manage' },
+  { path: '/dashboard/platform', icon: Activity, label: 'Overview', permission: 'platform.overview' },
+  { path: '/dashboard/tenant', icon: Building2, label: 'Tenants', permission: 'platform.tenants' },
+  { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'platform.usage' },
+  { path: '/dashboard/settings/observability', icon: Shield, label: 'Observability', permission: 'platform.observability' },
+  { path: '/dashboard/settings/system', icon: Terminal, label: 'System', permission: 'platform.system' },
 ];
 
 // Account — για όλους
@@ -104,19 +106,18 @@ export default function AdminSidebar() {
     }
   }, [tenant.isSuperAdmin, tenant.loading]);
 
-  // Feature check: combines role permission + feature flag
+  // Feature check: combines capability guard + feature flag
   const canAccessModule = (item: NavItem): boolean => {
-    if (!hasPermission(userRole, item.permission)) return false;
+    const perm = item.permission;
+    if (perm && !can(perm, userRole, tenant.isSuperAdmin)) return false;
     const path = item.path.split('/').pop() || '';
-    // Account-level items (settings, users, backup) — super admin only
-    if (['settings', 'users', 'backup'].includes(path)) {
-      return tenant.isSuperAdmin;
-    }
     // Check feature flag for content/CRM modules
     const feature = FEATURE_MODULES[path];
     if (feature && tenant.featureMap) {
       return tenant.featureMap[feature] === true;
     }
+    // Account-level items (settings, users, backup) — super admin only
+    if (!tenant.isSuperAdmin && ['settings', 'users', 'backup'].includes(path)) return false;
     return true;
   };
 
@@ -238,7 +239,7 @@ export default function AdminSidebar() {
             {!collapsed && <span>{label}</span>}
           </Link>
         ))}
-        {!collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pt-4 pb-1 flex items-center gap-2"><LayoutDashboard size={10} /> Workspace</div>}
+        {!collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pt-4 pb-1 flex items-center gap-2"><Building2 size={10} /> Επιχείρηση</div>}
         {contentItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}

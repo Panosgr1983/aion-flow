@@ -22,7 +22,14 @@ export type Permission =
   | 'history.view'   // Προβολή ιστορικού αλλαγών
   | 'history.restore'// Επαναφορά από ιστορικό
   | 'settings.all'   // Πρόσβαση σε ρυθμίσεις
-  | 'users.manage';  // Διαχείριση χρηστών
+  | 'users.manage'   // Διαχείριση χρηστών
+  // Platform-level (super admin only)
+  | 'platform.overview'
+  | 'platform.tenants'
+  | 'platform.usage'
+  | 'platform.observability'
+  | 'platform.system'
+  | 'platform.backups';
 
 /** Πίνακας δικαιωμάτων ανά ρόλο */
 const PERMISSION_MATRIX: Record<UserRole, Permission[]> = {
@@ -32,10 +39,31 @@ const PERMISSION_MATRIX: Record<UserRole, Permission[]> = {
   viewer: ['cms.view', 'history.view'],
 };
 
+/** Platform-level capabilities (only super admin) */
+const PLATFORM_CAPS: Permission[] = [
+  'platform.overview', 'platform.tenants', 'platform.usage',
+  'platform.observability', 'platform.system', 'platform.backups',
+];
+
 /** Έλεγχος αν ένας ρόλος έχει συγκεκριμένο δικαίωμα */
 export function hasPermission(role: UserRole | undefined, permission: Permission): boolean {
   if (!role) return false;
   return PERMISSION_MATRIX[role]?.includes(permission) ?? false;
+}
+
+/**
+ * Capability check — δύο επίπεδα:
+ * 1. Platform capabilities → χρειάζεται isSuperAdmin
+ * 2. Business permissions → ελέγχεται από role
+ */
+export function can(
+  permission: Permission,
+  role: UserRole | undefined,
+  isSuperAdmin: boolean,
+): boolean {
+  if (isSuperAdmin) return true;
+  if (PLATFORM_CAPS.includes(permission)) return false;
+  return hasPermission(role, permission);
 }
 
 /** Εμφανίζει την ελληνική ονομασία ενός ρόλου */

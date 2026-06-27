@@ -66,6 +66,12 @@ export type UsageEventMap = {
   'platform.user_created': { role: string };
   'platform.user_invited': { email: string; role: string };
   'platform.feature_enabled': { feature_name: string; enabled_by: 'admin' | 'user' };
+  'platform.tenant_created': { tenant_name: string; industry?: string };
+  'platform.tenant_archived': { tenant_name: string; reason?: string };
+  'platform.tenant_upgraded': { tenant_name: string; old_plan: string; new_plan: string };
+  'platform.backup_restored': { backup_name: string; tenant_name: string };
+  'platform.module_installed': { module: string; tenant_name: string };
+  'platform.role_changed': { user_email: string; old_role: string; new_role: string };
 };
 
 export const EVENT_VERSIONS: Record<keyof UsageEventMap, number> = {
@@ -98,6 +104,12 @@ export const EVENT_VERSIONS: Record<keyof UsageEventMap, number> = {
   'platform.user_created': 1,
   'platform.user_invited': 1,
   'platform.feature_enabled': 1,
+  'platform.tenant_created': 1,
+  'platform.tenant_archived': 1,
+  'platform.tenant_upgraded': 1,
+  'platform.backup_restored': 1,
+  'platform.module_installed': 1,
+  'platform.role_changed': 1,
 };
 
 export interface TrackEventOptions {
