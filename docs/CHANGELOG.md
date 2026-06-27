@@ -1,5 +1,27 @@
 # AION CMS — Changelog
 
+## v0.3.0 (2026-06-28)
+
+### Added
+- **System Health Cockpit**: `/dashboard/settings/system` — debug dashboard with Supabase, JWT, RLS, telemetry status, event count, live analytics source, one-click `trackEvent()` test
+- **Platform Overview**: `/dashboard/platform` — mission control for super admin: active tenants, events today, leads, health, system status
+- **Platform Events**: 6 new event types — `tenant_created`, `tenant_archived`, `tenant_upgraded`, `backup_restored`, `module_installed`, `role_changed`
+- **Capability Guard**: `can()` permission layer above roles — `platform.*` capabilities blocked for non-super-admins
+- **PlatformGuard**: route-level protection for all platform pages (Observability, Usage, System)
+- **Platform → Workspace separation**: sidebar divided into Platform (super admin), Επιχείρηση (tenant workspace), Λογαριασμός (account settings)
+- **Version bump**: 0.0.0 → 0.3.0
+
+### Fixed
+- **TrackEvent tenant_id**: auto-detected from JWT session when not explicitly provided — all CMS/CRM events now store correct tenant_id
+- **AnalyticsDashboard**: hardcoded `TENANT_ID` replaced with `selectedTenantId` from tenant context
+- **UsageDashboard**: now tenant-aware — filters churn risk, activity, top events by selected tenant
+- **analyticsHelper.getDashboardData()**: queries real `orders`, `customers`, `order_items`, `products`, `categories`, `pageviews` instead of `mockAnalytics`
+- **Sidebar**: Usage and System pages now gated to super-admin only (were accessible to any user with `users.manage`)
+
+### Changed
+- **Data Principle #1**: No production dashboard reads mock data. Mock data allowed only for demo mode, local dev, empty state placeholders, and tests.
+- **Permission model**: New `can(permission, role, isSuperAdmin)` function — platform capabilities (`platform.*`) are super-admin-only; business permissions checked by role matrix
+
 ## v0.1.0 (2026-06-27)
 
 ### Added
