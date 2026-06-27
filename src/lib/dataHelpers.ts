@@ -103,6 +103,17 @@ async function saveHistoryEntry(opts: {
       user_id: user?.id || user?.email || null,
       metadata: { source: 'dashboard' },
     });
+    void trackEvent('cms.history_entry', {
+      operation: opts.operation,
+      table_name: opts.tableName,
+      record_id: opts.recordId,
+      summary: opts.summary,
+      changed_fields: opts.changedFields,
+    }, {
+      entityType: opts.tableName,
+      entityId: opts.recordId || undefined,
+      source: 'dashboard',
+    });
   } catch (err) {
     console.warn('Failed to save content history:', err);
   }

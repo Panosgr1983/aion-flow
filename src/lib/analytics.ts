@@ -51,6 +51,13 @@ export type UsageEventMap = {
   'cms.media_uploaded': { file_size: number; file_type: string };
   'cms.media_deleted': { count: number };
   'cms.media_replaced': { file_size: number; file_type: string };
+  'cms.history_entry': {                                                // Γενική καταγραφή ιστορικού
+    operation: string;
+    table_name: string;
+    record_id: string | null;
+    summary: string | null;
+    changed_fields?: string[] | null;
+  };
 
   /* ═══ CRM ═══ */
   'crm.lead_created': { source: string; name: string };               // Νέο lead από φόρμα/booking
@@ -93,6 +100,7 @@ export const EVENT_VERSIONS: Record<keyof UsageEventMap, number> = {
   'cms.media_uploaded': 1,
   'cms.media_deleted': 1,
   'cms.media_replaced': 1,
+  'cms.history_entry': 1,
   'crm.lead_created': 1,
   'crm.lead_updated': 1,
   'crm.lead_stage_changed': 1,
