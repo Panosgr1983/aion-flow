@@ -341,6 +341,7 @@ export default function SiteSettingsPanel() {
           {activeTab === 'site' && (
             <>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Branding</h3>
+              {renderField('site_logo', 'Logo Image URL', { isImage: true })}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('site_name', 'Site Name')}
                 {renderField('site_monogram', 'Monogram (e.g. ΝΚ)')}
@@ -361,6 +362,7 @@ export default function SiteSettingsPanel() {
           {activeTab === 'footer' && (
             <>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Branding στο Footer</h3>
+              {renderField('site_logo', 'Logo Image URL', { isImage: true })}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('site_name', 'Όνομα Site')}
                 {renderField('site_monogram', 'Μονόγραμμα (π.χ. ΝΚ)')}
