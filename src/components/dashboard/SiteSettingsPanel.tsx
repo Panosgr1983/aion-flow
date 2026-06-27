@@ -371,6 +371,10 @@ export default function SiteSettingsPanel() {
 
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Στοιχεία Επικοινωνίας</h3>
               <div className="grid grid-cols-2 gap-4">
+                {renderField('contact_email_label', 'Ετικέτα Email')}
+                {renderField('contact_email', 'Email')}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_phone_label', 'Ετικέτα Τηλεφώνου')}
                 {renderField('contact_phone_hint', 'Τηλέφωνο')}
               </div>
