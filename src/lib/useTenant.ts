@@ -95,10 +95,10 @@ export function useTenant(): TenantState {
     const jwtSuperAdmin = u.is_super_admin === true || u.app_metadata?.is_super_admin === true;
     const jwtTenantId: string | undefined = u.tenant_id || u.app_metadata?.tenant_id || undefined;
 
-    if (jwtSuperAdmin && jwtTenantId) {
+    if (jwtSuperAdmin) {
       setState({
         isSuperAdmin: true,
-        tenantId: selectedTenantId || jwtTenantId || null,
+        tenantId: selectedTenantId || null,  // SA: never auto-attach to personal tenant
         featureMap: { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true },
         tenantStatus: 'active',
         loading: false,
@@ -110,7 +110,7 @@ export function useTenant(): TenantState {
     fetchProfile(user.id).then(({ is_super_admin, tenant_id }) => {
       const isSuperAdmin = is_super_admin || jwtSuperAdmin;
       const tenantId = isSuperAdmin
-        ? (selectedTenantId || tenant_id || jwtTenantId || null)
+        ? (selectedTenantId || null)  // SA: never auto-attach to personal tenant
         : (tenant_id || jwtTenantId || null);
 
       setState({
