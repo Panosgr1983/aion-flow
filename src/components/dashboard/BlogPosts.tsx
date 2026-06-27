@@ -3,6 +3,7 @@ import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-
 import { blogPostsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenantContext } from '../../lib/TenantContext';
+import { trackEvent } from '../../lib/analytics';
 import { BlogPost } from '../../types/supabase';
 import RichEditor from './RichEditor';
 import MediaPicker from './MediaPicker';
@@ -56,18 +57,27 @@ export default function BlogPosts() {
     if (editing) {
       const updated = await blogPostsHelper.update(editing.id, payload);
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
+      trackEvent('cms.blog_updated', { title: payload.title || '' }).catch(() => {});
     } else {
       const created = await blogPostsHelper.create(payload);
       setItems(prev => [...prev, created]);
+      trackEvent('cms.blog_created', { title: payload.title || '' }).catch(() => {});
+    }
+    if (payload.is_published) {
+      trackEvent('cms.blog_published', { title: payload.title || '', word_count: payload.content ? String(payload.content).length : 0 }).catch(() => {});
     }
     setSaving(false); setShowModal(false);
   };
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    const deletedItem = items.find(i => i.id === deleteId);
     await blogPostsHelper.delete(deleteId);
     setItems(prev => prev.filter(i => i.id !== deleteId));
     setDeleteId(null);
+    if (deletedItem) {
+      trackEvent('cms.blog_deleted', { title: deletedItem.title }).catch(() => {});
+    }
   };
 
   const formatDate = (d: string | null) => d ? new Date(d).toLocaleDateString('el-GR', { year: 'numeric', month: 'short', day: 'numeric' }) : '—';

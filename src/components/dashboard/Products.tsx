@@ -3,6 +3,7 @@ import { Plus, Search, CreditCard as Edit2, Trash2, X, Package, Star, Upload, Im
 import { productsHelper, categoriesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenantContext } from '../../lib/TenantContext';
+import { trackEvent } from '../../lib/analytics';
 import { Product, Category } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
 
@@ -85,9 +86,11 @@ export default function Products() {
     if (editing) {
       const updated = await productsHelper.update(editing.id, payload);
       setProducts(prev => prev.map(p => p.id === editing.id ? updated : p));
+      trackEvent('cms.product_updated', { name: payload.name, fields_changed: Object.keys(payload) }).catch(() => {});
     } else {
       const created = await productsHelper.create(payload);
       setProducts(prev => [created, ...prev]);
+      trackEvent('cms.product_created', { name: payload.name, category: form.category_id || 'none' }).catch(() => {});
     }
     if (form.image_url && form.sku?.startsWith('BOOK-')) {
       try { await syncImageToAboutBooks(form.image_url, form.name); } catch {}
@@ -98,9 +101,13 @@ export default function Products() {
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    const deletedItem = products.find(p => p.id === deleteId);
     await productsHelper.delete(deleteId);
     setProducts(prev => prev.filter(p => p.id !== deleteId));
     setDeleteId(null);
+    if (deletedItem) {
+      trackEvent('cms.product_deleted', { name: deletedItem.name }).catch(() => {});
+    }
   };
 
   const sorted = [...filtered].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));

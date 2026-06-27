@@ -3,6 +3,7 @@ import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-
 import { servicesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenantContext } from '../../lib/TenantContext';
+import { trackEvent } from '../../lib/analytics';
 import { Service } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
 
@@ -43,9 +44,11 @@ export default function Services() {
     if (editing) {
       const updated = await servicesHelper.update(editing.id, payload);
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
+      trackEvent('cms.service_updated', { service_title: form.title || '', fields_changed: Object.keys(payload) }).catch(() => {});
     } else {
       const created = await servicesHelper.create(payload);
       setItems(prev => [...prev, created]);
+      trackEvent('cms.service_created', { service_title: form.title || '' }).catch(() => {});
     }
 
     // Also persist image_url to site_settings.page_data as fallback (RLS allows this)
@@ -74,9 +77,13 @@ export default function Services() {
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    const deletedItem = items.find(i => i.id === deleteId);
     await servicesHelper.delete(deleteId);
     setItems(prev => prev.filter(i => i.id !== deleteId));
     setDeleteId(null);
+    if (deletedItem) {
+      trackEvent('cms.service_deleted', { service_title: deletedItem.title }).catch(() => {});
+    }
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;

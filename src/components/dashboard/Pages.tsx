@@ -3,6 +3,7 @@ import { Save, RefreshCw, Eye, EyeOff, ChevronDown, Upload, Image as ImageIcon }
 import { siteSettingsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenantContext } from '../../lib/TenantContext';
+import { trackEvent } from '../../lib/analytics';
 import MediaPicker from './MediaPicker';
 
 const DEFAULT_PAGES = [
@@ -113,6 +114,7 @@ export default function Pages() {
       }
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+      trackEvent('cms.page_updated', { page_slug: 'multiple', fields_changed: ['visibility', 'content'] }).catch(() => {});
     } catch {
       alert('Αποτυχία αποθήκευσης');
     } finally {

@@ -92,10 +92,11 @@ export async function uploadCmsAsset(
   if (error) throw error;
 
   // 3. Telemetry
-  trackEvent('media.upload', {
-    category: options.category,
-    source: options.source,
-    tenant_id: options.tenantId,
+  trackEvent('cms.media_uploaded', {
+    file_size: file.size,
+    file_type: file.type,
+  }, {
+    tenantId: options.tenantId,
   });
 
   return data as Media;
