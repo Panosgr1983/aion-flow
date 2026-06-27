@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Fragment } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useTenantContext } from '../../lib/TenantContext';
-import { RefreshCw, Users, BarChart3, CheckCircle, AlertOctagon } from 'lucide-react';
+import { RefreshCw, Users, BarChart3, CheckCircle, AlertOctagon, Search, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface TenantHealth {
   tenant_id: string;
@@ -31,6 +31,33 @@ interface TopEvent {
   last_seen: string;
 }
 
+interface RawEvent {
+  id: string;
+  tenant_id: string;
+  tenant_name: string;
+  event_name: string;
+  created_at: string;
+  source: string;
+  user_id: string | null;
+  entity_type: string | null;
+  entity_id: string | null;
+  metadata: Record<string, any> | null;
+  summary: string | null;
+}
+
+const EVENT_LABELS: Record<string, string> = {
+  'cms.login': 'Είσοδος', 'cms.logout': 'Αποσύνδεση',
+  'cms.history_entry': 'Αλλαγή περιεχομένου',
+  'cms.page_created': 'Δημιουργία σελίδας', 'cms.page_updated': 'Ενημέρωση σελίδας', 'cms.page_deleted': 'Διαγραφή σελίδας',
+  'cms.service_created': 'Δημιουργία υπηρεσίας', 'cms.service_updated': 'Ενημέρωση υπηρεσίας', 'cms.service_deleted': 'Διαγραφή υπηρεσίας',
+  'cms.blog_created': 'Δημιουργία άρθρου', 'cms.blog_updated': 'Ενημέρωση άρθρου', 'cms.blog_deleted': 'Διαγραφή άρθρου',
+  'cms.media_uploaded': 'Ανέβασμα αρχείου', 'cms.media_deleted': 'Διαγραφή αρχείου',
+  'crm.lead_created': 'Νέο lead', 'crm.lead_stage_changed': 'Αλλαγή σταδίου',
+  'crm.message_sent': 'Αποστολή μηνύματος', 'crm.message_received': 'Λήψη μηνύματος',
+  'platform.backup_created': 'Δημιουργία backup', 'platform.backup_restored': 'Επαναφορά backup',
+  'platform.user_created': 'Δημιουργία χρήστη',
+};
+
 const RISK_COLORS: Record<string, string> = {
   healthy: 'text-green-400 bg-green-500/10',
   attention: 'text-yellow-400 bg-yellow-500/10',
@@ -52,8 +79,15 @@ export default function UsageDashboard() {
   const [health, setHealth] = useState<TenantHealth[]>([]);
   const [activity, setActivity] = useState<TenantActivity[]>([]);
   const [topEvents, setTopEvents] = useState<TopEvent[]>([]);
+  const [rawEvents, setRawEvents] = useState<RawEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [filterTenant, setFilterTenant] = useState('');
+  const [filterEvent, setFilterEvent] = useState('');
+  const [filterSource, setFilterSource] = useState('');
+  const [page, setPage] = useState(0);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const PAGE_SIZE = 100;
 
   const queryFilter = (q: any) =>
     selectedTenantId ? q.eq('tenant_id', selectedTenantId) : q;
@@ -68,9 +102,9 @@ export default function UsageDashboard() {
         queryFilter(
           supabase
             .from('usage_events')
-            .select('tenant_id, event_name, created_at, source')
+            .select('id, tenant_id, event_name, created_at, source, user_id, entity_type, entity_id, metadata')
             .gte('created_at', new Date(Date.now() - 90 * 86400000).toISOString())
-            .order('created_at', { ascending: false })
+            .order('created_at', { ascending: false }).limit(500)
         ),
       ]);
 
@@ -174,9 +208,25 @@ export default function UsageDashboard() {
         .slice(0, 50)
         .map((r: any) => ({ ...r, last_seen: r.last }));
 
+      // ── Raw Event Log (90 days) ──
+      setRawEvents((events || []).filter((e: any) => e.source !== 'worker').map((e: any) => ({
+        id: e.id,
+        tenant_id: e.tenant_id,
+        tenant_name: tenantMap.get(e.tenant_id) || e.tenant_id.slice(0, 8),
+        event_name: e.event_name,
+        created_at: e.created_at,
+        source: e.source,
+        user_id: e.user_id,
+        entity_type: e.entity_type,
+        entity_id: e.entity_id,
+        metadata: e.metadata,
+        summary: e.metadata?.summary || null,
+      })));
+
       setHealth(healthData);
       setActivity(activityData);
       setTopEvents(topEventsData);
+      setPage(0);
     } catch (err: any) {
       setError(err?.message || 'Σφάλμα φόρτωσης δεδομένων');
     }
@@ -190,6 +240,11 @@ export default function UsageDashboard() {
   const totalEvents = activity.reduce((s, u) => s + u.total_events, 0);
   const atRisk = health.filter(r => r.churn_risk === 'critical' || r.churn_risk === 'warning').length;
   const healthy = health.filter(r => r.churn_risk === 'healthy').length;
+  const filtered = rawEvents.filter(e =>
+    (!filterTenant || e.tenant_name === filterTenant) &&
+    (!filterEvent || e.event_name === filterEvent) &&
+    (!filterSource || e.source === filterSource)
+  );
 
   return (
     <div className="space-y-5 animate-fade-in">
@@ -352,6 +407,102 @@ export default function UsageDashboard() {
           </div>
         </div>
       )}
+
+      {/* ═════════ Event Log ═════════ */}
+      <div className="card overflow-hidden">
+        <div className="p-4 border-b border-gray-800">
+          <h3 className="text-sm font-semibold flex items-center gap-2">
+            <Search size={14} className="text-blue-400" />
+            Αναλυτικό Ιστορικό Events (90 ημέρες)
+            <span className="text-xs text-gray-500 font-normal ml-1">· {rawEvents.length} events</span>
+          </h3>
+        </div>
+
+        {/* Filters */}
+        <div className="p-3 border-b border-gray-800 flex flex-wrap gap-2">
+          <select value={filterTenant} onChange={e => { setFilterTenant(e.target.value); setPage(0); }}
+            className="bg-gray-900 text-xs text-gray-300 border border-gray-700 rounded px-2 py-1.5 min-w-[140px]">
+            <option value="">Όλοι οι tenants</option>
+            {[...new Set(rawEvents.map(e => e.tenant_name))].sort().map(n => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </select>
+          <select value={filterEvent} onChange={e => { setFilterEvent(e.target.value); setPage(0); }}
+            className="bg-gray-900 text-xs text-gray-300 border border-gray-700 rounded px-2 py-1.5 min-w-[160px]">
+            <option value="">Όλα τα events</option>
+            {[...new Set(rawEvents.map(e => e.event_name))].sort().map(n => (
+              <option key={n} value={n}>{EVENT_LABELS[n] || n}</option>
+            ))}
+          </select>
+          <select value={filterSource} onChange={e => { setFilterSource(e.target.value); setPage(0); }}
+            className="bg-gray-900 text-xs text-gray-300 border border-gray-700 rounded px-2 py-1.5 min-w-[120px]">
+            <option value="">Όλες οι πηγές</option>
+            <option value="dashboard">Dashboard</option>
+            <option value="system">System</option>
+            <option value="public_site">Public Site</option>
+          </select>
+          <span className="text-xs text-gray-500 self-center ml-auto">
+            {filtered.length} από {rawEvents.length}
+          </span>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+          <table className="w-full text-sm">
+            <thead className="sticky top-0 bg-gray-950 z-10">
+              <tr className="border-b border-gray-800 text-xs text-gray-500 uppercase tracking-wider">
+                <th className="text-left py-2.5 px-3 w-8"></th>
+                <th className="text-left py-2.5 px-3">Ημερομηνία</th>
+                <th className="text-left py-2.5 px-3">Tenant</th>
+                <th className="text-left py-2.5 px-3">Event</th>
+                <th className="text-left py-2.5 px-3">Σύνοψη</th>
+                <th className="text-left py-2.5 px-3">Πηγή</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-800/50">
+              {filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map((e, i) => (
+                <Fragment key={e.id || i}>
+                  <tr className="hover:bg-gray-900/50 transition-colors cursor-pointer" onClick={() => setExpandedId(expandedId === e.id ? null : e.id)}>
+                    <td className="py-2 px-3 text-gray-600">{expandedId === e.id ? <ChevronDown size={12} /> : <ChevronRight size={12} />}</td>
+                    <td className="py-2 px-3 text-xs text-gray-400 whitespace-nowrap">{new Date(e.created_at).toLocaleDateString('el-GR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</td>
+                    <td className="py-2 px-3 text-xs text-gray-300">{e.tenant_name}</td>
+                    <td className="py-2 px-3"><code className="text-xs text-blue-400">{EVENT_LABELS[e.event_name] || e.event_name}</code></td>
+                    <td className="py-2 px-3 text-xs text-gray-400 max-w-[300px] truncate">{e.summary || e.metadata?.summary || '—'}</td>
+                    <td className="py-2 px-3"><span className={`text-[10px] px-1.5 py-0.5 rounded ${e.source === 'dashboard' ? 'bg-blue-500/20 text-blue-400' : e.source === 'system' ? 'bg-gray-500/20 text-gray-400' : 'bg-green-500/20 text-green-400'}`}>{e.source}</span></td>
+                  </tr>
+                  {expandedId === e.id && (
+                    <tr key={`${e.id}-details`}>
+                      <td colSpan={6} className="px-3 pb-3 pt-0">
+                        <div className="bg-gray-900/50 rounded p-3 text-xs space-y-1 font-mono">
+                          <div><span className="text-gray-500">event:</span> <span className="text-blue-300">{e.event_name}</span></div>
+                          <div><span className="text-gray-500">tenant:</span> <span className="text-gray-300">{e.tenant_name} ({e.tenant_id})</span></div>
+                          {e.user_id && <div><span className="text-gray-500">user:</span> <span className="text-gray-300">{e.user_id}</span></div>}
+                          {e.entity_type && <div><span className="text-gray-500">entity:</span> <span className="text-gray-300">{e.entity_type}{e.entity_id ? ` / ${e.entity_id}` : ''}</span></div>}
+                          {e.metadata && Object.keys(e.metadata).filter(k => k !== 'summary').length > 0 && (
+                            <div><span className="text-gray-500">metadata:</span> <span className="text-gray-400">{JSON.stringify(e.metadata, null, 1)}</span></div>
+                          )}
+                          <div className="text-gray-600 pt-1">{new Date(e.created_at).toLocaleString('el-GR')}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        {filtered.length > PAGE_SIZE && (
+          <div className="flex items-center justify-between p-3 border-t border-gray-800 text-xs text-gray-500">
+            <button disabled={page === 0} onClick={() => setPage(p => p - 1)}
+              className="px-3 py-1 rounded bg-gray-900 hover:bg-gray-800 disabled:opacity-30">← Προηγούμενο</button>
+            <span>Σελίδα {page + 1} / {Math.ceil(filtered.length / PAGE_SIZE)}</span>
+            <button disabled={(page + 1) * PAGE_SIZE >= filtered.length} onClick={() => setPage(p => p + 1)}
+              className="px-3 py-1 rounded bg-gray-900 hover:bg-gray-800 disabled:opacity-30">Επόμενο →</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
