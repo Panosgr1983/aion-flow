@@ -53,7 +53,7 @@ export default function TenantOverview() {
       tenantId ? supabase.from('services').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId) : Promise.resolve({ count: 0 }),
       tenantId ? supabase.from('blog_posts').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId) : Promise.resolve({ count: 0 }),
       tenantId ? supabase.from('site_settings').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId).eq('category', 'pages') : Promise.resolve({ count: 0 }),
-      tenantId ? supabase.from('media').select('id', { count: 'exact', head: true }) : Promise.resolve({ count: 0 }),
+      tenantId ? supabase.from('media').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId) : Promise.resolve({ count: 0 }),
       tenantId ? supabase.from('contact_messages').select('id', { count: 'exact', head: true }).eq('status', 'new') : Promise.resolve({ count: 0 }),
       tenantId ? supabase.from('contact_messages').select('id', { count: 'exact', head: true }) : Promise.resolve({ count: 0 }),
       tenantId ? supabase.from('contact_conversations').select('id', { count: 'exact', head: true }).not('lead_stage', 'is', null) : Promise.resolve({ count: 0 }),

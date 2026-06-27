@@ -49,9 +49,6 @@ const contentItems: NavItem[] = [
   { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA', permission: 'cms.edit' },
   { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες', permission: 'cms.edit' },
   { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics', permission: 'cms.view' },
-  { path: '/dashboard/history', icon: History, label: 'Ιστορικό', permission: 'history.view' },
-  { path: '/dashboard/inbox', icon: Mail, label: 'Inbox', permission: 'crm.inbox' },
-  { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline', permission: 'crm.pipeline' },
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site', permission: 'settings.all' },
 ];
 
@@ -59,6 +56,9 @@ const contentItems: NavItem[] = [
 const platformItems: NavItem[] = [
   { path: '/dashboard/platform', icon: Activity, label: 'Overview', permission: 'platform.overview' },
   { path: '/dashboard/tenant', icon: Building2, label: 'Tenants', permission: 'platform.tenants' },
+  { path: '/dashboard/inbox', icon: Mail, label: 'Inbox', permission: 'crm.inbox' },
+  { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline', permission: 'crm.pipeline' },
+  { path: '/dashboard/history', icon: History, label: 'Ιστορικό', permission: 'history.view' },
   { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'platform.usage' },
   { path: '/dashboard/settings/observability', icon: Shield, label: 'Observability', permission: 'platform.observability' },
   { path: '/dashboard/settings/system', icon: Terminal, label: 'System', permission: 'platform.system' },

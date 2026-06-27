@@ -33,16 +33,18 @@ export type Permission =
 
 /** Πίνακας δικαιωμάτων ανά ρόλο */
 const PERMISSION_MATRIX: Record<UserRole, Permission[]> = {
-  admin:  ['cms.edit', 'cms.view', 'crm.inbox', 'crm.pipeline', 'crm.tasks', 'history.view', 'history.restore', 'settings.all', 'users.manage'],
-  editor: ['cms.edit', 'cms.view', 'history.view', 'settings.all'],
-  sales:  ['crm.inbox', 'crm.pipeline', 'crm.tasks', 'history.view'],
-  viewer: ['cms.view', 'history.view'],
+  admin:  ['cms.edit', 'cms.view', 'settings.all', 'users.manage'],
+  editor: ['cms.edit', 'cms.view', 'settings.all'],
+  sales:  [],
+  viewer: ['cms.view'],
 };
 
 /** Platform-level capabilities (only super admin) */
 const PLATFORM_CAPS: Permission[] = [
   'platform.overview', 'platform.tenants', 'platform.usage',
   'platform.observability', 'platform.system', 'platform.backups',
+  'crm.inbox', 'crm.pipeline', 'crm.tasks',
+  'history.view', 'history.restore',
 ];
 
 /** Έλεγχος αν ένας ρόλος έχει συγκεκριμένο δικαίωμα */
