@@ -5,10 +5,10 @@ import { SiteSetting } from '../../types/supabase';
 import { uploadImage } from '../../lib/storage';
 import MediaPicker from './MediaPicker';
 
-const CATEGORIES = ['home', 'about', 'contact', 'site', 'navigation', 'cta', 'seo'] as const;
+const CATEGORIES = ['home', 'about', 'contact', 'site', 'footer', 'navigation', 'cta', 'seo'] as const;
 
 const TAB_LABELS: Record<string, string> = {
-  home: 'Αρχική', about: 'Σχετικά', contact: 'Επικοινωνία', site: 'Site Branding', navigation: 'Πλοήγηση', cta: 'CTA Band', seo: 'SEO',
+  home: 'Αρχική', about: 'Σχετικά', contact: 'Επικοινωνία', site: 'Site Branding', footer: 'Footer', navigation: 'Πλοήγηση', cta: 'CTA Band', seo: 'SEO',
 };
 
 const TEXTAREA_KEYS = ['subtitle', 'description', 'paragraph', 'tagline', 'heading', 'title'];
@@ -353,6 +353,51 @@ export default function SiteSettingsPanel() {
               <div className="grid grid-cols-2 gap-4">
                 {renderField('header_cta_text', 'CTA Button Text')}
                 {renderField('header_cta_link', 'CTA Button Link')}
+              </div>
+            </>
+          )}
+
+          {/* FOOTER */}
+          {activeTab === 'footer' && (
+            <>
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Branding στο Footer</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('site_name', 'Όνομα Site')}
+                {renderField('site_monogram', 'Μονόγραμμα (π.χ. ΝΚ)')}
+              </div>
+              {renderField('site_subtitle', 'Υπότιτλος')}
+              {renderField('site_tagline', 'Slogan / Περιγραφή', { rows: 2 })}
+              {renderField('footer_copyright', 'Copyright Text')}
+
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Στοιχεία Επικοινωνίας</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('contact_phone_label', 'Ετικέτα Τηλεφώνου')}
+                {renderField('contact_phone_hint', 'Τηλέφωνο')}
+              </div>
+              {renderField('contact_phone_note', 'Σημείωση Τηλεφώνου')}
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('contact_address_label', 'Διεύθυνση (οδός, αριθμός)')}
+                {renderField('contact_address_hint', 'Διεύθυνση (περιοχή)')}
+              </div>
+              {renderField('contact_address_line_1', 'Διεύθυνση Line 1')}
+              {renderField('contact_address_line_2', 'Διεύθυνση Line 2')}
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('contact_social_label', 'Social Label')}
+                {renderField('contact_social_facebook_url', 'Facebook URL', { isUrl: true })}
+              </div>
+
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Footer Navigation</h3>
+              <p className="text-xs text-gray-500">Προσθέστε, αφαιρέστε ή τροποποιήστε τους συνδέσμους στο footer.</p>
+              <div className="space-y-2">
+                {editFooterNav.map((link, i) => (
+                  <div key={i} className="flex gap-2 items-center">
+                    <GripVertical size={14} className="text-gray-600 shrink-0" />
+                    <input value={link.label} onChange={e => updateNavLink(i, 'label', e.target.value, true)} className="input flex-1 text-sm" placeholder="Label" />
+                    <input value={link.path} onChange={e => updateNavLink(i, 'path', e.target.value, true)} className="input flex-1 text-sm" placeholder="/path" />
+                    <button onClick={() => removeNavLink(i, true)} className="p-1.5 text-gray-500 hover:text-red-400"><Trash2 size={13} /></button>
+                  </div>
+                ))}
+                <button onClick={() => addNavLink(true)} className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"><Plus size={12} /> Προσθήκη συνδέσμου</button>
               </div>
             </>
           )}
