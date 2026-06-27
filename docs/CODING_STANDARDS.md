@@ -81,3 +81,54 @@ fix/*          → bug fixes
 1. Feature branch → Develop
 2. Develop → Release branch
 3. Release → Main (μετά από QA)
+
+## Performance Standards
+
+### Images
+| Rule | Requirement |
+|------|------------|
+| Format | WebP (always, no exceptions) |
+| Lazy loading | `loading="lazy"` σε όλα τα below-fold images |
+| Responsive | `srcset` + `sizes` για διαφορετικά breakpoints |
+| CLS prevention | Always set `width` + `height` attributes |
+| Hero preload | `fetchpriority="high"` στην hero image |
+| Max file sizes | Hero ≤200KB, Gallery ≤80KB, Logo ≤30KB |
+
+### Lighthouse Targets
+| Metric | Target | Priority |
+|--------|--------|----------|
+| Performance | ≥90 | Medium |
+| Accessibility | ≥95 | High |
+| SEO | ≥95 | High |
+| Best Practices | ≥90 | Medium |
+| TTFB | <800ms | High |
+| LCP | <2.5s | High |
+| CLS | <0.1 | High |
+
+## Accessibility Standards
+
+### Keyboard
+- All interactive elements must be reachable via Tab
+- All modals must trap focus
+- Escape key must close overlays
+- Custom components must have correct `role` attributes
+
+### ARIA
+- Use semantic HTML first (button, nav, main, aside)
+- ARIA labels only when semantic HTML is not enough
+- Dynamic content must announce changes
+
+### Contrast
+- Text on background: minimum 4.5:1 (normal), 3:1 (large)
+- Focus indicators: minimum 3:1 against adjacent colors
+- Never convey information by color alone
+
+## Animation Standards
+
+### Rules
+| Rule | Requirement |
+|------|------------|
+| Library | Framer Motion (consistent across all components) |
+| Reduced motion | Respect `prefers-reduced-motion` — disable or simplify |
+| Duration | Animations ≤300ms (micro-interactions), ≤500ms (page transitions) |
+| Accessibility | No auto-playing animations without user control |

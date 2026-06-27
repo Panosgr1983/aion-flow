@@ -199,12 +199,31 @@ src/components/dashboard/
 
 ### 11. Website Builder (Planned)
 
-- Drag & drop page builder
-- Theme system
-- Custom CSS/JS
+**Purpose:**  
+Generate complete websites based on Blueprint definitions.
+
+**Inputs:**
+- Blueprint (page architecture, sections, SEO rules)
+- Brand (logo, colors, fonts)
+- Services / Products
+- Assets (images, icons)
+
+**Outputs:**
+- Pages with correct section structure
+- SEO metadata (meta, schema, OG, canonical)
+- Navigation (header, footer, structure)
+- Theme (design tokens, dark/light mode)
+- CMS content structure (categories, fields)
+- Copywriting (titles, subtitles, CTAs)
+
+**Design principles:**  
+The Website Builder consumes a Blueprint definition and produces a fully configured tenant site. It does NOT replace the CMS — it configures it.
+
+This module will be built incrementally across multiple releases (v0.3+).  
+For existing blueprints, see [BLUEPRINTS.md](./BLUEPRINTS.md).
 
 **Status:** 🔄 Planned  
-**Target:** v0.3
+**Target:** v0.3+
 
 ---
 
