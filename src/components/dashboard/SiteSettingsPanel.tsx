@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical } from 'lucide-react';
 import { siteSettingsHelper, FOLDER_OPTIONS } from '../../lib/dataHelpers';
+import { uploadCmsAsset } from '../../lib/media';
+import { useTenantContext } from '../../lib/TenantContext';
 import { SiteSetting } from '../../types/supabase';
-import { uploadImage } from '../../lib/storage';
 import MediaPicker from './MediaPicker';
 
 const CATEGORIES = ['home', 'about', 'contact', 'site', 'footer', 'navigation', 'cta', 'seo'] as const;
@@ -41,7 +42,16 @@ function TabVisibilityGuard({ children, visibility, pageKey }: { children: React
   );
 }
 
+function imageKeyToCategory(key: string): string {
+  if (key.startsWith('logo') || key === 'site_logo') return 'logo';
+  if (key.includes('hero')) return 'hero';
+  if (key.includes('portrait') || key.includes('avatar')) return 'about';
+  if (key.includes('og_image') || key.includes('seo')) return 'seo';
+  return 'general';
+}
+
 export default function SiteSettingsPanel() {
+  const { selectedTenantId } = useTenantContext();
   const [settings, setSettings] = useState<SiteSetting[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -80,9 +90,15 @@ export default function SiteSettingsPanel() {
   };
 
   const handleImageUpload = async (file: File, targetKey: string) => {
+    if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
     try {
-      const url = await uploadImage(file, 'site-images');
-      setValue(targetKey, url);
+      const media = await uploadCmsAsset(file, {
+        tenantId: selectedTenantId,
+        bucket: 'site-images',
+        category: imageKeyToCategory(targetKey) as any,
+        source: 'editor',
+      });
+      setValue(targetKey, media.url);
     } catch (err) {
       alert('Αποτυχία μεταφόρτωσης');
     }
