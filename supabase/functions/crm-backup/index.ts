@@ -19,10 +19,12 @@ Deno.serve(async (req) => {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
   try {
-    const { type = 'manual' } = await req.json().catch(() => ({ type: 'manual' }));
+    const { type = 'manual', tenant_id } = await req.json().catch(() => ({ type: 'manual' }));
     if (!['manual', 'daily', 'weekly'].includes(type)) {
       return new Response(JSON.stringify({ error: 'Invalid type' }), { status: 400, headers: CORS_HEADERS });
     }
+
+    const tenantId = tenant_id || '00000000-0000-0000-0000-000000000001';
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;

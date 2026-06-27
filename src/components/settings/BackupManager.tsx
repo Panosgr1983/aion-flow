@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, createElement } from 'react';
 import { supabase } from '../../lib/supabase';
+import { getCurrentTenantContext } from '../../lib/TenantContext';
 import { RefreshCw, Shield, Clock, HardDrive, CheckCircle, XCircle, Activity, Calendar, Download, Play, Trash2 } from 'lucide-react';
 
 interface BackupJob {
@@ -39,7 +40,7 @@ export default function BackupManager() {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/crm-backup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
-        body: JSON.stringify({ type }),
+        body: JSON.stringify({ type, tenant_id: getCurrentTenantContext() || '00000000-0000-0000-0000-000000000001' }),
       });
       if (!res.ok) {
         const err = await res.json();
