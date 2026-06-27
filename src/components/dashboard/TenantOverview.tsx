@@ -86,35 +86,93 @@ export default function TenantOverview() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            { icon: FileText, label: 'Υπηρεσίες', desc: 'Διαχειριστείτε τις υπηρεσίες που προσφέρετε', path: '/dashboard/services', color: 'text-blue-400', bg: 'bg-blue-500/10' },
-            { icon: BookOpen, label: 'Blog', desc: 'Γράψτε και δημοσιεύστε άρθρα', path: '/dashboard/blog', color: 'text-purple-400', bg: 'bg-purple-500/10' },
-            { icon: Eye, label: 'Σελίδες', desc: 'Επεξεργαστείτε τις στατικές σελίδες σας', path: '/dashboard/pages', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-            { icon: Image, label: 'Πολυμέσα', desc: 'Ανεβάστε και οργανώστε αρχεία', path: '/dashboard/media', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-            { icon: FileText, label: 'Προϊόντα', desc: 'Διαχειριστείτε το e-shop σας', path: '/dashboard/products', color: 'text-amber-400', bg: 'bg-amber-500/10' },
-            { icon: FileText, label: 'Κριτικές', desc: 'Δημοσιεύστε μαρτυρίες πελατών', path: '/dashboard/testimonials', color: 'text-rose-400', bg: 'bg-rose-500/10' },
-          ].map(m => (
-            <Link key={m.path} to={m.path} className="card p-4 hover:bg-gray-800/40 transition-colors group">
-              <div className="flex items-start gap-3">
-                <div className={`size-10 rounded-xl ${m.bg} flex items-center justify-center shrink-0`}>
-                  <m.icon size={18} className={m.color} />
+        {/* Website Content */}
+        <div>
+          <h3 className="text-xs text-gray-500 uppercase tracking-wider mb-3 px-1">Περιεχόμενο Website</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { icon: FileText, label: 'Υπηρεσίες', desc: 'Διαχειριστείτε τις υπηρεσίες που προσφέρετε', path: '/dashboard/services', color: 'text-blue-400', bg: 'bg-blue-500/10' },
+              { icon: BookOpen, label: 'Blog', desc: 'Γράψτε και δημοσιεύστε άρθρα', path: '/dashboard/blog', color: 'text-purple-400', bg: 'bg-purple-500/10' },
+              { icon: Eye, label: 'Σελίδες', desc: 'Επεξεργαστείτε στατικές σελίδες', path: '/dashboard/pages', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
+              { icon: FileText, label: 'Κριτικές', desc: 'Δημοσιεύστε μαρτυρίες πελατών', path: '/dashboard/testimonials', color: 'text-rose-400', bg: 'bg-rose-500/10' },
+              { icon: FileText, label: 'Πιστοποιήσεις', desc: 'Προβάλετε πιστοποιήσεις & διακρίσεις', path: '/dashboard/credentials', color: 'text-amber-400', bg: 'bg-amber-500/10' },
+              { icon: FileText, label: 'Αξίες', desc: 'Ορίστε τις αξίες της επιχείρησής σας', path: '/dashboard/core-values', color: 'text-green-400', bg: 'bg-green-500/10' },
+              { icon: FileText, label: 'Σχετικά', desc: 'Γράψτε την ιστορία σας', path: '/dashboard/about', color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
+              { icon: FileText, label: 'Κουμπιά CTA', desc: 'Διαχειριστείτε τα call-to-action', path: '/dashboard/cta', color: 'text-pink-400', bg: 'bg-pink-500/10' },
+            ].map(m => (
+              <Link key={m.path} to={m.path} className="card p-4 hover:bg-gray-800/40 transition-colors group">
+                <div className="flex items-start gap-3">
+                  <div className={`size-10 rounded-xl ${m.bg} flex items-center justify-center shrink-0`}>
+                    <m.icon size={18} className={m.color} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm text-gray-200 group-hover:text-white transition-colors">{m.label}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{m.desc}</p>
+                  </div>
+                  <ArrowRight size={14} className="text-gray-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium text-sm text-gray-200 group-hover:text-white transition-colors">{m.label}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{m.desc}</p>
-                </div>
-                <ArrowRight size={14} className="text-gray-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
 
+        {/* Media & Shop */}
+        <div>
+          <h3 className="text-xs text-gray-500 uppercase tracking-wider mb-3 px-1">Πολυμέσα & e-Shop</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { icon: Image, label: 'Πολυμέσα', desc: 'Ανεβάστε και οργανώστε αρχεία', path: '/dashboard/media', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+              { icon: FileText, label: 'Βιβλία / Προϊόντα', desc: 'Διαχειριστείτε το e-shop σας', path: '/dashboard/products', color: 'text-amber-400', bg: 'bg-amber-500/10' },
+            ].map(m => (
+              <Link key={m.path} to={m.path} className="card p-4 hover:bg-gray-800/40 transition-colors group">
+                <div className="flex items-start gap-3">
+                  <div className={`size-10 rounded-xl ${m.bg} flex items-center justify-center shrink-0`}>
+                    <m.icon size={18} className={m.color} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm text-gray-200 group-hover:text-white transition-colors">{m.label}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{m.desc}</p>
+                  </div>
+                  <ArrowRight size={14} className="text-gray-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Site Settings */}
+        <div>
+          <h3 className="text-xs text-gray-500 uppercase tracking-wider mb-3 px-1">Ρυθμίσεις</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { icon: FileText, label: 'Ρυθμίσεις Site', desc: 'Διαχειριστείτε τις ρυθμίσεις του website σας', path: '/dashboard/site-settings', color: 'text-gray-400', bg: 'bg-gray-500/10' },
+            ].map(m => (
+              <Link key={m.path} to={m.path} className="card p-4 hover:bg-gray-800/40 transition-colors group">
+                <div className="flex items-start gap-3">
+                  <div className={`size-10 rounded-xl ${m.bg} flex items-center justify-center shrink-0`}>
+                    <m.icon size={18} className={m.color} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-sm text-gray-200 group-hover:text-white transition-colors">{m.label}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{m.desc}</p>
+                  </div>
+                  <ArrowRight size={14} className="text-gray-600 mt-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact / Support */}
         <div className="card p-5 bg-gray-900/50">
           <p className="text-xs text-gray-500 leading-relaxed">
-            💡 Χρειάζεστε βοήθεια; Κάθε ενότητα έχει τις δικές της οδηγίες.
-            Για οποιαδήποτε απορία, επικοινωνήστε με τον διαχειριστή της πλατφόρμας σας.
+            Χρειάζεστε βοήθεια ή θέλετε να προσθέσετε νέα λειτουργία στην πλατφόρμα σας;
           </p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs">
+            <a href="mailto:info@aionweb.gr" className="text-blue-400 hover:text-blue-300 transition-colors">info@aionweb.gr</a>
+            <a href="tel:+306977086945" className="text-blue-400 hover:text-blue-300 transition-colors">697 708 6945</a>
+            <a href="https://www.aionweb.gr" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">www.aionweb.gr</a>
+          </div>
         </div>
       </div>
     );
