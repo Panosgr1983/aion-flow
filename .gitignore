@@ -24,3 +24,12 @@ dist-ssr
 .env
 .vercel
 scripts/
+
+# LibreOffice lock files
+.~lock.*
+
+# Binary spreadsheet files
+*.ods
+
+# Supabase CLI local config
+supabase/.temp/
