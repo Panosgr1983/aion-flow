@@ -120,16 +120,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     const loginTime = sessionStorage.getItem('aion_login_time');
     const duration = loginTime ? Math.floor((Date.now() - parseInt(loginTime)) / 1000) : 0;
-    trackEvent('cms.logout', { session_duration_seconds: duration }, {
-      userId: user?.id,
-      tenantId: (user as any)?.tenant_id,
-    }).catch(() => {});
+    try {
+      await trackEvent('cms.logout', { session_duration_seconds: duration }, {
+        userId: user?.id,
+        tenantId: (user as any)?.tenant_id,
+      });
+    } catch {}
     if (isDemoMode) {
       localStorage.removeItem('aion_demo_auth');
       setUser(null);
       return;
     }
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch {}
+    setUser(null);
+    setSession(null);
+    localStorage.removeItem('aion_selected_tenant');
   };
 
   return (

@@ -33,8 +33,8 @@ export default function TenantOverview() {
     const { error: err } = await supabase.from('profiles').update({ is_super_admin: true }).eq('id', user.id);
     if (err) { setFixStatus('error'); return; }
     setFixStatus('done');
-    await supabase.auth.refreshSession();
-    window.location.reload();
+    await supabase.auth.signOut();
+    window.location.href = '/login';
   };
 
   // non-SA → JWT/profile tenant_id; SA → localStorage (Project Switcher)
