@@ -48,13 +48,13 @@ const contentItems: NavItem[] = [
   { path: '/dashboard/about', icon: User, label: 'Σχετικά', permission: 'cms.edit' },
   { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA', permission: 'cms.edit' },
   { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες', permission: 'cms.edit' },
-  { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics', permission: 'cms.view' },
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site', permission: 'settings.all' },
 ];
 
 // Platform — μόνο για super admin (operator)
 const platformItems: NavItem[] = [
   { path: '/dashboard/platform', icon: Activity, label: 'Overview', permission: 'platform.overview' },
+  { path: '/dashboard/analytics', icon: BarChart3, label: 'Αναφορές', permission: 'platform.analytics' },
   { path: '/dashboard/tenant', icon: Building2, label: 'Tenants', permission: 'platform.tenants' },
   { path: '/dashboard/inbox', icon: Mail, label: 'Inbox', permission: 'crm.inbox' },
   { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline', permission: 'crm.pipeline' },

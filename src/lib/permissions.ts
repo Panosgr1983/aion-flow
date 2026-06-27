@@ -25,6 +25,7 @@ export type Permission =
   | 'users.manage'   // Διαχείριση χρηστών
   // Platform-level (super admin only)
   | 'platform.overview'
+  | 'platform.analytics'
   | 'platform.tenants'
   | 'platform.usage'
   | 'platform.observability'
@@ -41,7 +42,7 @@ const PERMISSION_MATRIX: Record<UserRole, Permission[]> = {
 
 /** Platform-level capabilities (only super admin) */
 const PLATFORM_CAPS: Permission[] = [
-  'platform.overview', 'platform.tenants', 'platform.usage',
+  'platform.overview', 'platform.analytics', 'platform.tenants', 'platform.usage',
   'platform.observability', 'platform.system', 'platform.backups',
   'crm.inbox', 'crm.pipeline', 'crm.tasks',
   'history.view', 'history.restore',
