@@ -6,6 +6,7 @@
 
 | Αρχείο | Περιεχόμενο |
 |--------|------------|
+| [PRODUCT_PHILOSOPHY.md](./docs/PRODUCT_PHILOSOPHY.md) | Product principles (δεν αλλάζουν) |
 | [MANIFESTO.md](./docs/MANIFESTO.md) | Engineering philosophy & αρχές |
 | [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System architecture overview |
 | [DECISIONS.md](./docs/DECISIONS.md) | Architecture Decision Records (ADRs) |
