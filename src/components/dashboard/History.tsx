@@ -86,7 +86,8 @@ export default function AuditDashboard() {
     setLoading(false);
   }, [live, activeTenantId]);
 
-  useEffect(() => { loadTenants(); load(); }, [load, loadTenants]);
+  useEffect(() => { loadTenants(); }, [loadTenants]);
+  useEffect(() => { load(); }, [load]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -124,7 +125,7 @@ export default function AuditDashboard() {
       let totalBytes = 0;
       for (const t of tables) {
         let query = supabase.from(t).select('*');
-        if (selectedTenantId) query = query.eq('tenant_id', selectedTenantId);
+        if (activeTenantId) query = query.eq('tenant_id', activeTenantId);
         const { data } = await query;
         snapshot[t] = data || [];
         totalBytes += new Blob([JSON.stringify(data || [])]).size;
