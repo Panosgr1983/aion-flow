@@ -44,10 +44,10 @@ export default function BackupManager() {
     if (!snapshot || !restoreConfirm) return;
     setRestoring(true);
     setRestoreResult(null);
-    const results: { table: string; inserted: number; updated: number }[] = [];
+    const results: { table: string; inserted: number; skipped: number }[] = [];
     for (const [table, rows] of Object.entries(snapshot)) {
       if (!rows.length) continue;
-      let inserted = 0, updated = 0;
+      let inserted = 0, skipped = 0;
       for (const row of rows) {
         const record = { ...row };
         const id = record.id;
@@ -57,14 +57,13 @@ export default function BackupManager() {
         delete record.tenant_id;
         const { data: existing } = await supabase.from(table).select('id').eq('id', id).maybeSingle();
         if (existing) {
-          await supabase.from(table).update({ ...record, updated_at: new Date().toISOString() }).eq('id', id);
-          updated++;
+          skipped++;  // υπάρχει ήδη → δεν το πειράζουμε
         } else {
           await supabase.from(table).insert({ ...record, id, tenant_id: '00000000-0000-0000-0000-000000000001' });
           inserted++;
         }
       }
-      results.push({ table, inserted, updated });
+      results.push({ table, inserted, skipped });
     }
     setRestoreResult(results);
     setRestoring(false);
@@ -264,7 +263,7 @@ export default function BackupManager() {
                           {restoreConfirm === j.backup_id && (
                             <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2">
                               <p className="text-xs text-amber-400 font-medium">Επαναφορά backup;</p>
-                              <p className="text-xs text-gray-400">Θα αντικατασταθούν όλα τα δεδομένα με αυτά του backup. Η ενέργεια είναι αναστρέψιμη (δημιουργείται νέο backup πριν την επαναφορά).</p>
+                              <p className="text-xs text-gray-400">Θα προστεθούν μόνο όσες εγγραφές λείπουν (έχουν διαγραφεί). Οι υπάρχουσες εγγραφές ΔΕΝ θα αλλαχθούν.</p>
                               <div className="flex gap-2">
                                 <button onClick={restoreFromSnapshot} disabled={restoring} className="text-xs px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 disabled:opacity-50 transition-colors">
                                   {restoring ? 'Επαναφορά...' : 'Επιβεβαίωση Επαναφοράς'}
@@ -278,7 +277,7 @@ export default function BackupManager() {
                               <p className="text-xs text-green-400 font-medium mb-2">✅ Επαναφορά ολοκληρώθηκε</p>
                               <div className="space-y-1 text-xs text-gray-400">
                                 {restoreResult.map(r => (
-                                  <div key={r.table} className="flex justify-between"><code className="text-blue-300">{r.table}</code><span>{r.inserted} νέα · {r.updated} ενημερώσεις</span></div>
+                                  <div key={r.table} className="flex justify-between"><code className="text-blue-300">{r.table}</code><span>{r.inserted} επαναφορά · {r.skipped} υπήρχαν ήδη</span></div>
                                 ))}
                               </div>
                             </div>
