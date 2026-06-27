@@ -169,23 +169,23 @@ export default function TenantOverview() {
           </div>
         </div>
 
-        {/* Self-fix: activate super admin */}
-        {fixStatus === 'idle' && (
+        {/* Self-fix: activate super admin — only for known admin emails */}
+        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'idle' && (
           <button onClick={selfFix} className="card p-4 hover:bg-gray-800/40 transition-colors group w-full text-left">
             <div className="flex items-center gap-3">
               <div className="size-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
                 <Shield size={18} className="text-amber-400" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">Είστε διαχειριστής της πλατφόρμας;</p>
-                <p className="text-xs text-gray-500 mt-0.5">Πατήστε εδώ για να ενεργοποιήσετε την πλήρη πρόσβαση super admin</p>
+                <p className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">Ενεργοποίηση πρόσβασης super admin</p>
+                <p className="text-xs text-gray-500 mt-0.5">Το προφίλ σας δεν έχει δικαιώματα διαχειριστή — πατήστε για αυτόματη επιδιόρθωση</p>
               </div>
             </div>
           </button>
         )}
-        {fixStatus === 'fixing' && <div className="card p-4 text-center text-sm text-gray-400">Ενημέρωση προφίλ...</div>}
-        {fixStatus === 'done' && <div className="card p-4 text-center text-sm text-green-400">✅ Ο λογαριασμός σας αναβαθμίστηκε! Ανανέωση σελίδας...</div>}
-        {fixStatus === 'error' && <div className="card p-4 text-center text-sm text-red-400">Σφάλμα. Δοκιμάστε ξανά ή επικοινωνήστε με υποστήριξη.</div>}
+        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'fixing' && <div className="card p-4 text-center text-sm text-gray-400">Ενημέρωση προφίλ...</div>}
+        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'done' && <div className="card p-4 text-center text-sm text-green-400">✅ Ο λογαριασμός σας αναβαθμίστηκε! Ανανέωση σελίδας...</div>}
+        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'error' && <div className="card p-4 text-center text-sm text-red-400">Σφάλμα. Δοκιμάστε ξανά ή επικοινωνήστε με υποστήριξη.</div>}
 
         {/* Contact / Support */}
         <div className="card p-5 bg-gray-900/50">
