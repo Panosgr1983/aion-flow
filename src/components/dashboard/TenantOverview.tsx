@@ -22,7 +22,8 @@ export default function TenantOverview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const tenantId = getCurrentTenantContext();
+  // non-SA → JWT/profile tenant_id; SA → localStorage (Project Switcher)
+  const tenantId = tenant.isSuperAdmin ? getCurrentTenantContext() : tenant.tenantId;
 
   useEffect(() => {
     if (!tenantId) { setLoading(false); return; }
@@ -54,23 +55,6 @@ export default function TenantOverview() {
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
 
   if (error) return <div className="card p-6 text-red-400 text-sm">{error}</div>;
-
-  // Super admin — no tenant selected
-  if (!tenantId) {
-    return (
-      <div className="space-y-5 animate-fade-in">
-        <div className="flex items-center justify-between">
-          <div><h2 className="text-xl font-semibold">Dashboard</h2><p className="text-sm text-gray-500">Επιλέξτε ένα tenant από το Project Switcher</p></div>
-          <button onClick={() => setLoading(true)} className="btn-ghost p-2"><RefreshCw size={14} /></button>
-        </div>
-        <div className="card p-12 text-center">
-          <Activity size={48} className="mx-auto mb-4 text-gray-600 opacity-30" />
-          <h3 className="font-medium text-gray-300 mb-2">Κανένα tenant δεν έχει επιλεγεί</h3>
-          <p className="text-sm text-gray-500">Χρησιμοποιήστε το Project Switcher στην αριστερή μπάρα για να δείτε τα δεδομένα ενός tenant.</p>
-        </div>
-      </div>
-    );
-  }
 
   // Tenant customer view — welcome + guidance
   if (!tenant.isSuperAdmin) {
@@ -178,7 +162,24 @@ export default function TenantOverview() {
     );
   }
 
-  // ─── Super admin view ──────────────────────────────────────
+  // Super admin — no tenant selected
+  if (!tenantId) {
+    return (
+      <div className="space-y-5 animate-fade-in">
+        <div className="flex items-center justify-between">
+          <div><h2 className="text-xl font-semibold">Dashboard</h2><p className="text-sm text-gray-500">Επιλέξτε ένα tenant από το Project Switcher</p></div>
+          <button onClick={() => setLoading(true)} className="btn-ghost p-2"><RefreshCw size={14} /></button>
+        </div>
+        <div className="card p-12 text-center">
+          <Activity size={48} className="mx-auto mb-4 text-gray-600 opacity-30" />
+          <h3 className="font-medium text-gray-300 mb-2">Κανένα tenant δεν έχει επιλεγεί</h3>
+          <p className="text-sm text-gray-500">Χρησιμοποιήστε το Project Switcher στην αριστερή μπάρα για να δείτε τα δεδομένα ενός tenant.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Super admin view (tenant selected) ─────────────────────
   const statCards = [
     { icon: FileText, label: 'Υπηρεσίες', value: stats?.services || 0, color: 'text-blue-400', bg: 'bg-blue-500/10' },
     { icon: BookOpen, label: 'Blog Posts', value: stats?.blog || 0, color: 'text-purple-400', bg: 'bg-purple-500/10' },
