@@ -28,6 +28,10 @@ scripts/
 # LibreOffice lock files
 .~lock.*
 
+# Credentials — never committed
+docs/AION-Credentials.xlsx
+docs/AION-Users-Access-Report.csv
+
 # Binary spreadsheet files
 *.ods
 
