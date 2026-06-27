@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, createElement } from 'react';
+import React, { useEffect, useState, useCallback, Fragment, createElement } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getCurrentTenantContext } from '../../lib/TenantContext';
-import { RefreshCw, Shield, Clock, HardDrive, CheckCircle, XCircle, Activity, Calendar, Download, Play, Trash2 } from 'lucide-react';
+import { RefreshCw, Shield, Clock, HardDrive, CheckCircle, XCircle, Activity, Calendar, Download, Play, Trash2, Eye, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface BackupJob {
   id: string;
@@ -24,6 +24,9 @@ export default function BackupManager() {
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState('');
+  const [viewingId, setViewingId] = useState<string | null>(null);
+  const [snapshot, setSnapshot] = useState<Record<string, any[]> | null>(null);
+  const [snapshotLoading, setSnapshotLoading] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -33,6 +36,16 @@ export default function BackupManager() {
   }, []);
 
   useEffect(() => { load(); }, [load]);
+
+  const viewSnapshot = async (backupId: string | null) => {
+    if (!backupId) return;
+    setViewingId(backupId);
+    setSnapshotLoading(true);
+    setSnapshot(null);
+    const { data } = await supabase.from('content_backups').select('snapshot').eq('id', backupId).maybeSingle();
+    if (data) setSnapshot(data.snapshot as Record<string, any[]>);
+    setSnapshotLoading(false);
+  };
 
   const triggerBackup = async (type: 'manual' | 'daily' | 'weekly') => {
     setRunning(true); setError('');
@@ -161,11 +174,13 @@ export default function BackupManager() {
                   <th className="text-left py-3 px-4">Έναρξη</th>
                   <th className="text-left py-3 px-4">Διάρκεια</th>
                   <th className="text-left py-3 px-4">Σφάλμα</th>
+                  <th className="text-left py-3 px-4 w-8"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800/50">
                 {jobs.map(j => (
-                  <tr key={j.id} className="hover:bg-gray-900/50 transition-colors">
+                  <Fragment key={j.id}>
+                  <tr className="hover:bg-gray-900/50 transition-colors">
                     <td className="py-3 px-4">
                       <span className={`text-xs px-2 py-0.5 rounded-full ${TYPE_COLORS[j.type]}`}>
                         {TYPE_LABELS[j.type]}
@@ -189,7 +204,50 @@ export default function BackupManager() {
                     <td className="py-3 px-4 text-xs text-red-400 max-w-[200px] truncate">
                       {j.error_message || '—'}
                     </td>
+                    <td className="py-3 px-4">
+                      {j.status === 'success' && j.backup_id && (
+                        <button onClick={() => viewSnapshot(j.backup_id)} className="p-1 hover:bg-gray-800 rounded transition-colors" title="Προβολή backup">
+                          {viewingId === j.backup_id ? <ChevronDown size={14} className="text-blue-400" /> : <Eye size={14} className="text-gray-500 hover:text-blue-400" />}
+                        </button>
+                      )}
+                    </td>
                   </tr>
+                  {viewingId === j.backup_id && snapshot && (
+                    <tr key={`${j.id}-snap`}>
+                      <td colSpan={7} className="px-4 pb-4">
+                        <div className="bg-gray-900/60 rounded-xl p-4 space-y-3">
+                          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                            <HardDrive size={14} className="text-blue-400" />
+                            <span className="font-semibold text-gray-300">Περιεχόμενα Backup</span>
+                            <span className="text-gray-600">· {Object.keys(snapshot).length} πίνακες</span>
+                          </div>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            {Object.entries(snapshot).map(([table, rows]) => (
+                              <div key={table} className="bg-gray-800/50 rounded-lg p-3">
+                                <div className="flex items-center justify-between mb-1">
+                                  <code className="text-xs text-blue-300">{table}</code>
+                                  <span className="text-[10px] text-gray-500">{rows.length} εγγραφές</span>
+                                </div>
+                                <div className="text-[10px] text-gray-500 font-mono truncate max-h-12 overflow-y-auto">
+                                  {rows.length > 0
+                                    ? rows.slice(0, 3).map((r, i) => (
+                                        <div key={i} className="truncate">
+                                          {Object.entries(r).filter(([k]) => !['snapshot', 'tenant_id', 'created_at', 'updated_at'].includes(k)).slice(0, 3).map(([k, v]) => (
+                                            <span key={k}>{k}={typeof v === 'string' ? (v.length > 30 ? v.slice(0, 30) + '…' : v) : JSON.stringify(v).slice(0, 20)} </span>
+                                          )).reduce((acc: any, x: any, i: number) => i === 0 ? [x] : [...acc, <span key={`s-${i}`} className="text-gray-600"> | </span>, x], [])}
+                                        </div>
+                                      ))
+                                    : <span className="text-gray-600">κενός πίνακας</span>}
+                                  {rows.length > 3 && <div className="text-gray-600 mt-1">… και {rows.length - 3} ακόμα</div>}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  </Fragment>
                 ))}
               </tbody>
             </table>
