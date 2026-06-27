@@ -130,6 +130,22 @@ async function sendEvent(payload: Record<string, unknown>): Promise<void> {
   }
 }
 
+async function getUserId(): Promise<string | null> {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.user?.id ?? null;
+}
+
+async function resolveTenantId(userId: string | null | undefined): Promise<string | null> {
+  if (!userId) return null;
+  // Try 1: JWT claim (fast path)
+  const { data: { session } } = await supabase.auth.getSession();
+  const jwtTenantId = (session?.user as any)?.tenant_id ?? (session?.user as any)?.app_metadata?.tenant_id;
+  if (jwtTenantId) return jwtTenantId;
+  // Try 2: profiles table
+  const { data } = await supabase.from('profiles').select('tenant_id').eq('id', userId).maybeSingle();
+  return (data as any)?.tenant_id ?? null;
+}
+
 export async function trackEvent<T extends keyof UsageEventMap>(
   eventName: T,
   metadata: UsageEventMap[T],
@@ -137,17 +153,12 @@ export async function trackEvent<T extends keyof UsageEventMap>(
 ): Promise<void> {
   let tenantId = options?.tenantId;
   let userId = options?.userId;
-  if (!tenantId || !userId) {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const u = session?.user;
-      if (!tenantId && u) tenantId = (u as any)?.tenant_id ?? null;
-      if (!userId && u) userId = u.id;
-    } catch {}
-  }
+  if (!userId) userId = await getUserId();
+  if (!tenantId && userId) tenantId = await resolveTenantId(userId);
+  if (!tenantId || !userId) return;  // skip — can't track without context
   await sendEvent({
-    tenant_id: tenantId ?? null,
-    user_id: userId ?? null,
+    tenant_id: tenantId,
+    user_id: userId,
     session_id: options?.sessionId ?? null,
     event_name: eventName,
     event_version: EVENT_VERSIONS[eventName],
