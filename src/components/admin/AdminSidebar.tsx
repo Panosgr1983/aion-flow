@@ -55,15 +55,19 @@ const contentItems: NavItem[] = [
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site', permission: 'settings.all' },
 ];
 
-const bottomItems: NavItem[] = [
+// Platform — μόνο για super admin (operator)
+const platformItems: NavItem[] = [
+  { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
+  { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'users.manage' },
+  { path: '/dashboard/settings/system', icon: Terminal, label: 'System', permission: 'users.manage' },
+];
+
+// Account — για όλους
+const accountItems: NavItem[] = [
   { path: '/dashboard/profile', icon: User, label: 'Προφίλ' },
   { path: '/dashboard/settings', icon: Settings, label: 'Ρυθμίσεις', permission: 'settings.all' },
   { path: '/dashboard/settings/users', icon: Users, label: 'Χρήστες', permission: 'users.manage' },
   { path: '/dashboard/settings/backup', icon: Shield, label: 'Backup', permission: 'users.manage' },
-  { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
-  { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'users.manage' },
-  { path: '/dashboard/settings/system', icon: Terminal, label: 'System', permission: 'users.manage' },
-
 ];
 
 export default function AdminSidebar() {
@@ -104,8 +108,8 @@ export default function AdminSidebar() {
   const canAccessModule = (item: NavItem): boolean => {
     if (!hasPermission(userRole, item.permission)) return false;
     const path = item.path.split('/').pop() || '';
-    // Platform-level items (settings, users, backup, observability) — super admin only
-    if (['settings', 'users', 'backup', 'observability', 'usage', 'system'].includes(path)) {
+    // Account-level items (settings, users, backup) — super admin only
+    if (['settings', 'users', 'backup'].includes(path)) {
       return tenant.isSuperAdmin;
     }
     // Check feature flag for content/CRM modules
@@ -115,6 +119,8 @@ export default function AdminSidebar() {
     }
     return true;
   };
+
+  const isPlatform = tenant.isSuperAdmin;
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
@@ -200,6 +206,23 @@ export default function AdminSidebar() {
       )}
 
       <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+        {isPlatform && !collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1 flex items-center gap-2"><Zap size={10} /> Platform</div>}
+        {isPlatform && platformItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
+          <Link
+            key={path}
+            to={path}
+            title={collapsed ? label : undefined}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+              isActive(path)
+                ? 'bg-cyan-600/20 text-cyan-400 border border-cyan-500/20'
+                : 'text-gray-500 hover:text-gray-200 hover:bg-gray-800/60'
+            } ${collapsed ? 'justify-center' : ''}`}
+          >
+            <Icon size={18} className="shrink-0" />
+            {!collapsed && <span>{label}</span>}
+          </Link>
+        ))}
+
         {isDemoMode && shopItems.map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
@@ -215,7 +238,7 @@ export default function AdminSidebar() {
             {!collapsed && <span>{label}</span>}
           </Link>
         ))}
-        {!collapsed && <div className="text-[10px] text-gray-600 uppercase tracking-wider px-3 pt-4 pb-1">Περιεχόμενο</div>}
+        {!collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pt-4 pb-1 flex items-center gap-2"><LayoutDashboard size={10} /> Workspace</div>}
         {contentItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
@@ -242,7 +265,8 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="p-3 border-t border-gray-800/50 space-y-1">
-        {bottomItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
+        {!collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pb-1 flex items-center gap-2"><Settings size={10} /> Λογαριασμός</div>}
+        {accountItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}

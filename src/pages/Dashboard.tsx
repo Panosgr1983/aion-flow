@@ -31,6 +31,7 @@ import BackupManager from '../components/settings/BackupManager';
 import ObservabilityDashboard from '../components/settings/ObservabilityDashboard';
 import UsageDashboard from '../components/settings/UsageDashboard';
 import SystemDebug from '../components/settings/SystemDebug';
+import PlatformGuard from '../components/settings/PlatformGuard';
 import TenantOverview from '../components/dashboard/TenantOverview';
 import ErrorBoundary from '../components/dashboard/ErrorBoundary';
 // import EmailSyncManager from '../components/settings/EmailSyncManager';
@@ -64,9 +65,9 @@ export default function Dashboard() {
             <Route path="settings" element={<DashboardSettings />} />
             <Route path="settings/users" element={<UsersManager />} />
             <Route path="settings/backup" element={<BackupManager />} />
-            <Route path="settings/observability" element={<ObservabilityDashboard />} />
-            <Route path="settings/usage" element={<UsageDashboard />} />
-            <Route path="settings/system" element={<SystemDebug />} />
+            <Route path="settings/observability" element={<PlatformGuard><ObservabilityDashboard /></PlatformGuard>} />
+            <Route path="settings/usage" element={<PlatformGuard><UsageDashboard /></PlatformGuard>} />
+            <Route path="settings/system" element={<PlatformGuard><SystemDebug /></PlatformGuard>} />
             {/* <Route path="settings/email-sync" element={<EmailSyncManager />} /> */}
             <Route path="services" element={<Services />} />
             <Route path="blog" element={<BlogPosts />} />
