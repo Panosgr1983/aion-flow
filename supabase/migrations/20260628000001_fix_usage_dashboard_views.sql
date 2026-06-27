@@ -1,16 +1,23 @@
 /*
   # Fix Usage Dashboard Views (MT-3)
 
-  Δημιουργεί/αντικαθιστά τα views που χρησιμοποιεί το Usage Dashboard:
-    - v_churn_risk (δεν υπήρχε)
-    - v_tenant_active_days (ενημέρωση με tenant name)
-    - v_tenant_top_events (ενημέρωση με tenant name)
+  Δημιουργεί τα views που χρησιμοποιεί το Usage Dashboard:
+    - v_churn_risk
+    - v_tenant_active_days
+    - v_tenant_top_events
+
+  Σημείωση: Χρησιμοποιούμε DROP + CREATE αντί για CREATE OR REPLACE
+  γιατί αλλάζουν column types/names.
 */
+
+DROP VIEW IF EXISTS v_churn_risk CASCADE;
+DROP VIEW IF EXISTS v_tenant_active_days CASCADE;
+DROP VIEW IF EXISTS v_tenant_top_events CASCADE;
 
 -- ============================================================
 -- v_churn_risk: ανάλυση ρίσκου ανά tenant (30-day window)
 -- ============================================================
-CREATE OR REPLACE VIEW v_churn_risk AS
+CREATE VIEW v_churn_risk AS
 WITH last_events AS (
   SELECT
     tenant_id,
@@ -53,9 +60,9 @@ FROM tenants t
 LEFT JOIN last_events le ON le.tenant_id = t.id;
 
 -- ============================================================
--- v_tenant_active_days: επαναδημιουργία με tenant name
+-- v_tenant_active_days: με tenant name
 -- ============================================================
-CREATE OR REPLACE VIEW v_tenant_active_days AS
+CREATE VIEW v_tenant_active_days AS
 SELECT
   ue.tenant_id,
   t.name AS tenant_name,
@@ -69,9 +76,9 @@ WHERE ue.source NOT IN ('worker', 'system')
 GROUP BY ue.tenant_id, t.name, DATE_TRUNC('month', ue.created_at);
 
 -- ============================================================
--- v_tenant_top_events: επαναδημιουργία με tenant name
+-- v_tenant_top_events: με tenant name
 -- ============================================================
-CREATE OR REPLACE VIEW v_tenant_top_events AS
+CREATE VIEW v_tenant_top_events AS
 SELECT
   ue.tenant_id,
   t.name AS tenant_name,

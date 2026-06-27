@@ -33,7 +33,7 @@ SELECT
     'changed_fields', ch.changed_fields,
     'content_history_id', ch.id
   ),
-  'history_backfill',
+  'system',
   ch.created_at
 FROM content_history ch
 WHERE NOT EXISTS (
