@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useTenant } from '../../lib/useTenant';
 import { useTenantContext, getCurrentTenantContext } from '../../lib/TenantContext';
-import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users, Shield } from 'lucide-react';
 
 interface RecentActivity {
   id: string;
@@ -23,6 +24,18 @@ export default function TenantOverview() {
   const [allTenants, setAllTenants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [fixStatus, setFixStatus] = useState<'idle' | 'fixing' | 'done' | 'error'>('idle');
+  const { user } = useAuth();
+
+  const selfFix = async () => {
+    if (!user) return;
+    setFixStatus('fixing');
+    const { error: err } = await supabase.from('profiles').update({ is_super_admin: true }).eq('id', user.id);
+    if (err) { setFixStatus('error'); return; }
+    setFixStatus('done');
+    await supabase.auth.refreshSession();
+    window.location.reload();
+  };
 
   // non-SA → JWT/profile tenant_id; SA → localStorage (Project Switcher)
   const tenantId = tenant.isSuperAdmin ? getCurrentTenantContext() : tenant.tenantId;
@@ -155,6 +168,24 @@ export default function TenantOverview() {
             ))}
           </div>
         </div>
+
+        {/* Self-fix: activate super admin */}
+        {fixStatus === 'idle' && (
+          <button onClick={selfFix} className="card p-4 hover:bg-gray-800/40 transition-colors group w-full text-left">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                <Shield size={18} className="text-amber-400" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">Είστε διαχειριστής της πλατφόρμας;</p>
+                <p className="text-xs text-gray-500 mt-0.5">Πατήστε εδώ για να ενεργοποιήσετε την πλήρη πρόσβαση super admin</p>
+              </div>
+            </div>
+          </button>
+        )}
+        {fixStatus === 'fixing' && <div className="card p-4 text-center text-sm text-gray-400">Ενημέρωση προφίλ...</div>}
+        {fixStatus === 'done' && <div className="card p-4 text-center text-sm text-green-400">✅ Ο λογαριασμός σας αναβαθμίστηκε! Ανανέωση σελίδας...</div>}
+        {fixStatus === 'error' && <div className="card p-4 text-center text-sm text-red-400">Σφάλμα. Δοκιμάστε ξανά ή επικοινωνήστε με υποστήριξη.</div>}
 
         {/* Contact / Support */}
         <div className="card p-5 bg-gray-900/50">
