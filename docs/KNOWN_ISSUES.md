@@ -1,0 +1,105 @@
+# AION CMS — Known Issues
+
+> Παρακολούθηση γνωστών bugs.  
+> Δεν θέλουμε bugs μέσα στο μυαλό μας.
+
+---
+
+## How to report
+
+```
+❌ Δεν δουλεύει το Χ
+→ Πώς το αναπαράγουμε
+→ Τι περιμέναμε
+→ Τι έγινε αντί αυτού
+→ Screenshot / console log (αν υπάρχει)
+```
+
+---
+
+## Active Issues
+
+### #1. Gallery — Inline-content media δεν εμφανίζονται
+
+**Περιγραφή:**  
+Media που ανεβαίνουν με `source: 'inline-content'` από τον RichEditor δεν εμφανίζονται στη Media Gallery (φιλτράρει μόνο `source: 'editor'`).
+
+**Priority:** High  
+**Planned:** v0.2  
+**Module:** Media  
+**Workaround:** Αλλαγή του filter στη MediaLibrary.
+
+---
+
+### #2. RichEditor — Δεν χρησιμοποιεί uploadCmsAsset()
+
+**Περιγραφή:**  
+Ο RichEditor χρησιμοποιεί ακόμα `uploadImage()` από το `storage.ts` αντί για `uploadCmsAsset()`. Αυτό σημαίνει ότι inline-content media δεν έχουν tenant_id, category, ή source metadata.
+
+**Priority:** High  
+**Planned:** v0.2  
+**Module:** CMS — Content / RichEditor  
+**Workaround:** Δεν επηρεάζει τη λειτουργία, αλλά τα media είναι "orphan" στη DB.
+
+---
+
+### #3. Delete media — No usage detection
+
+**Περιγραφή:**  
+Το `deleteMedia()` δεν ελέγχει αν το asset χρησιμοποιείται αλλού. Μπορεί να διαγράψεις μια εικόνα που χρησιμοποιείται σε blog post ή product.
+
+**Priority:** Medium  
+**Planned:** v0.3  
+**Module:** Media  
+**Workaround:** Manual verification πριν delete.
+
+---
+
+### #4. Gallery — Categories δεν έχουν CRUD UI
+
+**Περιγραφή:**  
+Η Media Gallery υποστηρίζει categories, αλλά δεν υπάρχει dedicated UI για CRUD categories. Τα categories δημιουργούνται αυτόματα βάσει του `category` field.
+
+**Priority:** Medium  
+**Planned:** v0.2  
+**Module:** Media  
+**Workaround:** Categories δημιουργούνται μέσω upload.
+
+---
+
+### #5. RichEditor — Media picker modal missing
+
+**Περιγραφή:**  
+Ο RichEditor δεν έχει ακόμα modal για Media Picker. Ο χρήστης πρέπει να έχει ήδη ανεβασμένο το media URL για να το επικολλήσει.
+
+**Priority:** Medium  
+**Planned:** v0.3  
+**Module:** CMS — Content / RichEditor  
+**Workaround:** Ανέβασμα από Gallery και copy/paste URL.
+
+---
+
+### #6. Upload stability — Large files
+
+**Περιγραφή:**  
+Upload μεγάλων αρχείων (>5MB) μπορεί να αποτύχει χωρίς clear error message. Δεν υπάρχει progress indicator.
+
+**Priority:** Low  
+**Planned:** v0.3  
+**Module:** Media  
+**Workaround:** Upload μικρότερων αρχείων.
+
+---
+
+## Resolved Issues
+
+### #R1. uploadImage() ← uploadCmsAsset() σε όλους τους editors (Sprint 2.2)
+
+**Περιγραφή:**  
+Οι editors (Site Settings, Blog, Services, Products, Pages, About) χρησιμοποιούσαν `uploadImage()`.  
+**Fix:** Μετανάστευσαν σε `uploadCmsAsset()` — Sprint 2.2 (2026-06-27).  
+**Remaining:** RichEditor (Issue #2).
+
+---
+
+_Τελευταία ενημέρωση: 2026-06-27_
