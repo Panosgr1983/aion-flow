@@ -31,7 +31,7 @@ export default function MediaPicker({ open, onClose, onSelect, folder }: MediaPi
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
       <div className="card max-w-4xl w-full max-h-[80vh] flex flex-col p-0" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between p-4 border-b border-gray-800">
           <h3 className="font-semibold">Επιλογή εικόνας</h3>

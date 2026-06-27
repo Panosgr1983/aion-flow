@@ -47,7 +47,7 @@ export default function TenantSelector() {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-gray-950 flex items-center justify-center">
+    <div className="fixed inset-0 z-[100] bg-gray-950 flex items-start justify-center pt-[8vh]">
       <div className="w-full max-w-3xl px-6 py-8 animate-fade-in">
         {/* Logo */}
         <div className="text-center mb-10">

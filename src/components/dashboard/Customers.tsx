@@ -125,7 +125,7 @@ export default function Customers() {
       </div>
 
       {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/60 backdrop-blur-sm">
           <div className="card w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold">Προφίλ Πελάτη</h3>
@@ -178,7 +178,7 @@ export default function Customers() {
       )}
 
       {deleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/60 backdrop-blur-sm">
           <div className="card w-full max-w-sm p-6">
             <h3 className="text-lg font-semibold mb-2">Διαγραφή Πελάτη</h3>
             <p className="text-gray-400 text-sm mb-6">Είστε σίγουροι; Η ενέργεια δεν μπορεί να αναιρεθεί.</p>

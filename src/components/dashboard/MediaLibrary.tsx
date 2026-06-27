@@ -173,7 +173,7 @@ export default function MediaLibrary({ onSelect }: MediaLibraryProps) {
       )}
 
       {preview && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setPreview(null)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/70 backdrop-blur-sm" onClick={() => setPreview(null)}>
           <div className="card max-w-2xl w-full p-4" onClick={e => e.stopPropagation()}>
             <img src={preview.url} alt={preview.alt_text || preview.name} className="w-full rounded-xl object-contain max-h-96" />
             <div className="mt-4 grid grid-cols-3 gap-3 text-sm">

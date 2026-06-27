@@ -324,7 +324,7 @@ export default function AuditDashboard() {
 
       {/* REVERT MODAL */}
       {revertTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setRevertTarget(null)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] bg-black/60 backdrop-blur-sm" onClick={() => setRevertTarget(null)}>
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center"><AlertTriangle size={20} className="text-amber-400" /></div>
