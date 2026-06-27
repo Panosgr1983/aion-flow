@@ -16,6 +16,13 @@
 | [DEPLOYMENT.md](./docs/DEPLOYMENT.md) | Deployment & release flow |
 | [BACKUP.md](./docs/BACKUP.md) | Backup & disaster recovery |
 | [CODING_STANDARDS.md](./docs/CODING_STANDARDS.md) | Code conventions |
+| [FEATURES.md](./docs/FEATURES.md) | Feature status (Stable/Beta/Planned) |
+| [MODULES.md](./docs/MODULES.md) | Module architecture & dependency graph |
+| [KNOWN_ISSUES.md](./docs/KNOWN_ISSUES.md) | Known bugs & workarounds |
+| [TECH_DEBT.md](./docs/TECH_DEBT.md) | Technical debt registry |
+| [DESIGN_PRINCIPLES.md](./docs/DESIGN_PRINCIPLES.md) | Architectural design principles |
+| [BLUEPRINTS.md](./docs/BLUEPRINTS.md) | Website blueprint registry |
+| [COPYWRITING.md](./docs/COPYWRITING.md) | Copywriting rules (AI-consumable) |
 | [CONTRIBUTING.md](./docs/CONTRIBUTING.md) | How to contribute |
 
 ## Quick Start
@@ -27,7 +34,7 @@ npm run dev
 
 ## Current Version
 
-**v0.1.0** — Foundation release. 7+ ενεργοί πελάτες σε production.
+**v0.2.0** — Media Manager release. 7+ ενεργοί πελάτες σε production.
 
 ## Architecture Highlights
 

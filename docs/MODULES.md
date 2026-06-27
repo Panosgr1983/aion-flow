@@ -112,7 +112,8 @@ Built into each editor (Pages, Blog, Products, Services).
 └── is_active toggle
 ```
 
-**Status:** ✅ Stable  
+**Status:** ✅ Stable (basic) — meta, OG, slug, canonical, `is_active`  
+**Planned:** 🔄 v0.3 — SEO Manager (bulk editor, sitemap, schema generator, analytics integration)  
 **Tenant-aware:** ✅  
 **Key files:** Integrated in each CMS editor
 

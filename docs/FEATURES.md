@@ -1,5 +1,6 @@
 # AION CMS — Features
 
+> Version: **v0.2.0**
 > Τι μπορεί να κάνει το AION σήμερα.
 
 ## Feature Status Legend
