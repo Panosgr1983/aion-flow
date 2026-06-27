@@ -15,39 +15,63 @@
 */
 
 import { supabase } from './supabase';
+import type { UploadResult } from '../types/supabase';
 
-/**
- * Ανέβασμα εικόνας σε bucket.
- * Αυτόματα μετατρέπει PNG→JPEG για βελτιστοποίηση μεγέθους.
- * 
- * @param file - Το αρχείο προς ανέβασμα
- * @param bucket - Το bucket προορισμού (default: blog-images)
- * @returns Public URL του αρχείου
- */
-export async function uploadImage(file: File, bucket: string = 'blog-images'): Promise<string> {
+// ────────────────────────────────────────────────────────────
+// Internal: upload logic (PNG→JPEG, Storage upload, URL gen)
+// ────────────────────────────────────────────────────────────
+async function performUpload(file: File, bucket: string, fileName: string): Promise<string> {
   let uploadFile = file;
-  let ext = file.name.split('.').pop() || 'jpg';
+  let ext = fileName.split('.').pop() || 'jpg';
 
-  const isPng = file.type === 'image/png' || ext.toLowerCase() === 'png';
+  const isPng = (file.type === 'image/png' || ext.toLowerCase() === 'png');
   if (isPng) {
     const blob = await pngToJpeg(file, 0.9);
     uploadFile = new File([blob], file.name.replace(/\.png$/i, '.jpg'), { type: 'image/jpeg' });
     ext = 'jpg';
   }
 
-  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const finalName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
   const { error } = await supabase.storage
     .from(bucket)
-    .upload(fileName, uploadFile, { cacheControl: '3600', upsert: true });
+    .upload(finalName, uploadFile, { cacheControl: '3600', upsert: true });
 
   if (error) throw error;
 
   const { data: { publicUrl } } = supabase.storage
     .from(bucket)
-    .getPublicUrl(fileName);
+    .getPublicUrl(finalName);
 
   return publicUrl;
+}
+
+/**
+ * Ανέβασμα εικόνας σε bucket (backward compatible).
+ * ΔΕΝ αλλάζει — υπάρχοντες callers δουλεύουν χωρίς αλλαγή.
+ * 
+ * @returns Public URL string
+ */
+export async function uploadImage(file: File, bucket: string = 'blog-images'): Promise<string> {
+  const fileName = `legacy-${Date.now()}`;
+  const url = await performUpload(file, bucket, fileName);
+  return url;
+}
+
+/**
+ * Ανέβασμα asset με structured response.
+ * Το νέο σύστημα media χρησιμοποιεί αυτό.
+ * 
+ * @returns UploadResult με url, path, filename
+ */
+export async function uploadToStorage(file: File, bucket: string = 'site-images'): Promise<UploadResult> {
+  const url = await uploadImage(file, bucket);
+
+  const urlParts = url.split('/');
+  const filename = urlParts.pop() || '';
+  const storagePath = `${bucket}/${filename}`;
+
+  return { url, path: storagePath, filename };
 }
 
 /**

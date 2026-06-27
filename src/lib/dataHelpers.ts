@@ -237,8 +237,9 @@ export const mediaHelper = {
       await delay(500);
       const newMedia: Media = {
         id: crypto.randomUUID(), name: file.name, original_name: file.name, url: URL.createObjectURL(file),
-        public_id: '', mime_type: file.type, size: file.size, width: null, height: null,
-        folder, alt_text: options?.alt_text || '', caption: options?.caption || '', tags: [],
+        public_id: '', path: '', storage_bucket: 'site-images', mime_type: file.type, size: file.size,
+        width: null, height: null, folder, category: 'general', source: 'editor', tenant_id: null,
+        metadata: {}, alt_text: options?.alt_text || '', caption: options?.caption || '', tags: [],
         created_by: null, created_at: new Date().toISOString(), updated_at: new Date().toISOString(),
       };
       mockMedia.push(newMedia);

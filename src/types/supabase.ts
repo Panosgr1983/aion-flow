@@ -159,17 +159,42 @@ export interface OrderItem {
   created_at: string;
 }
 
+export type MediaCategory = 'service' | 'blog' | 'product' | 'page' | 'about' | 'logo' | 'hero' | 'gallery' | 'seo' | 'avatar' | 'inline-content' | 'general';
+
+export interface UploadResult {
+  url: string;
+  path: string;
+  filename: string;
+}
+
+export interface UploadOptions {
+  tenantId: string;
+  bucket?: string;
+  folder?: string;
+  category?: MediaCategory;
+  source?: 'editor' | 'inline-content' | 'import';
+  alt?: string;
+  caption?: string;
+  createdBy?: string | null;
+}
+
 export interface Media {
   id: string;
   name: string;
   original_name: string;
   url: string;
   public_id: string;
+  path: string;
+  storage_bucket: string;
   mime_type: string;
   size: number;
   width: number | null;
   height: number | null;
   folder: string;
+  category: MediaCategory;
+  source: string;
+  tenant_id: string | null;
+  metadata: Record<string, any>;
   alt_text: string;
   caption: string;
   tags: string[];
