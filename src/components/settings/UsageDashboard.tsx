@@ -64,7 +64,7 @@ export default function UsageDashboard() {
 
     try {
       const [{ data: tenants }, { data: events }] = await Promise.all([
-        queryFilter(supabase.from('tenants').select('id, name')),
+        supabase.from('tenants').select('id, name'),
         queryFilter(
           supabase
             .from('usage_events')
