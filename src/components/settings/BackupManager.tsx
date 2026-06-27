@@ -27,6 +27,9 @@ export default function BackupManager() {
   const [viewingId, setViewingId] = useState<string | null>(null);
   const [snapshot, setSnapshot] = useState<Record<string, any[]> | null>(null);
   const [snapshotLoading, setSnapshotLoading] = useState(false);
+  const [restoring, setRestoring] = useState(false);
+  const [restoreConfirm, setRestoreConfirm] = useState<string | null>(null);
+  const [restoreResult, setRestoreResult] = useState<{ table: string; inserted: number; updated: number }[] | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -36,6 +39,37 @@ export default function BackupManager() {
   }, []);
 
   useEffect(() => { load(); }, [load]);
+
+  const restoreFromSnapshot = async () => {
+    if (!snapshot || !restoreConfirm) return;
+    setRestoring(true);
+    setRestoreResult(null);
+    const results: { table: string; inserted: number; updated: number }[] = [];
+    for (const [table, rows] of Object.entries(snapshot)) {
+      if (!rows.length) continue;
+      let inserted = 0, updated = 0;
+      for (const row of rows) {
+        const record = { ...row };
+        const id = record.id;
+        delete record.id;
+        delete record.created_at;
+        delete record.updated_at;
+        delete record.tenant_id;
+        const { data: existing } = await supabase.from(table).select('id').eq('id', id).maybeSingle();
+        if (existing) {
+          await supabase.from(table).update({ ...record, updated_at: new Date().toISOString() }).eq('id', id);
+          updated++;
+        } else {
+          await supabase.from(table).insert({ ...record, id, tenant_id: '00000000-0000-0000-0000-000000000001' });
+          inserted++;
+        }
+      }
+      results.push({ table, inserted, updated });
+    }
+    setRestoreResult(results);
+    setRestoring(false);
+    setRestoreConfirm(null);
+  };
 
   const viewSnapshot = async (backupId: string | null) => {
     if (!backupId) return;
@@ -220,21 +254,35 @@ export default function BackupManager() {
                             <HardDrive size={14} className="text-blue-400" />
                             <span className="font-semibold text-gray-300">Περιεχόμενα Backup</span>
                             <span className="text-gray-600">· {Object.keys(snapshot).length} πίνακες</span>
-                            <button
-                              onClick={() => {
-                                const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
-                                const url = URL.createObjectURL(blob);
-                                const a = document.createElement('a');
-                                a.href = url;
-                                a.download = `backup-${j.type}-${new Date(j.started_at).toISOString().slice(0, 10)}.json`;
-                                a.click();
-                                URL.revokeObjectURL(url);
-                              }}
+                            <button onClick={() => { const b = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = `backup-${j.type}-${new Date(j.started_at).toISOString().slice(0, 10)}.json`; a.click(); URL.revokeObjectURL(u); }}
                               className="ml-auto flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors"
-                            >
-                              <Download size={12} /> Λήψη JSON
-                            </button>
+                            ><Download size={12} /> Λήψη JSON</button>
+                            <button onClick={() => setRestoreConfirm(j.backup_id)}
+                              className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors"
+                            ><Play size={12} /> Restore</button>
                           </div>
+                          {restoreConfirm === j.backup_id && (
+                            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2">
+                              <p className="text-xs text-amber-400 font-medium">Επαναφορά backup;</p>
+                              <p className="text-xs text-gray-400">Θα αντικατασταθούν όλα τα δεδομένα με αυτά του backup. Η ενέργεια είναι αναστρέψιμη (δημιουργείται νέο backup πριν την επαναφορά).</p>
+                              <div className="flex gap-2">
+                                <button onClick={restoreFromSnapshot} disabled={restoring} className="text-xs px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 disabled:opacity-50 transition-colors">
+                                  {restoring ? 'Επαναφορά...' : 'Επιβεβαίωση Επαναφοράς'}
+                                </button>
+                                <button onClick={() => setRestoreConfirm(null)} disabled={restoring} className="text-xs px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 transition-colors">Ακύρωση</button>
+                              </div>
+                            </div>
+                          )}
+                          {restoreResult && (
+                            <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/20">
+                              <p className="text-xs text-green-400 font-medium mb-2">✅ Επαναφορά ολοκληρώθηκε</p>
+                              <div className="space-y-1 text-xs text-gray-400">
+                                {restoreResult.map(r => (
+                                  <div key={r.table} className="flex justify-between"><code className="text-blue-300">{r.table}</code><span>{r.inserted} νέα · {r.updated} ενημερώσεις</span></div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                             {Object.entries(snapshot).map(([table, rows]) => (
                               <div key={table} className="bg-gray-800/50 rounded-lg p-3">
