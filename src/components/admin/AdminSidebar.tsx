@@ -16,7 +16,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
@@ -62,6 +62,7 @@ const bottomItems: NavItem[] = [
   { path: '/dashboard/settings/backup', icon: Shield, label: 'Backup', permission: 'users.manage' },
   { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
   { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'users.manage' },
+  { path: '/dashboard/settings/system', icon: Terminal, label: 'System', permission: 'users.manage' },
 
 ];
 
@@ -104,7 +105,7 @@ export default function AdminSidebar() {
     if (!hasPermission(userRole, item.permission)) return false;
     const path = item.path.split('/').pop() || '';
     // Platform-level items (settings, users, backup, observability) — super admin only
-    if (['settings', 'users', 'backup', 'observability'].includes(path)) {
+    if (['settings', 'users', 'backup', 'observability', 'usage', 'system'].includes(path)) {
       return tenant.isSuperAdmin;
     }
     // Check feature flag for content/CRM modules

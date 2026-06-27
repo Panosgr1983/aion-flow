@@ -18,6 +18,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import { useTenantContext } from '../../lib/TenantContext';
 import { RefreshCw, Activity, Users, Calendar, BarChart3, TrendingUp, Clock, CheckCircle, AlertTriangle, AlertOctagon, Eye, EyeOff } from 'lucide-react';
 
 interface ChurnRiskRow {
@@ -67,6 +68,7 @@ const RISK_LABELS: Record<string, string> = {
 };
 
 export default function UsageDashboard() {
+  const { selectedTenantId } = useTenantContext();
   const [churnData, setChurnData] = useState<ChurnRiskRow[]>([]);
   const [usage, setUsage] = useState<TenantUsage[]>([]);
   const [topEvents, setTopEvents] = useState<TopEvent[]>([]);
@@ -74,18 +76,22 @@ export default function UsageDashboard() {
 
   const load = async () => {
     setLoading(true);
-    const [c, u, e] = await Promise.all([
-      supabase.from('v_churn_risk').select('*').order('days_since_last_activity', { ascending: false }),
-      supabase.from('v_tenant_active_days').select('*').order('last_activity', { ascending: false }),
-      supabase.from('v_tenant_top_events').select('*').limit(50),
-    ]);
+    let q1: any = supabase.from('v_churn_risk').select('*').order('days_since_last_activity', { ascending: false });
+    let q2: any = supabase.from('v_tenant_active_days').select('*').order('last_activity', { ascending: false });
+    let q3: any = supabase.from('v_tenant_top_events').select('*').limit(50);
+    if (selectedTenantId) {
+      q1 = q1.eq('tenant_id', selectedTenantId);
+      q2 = q2.eq('tenant_id', selectedTenantId);
+      q3 = q3.eq('tenant_id', selectedTenantId);
+    }
+    const [c, u, e] = await Promise.all([q1, q2, q3]);
     if (c.data) setChurnData(c.data as ChurnRiskRow[]);
     if (u.data) setUsage(u.data as TenantUsage[]);
     if (e.data) setTopEvents(e.data as TopEvent[]);
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [selectedTenantId]);
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
 

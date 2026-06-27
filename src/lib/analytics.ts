@@ -123,9 +123,19 @@ export async function trackEvent<T extends keyof UsageEventMap>(
   metadata: UsageEventMap[T],
   options?: TrackEventOptions,
 ): Promise<void> {
+  let tenantId = options?.tenantId;
+  let userId = options?.userId;
+  if (!tenantId || !userId) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const u = session?.user;
+      if (!tenantId && u) tenantId = (u as any)?.tenant_id ?? null;
+      if (!userId && u) userId = u.id;
+    } catch {}
+  }
   await sendEvent({
-    tenant_id: options?.tenantId ?? null,
-    user_id: options?.userId ?? null,
+    tenant_id: tenantId ?? null,
+    user_id: userId ?? null,
     session_id: options?.sessionId ?? null,
     event_name: eventName,
     event_version: EVENT_VERSIONS[eventName],
