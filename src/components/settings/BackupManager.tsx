@@ -220,6 +220,20 @@ export default function BackupManager() {
                             <HardDrive size={14} className="text-blue-400" />
                             <span className="font-semibold text-gray-300">Περιεχόμενα Backup</span>
                             <span className="text-gray-600">· {Object.keys(snapshot).length} πίνακες</span>
+                            <button
+                              onClick={() => {
+                                const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' });
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `backup-${j.type}-${new Date(j.started_at).toISOString().slice(0, 10)}.json`;
+                                a.click();
+                                URL.revokeObjectURL(url);
+                              }}
+                              className="ml-auto flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors"
+                            >
+                              <Download size={12} /> Λήψη JSON
+                            </button>
                           </div>
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                             {Object.entries(snapshot).map(([table, rows]) => (
