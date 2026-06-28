@@ -3,7 +3,7 @@
   AION Flow — Storage Helpers (Supabase Storage)
   
   Διαχείριση αρχείων:
-    - uploadImage:  Ανέβασμα εικόνας με auto-convert PNG→JPEG
+    - uploadImage:  Ανέβασμα εικόνας (με auto-convert PNG→JPEG)
     - uploadFile:   Ανέβασμα οποιουδήποτε αρχείου (attachments)
     - deleteImage:  Διαγραφή από Storage
   
@@ -17,18 +17,19 @@
 import { supabase } from './supabase';
 import type { UploadResult } from '../types/supabase';
 
-// ────────────────────────────────────────────────────────────
-// Internal: upload logic (PNG→JPEG, Storage upload, URL gen)
-// ────────────────────────────────────────────────────────────
-async function performUpload(file: File, bucket: string, fileName: string): Promise<string> {
+async function performUpload(file: File, bucket: string, fileName: string, keepFormat = false): Promise<string> {
   let uploadFile = file;
   let ext = fileName.split('.').pop() || 'jpg';
 
-  const isPng = (file.type === 'image/png' || ext.toLowerCase() === 'png');
-  if (isPng) {
-    const blob = await pngToJpeg(file, 0.9);
-    uploadFile = new File([blob], file.name.replace(/\.png$/i, '.jpg'), { type: 'image/jpeg' });
-    ext = 'jpg';
+  if (!keepFormat) {
+    const isPng = (file.type === 'image/png' || ext.toLowerCase() === 'png');
+    if (isPng) {
+      const blob = await pngToJpeg(file, 0.9);
+      uploadFile = new File([blob], file.name.replace(/\.png$/i, '.jpg'), { type: 'image/jpeg' });
+      ext = 'jpg';
+    }
+  } else {
+    ext = file.name.split('.').pop() || ext;
   }
 
   const finalName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
@@ -46,26 +47,14 @@ async function performUpload(file: File, bucket: string, fileName: string): Prom
   return publicUrl;
 }
 
-/**
- * Ανέβασμα εικόνας σε bucket (backward compatible).
- * ΔΕΝ αλλάζει — υπάρχοντες callers δουλεύουν χωρίς αλλαγή.
- * 
- * @returns Public URL string
- */
-export async function uploadImage(file: File, bucket: string = 'blog-images'): Promise<string> {
+export async function uploadImage(file: File, bucket: string = 'blog-images', keepFormat = false): Promise<string> {
   const fileName = `legacy-${Date.now()}`;
-  const url = await performUpload(file, bucket, fileName);
+  const url = await performUpload(file, bucket, fileName, keepFormat);
   return url;
 }
 
-/**
- * Ανέβασμα asset με structured response.
- * Το νέο σύστημα media χρησιμοποιεί αυτό.
- * 
- * @returns UploadResult με url, path, filename
- */
-export async function uploadToStorage(file: File, bucket: string = 'site-images'): Promise<UploadResult> {
-  const url = await uploadImage(file, bucket);
+export async function uploadToStorage(file: File, bucket: string = 'site-images', keepFormat = false): Promise<UploadResult> {
+  const url = await uploadImage(file, bucket, keepFormat);
 
   const urlParts = url.split('/');
   const filename = urlParts.pop() || '';
@@ -74,10 +63,6 @@ export async function uploadToStorage(file: File, bucket: string = 'site-images'
   return { url, path: storagePath, filename };
 }
 
-/**
- * Μετατροπή PNG σε JPEG για μείωση μεγέθους.
- * Χρησιμοποιεί canvas API (client-side).
- */
 async function pngToJpeg(file: File, quality: number): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -99,14 +84,6 @@ async function pngToJpeg(file: File, quality: number): Promise<Blob> {
   });
 }
 
-/**
- * Ανέβασμα οποιουδήποτε αρχείου (για email attachments).
- * ΔΕΝ κάνει conversion όπως το uploadImage.
- * 
- * @param file - Το αρχείο προς ανέβασμα
- * @param bucket - Το bucket προορισμού (default: contact-attachments)
- * @returns Public URL του αρχείου
- */
 export async function uploadFile(file: File, bucket: string = 'contact-attachments'): Promise<string> {
   const ext = file.name.split('.').pop() || 'bin';
   const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
@@ -124,11 +101,6 @@ export async function uploadFile(file: File, bucket: string = 'contact-attachmen
   return publicUrl;
 }
 
-/**
- * Διαγραφή αρχείου από Storage.
- * 
- * @param url - Το public URL του αρχείου προς διαγραφή
- */
 export async function deleteImage(url: string): Promise<void> {
   const match = url.match(/\/([^/]+)$/);
   if (!match) return;

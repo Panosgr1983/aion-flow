@@ -176,6 +176,8 @@ export interface UploadOptions {
   alt?: string;
   caption?: string;
   createdBy?: string | null;
+  /** Αν true, παρακάμπτει το auto-convert PNG→JPEG (π.χ. για logo με διαφάνεια) */
+  keepFormat?: boolean;
 }
 
 export interface Media {

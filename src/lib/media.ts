@@ -62,7 +62,7 @@ export async function uploadCmsAsset(
   }
 
   // 1. Upload to Storage
-  const { url, path } = await uploadToStorage(file, options.bucket || 'site-images');
+  const { url, path } = await uploadToStorage(file, options.bucket || 'site-images', options.keepFormat);
 
   const mediaRecord = {
     name: file.name,

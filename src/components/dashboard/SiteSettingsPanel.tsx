@@ -92,11 +92,13 @@ export default function SiteSettingsPanel() {
   const handleImageUpload = async (file: File, targetKey: string) => {
     if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
     try {
+      const isLogo = targetKey === 'site_logo';
       const media = await uploadCmsAsset(file, {
         tenantId: selectedTenantId,
         bucket: 'site-images',
         category: imageKeyToCategory(targetKey) as any,
         source: 'editor',
+        keepFormat: isLogo,
       });
       setValue(targetKey, media.url);
     } catch (err) {
