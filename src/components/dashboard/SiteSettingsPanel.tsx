@@ -88,13 +88,17 @@ export default function SiteSettingsPanel() {
 
   const setValue = (key: string, val: string) => {
     dirtyKeys.current.add(key);
-    setSettings(prev => prev.map(s => s.key === key ? { ...s, value: val } : s));
+    setSettings(prev => {
+      const exists = prev.some(s => s.key === key);
+      if (exists) return prev.map(s => s.key === key ? { ...s, value: val } : s);
+      return [...prev, { id: '', key, value: val, category: imageKeyToCategory(key) } as SiteSetting];
+    });
   };
 
   const handleImageUpload = async (file: File, targetKey: string) => {
     if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
     try {
-      const isLogo = targetKey === 'site_logo' || targetKey === 'site_logo_footer';
+      const isLogo = targetKey === 'site_logo' || targetKey === 'site_logo_footer' || targetKey === 'site_favicon';
       const media = await uploadCmsAsset(file, {
         tenantId: selectedTenantId,
         bucket: 'site-images',
@@ -108,6 +112,9 @@ export default function SiteSettingsPanel() {
       if (setting) {
         await siteSettingsHelper.update(setting.id, { value: media.url });
         dirtyKeys.current.delete(targetKey);
+      } else {
+        const created = await siteSettingsHelper.create({ key: targetKey, value: media.url, category: imageKeyToCategory(targetKey), tenant_id: selectedTenantId });
+        setSettings(prev => [...prev, created]);
       }
     } catch (err) {
       console.error('Upload error:', err);
@@ -163,7 +170,12 @@ export default function SiteSettingsPanel() {
     setSaving(true);
     const dirty = settings.filter(s => dirtyKeys.current.has(s.key));
     if (dirty.length > 0) {
-      await Promise.all(dirty.map(s => siteSettingsHelper.update(s.id, { value: s.value })));
+      await Promise.all(dirty.map(s => {
+        if (s.id && s.id.length > 0) {
+          return siteSettingsHelper.update(s.id, { value: s.value });
+        }
+        return siteSettingsHelper.create({ key: s.key, value: s.value, category: 'general', tenant_id: selectedTenantId });
+      }));
       dirtyKeys.current.clear();
     }
     setSaving(false);
