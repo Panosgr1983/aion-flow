@@ -43,10 +43,10 @@ function TabVisibilityGuard({ children, visibility, pageKey }: { children: React
 }
 
 function imageKeyToCategory(key: string): string {
-  if (key.startsWith('logo') || key === 'site_logo') return 'logo';
+  if (key.startsWith('logo') || key === 'site_logo' || key === 'site_logo_footer') return 'logo';
   if (key.includes('hero')) return 'hero';
   if (key.includes('portrait') || key.includes('avatar')) return 'about';
-  if (key.includes('og_image') || key.includes('seo')) return 'seo';
+  if (key.includes('og_image') || key.includes('seo') || key === 'site_favicon') return 'seo';
   return 'general';
 }
 
@@ -94,7 +94,7 @@ export default function SiteSettingsPanel() {
   const handleImageUpload = async (file: File, targetKey: string) => {
     if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
     try {
-      const isLogo = targetKey === 'site_logo';
+      const isLogo = targetKey === 'site_logo' || targetKey === 'site_logo_footer';
       const media = await uploadCmsAsset(file, {
         tenantId: selectedTenantId,
         bucket: 'site-images',
@@ -372,7 +372,9 @@ export default function SiteSettingsPanel() {
           {activeTab === 'site' && (
             <>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Branding</h3>
-              {renderField('site_logo', 'Logo Image URL', { isImage: true })}
+              {renderField('site_logo', 'Header Logo Image', { isImage: true })}
+              {renderField('site_logo_footer', 'Footer Logo Image', { isImage: true })}
+              {renderField('site_favicon', 'Favicon Image', { isImage: true })}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('site_name', 'Site Name')}
                 {renderField('site_monogram', 'Monogram (e.g. ΝΚ)')}
@@ -393,7 +395,7 @@ export default function SiteSettingsPanel() {
           {activeTab === 'footer' && (
             <>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Branding στο Footer</h3>
-              {renderField('site_logo', 'Logo Image URL', { isImage: true })}
+              {renderField('site_logo_footer', 'Footer Logo Image', { isImage: true })}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('site_name', 'Όνομα Site')}
                 {renderField('site_monogram', 'Μονόγραμμα (π.χ. ΝΚ)')}
