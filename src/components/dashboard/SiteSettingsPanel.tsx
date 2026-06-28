@@ -103,7 +103,10 @@ export default function SiteSettingsPanel() {
       setValue(targetKey, media.url);
     } catch (err) {
       console.error('Upload error:', err);
-      alert('Αποτυχία μεταφόρτωσης: ' + (err instanceof Error ? err.message : 'Άγνωστο σφάλμα'));
+      console.trace('Upload error stack');
+      const msg = err instanceof Error ? err.message : typeof err === 'string' ? err : JSON.stringify(err);
+      const detail = (err as any)?.details || (err as any)?.hint || '';
+      alert('Αποτυχία μεταφόρτωσης: ' + msg + (detail ? ' (' + detail + ')' : ''));
     }
   };
 
