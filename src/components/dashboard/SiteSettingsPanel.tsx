@@ -101,9 +101,13 @@ export default function SiteSettingsPanel() {
         keepFormat: isLogo,
       });
       setValue(targetKey, media.url);
+      // auto-save αμέσως για να μη χρειάζεται ξεχωριστό Save
+      const setting = settings.find(s => s.key === targetKey);
+      if (setting) {
+        await siteSettingsHelper.update(setting.id, { value: media.url });
+      }
     } catch (err) {
       console.error('Upload error:', err);
-      console.trace('Upload error stack');
       const msg = err instanceof Error ? err.message : typeof err === 'string' ? err : JSON.stringify(err);
       const detail = (err as any)?.details || (err as any)?.hint || '';
       alert('Αποτυχία μεταφόρτωσης: ' + msg + (detail ? ' (' + detail + ')' : ''));
@@ -154,9 +158,7 @@ export default function SiteSettingsPanel() {
 
   const handleSave = async () => {
     setSaving(true);
-    for (const s of settings) {
-      await siteSettingsHelper.update(s.id, { value: s.value });
-    }
+    await Promise.all(settings.map(s => siteSettingsHelper.update(s.id, { value: s.value })));
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
