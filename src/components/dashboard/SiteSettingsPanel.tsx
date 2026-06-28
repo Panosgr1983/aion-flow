@@ -102,7 +102,8 @@ export default function SiteSettingsPanel() {
       });
       setValue(targetKey, media.url);
     } catch (err) {
-      alert('Αποτυχία μεταφόρτωσης');
+      console.error('Upload error:', err);
+      alert('Αποτυχία μεταφόρτωσης: ' + (err instanceof Error ? err.message : 'Άγνωστο σφάλμα'));
     }
   };
 
