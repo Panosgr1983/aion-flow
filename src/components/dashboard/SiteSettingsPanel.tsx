@@ -61,6 +61,7 @@ export default function SiteSettingsPanel() {
   const [editFooterNav, setEditFooterNav] = useState<NavLink[]>([]);
   const [editBio, setEditBio] = useState<string[]>([]);
   const [pickerTarget, setPickerTarget] = useState<string | null>(null);
+  const dirtyKeys = useRef(new Set<string>());
 
   const loadSettings = async () => {
     const d = await siteSettingsHelper.getAll();
@@ -86,6 +87,7 @@ export default function SiteSettingsPanel() {
   };
 
   const setValue = (key: string, val: string) => {
+    dirtyKeys.current.add(key);
     setSettings(prev => prev.map(s => s.key === key ? { ...s, value: val } : s));
   };
 
@@ -105,6 +107,7 @@ export default function SiteSettingsPanel() {
       const setting = settings.find(s => s.key === targetKey);
       if (setting) {
         await siteSettingsHelper.update(setting.id, { value: media.url });
+        dirtyKeys.current.delete(targetKey);
       }
     } catch (err) {
       console.error('Upload error:', err);
@@ -158,7 +161,11 @@ export default function SiteSettingsPanel() {
 
   const handleSave = async () => {
     setSaving(true);
-    await Promise.all(settings.map(s => siteSettingsHelper.update(s.id, { value: s.value })));
+    const dirty = settings.filter(s => dirtyKeys.current.has(s.key));
+    if (dirty.length > 0) {
+      await Promise.all(dirty.map(s => siteSettingsHelper.update(s.id, { value: s.value })));
+      dirtyKeys.current.clear();
+    }
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
