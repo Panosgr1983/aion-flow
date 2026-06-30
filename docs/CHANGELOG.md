@@ -1,5 +1,25 @@
 # AION CMS — Changelog
 
+## v0.3.1 (2026-06-29)
+
+### Added
+- **site_logo_footer**: Ξεχωριστό πεδίο για το logo του footer (ανεξάρτητο από header)
+- **site_favicon**: Νέο πεδίο για favicon, με `keepFormat: true` (PNG χωρίς compression)
+- **site-images bucket migration**: Δημιουργία bucket + RLS policies για storage.objects
+- **Media table columns**: Προστέθηκαν `category`, `source`, `metadata`, `path`, `storage_bucket` στην production (έλειπαν από προηγούμενο migration)
+- **beforeLoad prefetch**: Site_settings φορτώνονται στο SSR μέσω `queryClient.prefetchQuery` — όλα τα settings (όνομα, λογότυπο, hero κλπ) διαθέσιμα από τον server
+
+### Changed
+- **Upload system**: Αφαιρέθηκε το auto PNG→JPEG conversion για logos (site_logo, site_logo_footer, site_favicon). Οι υπόλοιπες εικόνες συνεχίζουν κανονικά.
+- **Auto-save μετά από image upload**: Το logo αποθηκεύεται αμέσως μετά το upload — δε χρειάζεται ξεχωριστό Save
+- **dirtyKeys tracking**: Το Save αποθηκεύει ΜΟΝΟ τις ρυθμίσεις που άλλαξαν (όχι και τα 40+ settings)
+- **Parallel save**: `Promise.all` αντί για sequential loop στο handleSave
+
+### Fixed
+- **site_settings category column**: Έλειπε από production DB — το uploadCmsAsset αποτύγχανε με "Could not find the 'category' column of 'media'"
+- **New settings (site_logo_footer, site_favicon)**: Δημιουργούνται INSERT αντί για UPDATE όταν δεν υπάρχουν ακόμα στη DB
+- **setValue για νέα keys**: Προσθέτει entry στο local settings array ακόμα κι αν δεν υπάρχει στη DB
+
 ## v0.3.0 (2026-06-28)
 
 ### Added
