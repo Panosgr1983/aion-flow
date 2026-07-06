@@ -10,6 +10,11 @@
 
 Τρέχει σε React (Vite) + Supabase (PostgreSQL + Auth + Storage + Edge Functions).
 
+> **Για πλήρη κατανόηση της αρχιτεκτονικής, δες:**
+> - `docs/MASTER/ARCHITECTURE_MAP.md` — high-level map με data flow
+> - `docs/MASTER/PERMISSIONS_MATRIX.md` — permission matrix
+> - `docs/MASTER/PROJECT_MEMORY.md` — evolution του project
+
 ## Stack
 
 ```
@@ -73,6 +78,24 @@ CI/CD:       Vercel Auto Deploy, GitHub Actions (backups)
 - JWT hook injects `user_role` + `is_super_admin` στο token
 - RLS policies ελέγχουν `tenant_id` σε όλα τα queries
 - `withTenant()` helper εξασφαλίζει tenant filtering
+
+### Three-Tier Tenant ID System
+- **`tenantId`** — ID του tenant του χρήστη (SA: `selectedTenantId || null`, μη-SA: JWT/profile)
+- **`selectedTenantId`** — Ποιο tenant διάλεξε ο SA από το Project Switcher (TenantContext)
+- **`effectiveTenantId`** — ΤΙ ΠΡΕΠΕΙ ΝΑ ΧΡΗΣΙΜΟΠΟΙΟΥΝ ΟΛΑ ΤΑ COMPONENTS
+
+### Super Admin Auto-Assign
+- `KNOWN_SUPER_ADMIN_EMAILS = ['info@aionweb.gr', 'choliasmenos.panos@gmail.com']`
+- Το `useTenant()` hook αναγνωρίζει αυτόματα αυτά τα emails ως SA
+- Profile ενημερώνεται στη DB για persistence (χωρίς `refreshSession()`)
+- `localStorage.aion_selected_tenant` καθαρίζεται σε κάθε νέο login
+- Ο SA ξεκινά πάντα από την οθόνη επιλογής tenant
+
+### Tenant Selection Flow (SA)
+1. **Login** → localStorage cleared → βλέπει tenant selection grid
+2. **Επιλογή tenant** → `setSelectedTenantId(id)` → `effectiveTenantId = id`
+3. **Refresh** → persistence από localStorage (ίδιο tenant)
+4. **Logout/Login** → cleared → ξανά selection grid
 
 ### JWT Claims
 ```json

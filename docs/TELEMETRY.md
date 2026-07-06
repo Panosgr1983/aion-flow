@@ -1,5 +1,9 @@
 # AION — Telemetry & Usage Events
 
+> **Single Source of Truth για το telemetry system.**
+> Δες επίσης: `docs/MASTER/ARCHITECTURE_MAP.md` για data flow,
+> `docs/MASTER/CURRENT_STATE.md` για τη συνολική κατάσταση.
+
 ## Philosophy
 
 Κάθε ενέργεια χρήστη στην πλατφόρμα καταγράφεται ως event στο `usage_events` table. Αυτά τα events τροφοδοτούν:

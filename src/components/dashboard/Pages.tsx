@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Eye, EyeOff, ChevronDown, Upload, Image as ImageIcon } from 'lucide-react';
 import { siteSettingsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
-import { useTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
 import MediaPicker from './MediaPicker';
 
@@ -30,7 +30,7 @@ interface PageContent {
 const emptyPageData = (): PageData => ({ hero_image: '', title: '', subtitle: '' });
 
 export default function Pages() {
-  const { selectedTenantId } = useTenantContext();
+  const { effectiveTenantId } = useTenant();
   const [visibility, setVisibility] = useState<Record<string, boolean>>({});
   const [pageContent, setPageContent] = useState<PageContent>({});
   const [loading, setLoading] = useState(true);
@@ -84,8 +84,8 @@ export default function Pages() {
   const handleImageUpload = async (path: string, file: File) => {
     setUploadingFor(path);
     try {
-      if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
-      const media = await uploadCmsAsset(file, { tenantId: selectedTenantId, bucket: 'site-images', category: 'page', source: 'editor' });
+      if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+      const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'page', source: 'editor' });
       updateContent(path, 'hero_image', media.url);
     } catch {
       alert('Αποτυχία μεταφόρτωσης');

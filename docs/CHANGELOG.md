@@ -1,5 +1,40 @@
 # AION CMS — Changelog
 
+## v0.3.2 (2026-07-06)
+
+### Added
+- **`effectiveTenantId`**: Νέο πεδίο στο `TenantState` που επιστρέφει
+  `selectedTenantId` για SA και `tenant_id` για μη-SA. Όλα τα components
+  χρησιμοποιούν `tenant.effectiveTenantId` αντί για απευθείας
+  `selectedTenantId` από TenantContext.
+- **Super Admin auto-assign**: Τα emails `info@aionweb.gr` και
+  `choliasmenos.panos@gmail.com` αναγνωρίζονται αυτόματα ως super admin
+  στο `useTenant()` hook — χωρίς JWT claims ή DB lookup.
+- **Πλήρης λίστα user permissions** στο `docs/PERMISSIONS.md` με
+  πίνακα δικαιωμάτων ανά ρόλο και περιγραφή του three-tier tenant ID
+  συστήματος.
+
+### Changed
+- **AuthContext**: Στο `SIGNED_IN` event, καθαρίζεται
+  `localStorage.aion_selected_tenant` ώστε κάθε νέο login να ξεκινά χωρίς
+  προεπιλεγμένο tenant.
+- **useTenant**: Προστέθηκε localStorage sync για διόρθωση stale state
+  στο `TenantContext` μετά από νέο login.
+- **6 components** (Services, BlogPosts, Products, SiteSettingsPanel,
+  Pages, AboutPanel): Αλλαγή από `useTenantContext().selectedTenantId`
+  σε `useTenant().effectiveTenantId` για tenant-aware uploads/queries.
+
+### Fixed
+- **Login loop**: Αφαιρέθηκε `supabase.auth.refreshSession()` από το
+  auto-assign profile update — προκαλούσε `SIGNED_OUT` και redirect
+  πίσω στη login σελίδα.
+- **Stale TenantContext state**: Μετά από SIGNED_IN, το TenantContext
+  κρατούσε παλιά τιμή από localStorage — το useTenant τώρα συγχρονίζει
+  με live localStorage τιμή.
+- **Non-super-admin uploads**: Τα components χρησιμοποιούν πλέον
+  `effectiveTenantId` (το tenant_id του χρήστη) αντί για `selectedTenantId`
+  (που ήταν null για μη-SA).
+
 ## v0.3.1 (2026-06-29)
 
 ### Added

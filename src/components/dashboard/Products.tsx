@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { Plus, Search, CreditCard as Edit2, Trash2, X, Package, Star, Upload, Image as ImageIcon, GripVertical } from 'lucide-react';
 import { productsHelper, categoriesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
-import { useTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
 import { Product, Category } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
@@ -10,7 +10,7 @@ import MediaPicker from './MediaPicker';
 const emptyForm = { name: '', slug: '', description: '', price: '', compare_price: '', sku: '', stock_quantity: '', category_id: '', image_url: '', is_active: true, is_featured: false, sort_order: 0 };
 
 export default function Products() {
-  const { selectedTenantId } = useTenantContext();
+  const { effectiveTenantId } = useTenant();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -325,8 +325,8 @@ export default function Products() {
                   if (!file) return;
                   setImageUploading(true);
                   try {
-                    if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
-                    const media = await uploadCmsAsset(file, { tenantId: selectedTenantId, bucket: 'site-images', category: 'product', source: 'editor' });
+                    if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+                    const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'product', source: 'editor' });
                     setForm(f => ({ ...f, image_url: media.url }));
                   } catch { alert('Αποτυχία μεταφόρτωσης'); }
                   finally { setImageUploading(false); e.target.value = ''; }

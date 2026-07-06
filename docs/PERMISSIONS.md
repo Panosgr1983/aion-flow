@@ -1,18 +1,103 @@
 # AION — Permissions & Access Control
 
-## Overview
+> **Τελευταία ενημέρωση:** 2026-07-06
+> Δες επίσης: `docs/MASTER/PERMISSIONS_MATRIX.md` για τον πλήρη πίνακα
+> δικαιωμάτων ανά module/ρόλο.
 
-Το AION έχει τέσσερα επίπεδα ασφαλείας που εφαρμόζονται πάντα με αυτή τη
-σειρά:
+## 1. Επισκόπηση Συστήματος
+
+Το AION έχει **τέσσερα επίπεδα ασφαλείας** που εφαρμόζονται πάντα με αυτή
+τη σειρά:
 
 ```
 1. Capability Guard      → can(permission, role, isSuperAdmin)
-2. Sidebar Visibility    → canAccessModule()
+2. Sidebar Visibility    → canAccessModule() + FEATURE_MODULES
 3. Route Protection      → PlatformGuard (platform routes)
 4. Database RLS          → withTenant() + is_super_admin bypass
 ```
 
-## Levels
+## 2. Χρήστες & Λογαριασμοί
+
+### 2.1 Τύποι Λογαριασμών
+
+| Τύπος | Περιγραφή | Πρόσβαση |
+|-------|-----------|----------|
+| **Super Admin** | Ιδιοκτήτες πλατφόρμας | Όλοι οι tenants, Platform tools |
+| **Tenant Admin** | Διαχειριστής πελάτη | Μόνο ο δικός του tenant |
+| **Tenant Editor** | Συντάκτης περιεχομένου | CMS μόνο (όχι ρυθμίσεις) |
+| **Tenant Sales** | Πωλήσεις | CRM, Pipeline |
+| **Tenant Viewer** | Μόνο ανάγνωση | CMS view-only |
+
+### 2.2 Super Admin Auto-Assign
+
+Ορισμένα emails αναγνωρίζονται αυτόματα ως **Super Admin** χωρίς να
+χρειάζεται JWT hook ή DB profile:
+
+```typescript
+// src/lib/useTenant.ts
+const KNOWN_SUPER_ADMIN_EMAILS = [
+  'info@aionweb.gr',        // AION Web — ιδιοκτήτης
+  'choliasmenos.panos@gmail.com',  // AION Web — developer
+];
+```
+
+- Με το login, το `useTenant()` hook ανιχνεύει το email και θέτει
+  `isSuperAdmin: true` **άμεσα** (χωρίς αναμονή JWT ή DB).
+- Παράλληλα ενημερώνει το `profiles.is_super_admin` στη DB για
+  persistence.
+- ΔΕΝ καλείται `supabase.auth.refreshSession()` (προκαλούσε sign-out).
+- Κάθε νέο login καθαρίζει το `localStorage.aion_selected_tenant` ώστε
+  ο SA να βλέπει πάντα την οθόνη επιλογής tenant πρώτα.
+
+### 2.3 Three-Tier Tenant ID System
+
+```typescript
+// src/lib/useTenant.ts — TenantState interface
+interface TenantState {
+  isSuperAdmin: boolean;
+  tenantId: string | null;           // ID του tenant του χρήστη
+  effectiveTenantId: string | null;  // ΤΙ να χρησιμοποιούν τα components
+  featureMap: Record<string, boolean> | null;
+  tenantStatus: string | null;
+  loading: boolean;
+}
+```
+
+| Πεδίο | SA | μη-SA |
+|-------|----|-------|
+| `tenantId` | `selectedTenantId \|\| null` | `tenant_id` (από JWT/profile) |
+| `effectiveTenantId` | `selectedTenantId` | `tenant_id \|\| jwtTenantId \|\| null` |
+
+**Κανόνας:** Όλα τα components χρησιμοποιούν **`tenant.effectiveTenantId`**
+για φιλτράρισμα, uploads και queries. Ποτέ απευθείας `selectedTenantId`
+από TenantContext.
+
+### 2.4 Tenant Selection (Super Admin)
+
+- **Login:** `localStorage.aion_selected_tenant` καθαρίζεται → ο SA
+  βλέπει την οθόνη επιλογής tenant (grid με όλους τους tenants).
+- **Επιλογή:** Κλικ σε tenant → `setSelectedTenantId(id)` →
+  `effectiveTenantId` = id → τα components φορτώνουν τα δεδομένα του.
+- **Refresh:** Η επιλογή persistei στο localStorage → μετά από F5,
+  ο SA βλέπει το ίδιο tenant.
+- **Logout/Login:** Η επιλογή καθαρίζεται → ξανά η οθόνη επιλογής.
+
+### 2.5 Συγχρονισμός TenantContext ↔ localStorage
+
+Κατά το login, υπάρχει race condition:
+1. `TenantProvider` αρχικοποιείται με παλιά τιμή από localStorage
+2. `AuthContext` SIGNED_IN event καθαρίζει το localStorage
+3. Το `useTenant()` ανιχνεύει την ασυμφωνία και διορθώνει:
+
+```typescript
+// src/lib/useTenant.ts
+if (selectedTenantId !== lsTenantId) {
+  setSelectedTenantId(lsTenantId);
+  return; // effect re-runs with corrected value
+}
+```
+
+## 3. Επίπεδα Ασφαλείας
 
 ### Level 1: Capability Guard (`can()`)
 
@@ -87,27 +172,68 @@ CREATE POLICY "super_admin_all_events"
   USING (is_super_admin());
 ```
 
-## Platform vs Workspace
+## 4. Platform vs Workspace
 
 | | AION Platform (Super Admin) | AION Workspace (Tenant) |
 |---|---|---|
 | **Dashboard** | Platform Overview: active tenants, events today, health | Tenant Overview: content stats, CRM stats |
-| **CMS** | Όλοι οι tenants | Μόνο το δικό του content |
+| **CMS** | Όλοι οι tenants (μέσω Project Switcher) | Μόνο το δικό του content |
 | **CRM** | Όλοι οι tenants | Μόνο τα δικά του leads/messages |
 | **Usage** | Πλήρη telemetry & churn risk | ❌ Δεν βλέπει |
 | **System** | Debug cockpit | ❌ Δεν βλέπει |
 | **Observability** | Platform health | ❌ Δεν βλέπει |
-| **Tenants** | Tenant switcher + όλοι οι tenants | ❌ Δεν βλέπει άλλους tenants |
+| **Tenants** | Project Switcher + όλοι οι tenants | ❌ Δεν βλέπει άλλους tenants |
 | **Settings** | Platform + tenant settings | Μόνο tenant settings |
 
-## Adding a New Permission
+## 5. Πίνακας Δικαιωμάτων (Permission Matrix)
+
+```typescript
+// src/lib/permissions.ts
+const PERMISSION_MATRIX: Record<UserRole, Permission[]> = {
+  admin:  ['cms.edit', 'cms.view', 'settings.all', 'users.manage'],
+  editor: ['cms.edit', 'cms.view', 'settings.all'],
+  sales:  [],
+  viewer: ['cms.view'],
+};
+```
+
+| Ρόλος | CMS Edit | CMS View | Settings | Users | CRM Inbox | Pipeline | History |
+|-------|----------|----------|----------|-------|-----------|----------|---------|
+| **Super Admin** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Admin** | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Editor** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Sales** | ❌ | ❌ | ❌ | ❌ | ✅* | ✅* | ❌ |
+| **Viewer** | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+
+> *Sales: CRM Inbox/Pipeline πρόσβαση γίνεται μέσω `isSuperAdmin` bypass
+> ή feature flags. Ο sales ρόλος έχει άδειο permission matrix — η
+> πρόσβαση στα CRM modules γίνεται μέσω `FEATURE_MODULES` + tenant
+> features.
+
+## 6. Users Management
+
+**Διαχείριση:** `Settings → Χρήστες` (super admin only)
+
+Λειτουργίες:
+- Λίστα όλων των χρηστών
+- Αλλαγή role (admin/editor/sales/viewer)
+- Toggle super admin
+- Αντιστοίχηση σε tenant
+
+**Self-fix (legacy):** Στο TenantOverview υπάρχει κουμπί "Ενεργοποίηση
+πρόσβασης super admin" για χρήστες με email info@aionweb.gr ή
+choliasmenos.panos@gmail.com. Χρησιμοποιείται μόνο αν η auto-assign
+λογική στο `useTenant.ts` δεν έχει τρέξει (π.χ. πρώτο login πριν την
+αναβάθμιση).
+
+## 7. Προσθήκη Νέου Permission
 
 1. Πρόσθεσε το permission string στο `Permission` type στο `src/lib/permissions.ts`
 2. Αν είναι platform-level, πρόσθεσέ το στο `PLATFORM_CAPS[]`
 3. Αν είναι business-level, πρόσθεσέ το στο αντίστοιχο role array στο `PERMISSION_MATRIX`
 4. Χρησιμοποίησε `can('your.permission', role, isSuperAdmin)` για έλεγχο
 
-## Testing Permissions
+## 8. Testing Permissions
 
 Το System Health cockpit (`/dashboard/settings/system`) δείχνει live:
 - JWT claims (`user_role`, `is_super_admin`)

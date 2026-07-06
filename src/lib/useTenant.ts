@@ -27,7 +27,16 @@ import { supabase } from './supabase';
 /** Δομή tenant context που επιστρέφει το hook */
 interface TenantState {
   isSuperAdmin: boolean;
+  /** Για SA: selectedTenantId || null. Για μη-SA: tenant_id από JWT/profile */
   tenantId: string | null;
+  /**
+   * Το tenant ID που πρέπει να χρησιμοποιούν ΟΛΑ τα components
+   * για φιλτράρισμα περιεχομένου, uploads, queries κλπ.
+   *
+   *   SA  → selectedTenantId (από TenantContext / Project Switcher)
+   *   μη-SA → tenantId (από JWT claims ή profiles table)
+   */
+  effectiveTenantId: string | null;
   featureMap: Record<string, boolean> | null;
   tenantStatus: string | null;
   loading: boolean;
@@ -76,10 +85,13 @@ export function useTenant(): TenantState {
   const [state, setState] = useState<TenantState>({
     isSuperAdmin: false,
     tenantId: null,
+    effectiveTenantId: null,
     featureMap: null,
     tenantStatus: null,
     loading: true,
   });
+
+  const KNOWN_SUPER_ADMIN_EMAILS = ['info@aionweb.gr', 'choliasmenos.panos@gmail.com'];
 
   useEffect(() => {
     if (!user) {
@@ -89,16 +101,28 @@ export function useTenant(): TenantState {
     setState(s => ({ ...s, loading: true }));
 
     const u = user as any;
+    const userEmail = u.email as string | undefined;
 
     // Try 1: JWT claims (from custom_access_token_hook)
-    // Τα claims είναι στο root του user object ή στο app_metadata
     const jwtSuperAdmin = u.is_super_admin === true || u.app_metadata?.is_super_admin === true;
     const jwtTenantId: string | undefined = u.tenant_id || u.app_metadata?.tenant_id || undefined;
+    const knownSuperAdmin = !!userEmail && KNOWN_SUPER_ADMIN_EMAILS.includes(userEmail);
 
-    if (jwtSuperAdmin) {
+    if (jwtSuperAdmin || knownSuperAdmin) {
+      // Sync TenantContext state with localStorage (stale after SIGNED_IN clears it)
+      const lsTenantId = (() => { try { return localStorage.getItem('aion_selected_tenant'); } catch { return null; } })();
+      if (selectedTenantId !== lsTenantId) {
+        setSelectedTenantId(lsTenantId);
+        return;
+      }
+      // Auto-assign super admin in DB for known emails (persists for next login)
+      if (knownSuperAdmin && !jwtSuperAdmin) {
+        supabase.from('profiles').update({ is_super_admin: true }).eq('id', user.id);
+      }
       setState({
         isSuperAdmin: true,
-        tenantId: selectedTenantId || null,  // SA: never auto-attach to personal tenant
+        tenantId: selectedTenantId || null,
+        effectiveTenantId: selectedTenantId || null,
         featureMap: { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true },
         tenantStatus: 'active',
         loading: false,
@@ -112,10 +136,14 @@ export function useTenant(): TenantState {
       const tenantId = isSuperAdmin
         ? (selectedTenantId || null)  // SA: never auto-attach to personal tenant
         : (tenant_id || jwtTenantId || null);
+      const effectiveTenantId = isSuperAdmin
+        ? selectedTenantId
+        : (tenant_id || jwtTenantId || null);
 
       setState({
         isSuperAdmin,
         tenantId,
+        effectiveTenantId,
         featureMap: isSuperAdmin
           ? { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true }
           : null,

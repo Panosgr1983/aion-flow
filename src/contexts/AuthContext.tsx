@@ -77,6 +77,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           tenantId: jwtTenantId,
           sessionId: createSessionId(),
         });
+        // Always start with no tenant selected on fresh login
+        localStorage.removeItem('aion_selected_tenant');
       }
       setSession(session);
       setUser(session?.user ?? null);

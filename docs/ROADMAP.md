@@ -1,74 +1,98 @@
-# AION CMS — Roadmap
+# AION — Roadmap
 
-## v0.1 "Foundation" ✅
-
-Κατάσταση: **Σε λειτουργία**
-
-- [x] Authentication & User Management
-- [x] Multi-Tenant foundation
-- [x] Basic CMS (Services, Blog, Products, Pages)
-- [x] Site Settings (hero, colors, footer, logo, contact)
-- [x] Media Library (βασικό upload/gallery)
-- [x] CRM Inbox (split view, threading, search)
-- [x] Leads Pipeline (5-stage Kanban, drag & drop)
-- [x] Email Workspace (compose, drafts, signatures)
-- [x] Usage Dashboard (churn risk, active days, top events)
-- [x] Audit Dashboard (timeline, search, CSV export)
-- [x] Backup System (manual/daily/weekly, edge function)
-- [x] JWT Hook + RLS + withTenant() helper
-- [x] Editor Role (full CMS access, no is_super_admin)
+> **Πού είμαστε, πού πάμε.**
+> Τελευταία ενημέρωση: 2026-07-06
 
 ---
 
-## v0.2 "Media Manager" 🔜
+## ✅ v0.1 "Foundation" — Ολοκληρωμένο
 
-Επόμενο release
-
-- [ ] Νέο media architecture (storage.ts → media.ts → uploadCmsAsset)
-- [ ] Gallery με categories και filters
-- [ ] Media metadata (tenant, category, source, tags)
-- [ ] Inline-content filtering
-- [ ] Drag & drop upload
-- [ ] Bulk delete/select
-- [ ] Image optimization (auto-resize, WebP)
-
----
-
-## v0.3 "Website Builder"
-
-- [ ] Page Builder (drag & drop sections)
-- [ ] Theme system (color palettes, fonts, spacing)
-- [ ] Custom CSS/JS per tenant
-- [ ] SEO Manager (meta tags, OG images, sitemap)
-- [ ] Form Builder (contact, booking, newsletter)
+- Authentication & User Management
+- Multi-Tenant foundation (JWT hook + RLS + withTenant())
+- CMS (Services, Blog, Products, Pages, Media)
+- Site Settings (hero, colors, footer, logo, contact, SMTP, SEO, navigation)
+- CRM Inbox (split view, threading, search, compose/reply/forward, drafts)
+- Leads Pipeline (5-stage Kanban, drag & drop, inline editing)
+- Email Workspace (compose, drafts, signatures, attachments, auto-save)
+- Usage Dashboard (churn risk, active days, top events)
+- Audit Dashboard (timeline, search, CSV export, restore)
+- Backup System (manual/daily/weekly, edge function)
+- Profile, Testimonials, Credentials, Core Values, About, CTA
 
 ---
 
-## v0.4 "CRM Pro"
+## ✅ v0.2 "Media Manager" — Ολοκληρωμένο
 
-- [ ] Email campaigns (mass send, templates)
-- [ ] Email accounts management (IMAP sync)
-- [ ] Pipeline automation (auto-move leads, triggers)
-- [ ] Kanban with swimlanes
-- [ ] Reporting (pipeline velocity, win rate, forecast)
-
----
-
-## v0.5 "Subscriptions & Billing"
-
-- [ ] Subscription management
-- [ ] Usage-based billing
-- [ ] Invoice generation
-- [ ] Payment gateway integration (Stripe)
-- [ ] Feature tiers (free, pro, enterprise)
+- uploadCmsAsset() (tenant-aware, metadata, telemetry)
+- Media metadata (category, source, tags, path, storage_bucket)
+- Gallery with filters (by category, source, tenant)
+- MediaPicker (inline selection from editors)
+- Documentation overhaul
+- 3-level upload pipeline (storage.ts → media.ts → uploadCmsAsset)
 
 ---
 
-## v1.0 "Public Release"
+## ✅ v0.3 "Platform" — Ολοκληρωμένο (κύρια)
 
-- [ ] Documentation complete
-- [ ] Load testing (>1000 concurrent users)
-- [ ] Performance optimization
-- [ ] Security audit
-- [ ] Public documentation site
-- [ ] Onboarding flow
+- [x] Platform Overview (active tenants, events today, leads, health)
+- [x] super admin console (capability guard, PlatformGuard, sidebar separation)
+- [x] System Health Cockpit (Supabase, JWT, RLS, telemetry)
+- [x] Observability (SMTP, edge functions, storage health)
+- [x] Telemetry auto-detection (tenant_id from JWT)
+- [x] Churn Detection (v_churn_risk view)
+- [x] Platform events (6 types)
+- [x] `can()` capability guard
+- [x] Single Source of Truth (no mock data in production)
+- [x] `effectiveTenantId` + three-tier tenant system
+- [x] Super Admin auto-assign (KNOWN_SUPER_ADMIN_EMAILS)
+- [x] Clear tenant selection on login
+- [x] docs MASTER overhaul + permission matrix + project memory
+
+---
+
+## 🔜 v0.3.3 "Tenant Content Tabs"
+
+- [ ] Tab section per tenant με CMS content icons (Kolokotronis homepage-style)
+- [ ] Gallery 2.0 (categories, filters, bulk operations)
+
+---
+
+## 🔄 v0.4 "Website Builder" (planned)
+
+- Page Builder (drag & drop sections)
+- Theme system (color palettes, fonts, spacing)
+- SEO Manager (bulk editor, sitemap, schema)
+- Form Builder (contact, booking, newsletter)
+- Industry Profiles (ADR-006)
+- Image optimization (auto-resize, WebP)
+
+---
+
+## 🔄 v0.5 "CRM Pro" (planned)
+
+- Email campaigns (mass send, templates)
+- Pipeline automation (auto-move leads, triggers)
+- Reporting (pipeline velocity, win rate, forecast)
+- Drag & drop media upload
+- Usage detection (warn before media delete)
+
+---
+
+## 🔄 v0.6 "Subscriptions & Billing" (planned)
+
+- Subscription management
+- Usage-based billing
+- Invoice generation
+- Payment gateway (Stripe)
+- Feature tiers (free, pro, enterprise)
+
+---
+
+## 🔄 v1.0 "Public Release" (future)
+
+- Documentation complete
+- Load testing (>1000 concurrent users)
+- Performance optimization
+- Security audit
+- Public documentation site
+- Onboarding flow

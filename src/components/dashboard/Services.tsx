@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
 import { servicesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
-import { useTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
 import { Service } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
@@ -16,7 +16,7 @@ function slugify(s: string) {
 }
 
 export default function Services() {
-  const { selectedTenantId } = useTenantContext();
+  const { effectiveTenantId } = useTenant();
   const [items, setItems] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -135,7 +135,7 @@ export default function Services() {
               <div className="grid grid-cols-3 gap-4">
                 <div><label className="text-xs text-gray-500 block mb-1">Σειρά</label><input type="number" value={form.sort_order} onChange={e => setForm(f => ({ ...f, sort_order: parseInt(e.target.value) || 0 }))} className="input" /></div>
                 <div><label className="text-xs text-gray-500 block mb-1">Ενεργό</label><select value={form.is_active ? 'true' : 'false'} onChange={e => setForm(f => ({ ...f, is_active: e.target.value === 'true' }))} className="input"><option value="true">Ναι</option><option value="false">Όχι</option></select></div>
-                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα Hero (στο background)</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.onchange = async () => { const f = inp.files?.[0]; if (!f) return; setImageUploading(true); try { if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; } const media = await uploadCmsAsset(f, { tenantId: selectedTenantId, bucket: 'site-images', category: 'service', source: 'editor' }); setForm(prev => ({ ...prev, image_url: media.url })); } catch (e) { alert('Αποτυχία'); } finally { setImageUploading(false); } }; inp.click(); }} disabled={imageUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs"><ImageIcon size={14} /></button></div></div>
+                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα Hero (στο background)</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.onchange = async () => { const f = inp.files?.[0]; if (!f) return; setImageUploading(true); try { if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; } const media = await uploadCmsAsset(f, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'service', source: 'editor' }); setForm(prev => ({ ...prev, image_url: media.url })); } catch (e) { alert('Αποτυχία'); } finally { setImageUploading(false); } }; inp.click(); }} disabled={imageUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs"><ImageIcon size={14} /></button></div></div>
               </div>
               <div className="border-t border-gray-800 pt-4"><p className="text-xs text-gray-500 mb-2">SEO</p><div className="grid grid-cols-1 gap-3"><div><label className="text-xs text-gray-500 block mb-1">Meta Title</label><input value={form.meta_title || ''} onChange={e => setForm(f => ({ ...f, meta_title: e.target.value }))} className="input" /></div><div><label className="text-xs text-gray-500 block mb-1">Meta Description</label><textarea value={form.meta_description || ''} onChange={e => setForm(f => ({ ...f, meta_description: e.target.value }))} className="input h-16 resize-none" /></div><div><label className="text-xs text-gray-500 block mb-1">OG Image (social)</label><input value={form.og_image} onChange={e => setForm(f => ({ ...f, og_image: e.target.value }))} className="input" placeholder="π.χ. για sharing σε social media" /></div></div></div>
               <div className="flex justify-end gap-3 pt-2"><button onClick={() => setShowModal(false)} className="btn-secondary">Ακύρωση</button><button onClick={handleSave} disabled={saving} className="btn-primary">{saving ? 'Αποθήκευση...' : 'Αποθήκευση'}</button></div>

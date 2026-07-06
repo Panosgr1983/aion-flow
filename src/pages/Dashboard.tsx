@@ -34,6 +34,7 @@ import SystemDebug from '../components/settings/SystemDebug';
 import PlatformOverview from '../components/settings/PlatformOverview';
 import PlatformGuard from '../components/settings/PlatformGuard';
 import TenantOverview from '../components/dashboard/TenantOverview';
+import TenantSiteManagement from '../components/dashboard/TenantSiteManagement';
 import ErrorBoundary from '../components/dashboard/ErrorBoundary';
 // import EmailSyncManager from '../components/settings/EmailSyncManager';
 
@@ -86,6 +87,7 @@ export default function Dashboard() {
             <Route path="inbox" element={<InboxPage />} />
             <Route path="pipeline" element={<PipelinePage />} />
             <Route path="tenant" element={<TenantOverview />} />
+            <Route path="tenant-site" element={<TenantSiteManagement />} />
           </Routes>
           </ErrorBoundary>
         </main>

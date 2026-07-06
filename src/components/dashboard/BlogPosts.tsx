@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
 import { blogPostsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
-import { useTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
 import { BlogPost } from '../../types/supabase';
 import RichEditor from './RichEditor';
@@ -15,7 +15,7 @@ function slugify(s: string) {
 }
 
 export default function BlogPosts() {
-  const { selectedTenantId } = useTenantContext();
+  const { effectiveTenantId } = useTenant();
   const [items, setItems] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -139,7 +139,7 @@ export default function BlogPosts() {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div><label className="text-xs text-gray-500 block mb-1">Κατηγορία</label><input value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} className="input" /></div>
-                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα URL</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => heroInputRef.current?.click()} disabled={heroUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs" title="Μεταφόρτωση"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs" title="Από τη βιβλιοθήκη"><ImageIcon size={14} /></button></div><input ref={heroInputRef} type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files?.[0]; if (!file) return; setHeroUploading(true); try { if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; } const media = await uploadCmsAsset(file, { tenantId: selectedTenantId, bucket: 'blog-images', category: 'blog', source: 'editor' }); setForm(f => ({ ...f, image_url: media.url })); } catch (err) { alert('Αποτυχία μεταφόρτωσης'); } finally { setHeroUploading(false); e.target.value = ''; } }} /><MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm(f => ({ ...f, image_url: url }))} folder="blog" /></div>
+                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα URL</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => heroInputRef.current?.click()} disabled={heroUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs" title="Μεταφόρτωση"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs" title="Από τη βιβλιοθήκη"><ImageIcon size={14} /></button></div><input ref={heroInputRef} type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files?.[0]; if (!file) return; setHeroUploading(true); try { if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; } const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'blog-images', category: 'blog', source: 'editor' }); setForm(f => ({ ...f, image_url: media.url })); } catch (err) { alert('Αποτυχία μεταφόρτωσης'); } finally { setHeroUploading(false); e.target.value = ''; } }} /><MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm(f => ({ ...f, image_url: url }))} folder="blog" /></div>
                 <div><label className="text-xs text-gray-500 block mb-1">Κατάσταση</label><select value={form.is_published ? 'true' : 'false'} onChange={e => setForm(f => ({ ...f, is_published: e.target.value === 'true' }))} className="input"><option value="false">Προσχέδιο</option><option value="true">Δημοσιευμένο</option></select></div>
               </div>
               <div><label className="text-xs text-gray-500 block mb-1">Απόσπασμα</label><textarea value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} className="input h-16 resize-none" /></div>

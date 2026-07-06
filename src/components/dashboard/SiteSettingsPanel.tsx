@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical } from 'lucide-react';
 import { siteSettingsHelper, FOLDER_OPTIONS } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
-import { useTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import { SiteSetting } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
 
@@ -51,7 +51,7 @@ function imageKeyToCategory(key: string): string {
 }
 
 export default function SiteSettingsPanel() {
-  const { selectedTenantId } = useTenantContext();
+  const { effectiveTenantId } = useTenant();
   const [settings, setSettings] = useState<SiteSetting[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -96,11 +96,11 @@ export default function SiteSettingsPanel() {
   };
 
   const handleImageUpload = async (file: File, targetKey: string) => {
-    if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+    if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
     try {
       const isLogo = targetKey === 'site_logo' || targetKey === 'site_logo_footer' || targetKey === 'site_favicon';
       const media = await uploadCmsAsset(file, {
-        tenantId: selectedTenantId,
+        tenantId: effectiveTenantId,
         bucket: 'site-images',
         category: imageKeyToCategory(targetKey) as any,
         source: 'editor',
@@ -113,7 +113,7 @@ export default function SiteSettingsPanel() {
         await siteSettingsHelper.update(setting.id, { value: media.url });
         dirtyKeys.current.delete(targetKey);
       } else {
-        const created = await siteSettingsHelper.create({ key: targetKey, value: media.url, category: imageKeyToCategory(targetKey), tenant_id: selectedTenantId });
+        const created = await siteSettingsHelper.create({ key: targetKey, value: media.url, category: imageKeyToCategory(targetKey), tenant_id: effectiveTenantId });
         setSettings(prev => [...prev, created]);
       }
     } catch (err) {
@@ -174,7 +174,7 @@ export default function SiteSettingsPanel() {
         if (s.id && s.id.length > 0) {
           return siteSettingsHelper.update(s.id, { value: s.value });
         }
-        return siteSettingsHelper.create({ key: s.key, value: s.value, category: 'general', tenant_id: selectedTenantId });
+        return siteSettingsHelper.create({ key: s.key, value: s.value, category: 'general', tenant_id: effectiveTenantId });
       }));
       dirtyKeys.current.clear();
     }

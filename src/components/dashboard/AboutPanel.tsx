@@ -2,13 +2,13 @@ import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical, ImageIcon } from 'lucide-react';
 import { siteSettingsHelper, productsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
-import { useTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import MediaPicker from './MediaPicker';
 
 const ICON_OPTIONS = ['clock', 'book', 'heart', 'sparkles', 'award', 'graduation'];
 
 export default function AboutPanel() {
-  const { selectedTenantId } = useTenantContext();
+  const { effectiveTenantId } = useTenant();
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -34,8 +34,8 @@ export default function AboutPanel() {
   const handleBookCoverUpload = async (idx: number, file: File) => {
     setUploadingBookIdx(idx);
     try {
-      if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
-      const media = await uploadCmsAsset(file, { tenantId: selectedTenantId, bucket: 'site-images', category: 'about', source: 'editor' });
+      if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+      const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'about', source: 'editor' });
       updateBook(idx, 'cover_image', media.url);
     } catch (err) {
       alert('Αποτυχία μεταφόρτωσης εικόνας');
@@ -83,8 +83,8 @@ export default function AboutPanel() {
 
   const handleImageUpload = async (file: File, targetKey: string) => {
     try {
-      if (!selectedTenantId) { alert('Δεν βρέθηκε tenant'); return; }
-      const media = await uploadCmsAsset(file, { tenantId: selectedTenantId, bucket: 'site-images', category: 'about', source: 'editor' });
+      if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+      const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'about', source: 'editor' });
       setVal(targetKey, media.url);
     } catch { alert('Αποτυχία μεταφόρτωσης'); }
   };
