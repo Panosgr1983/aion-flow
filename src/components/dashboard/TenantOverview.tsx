@@ -2,17 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useTenant } from '../../lib/useTenant';
-import { useTenantContext, getCurrentTenantContext } from '../../lib/TenantContext';
-import { useAuth } from '../../contexts/AuthContext';
-import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users, Shield } from 'lucide-react';
+import { useTenantContext } from '../../lib/TenantContext';
+import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users } from 'lucide-react';
 
 interface RecentActivity {
   id: string;
   table_name: string;
-  record_title: string;
+  entity_name: string;
   operation: string;
   created_at: string;
-  created_by_name: string | null;
+  user_id: string | null;
 }
 
 export default function TenantOverview() {
@@ -24,22 +23,8 @@ export default function TenantOverview() {
   const [allTenants, setAllTenants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [fixStatus, setFixStatus] = useState<'idle' | 'fixing' | 'done' | 'error'>('idle');
-  const { user } = useAuth();
 
-  const selfFix = async () => {
-    if (!user) return;
-    setFixStatus('fixing');
-    const { error: err } = await supabase.from('profiles').update({ is_super_admin: true }).eq('id', user.id);
-    if (err) { setFixStatus('error'); return; }
-    localStorage.removeItem('aion_selected_tenant');
-    setFixStatus('done');
-    await supabase.auth.signOut();
-    window.location.href = '/login';
-  };
-
-  // non-SA → JWT/profile tenant_id; SA → localStorage (Project Switcher)
-  const tenantId = tenant.isSuperAdmin ? getCurrentTenantContext() : tenant.tenantId;
+  const tenantId = tenant.effectiveTenantId;
 
   useEffect(() => {
     if (tenant.isSuperAdmin && !tenantId) {
@@ -60,7 +45,7 @@ export default function TenantOverview() {
       supabase.from('site_settings').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId).eq('category', 'pages'),
       supabase.from('media').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId),
       tenant.isSuperAdmin
-        ? supabase.from('content_history').select('id, table_name, record_title, operation, created_at, created_by_name').eq('tenant_id', tenantId).order('created_at', { ascending: false }).limit(10)
+        ? supabase.from('content_history').select('id, table_name, entity_name, operation, created_at, user_id').eq('tenant_id', tenantId).order('created_at', { ascending: false }).limit(10)
         : Promise.resolve({ data: [] }),
     ]).then(([info, svc, blog, pages, med, activity]) => {
       if (info?.data) setTenantInfo(info.data);
@@ -169,24 +154,6 @@ export default function TenantOverview() {
             ))}
           </div>
         </div>
-
-        {/* Self-fix: activate super admin — only for known admin emails */}
-        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'idle' && (
-          <button onClick={selfFix} className="card p-4 hover:bg-gray-800/40 transition-colors group w-full text-left">
-            <div className="flex items-center gap-3">
-              <div className="size-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                <Shield size={18} className="text-amber-400" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">Ενεργοποίηση πρόσβασης super admin</p>
-                <p className="text-xs text-gray-500 mt-0.5">Το προφίλ σας δεν έχει δικαιώματα διαχειριστή — πατήστε για αυτόματη επιδιόρθωση</p>
-              </div>
-            </div>
-          </button>
-        )}
-        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'fixing' && <div className="card p-4 text-center text-sm text-gray-400">Ενημέρωση προφίλ...</div>}
-        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'done' && <div className="card p-4 text-center text-sm text-green-400">✅ Ο λογαριασμός σας αναβαθμίστηκε! Ανανέωση σελίδας...</div>}
-        {['info@aionweb.gr', 'choliasmenos.panos@gmail.com'].includes(user?.email || '') && fixStatus === 'error' && <div className="card p-4 text-center text-sm text-red-400">Σφάλμα. Δοκιμάστε ξανά ή επικοινωνήστε με υποστήριξη.</div>}
 
         {/* Contact / Support */}
         <div className="card p-5 bg-gray-900/50">
@@ -354,7 +321,7 @@ export default function TenantOverview() {
               <div key={a.id} className="flex items-center justify-between py-1.5 text-sm">
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-xs px-2 py-0.5 rounded-full bg-gray-800 text-gray-400 shrink-0">{getOperationLabel(a.operation)}</span>
-                  <span className="text-gray-300 truncate">{a.record_title}</span>
+                  <span className="text-gray-300 truncate">{a.entity_name}</span>
                   <span className="text-gray-600 text-xs shrink-0">({getTableLabel(a.table_name)})</span>
                 </div>
                 <span className="text-xs text-gray-600 shrink-0 ml-3">{new Date(a.created_at).toLocaleDateString('el-GR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>

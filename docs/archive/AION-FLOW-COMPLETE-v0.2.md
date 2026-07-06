@@ -2,7 +2,7 @@
 
 > Έκδοση: v0.3.2  
 > Τελευταία ενημέρωση: 2026-07-06  
-> Τεχνολογίες: React 19, TypeScript, Vite 5, Supabase, Vercel, Cloudflare Workers
+> Τεχνολογίες: React 18.3, TypeScript, Vite 5, Supabase, Vercel, Cloudflare Workers
 
 ---
 

@@ -81,7 +81,7 @@ async function fetchProfile(userId: string): Promise<{ is_super_admin: boolean; 
 
 export function useTenant(): TenantState {
   const { user, isDemoMode } = useAuth();
-  const { selectedTenantId } = useTenantContext();
+  const { selectedTenantId, setSelectedTenantId } = useTenantContext();
   const [state, setState] = useState<TenantState>({
     isSuperAdmin: false,
     tenantId: null,

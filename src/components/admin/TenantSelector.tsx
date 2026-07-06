@@ -31,15 +31,15 @@ export default function TenantSelector() {
   const [selected, setSelected] = useState<string | null>(null);
   const { setSelectedTenantId, selectedTenantId } = useTenantContext();
 
-  // If already selected, don't show
-  if (selectedTenantId) return null;
-
   useEffect(() => {
     supabase.from('tenants').select('id, name, slug, status, plan_name, industry').order('name').then(({ data }) => {
       if (data) setTenants(data as TenantCard[]);
       setLoading(false);
     });
   }, []);
+
+  // If already selected, don't show — AFTER all hooks
+  if (selectedTenantId) return null;
 
   const handleSelect = (id: string) => {
     setSelected(id);

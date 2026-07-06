@@ -82,10 +82,10 @@ export default function Dashboard() {
             <Route path="pages" element={<Pages />} />
             <Route path="site-settings" element={<SiteSettingsPanel />} />
             <Route path="analytics" element={<AnalyticsDashboard />} />
-            <Route path="history" element={<History />} />
+            <Route path="history" element={<PlatformGuard><History /></PlatformGuard>} />
             <Route path="contact-messages" element={<Navigate to="/dashboard/inbox" replace />} />
-            <Route path="inbox" element={<InboxPage />} />
-            <Route path="pipeline" element={<PipelinePage />} />
+            <Route path="inbox" element={<PlatformGuard><InboxPage /></PlatformGuard>} />
+            <Route path="pipeline" element={<PlatformGuard><PipelinePage /></PlatformGuard>} />
             <Route path="tenant" element={<TenantOverview />} />
             <Route path="tenant-site" element={<TenantSiteManagement />} />
           </Routes>

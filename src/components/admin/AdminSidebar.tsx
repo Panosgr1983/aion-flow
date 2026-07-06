@@ -38,7 +38,7 @@ interface NavItem { path: string; icon: any; label: string; permission?: Permiss
 
 const contentItems: NavItem[] = [
   { path: '/dashboard/tenant', icon: Home, label: 'Αρχική', permission: 'cms.view' },
-  { path: '/dashboard/tenant-site', icon: Globe, label: 'Tenant Site Management', permission: 'cms.view' },
+  { path: '/dashboard/tenant-site', icon: Globe, label: 'Διαχείριση Ιστοσελίδας', permission: 'cms.view' },
   { path: '/dashboard/products', icon: Package, label: 'Βιβλία / Προϊόντα', permission: 'cms.edit' },
   { path: '/dashboard/media', icon: Image, label: 'Πολυμέσα', permission: 'cms.edit' },
   { path: '/dashboard/services', icon: FileText, label: 'Υπηρεσίες', permission: 'cms.edit' },
