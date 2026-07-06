@@ -26,7 +26,7 @@
 ```
 ┌─────────────────────────────────────────┐
 │            Browser (SPA)                │
-│     React 19 + TanStack Router          │
+│     React 18.3 + TanStack Router          │
 │         Vercel (CDN)                    │
 ├─────────────────────────────────────────┤
 │              Supabase                   │

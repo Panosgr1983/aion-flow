@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, Fragment, createElement } from 'react';
 import { supabase } from '../../lib/supabase';
-import { getCurrentTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import { RefreshCw, Shield, Clock, HardDrive, CheckCircle, XCircle, Activity, Calendar, Download, Play, Trash2, Eye, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface BackupJob {
@@ -20,6 +20,7 @@ const TYPE_ICONS: Record<string, any> = { manual: Play, daily: Calendar, weekly:
 const TYPE_COLORS: Record<string, string> = { manual: 'bg-blue-500/10 text-blue-400', daily: 'bg-green-500/10 text-green-400', weekly: 'bg-purple-500/10 text-purple-400' };
 
 export default function BackupManager() {
+  const tenant = useTenant();
   const [jobs, setJobs] = useState<BackupJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
@@ -54,12 +55,11 @@ export default function BackupManager() {
         delete record.id;
         delete record.created_at;
         delete record.updated_at;
-        delete record.tenant_id;
         const { data: existing } = await supabase.from(table).select('id').eq('id', id).maybeSingle();
         if (existing) {
           skipped++;  // υπάρχει ήδη → δεν το πειράζουμε
         } else {
-          await supabase.from(table).insert({ ...record, id, tenant_id: '00000000-0000-0000-0000-000000000001' });
+          await supabase.from(table).insert({ ...record, id });
           inserted++;
         }
       }
@@ -86,7 +86,7 @@ export default function BackupManager() {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/crm-backup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
-        body: JSON.stringify({ type, tenant_id: getCurrentTenantContext() || '00000000-0000-0000-0000-000000000001' }),
+        body: JSON.stringify({ type, tenant_id: tenant.effectiveTenantId }),
       });
       if (!res.ok) {
         const err = await res.json();

@@ -3,7 +3,7 @@ import { History as HistoryIcon, RotateCcw, Upload, Trash2, ChevronDown, Chevron
 import type { ContentHistory, ContentBackup } from '../../types/supabase';
 import { supabase, isSupabaseAvailable } from '../../lib/supabase';
 import { restoreHelper } from '../../lib/dataHelpers';
-import { useTenantContext } from '../../lib/TenantContext';
+import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
 
 const TABLE_LABELS: Record<string, string> = {
@@ -42,7 +42,7 @@ function formatDate(date: string): string {
 
 export default function AuditDashboard() {
   const live = isSupabaseAvailable();
-  const { selectedTenantId } = useTenantContext();
+  const tenant = useTenant();
   const [tenantFilter, setTenantFilter] = useState<string>('all');
   const [tenants, setTenants] = useState<{ id: string; name: string }[]>([]);
   const [entries, setEntries] = useState<ContentHistory[]>([]);
@@ -59,8 +59,8 @@ export default function AuditDashboard() {
   const [cleaning, setCleaning] = useState(false);
   const [error, setError] = useState('');
 
-  const activeTenantId = selectedTenantId && selectedTenantId !== '00000000-0000-0000-0000-000000000001'
-    ? selectedTenantId
+  const activeTenantId = tenant.effectiveTenantId
+    ? tenant.effectiveTenantId
     : tenantFilter !== 'all' ? tenantFilter : null;
 
   const loadTenants = useCallback(async () => {
@@ -118,7 +118,7 @@ export default function AuditDashboard() {
 
   const handleBackup = async () => {
     setBackingUp(true); setError('');
-    const backupTenantId = activeTenantId || '00000000-0000-0000-0000-000000000001';
+    const backupTenantId = activeTenantId;
     try {
       const tables = ['services', 'blog_posts', 'testimonials', 'credentials', 'core_values', 'site_settings'];
       const snapshot: Record<string, unknown> = {};

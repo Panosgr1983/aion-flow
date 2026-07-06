@@ -125,5 +125,6 @@ type: σύντομη περιγραφή
 ❌ `refreshSession()` χωρίς έλεγχο
 ❌ Mock data σε production
 ❌ Secrets σε commits
-❌ Hardcoded tenant IDs
+❌ Hardcoded tenant IDs (συμπ. default UUID `00000000-0000-0000-0000-000000000001`)
+❌ `getCurrentTenantContext()` σε component — χρησιμοποίησε `useTenant().effectiveTenantId`
 ❌ `console.log` σε production (μόνο `trackEvent`)

@@ -50,9 +50,7 @@ docs/
 ├── BACKUP.md                  ← Backup/restore
 ├── MODULES.md                 ← Module descriptions
 │
-├── 01-Architecture.md ...     ← Παλαιότερα (σε μετάβαση σε MASTER/)
-│
-├── AION-FLOW-COMPLETE.md      ← Full flow documentation
+├── archive/                   ← Legacy docs (do not use as source of truth)
 ├── CODING_STANDARDS.md        ← Code style & conventions
 ├── CONTRIBUTING.md            ← Contribution guide
 ├── COPYWRITING.md             ← Copy & tone

@@ -1,6 +1,6 @@
 # AION CMS — Features
 
-> Version: **v0.2.0**
+> Version: **v0.3.2** — δες `VERSIONS.md` για πλήρες changelog.
 > Τι μπορεί να κάνει το AION σήμερα.
 
 ## Feature Status Legend
