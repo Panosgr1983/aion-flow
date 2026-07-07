@@ -40,6 +40,7 @@ const titles: Record<string, string> = {
   '/dashboard/credentials': 'Πιστοποιήσεις',
   '/dashboard/core-values': 'Αξίες',
   '/dashboard/business-info': 'Business Information',
+  '/dashboard/branding': 'Branding',
   '/dashboard/site-settings': 'Ρυθμίσεις Περιεχομένου',
   '/dashboard/history': 'Ιστορικό',
   '/dashboard/contact-messages': 'Inbox',

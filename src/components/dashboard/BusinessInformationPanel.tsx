@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Save, RefreshCw } from 'lucide-react';
-import { siteSettingsHelper } from '../../lib/dataHelpers';
+import { Save, RefreshCw, History, ArrowLeft } from 'lucide-react';
+import { coreEntitiesHelper } from '../../lib/coreEntitiesHelper';
+import { useTenant } from '../../lib/useTenant';
 
 const DEFAULT_BUSINESS = {
   address: {
@@ -23,44 +24,48 @@ const DEFAULT_BUSINESS = {
 type BusinessInfo = typeof DEFAULT_BUSINESS;
 
 export default function BusinessInformationPanel() {
+  const tenant = useTenant();
   const [biz, setBiz] = useState<BusinessInfo>(DEFAULT_BUSINESS);
-  const [recordId, setRecordId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [tab, setTab] = useState('address');
+  const [showHistory, setShowHistory] = useState(false);
+  const [history, setHistory] = useState<any[]>([]);
+  const entityType = 'business_information';
 
-  const loadSettings = async () => {
-    const all = await siteSettingsHelper.getAll();
-    const record = all.find(s => s.key === 'business_information');
+  const loadData = async () => {
+    const record = await coreEntitiesHelper.getByType(tenant.effectiveTenantId, entityType);
     if (record) {
-      setRecordId(record.id);
-      setBiz({ ...DEFAULT_BUSINESS, ...(typeof record.value === 'object' && record.value ? record.value : {}) });
+      setBiz({ ...DEFAULT_BUSINESS, ...(record.data || {}) });
     }
     setLoading(false);
   };
 
-  useEffect(() => { loadSettings(); }, []);
+  useEffect(() => { if (tenant.effectiveTenantId) loadData(); }, [tenant.effectiveTenantId]);
+
+  const loadHistory = async () => {
+    const record = await coreEntitiesHelper.getByType(tenant.effectiveTenantId, entityType);
+    if (record) {
+      const h = await coreEntitiesHelper.getHistory(record.id);
+      setHistory(h);
+      setShowHistory(true);
+    }
+  };
 
   const setVal = (group: keyof BusinessInfo, field: string, val: string) => {
-    setBiz(prev => ({ ...prev, [group]: { ...prev[group], [field]: val } }));
+    setBiz(prev => ({ ...prev, [group]: { ...(prev as any)[group], [field]: val } }));
   };
 
   const handleSave = async () => {
     setSaving(true);
-    const all = await siteSettingsHelper.getAll();
-    const existing = all.find(s => s.key === 'business_information');
-    if (existing) {
-      await siteSettingsHelper.update(existing.id, { value: biz });
-    } else {
-      await siteSettingsHelper.create({ key: 'business_information', value: biz, category: 'contact' });
-    }
+    await coreEntitiesHelper.upsert(tenant.effectiveTenantId, entityType, biz);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
-  const handleRefresh = () => { setLoading(true); loadSettings(); };
+  const handleRefresh = () => { setLoading(true); loadData(); };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
 
@@ -79,6 +84,39 @@ export default function BusinessInformationPanel() {
     );
   };
 
+  if (showHistory) {
+    return (
+      <div className="space-y-5 animate-fade-in">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setShowHistory(false)} className="p-2 text-gray-500 hover:text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"><ArrowLeft size={16} /></button>
+            <div><h2 className="text-xl font-semibold">Ιστορικό Εκδόσεων</h2><p className="text-sm text-gray-500">Προηγούμενες αποθηκευμένες εκδόσεις του Business Information</p></div>
+          </div>
+        </div>
+        <div className="card p-6 space-y-3">
+          {history.length === 0 && <p className="text-sm text-gray-500">Δεν υπάρχει ιστορικό ακόμα.</p>}
+          {history.map((h, i) => (
+            <div key={h.id} className="flex items-center justify-between p-3 bg-gray-900 rounded-lg border border-gray-800">
+              <div>
+                <span className="text-xs text-gray-400">Έκδοση {h.version}</span>
+                <span className="text-xs text-gray-600 ml-3">{new Date(h.created_at).toLocaleString('el-GR')}</span>
+              </div>
+              <button
+                onClick={async () => {
+                  setBiz({ ...DEFAULT_BUSINESS, ...(h.data || {}) });
+                  setShowHistory(false);
+                }}
+                className="text-xs text-blue-400 hover:text-blue-300 px-3 py-1.5 rounded-lg border border-blue-900/40 hover:bg-blue-950/40 transition-colors"
+              >
+                Επαναφορά
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   const tabs = [
     { id: 'address', label: '📍 Διεύθυνση', icon: '📍' },
     { id: 'contact', label: '📞 Επικοινωνία', icon: '📞' },
@@ -94,9 +132,12 @@ export default function BusinessInformationPanel() {
           <div><h2 className="text-xl font-semibold">Business Information</h2><p className="text-sm text-gray-500">Κεντρικά στοιχεία επιχείρησης — μία φορά, παντού</p></div>
           <button onClick={handleRefresh} className="p-2 text-gray-500 hover:text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"><RefreshCw size={14} /></button>
         </div>
-        <button onClick={handleSave} disabled={saving} className="btn-primary">
-          {saving ? <><RefreshCw size={16} className="animate-spin" /> Αποθήκευση...</> : <><Save size={16} /> {saved ? 'Αποθηκεύτηκε!' : 'Αποθήκευση'}</>}
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={loadHistory} className="p-2 text-gray-500 hover:text-gray-300 hover:bg-gray-800 rounded-lg transition-colors" title="Ιστορικό εκδόσεων"><History size={14} /></button>
+          <button onClick={handleSave} disabled={saving} className="btn-primary">
+            {saving ? <><RefreshCw size={16} className="animate-spin" /> Αποθήκευση...</> : <><Save size={16} /> {saved ? 'Αποθηκεύτηκε!' : 'Αποθήκευση'}</>}
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-2 border-b border-gray-800 pb-px mb-6 overflow-x-auto">
