@@ -294,6 +294,13 @@ export default function SiteSettingsPanel() {
                 {renderField('home_books_showcase_link_text', '"View All" Link Text')}
               </div>
 
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Homepage Contact Section</h3>
+              {renderField('contact_section_eyebrow', 'Contact Section Eyebrow')}
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('contact_cta_text', 'CTA Button Text')}
+                {renderField('contact_cta_link', 'CTA Button Link')}
+              </div>
+
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Other Sections</h3>
               {renderField('testimonials_section_title', 'Testimonials Section Title')}
               {renderField('blog_section_title', 'Blog Section Title')}
@@ -362,7 +369,13 @@ export default function SiteSettingsPanel() {
                 {renderField('contact_social_facebook_url', 'Facebook URL', { isUrl: true })}
               </div>
               {renderField('contact_map_embed_url', 'Google Maps Embed URL', { isUrl: true, rows: 3 })}
+              {renderField('contact_map_title', 'Map Iframe Title')}
+              {renderField('contact_open_maps_text', '"Άνοιγμα στους Χάρτες" Link Text')}
               {renderField('contact_form_heading', 'Form Heading')}
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('contact_address_area', 'Περιοχή (π.χ. Νέο Ηράκλειο)')}
+                {renderField('contact_address_postal_code', 'Τ.Κ. (π.χ. 14121)')}
+              </div>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Email Configuration</h3>
               {renderField('contact_email', 'Email λήψης (στο email αυτό θα στέλνονται τα μηνύματα)')}
 
@@ -435,6 +448,16 @@ export default function SiteSettingsPanel() {
               <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_social_label', 'Social Label')}
                 {renderField('contact_social_facebook_url', 'Facebook URL', { isUrl: true })}
+              </div>
+
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Footer Section Labels</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('footer_heading_nav', '"Πλοήγηση" Section Heading')}
+                {renderField('footer_heading_contact', '"Επικοινωνία" Section Heading')}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('footer_privacy_text', 'Privacy Link Text')}
+                {renderField('footer_terms_text', 'Terms Link Text')}
               </div>
 
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Footer Navigation</h3>
