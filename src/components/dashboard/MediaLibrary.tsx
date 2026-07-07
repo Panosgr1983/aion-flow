@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Search, Trash2, Grid2x2 as Grid, List, CheckSquare, Square, Upload } from 'lucide-react';
 import { mediaHelper, FOLDER_OPTIONS, FOLDER_LABELS, MEDIA_FOLDERS, FolderCategory } from '../../lib/dataHelpers';
+import { trackEvent } from '../../lib/analytics';
 import { Media } from '../../types/supabase';
 
 function formatSize(bytes: number) {
@@ -57,9 +58,11 @@ export default function MediaLibrary({ onSelect }: MediaLibraryProps) {
   };
 
   const handleDeleteSelected = async () => {
+    const count = selected.size;
     for (const id of selected) { await mediaHelper.delete(id); }
     setMedia(prev => prev.filter(m => !selected.has(m.id)));
     setSelected(new Set());
+    trackEvent('cms.media_deleted', { count }).catch(() => {});
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
@@ -170,7 +173,7 @@ export default function MediaLibrary({ onSelect }: MediaLibraryProps) {
       )}
 
       {preview && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setPreview(null)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/70 backdrop-blur-sm" onClick={() => setPreview(null)}>
           <div className="card max-w-2xl w-full p-4" onClick={e => e.stopPropagation()}>
             <img src={preview.url} alt={preview.alt_text || preview.name} className="w-full rounded-xl object-contain max-h-96" />
             <div className="mt-4 grid grid-cols-3 gap-3 text-sm">

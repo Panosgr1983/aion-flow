@@ -138,7 +138,7 @@ export default function Orders() {
       </div>
 
       {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/60 backdrop-blur-sm">
           <div className="card w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold">{selected.order_number}</h3>

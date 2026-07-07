@@ -31,6 +31,7 @@ const titles: Record<string, string> = {
   '/dashboard/settings': 'Ρυθμίσεις',
   '/dashboard/settings/users': 'Διαχείριση Χρηστών',
   '/dashboard/settings/backup': 'Backup Manager',
+  '/dashboard/tenant-site': 'Διαχείριση Ιστοσελίδας',
   '/dashboard/settings/observability': 'Observability',
   '/dashboard/settings/usage': 'Usage & Telemetry',
   '/dashboard/services': 'Υπηρεσίες',
@@ -64,7 +65,7 @@ export default function AdminHeader() {
     }
   }, [selectedTenantId]);
 
-  const statusIcon = tenantInfo?.status === 'active' ? CheckCircle : AlertTriangle;
+  const StatusIcon = tenantInfo?.status === 'active' ? CheckCircle : AlertTriangle;
   const statusColor = tenantInfo?.status === 'active' ? 'text-green-400' : 'text-amber-400';
 
   return (
@@ -80,7 +81,7 @@ export default function AdminHeader() {
               <span className="font-medium text-gray-300">{tenantInfo.name}</span>
               {tenantInfo.plan && <span className="text-gray-600">· {tenantInfo.plan}</span>}
               <span className={`flex items-center gap-0.5 ${statusColor}`}>
-                <statusIcon size={10} />
+                <StatusIcon size={10} />
                 {tenantInfo.status === 'active' ? 'Ενεργό' : tenantInfo.status}
               </span>
             </div>

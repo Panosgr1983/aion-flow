@@ -1,10 +1,19 @@
-# AION CMS — Architecture Overview
+# AION — Platform Architecture Overview
 
 ## Σύνοψη
 
-Το AION είναι multi-tenant CMS πλατφόρμα με CRM, Pipeline, Email
-Workspace και realtime analytics. Τρέχει σε React (Vite) + Supabase
-(PostgreSQL + Auth + Storage + Edge Functions).
+Το AION είναι multi-tenant SaaS πλατφόρμα για ψηφιακές επιχειρήσεις.
+Αποτελείται από δύο διακριτά προϊόντα στον ίδιο πυρήνα:
+
+- **AION Platform** (Super Admin Console) — κέντρο ελέγχου του SaaS
+- **AION Workspace** (Tenant Portal) — περιβάλλον εργασίας κάθε πελάτη
+
+Τρέχει σε React (Vite) + Supabase (PostgreSQL + Auth + Storage + Edge Functions).
+
+> **Για πλήρη κατανόηση της αρχιτεκτονικής, δες:**
+> - `docs/MASTER/ARCHITECTURE_MAP.md` — high-level map με data flow
+> - `docs/MASTER/PERMISSIONS_MATRIX.md` — permission matrix
+> - `docs/MASTER/PROJECT_MEMORY.md` — evolution του project
 
 ## Stack
 
@@ -21,35 +30,45 @@ CI/CD:       Vercel Auto Deploy, GitHub Actions (backups)
 ## Architecture Diagram
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    AION CMS (Vite/React)                      │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────┐  │
-│  │ CMS      │ │ CRM      │ │ Pipeline │ │ Workspace      │  │
-│  │ Editors  │ │ Inbox    │ │ Kanban   │ │ Email          │  │
-│  └──────────┘ └──────────┘ └──────────┘ └────────────────┘  │
-│         │            │            │              │           │
-│         ▼            ▼            ▼              ▼           │
-│  ┌───────────────────────────────────────────────────────┐   │
-│  │           Data Helpers (dataHelpers.ts)               │   │
-│  │           Media Service (media.ts)                    │   │
-│  │           Storage (storage.ts)                        │   │
-│  └──────────────────────┬───────────────────────────────┘   │
-│                         │                                    │
-│                         ▼                                    │
-│  ┌───────────────────────────────────────────────────────┐   │
-│  │           API Layer (Supabase Client)                  │   │
-│  │    RLS Policies + JWT Hook + withTenant() Helper      │   │
-│  └──────────────────────┬───────────────────────────────┘   │
-└─────────────────────────┼───────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────┐
+│                    AION PLATFORM (Vite/React)                       │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  PLATFORM LAYER (super admin only — /dashboard/platform,     │   │
+│  │  /settings/usage, /settings/system, /settings/observability) │   │
+│  │  Capability Guard: can('platform.*') => isSuperAdmin         │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  WORKSPACE LAYER (tenant)                                    │   │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────┐  │   │
+│  │  │ CMS      │ │ CRM      │ │ Pipeline │ │ Business       │  │   │
+│  │  │ Editors  │ │ Inbox    │ │ Kanban   │ │ Dashboard      │  │   │
+│  │  └──────────┘ └──────────┘ └──────────┘ └────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  DATA LAYER — Single Source of Truth                         │   │
+│  │  analyticsHelper.getDashboardData() queries real DB tables   │   │
+│  │  trackEvent() → usage_events (tenant_id auto-detected)       │   │
+│  │  withTenant() → tenant-aware queries via TenantContext       │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  API Layer (Supabase Client)                                │   │
+│  │  RLS Policies + JWT Hook + withTenant() + capability guard  │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+└───────────────────────────────────────────────────────────────────┘
                           │
                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       Supabase                                │
-│  ┌─────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐ │
-│  │ Auth    │  │ Database │  │ Storage  │  │ Edge         │ │
-│  │         │  │(Postgres)│  │(S3-like) │  │ Functions    │ │
-│  └─────────┘  └──────────┘  └──────────┘  └──────────────┘ │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                       Supabase                                        │
+│  ┌─────────┐  ┌──────────┐  ┌──────────────┐  ┌────────────────┐   │
+│  │ Auth    │  │ Database │  │   Storage    │  │ Edge Functions  │   │
+│  │ JWT     │  │ Postgres │  │   (S3-like)  │  │ (Deno)         │   │
+│  │ Hook    │  │ + Views  │  │              │  │                │   │
+│  └─────────┘  └──────────┘  └──────────────┘  └────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Core Concepts
@@ -59,6 +78,24 @@ CI/CD:       Vercel Auto Deploy, GitHub Actions (backups)
 - JWT hook injects `user_role` + `is_super_admin` στο token
 - RLS policies ελέγχουν `tenant_id` σε όλα τα queries
 - `withTenant()` helper εξασφαλίζει tenant filtering
+
+### Three-Tier Tenant ID System
+- **`tenantId`** — ID του tenant του χρήστη (SA: `selectedTenantId || null`, μη-SA: JWT/profile)
+- **`selectedTenantId`** — Ποιο tenant διάλεξε ο SA από το Project Switcher (TenantContext)
+- **`effectiveTenantId`** — ΤΙ ΠΡΕΠΕΙ ΝΑ ΧΡΗΣΙΜΟΠΟΙΟΥΝ ΟΛΑ ΤΑ COMPONENTS
+
+### Super Admin Auto-Assign
+- `KNOWN_SUPER_ADMIN_EMAILS = ['info@aionweb.gr', 'choliasmenos.panos@gmail.com']`
+- Το `useTenant()` hook αναγνωρίζει αυτόματα αυτά τα emails ως SA
+- Profile ενημερώνεται στη DB για persistence (χωρίς `refreshSession()`)
+- `localStorage.aion_selected_tenant` καθαρίζεται σε κάθε νέο login
+- Ο SA ξεκινά πάντα από την οθόνη επιλογής tenant
+
+### Tenant Selection Flow (SA)
+1. **Login** → localStorage cleared → βλέπει tenant selection grid
+2. **Επιλογή tenant** → `setSelectedTenantId(id)` → `effectiveTenantId = id`
+3. **Refresh** → persistence από localStorage (ίδιο tenant)
+4. **Logout/Login** → cleared → ξανά selection grid
 
 ### JWT Claims
 ```json
@@ -89,3 +126,101 @@ Semantic Versioning: `v<major>.<minor>.<patch>`
 - **major**: Breaking changes (απαιτεί migration)
 - **minor**: Νέες λειτουργίες (backward compatible)
 - **patch**: Bug fixes (no schema changes)
+
+---
+
+## Platform vs Workspace
+
+Το AION είναι δύο προϊόντα στον ίδιο πυρήνα:
+
+### AION Platform (Super Admin Console)
+- **Πρόσβαση**: μόνο `is_super_admin = true`
+- **Route guard**: `PlatformGuard` component redirects non-super-admins
+- **Sidebar section**: "⚡ Platform" — Overview, Tenants, Usage, Observability, System
+- **Σκοπός**: διαχείριση ολόκληρου του SaaS (tenants, telemetry, health, events)
+- **Dashboard**: Platform Overview (active tenants, events today, leads, storage, system health)
+
+### AION Workspace (Tenant Portal)
+- **Πρόσβαση**: κάθε authenticated user του tenant
+- **Sidebar section**: "🏢 Επιχείρηση" — business modules (CMS, CRM, Pipeline, Site Settings)
+- **Sidebar section**: "🔧 Λογαριασμός" — προφίλ, ρυθμίσεις (μόνο για super admin)
+- **Σκοπός**: ο πελάτης διαχειρίζεται την επιχείρησή του
+- **Ποτέ δεν βλέπει**: telemetry, usage, system debug, observability, άλλους tenants
+
+---
+
+## Capability Guard — `can()`
+
+Τρία επίπεδα ασφαλείας, εφαρμόζονται πάντα με αυτή τη σειρά:
+
+```
+1. Sidebar visibility    → canAccessModule() → can() + feature flags
+2. Route guard            → PlatformGuard (platform routes)
+3. Database RLS           → withTenant() + is_super_admin bypass
+```
+
+### Capabilities
+
+```
+Platform-level (super admin only):
+  platform.overview, platform.tenants, platform.usage,
+  platform.observability, platform.system, platform.backups
+
+Business-level (role-based):
+  cms.edit, cms.view, crm.inbox, crm.pipeline, crm.tasks,
+  history.view, history.restore, settings.all, users.manage
+```
+
+### Παράδειγμα
+
+```typescript
+// super admin: true (bypass)
+// tenant admin: false (platform.* blocked)
+can('platform.usage', userRole, isSuperAdmin)
+
+// super admin: true
+// tenant admin: true (admin role has cms.edit)
+can('cms.edit', userRole, isSuperAdmin)
+```
+
+---
+
+## Single Source of Truth
+
+**Data Principle #1**: Κανένα production dashboard δεν διαβάζει mock data.
+
+```
+Database
+├── orders, customers, products, order_items
+├── usage_events, views
+├── pageviews, daily_stats
+↓
+analyticsHelper.getDashboardData()
+↓
+Overview, Analytics, Usage Dashboard
+
+Mock data επιτρέπονται ΜΟΝΟ για:
+- demo mode
+- local development
+- empty state placeholders
+- automated tests
+```
+
+---
+
+## Telemetry System
+
+Το AION καταγράφει 35+ event types:
+- **cms.*** — ενέργειες CMS (login, page_updated, blog_published)
+- **crm.*** — ενέργειες CRM (lead_created, message_sent, stage_changed)
+- **platform.*** — ενέργειες συστήματος (tenant_created, backup_restored, role_changed)
+
+```typescript
+// Αυτόματο tenant_id από JWT session
+trackEvent('cms.page_updated', { page_slug: 'about', fields_changed: ['content'] })
+
+// Με override tenant_id
+trackEvent('cms.login', { session_source: 'dashboard' }, { tenantId })
+```
+
+Δες [TELEMETRY.md](./TELEMETRY.md) για πλήρη αναφορά.

@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical } from 'lucide-react';
 import { siteSettingsHelper, FOLDER_OPTIONS } from '../../lib/dataHelpers';
+import { uploadCmsAsset } from '../../lib/media';
+import { useTenant } from '../../lib/useTenant';
 import { SiteSetting } from '../../types/supabase';
-import { uploadImage } from '../../lib/storage';
 import MediaPicker from './MediaPicker';
 
 const CATEGORIES = ['home', 'about', 'contact', 'site', 'footer', 'navigation', 'cta', 'seo'] as const;
@@ -41,7 +42,16 @@ function TabVisibilityGuard({ children, visibility, pageKey }: { children: React
   );
 }
 
+function imageKeyToCategory(key: string): string {
+  if (key.startsWith('logo') || key === 'site_logo' || key === 'site_logo_footer') return 'logo';
+  if (key.includes('hero')) return 'hero';
+  if (key.includes('portrait') || key.includes('avatar')) return 'about';
+  if (key.includes('og_image') || key.includes('seo') || key === 'site_favicon') return 'seo';
+  return 'general';
+}
+
 export default function SiteSettingsPanel() {
+  const { effectiveTenantId } = useTenant();
   const [settings, setSettings] = useState<SiteSetting[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,6 +61,7 @@ export default function SiteSettingsPanel() {
   const [editFooterNav, setEditFooterNav] = useState<NavLink[]>([]);
   const [editBio, setEditBio] = useState<string[]>([]);
   const [pickerTarget, setPickerTarget] = useState<string | null>(null);
+  const dirtyKeys = useRef(new Set<string>());
 
   const loadSettings = async () => {
     const d = await siteSettingsHelper.getAll();
@@ -76,15 +87,40 @@ export default function SiteSettingsPanel() {
   };
 
   const setValue = (key: string, val: string) => {
-    setSettings(prev => prev.map(s => s.key === key ? { ...s, value: val } : s));
+    dirtyKeys.current.add(key);
+    setSettings(prev => {
+      const exists = prev.some(s => s.key === key);
+      if (exists) return prev.map(s => s.key === key ? { ...s, value: val } : s);
+      return [...prev, { id: '', key, value: val, category: imageKeyToCategory(key) } as SiteSetting];
+    });
   };
 
   const handleImageUpload = async (file: File, targetKey: string) => {
+    if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
     try {
-      const url = await uploadImage(file, 'site-images');
-      setValue(targetKey, url);
+      const isLogo = targetKey === 'site_logo' || targetKey === 'site_logo_footer' || targetKey === 'site_favicon';
+      const media = await uploadCmsAsset(file, {
+        tenantId: effectiveTenantId,
+        bucket: 'site-images',
+        category: imageKeyToCategory(targetKey) as any,
+        source: 'editor',
+        keepFormat: isLogo,
+      });
+      setValue(targetKey, media.url);
+      // auto-save αμέσως για να μη χρειάζεται ξεχωριστό Save
+      const setting = settings.find(s => s.key === targetKey);
+      if (setting) {
+        await siteSettingsHelper.update(setting.id, { value: media.url });
+        dirtyKeys.current.delete(targetKey);
+      } else {
+        const created = await siteSettingsHelper.create({ key: targetKey, value: media.url, category: imageKeyToCategory(targetKey), tenant_id: effectiveTenantId });
+        setSettings(prev => [...prev, created]);
+      }
     } catch (err) {
-      alert('Αποτυχία μεταφόρτωσης');
+      console.error('Upload error:', err);
+      const msg = err instanceof Error ? err.message : typeof err === 'string' ? err : JSON.stringify(err);
+      const detail = (err as any)?.details || (err as any)?.hint || '';
+      alert('Αποτυχία μεταφόρτωσης: ' + msg + (detail ? ' (' + detail + ')' : ''));
     }
   };
 
@@ -132,8 +168,15 @@ export default function SiteSettingsPanel() {
 
   const handleSave = async () => {
     setSaving(true);
-    for (const s of settings) {
-      await siteSettingsHelper.update(s.id, { value: s.value });
+    const dirty = settings.filter(s => dirtyKeys.current.has(s.key));
+    if (dirty.length > 0) {
+      await Promise.all(dirty.map(s => {
+        if (s.id && s.id.length > 0) {
+          return siteSettingsHelper.update(s.id, { value: s.value });
+        }
+        return siteSettingsHelper.create({ key: s.key, value: s.value, category: 'general', tenant_id: effectiveTenantId });
+      }));
+      dirtyKeys.current.clear();
     }
     setSaving(false);
     setSaved(true);
@@ -341,7 +384,9 @@ export default function SiteSettingsPanel() {
           {activeTab === 'site' && (
             <>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Branding</h3>
-              {renderField('site_logo', 'Logo Image URL', { isImage: true })}
+              {renderField('site_logo', 'Header Logo Image', { isImage: true })}
+              {renderField('site_logo_footer', 'Footer Logo Image', { isImage: true })}
+              {renderField('site_favicon', 'Favicon Image', { isImage: true })}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('site_name', 'Site Name')}
                 {renderField('site_monogram', 'Monogram (e.g. ΝΚ)')}
@@ -362,7 +407,7 @@ export default function SiteSettingsPanel() {
           {activeTab === 'footer' && (
             <>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">Branding στο Footer</h3>
-              {renderField('site_logo', 'Logo Image URL', { isImage: true })}
+              {renderField('site_logo_footer', 'Footer Logo Image', { isImage: true })}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('site_name', 'Όνομα Site')}
                 {renderField('site_monogram', 'Μονόγραμμα (π.χ. ΝΚ)')}

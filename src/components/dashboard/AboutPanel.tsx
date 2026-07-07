@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical, ImageIcon } from 'lucide-react';
 import { siteSettingsHelper, productsHelper } from '../../lib/dataHelpers';
-import { uploadImage } from '../../lib/storage';
+import { uploadCmsAsset } from '../../lib/media';
+import { useTenant } from '../../lib/useTenant';
 import MediaPicker from './MediaPicker';
 
 const ICON_OPTIONS = ['clock', 'book', 'heart', 'sparkles', 'award', 'graduation'];
 
 export default function AboutPanel() {
+  const { effectiveTenantId } = useTenant();
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -32,8 +34,9 @@ export default function AboutPanel() {
   const handleBookCoverUpload = async (idx: number, file: File) => {
     setUploadingBookIdx(idx);
     try {
-      const url = await uploadImage(file, 'site-images');
-      updateBook(idx, 'cover_image', url);
+      if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+      const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'about', source: 'editor' });
+      updateBook(idx, 'cover_image', media.url);
     } catch (err) {
       alert('Αποτυχία μεταφόρτωσης εικόνας');
     } finally {
@@ -79,8 +82,11 @@ export default function AboutPanel() {
   const setVal = (key: string, val: any) => setSettings(prev => ({ ...prev, [key]: val }));
 
   const handleImageUpload = async (file: File, targetKey: string) => {
-    try { const url = await uploadImage(file, 'site-images'); setVal(targetKey, url); }
-    catch { alert('Αποτυχία μεταφόρτωσης'); }
+    try {
+      if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+      const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'about', source: 'editor' });
+      setVal(targetKey, media.url);
+    } catch { alert('Αποτυχία μεταφόρτωσης'); }
   };
 
   const updateBio = (idx: number, text: string) => {

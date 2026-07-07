@@ -16,11 +16,11 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal, Building2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
-import { hasPermission, Permission } from '../../lib/permissions';
+import { can, Permission } from '../../lib/permissions';
 import { UserRole } from '../../types/supabase';
 import { useTenant } from '../../lib/useTenant';
 import { useTenantContext } from '../../lib/TenantContext';
@@ -38,6 +38,7 @@ interface NavItem { path: string; icon: any; label: string; permission?: Permiss
 
 const contentItems: NavItem[] = [
   { path: '/dashboard/tenant', icon: Home, label: 'Αρχική', permission: 'cms.view' },
+  { path: '/dashboard/tenant-site', icon: Globe, label: 'Διαχείριση Ιστοσελίδας', permission: 'cms.view' },
   { path: '/dashboard/products', icon: Package, label: 'Βιβλία / Προϊόντα', permission: 'cms.edit' },
   { path: '/dashboard/media', icon: Image, label: 'Πολυμέσα', permission: 'cms.edit' },
   { path: '/dashboard/services', icon: FileText, label: 'Υπηρεσίες', permission: 'cms.edit' },
@@ -48,21 +49,28 @@ const contentItems: NavItem[] = [
   { path: '/dashboard/about', icon: User, label: 'Σχετικά', permission: 'cms.edit' },
   { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA', permission: 'cms.edit' },
   { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες', permission: 'cms.edit' },
-  { path: '/dashboard/analytics', icon: BarChart3, label: 'Analytics', permission: 'cms.view' },
-  { path: '/dashboard/history', icon: History, label: 'Ιστορικό', permission: 'history.view' },
-  { path: '/dashboard/inbox', icon: Mail, label: 'Inbox', permission: 'crm.inbox' },
-  { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline', permission: 'crm.pipeline' },
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site', permission: 'settings.all' },
 ];
 
-const bottomItems: NavItem[] = [
+// Platform — μόνο για super admin (operator)
+const platformItems: NavItem[] = [
+  { path: '/dashboard/platform', icon: Activity, label: 'Overview', permission: 'platform.overview' },
+  { path: '/dashboard/analytics', icon: BarChart3, label: 'Αναφορές', permission: 'platform.analytics' },
+  { path: '/dashboard/tenant', icon: Building2, label: 'Tenants', permission: 'platform.tenants' },
+  { path: '/dashboard/inbox', icon: Mail, label: 'Inbox', permission: 'crm.inbox' },
+  { path: '/dashboard/pipeline', icon: TrendingUp, label: 'Pipeline', permission: 'crm.pipeline' },
+  { path: '/dashboard/history', icon: History, label: 'Ιστορικό', permission: 'history.view' },
+  { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'platform.usage' },
+  { path: '/dashboard/settings/observability', icon: Shield, label: 'Observability', permission: 'platform.observability' },
+  { path: '/dashboard/settings/system', icon: Terminal, label: 'System', permission: 'platform.system' },
+];
+
+// Account — για όλους
+const accountItems: NavItem[] = [
   { path: '/dashboard/profile', icon: User, label: 'Προφίλ' },
   { path: '/dashboard/settings', icon: Settings, label: 'Ρυθμίσεις', permission: 'settings.all' },
   { path: '/dashboard/settings/users', icon: Users, label: 'Χρήστες', permission: 'users.manage' },
   { path: '/dashboard/settings/backup', icon: Shield, label: 'Backup', permission: 'users.manage' },
-  { path: '/dashboard/settings/observability', icon: Activity, label: 'Observability', permission: 'users.manage' },
-  { path: '/dashboard/settings/usage', icon: BarChart3, label: 'Usage', permission: 'users.manage' },
-
 ];
 
 export default function AdminSidebar() {
@@ -99,21 +107,22 @@ export default function AdminSidebar() {
     }
   }, [tenant.isSuperAdmin, tenant.loading]);
 
-  // Feature check: combines role permission + feature flag
+  // Feature check: combines capability guard + feature flag
   const canAccessModule = (item: NavItem): boolean => {
-    if (!hasPermission(userRole, item.permission)) return false;
+    const perm = item.permission;
+    if (perm && !can(perm, userRole, tenant.isSuperAdmin)) return false;
     const path = item.path.split('/').pop() || '';
-    // Platform-level items (settings, users, backup, observability) — super admin only
-    if (['settings', 'users', 'backup', 'observability'].includes(path)) {
-      return tenant.isSuperAdmin;
-    }
     // Check feature flag for content/CRM modules
     const feature = FEATURE_MODULES[path];
     if (feature && tenant.featureMap) {
       return tenant.featureMap[feature] === true;
     }
+    // Account-level items (settings, users, backup) — super admin only
+    if (!tenant.isSuperAdmin && ['settings', 'users', 'backup'].includes(path)) return false;
     return true;
   };
+
+  const isPlatform = tenant.isSuperAdmin;
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
@@ -199,6 +208,23 @@ export default function AdminSidebar() {
       )}
 
       <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+        {isPlatform && !collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pt-2 pb-1 flex items-center gap-2"><Zap size={10} /> Platform</div>}
+        {isPlatform && platformItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
+          <Link
+            key={path}
+            to={path}
+            title={collapsed ? label : undefined}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+              isActive(path)
+                ? 'bg-cyan-600/20 text-cyan-400 border border-cyan-500/20'
+                : 'text-gray-500 hover:text-gray-200 hover:bg-gray-800/60'
+            } ${collapsed ? 'justify-center' : ''}`}
+          >
+            <Icon size={18} className="shrink-0" />
+            {!collapsed && <span>{label}</span>}
+          </Link>
+        ))}
+
         {isDemoMode && shopItems.map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
@@ -214,7 +240,7 @@ export default function AdminSidebar() {
             {!collapsed && <span>{label}</span>}
           </Link>
         ))}
-        {!collapsed && <div className="text-[10px] text-gray-600 uppercase tracking-wider px-3 pt-4 pb-1">Περιεχόμενο</div>}
+        {!collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pt-4 pb-1 flex items-center gap-2"><Building2 size={10} /> Επιχείρηση</div>}
         {contentItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
@@ -241,7 +267,8 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="p-3 border-t border-gray-800/50 space-y-1">
-        {bottomItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
+        {!collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pb-1 flex items-center gap-2"><Settings size={10} /> Λογαριασμός</div>}
+        {accountItems.filter(canAccessModule).map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}

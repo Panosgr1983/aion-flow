@@ -1,8 +1,8 @@
 # AION Flow — Πλήρης Τεκμηρίωση Πλατφόρμας
 
-> Έκδοση: v2.0  
-> Τελευταία ενημέρωση: Ιούνιος 2026  
-> Τεχνολογίες: React 19, TypeScript, Vite 7, Supabase, Vercel, Cloudflare Workers
+> Έκδοση: v0.3.2  
+> Τελευταία ενημέρωση: 2026-07-06  
+> Τεχνολογίες: React 18.3, TypeScript, Vite 5, Supabase, Vercel, Cloudflare Workers
 
 ---
 
@@ -26,7 +26,7 @@
 ```
 ┌─────────────────────────────────────────┐
 │            Browser (SPA)                │
-│     React 19 + TanStack Router          │
+│     React 18.3 + TanStack Router          │
 │         Vercel (CDN)                    │
 ├─────────────────────────────────────────┤
 │              Supabase                   │
@@ -299,6 +299,53 @@ Tenant User
   ├─ Feature flags: tenant_features
   └─ Role-based: admin / editor / sales / viewer
 ```
+
+### Super Admin Auto-Assign
+
+Ορισμένα emails αναγνωρίζονται αυτόματα ως super admin:
+
+```typescript
+// src/lib/useTenant.ts
+const KNOWN_SUPER_ADMIN_EMAILS = [
+  'info@aionweb.gr',
+  'choliasmenos.panos@gmail.com',
+];
+```
+
+- Με το login, το `useTenant()` hook θέτει `isSuperAdmin: true` άμεσα
+- Παράλληλα ενημερώνει το profile στη DB για persistence
+- ΔΕΝ καλείται `refreshSession()` (προκαλούσε sign-out)
+
+### Three-Tier Tenant ID System
+
+```typescript
+// TenantState (src/lib/useTenant.ts)
+interface TenantState {
+  isSuperAdmin: boolean;
+  tenantId: string | null;          // ID του tenant του χρήστη
+  effectiveTenantId: string | null; // ΤΙ να χρησιμοποιούν τα components
+  featureMap: Record<string, boolean> | null;
+  tenantStatus: string | null;
+  loading: boolean;
+}
+```
+
+| Πεδίο | SA | μη-SA |
+|-------|----|-------|
+| `tenantId` | `selectedTenantId \|\| null` | `tenant_id` από JWT/profile |
+| `effectiveTenantId` | `selectedTenantId` | `tenant_id \|\| jwtTenantId \|\| null` |
+
+**Κανόνας:** Όλα τα components χρησιμοποιούν `tenant.effectiveTenantId`
+για φιλτράρισμα, uploads και queries. Ποτέ απευθείας `selectedTenantId`.
+
+### Tenant Selection Flow (Super Admin)
+
+1. **Login:** `localStorage.aion_selected_tenant` καθαρίζεται → ο SA
+   βλέπει οθόνη επιλογής tenant
+2. **Επιλογή:** Κλικ σε tenant → `setSelectedTenantId(id)` →
+   `effectiveTenantId = id` → component data loading
+3. **Refresh:** Η επιλογή persistei στο localStorage (ίδιο tenant)
+4. **Logout/Login:** Η επιλογή καθαρίζεται → ξανά οθόνη επιλογής
 
 ### JWT Claims Hook
 

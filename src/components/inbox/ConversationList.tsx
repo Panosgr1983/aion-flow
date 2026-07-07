@@ -191,7 +191,7 @@ export default function ConversationList({ conversations, drafts, selectedId, on
       </div>
 
       {showConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowConfirm(null)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] bg-black/60 backdrop-blur-sm" onClick={() => setShowConfirm(null)}>
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4"><div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center"><AlertTriangle size={20} className="text-amber-400" /></div><h3 className="text-lg font-semibold">Διαγραφή</h3></div>
             <p className="text-sm text-gray-400 mb-4">Είσαι σίγουρος ότι θέλεις να διαγράψεις {selected.size} συνομιλία/ες;</p>

@@ -30,7 +30,11 @@ import UsersManager from '../components/settings/UsersManager';
 import BackupManager from '../components/settings/BackupManager';
 import ObservabilityDashboard from '../components/settings/ObservabilityDashboard';
 import UsageDashboard from '../components/settings/UsageDashboard';
+import SystemDebug from '../components/settings/SystemDebug';
+import PlatformOverview from '../components/settings/PlatformOverview';
+import PlatformGuard from '../components/settings/PlatformGuard';
 import TenantOverview from '../components/dashboard/TenantOverview';
+import TenantSiteManagement from '../components/dashboard/TenantSiteManagement';
 import ErrorBoundary from '../components/dashboard/ErrorBoundary';
 // import EmailSyncManager from '../components/settings/EmailSyncManager';
 
@@ -50,6 +54,7 @@ export default function Dashboard() {
           <ErrorBoundary>
           <Routes>
             <Route index element={<TenantOverview />} />
+            <Route path="platform" element={<PlatformGuard><PlatformOverview /></PlatformGuard>} />
             {isDemoMode && (
               <>
                 <Route path="categories" element={<Categories />} />
@@ -63,8 +68,9 @@ export default function Dashboard() {
             <Route path="settings" element={<DashboardSettings />} />
             <Route path="settings/users" element={<UsersManager />} />
             <Route path="settings/backup" element={<BackupManager />} />
-            <Route path="settings/observability" element={<ObservabilityDashboard />} />
-            <Route path="settings/usage" element={<UsageDashboard />} />
+            <Route path="settings/observability" element={<PlatformGuard><ObservabilityDashboard /></PlatformGuard>} />
+            <Route path="settings/usage" element={<PlatformGuard><UsageDashboard /></PlatformGuard>} />
+            <Route path="settings/system" element={<PlatformGuard><SystemDebug /></PlatformGuard>} />
             {/* <Route path="settings/email-sync" element={<EmailSyncManager />} /> */}
             <Route path="services" element={<Services />} />
             <Route path="blog" element={<BlogPosts />} />
@@ -76,11 +82,12 @@ export default function Dashboard() {
             <Route path="pages" element={<Pages />} />
             <Route path="site-settings" element={<SiteSettingsPanel />} />
             <Route path="analytics" element={<AnalyticsDashboard />} />
-            <Route path="history" element={<History />} />
+            <Route path="history" element={<PlatformGuard><History /></PlatformGuard>} />
             <Route path="contact-messages" element={<Navigate to="/dashboard/inbox" replace />} />
-            <Route path="inbox" element={<InboxPage />} />
-            <Route path="pipeline" element={<PipelinePage />} />
+            <Route path="inbox" element={<PlatformGuard><InboxPage /></PlatformGuard>} />
+            <Route path="pipeline" element={<PlatformGuard><PipelinePage /></PlatformGuard>} />
             <Route path="tenant" element={<TenantOverview />} />
+            <Route path="tenant-site" element={<TenantSiteManagement />} />
           </Routes>
           </ErrorBoundary>
         </main>

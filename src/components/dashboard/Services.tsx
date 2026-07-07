@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
 import { servicesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
+import { uploadCmsAsset } from '../../lib/media';
+import { useTenant } from '../../lib/useTenant';
+import { trackEvent } from '../../lib/analytics';
 import { Service } from '../../types/supabase';
-import { uploadImage } from '../../lib/storage';
 import MediaPicker from './MediaPicker';
 
 const iconOptions = ['user', 'sparkles', 'brain', 'heart', 'users', 'book-open', 'lock', 'shield', 'star', 'globe', 'sun', 'moon', 'leaf', 'feather', 'compass'];
@@ -14,6 +16,7 @@ function slugify(s: string) {
 }
 
 export default function Services() {
+  const { effectiveTenantId } = useTenant();
   const [items, setItems] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -41,9 +44,11 @@ export default function Services() {
     if (editing) {
       const updated = await servicesHelper.update(editing.id, payload);
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
+      trackEvent('cms.service_updated', { service_title: form.title || '', fields_changed: Object.keys(payload) }).catch(() => {});
     } else {
       const created = await servicesHelper.create(payload);
       setItems(prev => [...prev, created]);
+      trackEvent('cms.service_created', { service_title: form.title || '' }).catch(() => {});
     }
 
     // Also persist image_url to site_settings.page_data as fallback (RLS allows this)
@@ -72,9 +77,13 @@ export default function Services() {
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    const deletedItem = items.find(i => i.id === deleteId);
     await servicesHelper.delete(deleteId);
     setItems(prev => prev.filter(i => i.id !== deleteId));
     setDeleteId(null);
+    if (deletedItem) {
+      trackEvent('cms.service_deleted', { service_title: deletedItem.title }).catch(() => {});
+    }
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" /></div>;
@@ -112,7 +121,7 @@ export default function Services() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowModal(false)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] bg-black/60 backdrop-blur-sm" onClick={() => setShowModal(false)}>
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-lg max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold mb-4">{editing ? 'Επεξεργασία' : 'Νέα'} Υπηρεσία</h3>
             <div className="space-y-4">
@@ -126,7 +135,7 @@ export default function Services() {
               <div className="grid grid-cols-3 gap-4">
                 <div><label className="text-xs text-gray-500 block mb-1">Σειρά</label><input type="number" value={form.sort_order} onChange={e => setForm(f => ({ ...f, sort_order: parseInt(e.target.value) || 0 }))} className="input" /></div>
                 <div><label className="text-xs text-gray-500 block mb-1">Ενεργό</label><select value={form.is_active ? 'true' : 'false'} onChange={e => setForm(f => ({ ...f, is_active: e.target.value === 'true' }))} className="input"><option value="true">Ναι</option><option value="false">Όχι</option></select></div>
-                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα Hero (στο background)</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.onchange = async () => { const f = inp.files?.[0]; if (!f) return; setImageUploading(true); try { const url = await uploadImage(f, 'site-images'); setForm(prev => ({ ...prev, image_url: url })); } catch (e) { alert('Αποτυχία'); } finally { setImageUploading(false); } }; inp.click(); }} disabled={imageUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs"><ImageIcon size={14} /></button></div></div>
+                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα Hero (στο background)</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.onchange = async () => { const f = inp.files?.[0]; if (!f) return; setImageUploading(true); try { if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; } const media = await uploadCmsAsset(f, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'service', source: 'editor' }); setForm(prev => ({ ...prev, image_url: media.url })); } catch (e) { alert('Αποτυχία'); } finally { setImageUploading(false); } }; inp.click(); }} disabled={imageUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs"><ImageIcon size={14} /></button></div></div>
               </div>
               <div className="border-t border-gray-800 pt-4"><p className="text-xs text-gray-500 mb-2">SEO</p><div className="grid grid-cols-1 gap-3"><div><label className="text-xs text-gray-500 block mb-1">Meta Title</label><input value={form.meta_title || ''} onChange={e => setForm(f => ({ ...f, meta_title: e.target.value }))} className="input" /></div><div><label className="text-xs text-gray-500 block mb-1">Meta Description</label><textarea value={form.meta_description || ''} onChange={e => setForm(f => ({ ...f, meta_description: e.target.value }))} className="input h-16 resize-none" /></div><div><label className="text-xs text-gray-500 block mb-1">OG Image (social)</label><input value={form.og_image} onChange={e => setForm(f => ({ ...f, og_image: e.target.value }))} className="input" placeholder="π.χ. για sharing σε social media" /></div></div></div>
               <div className="flex justify-end gap-3 pt-2"><button onClick={() => setShowModal(false)} className="btn-secondary">Ακύρωση</button><button onClick={handleSave} disabled={saving} className="btn-primary">{saving ? 'Αποθήκευση...' : 'Αποθήκευση'}</button></div>
@@ -138,7 +147,7 @@ export default function Services() {
       <MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm(f => ({ ...f, image_url: url }))} folder="services" />
 
       {deleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setDeleteId(null)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] bg-black/60 backdrop-blur-sm" onClick={() => setDeleteId(null)}>
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold mb-2">Διαγραφή</h3><p className="text-sm text-gray-400 mb-4">Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτή την υπηρεσία;</p>
             <div className="flex justify-end gap-3"><button onClick={() => setDeleteId(null)} className="btn-secondary">Ακύρωση</button><button onClick={handleDelete} className="px-4 py-2 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-colors text-sm font-medium">Διαγραφή</button></div>

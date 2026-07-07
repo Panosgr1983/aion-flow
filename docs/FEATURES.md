@@ -1,102 +1,98 @@
-# AION CMS — Feature Catalog
+# AION CMS — Features
 
-Κατάλογος όλων των δυνατοτήτων του AION CMS με status ανάπτυξης.
+> Version: **v0.3.2** — δες `VERSIONS.md` για πλήρες changelog.
+> Τι μπορεί να κάνει το AION σήμερα.
 
-## Status Labels
+## Feature Status Legend
 
-| Label | Meaning |
+| Badge | Meaning |
 |-------|---------|
-| ✅ Stable | Production-ready, fully tested |
-| 🔬 Beta | Λειτουργεί, αλλά υπό παρακολούθηση |
-| 🧪 Experimental | Δοκιμαστικό, μη σταθερό API |
-| ⏳ Planned | Σχεδιασμένο για επόμενο release |
-| 💤 Deprecated | Δεν αναπτύσσεται περαιτέρω |
+| ✅ Stable | Production-ready |
+| 🟡 Beta | Working, improvements planned |
+| 🔄 Planned | On roadmap |
+| ❌ Not started | Future |
 
 ---
 
-## Core Platform
+## CMS Core
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Authentication (Supabase Auth) | ✅ Stable | Email/password + JWT hook |
-| Multi-Tenant | ✅ Stable | JWT hook + RLS + withTenant() |
-| User Roles | ✅ Stable | admin, editor, sales, viewer |
-| Super Admin Bypass | ✅ Stable | is_super_admin flag |
-| Feature Flags | ✅ Stable | tenant_features table |
-| Audit Log | ✅ Stable | content_history + restore |
-| Error Boundary | ✅ Stable | Per-component error catching |
-| Telemetry | ✅ Stable | 20 event types via analytics.ts |
-| Usage Dashboard | ✅ Stable | Churn risk, active days, top events |
-
-## CMS
-
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Services Editor | ✅ Stable | CRUD + image + SEO |
-| Blog Posts Editor | ✅ Stable | TipTap editor + OG images |
-| Products Editor | ✅ Stable | Image + book sync |
-| Pages Editor | ✅ Stable | Hero image per page |
-| About Panel | ✅ Stable | Bio, portrait, books |
+| Dashboard | ✅ Stable | Metrics, navigation |
+| Authentication | ✅ Stable | Email/password, JWT, Supabase Auth |
+| Multi-Tenant | ✅ Stable | RLS, `withTenant()`, tenant isolation |
+| Editor Role | ✅ Stable | Full CMS, no `is_super_admin` |
+| Site Settings | ✅ Stable | Logo, favicon, hero, colors, footer, contact |
+| Pages | ✅ Stable | Edit hero + content per route |
+| Blog | ✅ Stable | CRUD, featured image, categories |
+| Products | ✅ Stable | CRUD, images, categories, prices, stock |
+| Services | ✅ Stable | CRUD, images, icons, ordering |
+| Categories | ✅ Stable | CRUD, tree structure |
+| Media Library | 🟡 Beta | Upload, gallery, categories, filters |
+| Media Picker | 🟡 Beta | Inline selection |
+| Orders | ✅ Stable | View, status management |
 | Testimonials | ✅ Stable | CRUD |
-| Credentials | ✅ Stable | CRUD |
 | Core Values | ✅ Stable | CRUD |
-| Site Settings | ✅ Stable | Hero, colors, footer, SEO |
-| Media Library | 🔬 Beta | Upload/gallery/filter — needs asset management refactor |
+| CTA Panel | ✅ Stable | Configurable call-to-action |
+| SEO | ✅ Stable | Meta tags, OG images per page |
+
+## Media Architecture
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| `uploadImage()` (legacy) | ✅ Stable | Legacy, being replaced |
+| `uploadCmsAsset()` | 🟡 Beta | Tenant-aware, metadata, telemetry |
+| Media DB table | 🟡 Beta | Tenant, category, source, tags |
+| Gallery filters | 🟡 Beta | By category, source, tenant |
+| Drag & drop upload | 🔄 Planned | |
+| Bulk select/delete | 🔄 Planned | |
+| Image optimization | 🔄 Planned | Auto-resize, WebP |
+| Usage detection | 🔄 Planned | Warn before delete if in-use |
 
 ## CRM
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Inbox (split view) | ✅ Stable | Threading, search, filters |
-| Compose Window | ✅ Stable | Reply/forward, signatures, attachments |
-| Drafts | ✅ Stable | Auto-save 3s |
-| Sent / Archive / Trash | ✅ Stable | Full folder system |
-| Leads Pipeline | ✅ Stable | 5-stage Kanban, drag & drop |
-| Follow-up Tasks | ✅ Stable | Per-lead task management |
+| Inbox (split view) | ✅ Stable | Threading, search |
+| Lead Pipeline (Kanban) | ✅ Stable | 5 stages, drag & drop |
+| Pipeline automation | 🔄 Planned | Auto-move, triggers |
+| Email Workspace | ✅ Stable | Compose, drafts, signatures |
+| Contact form | 🟡 Beta | Edge function `send-contact-email` |
+| Customers | ✅ Stable | List, details |
+| Credentials | ✅ Stable | Manage credentials |
 
-## Email Workspace
-
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Unified Compose | ✅ Stable | New/reply/forward/draft |
-| Attachments | ✅ Stable | Upload to contact-attachments |
-| Signatures | ✅ Stable | Per-user signatures |
-| Auto-save Drafts | ✅ Stable | 3-second debounce |
-| Cc/Bcc | ✅ Stable | Multi-recipient |
-| Email Accounts | 🔬 Beta | IMAP sync (experimental) |
-
-## Infrastructure
+## Analytics & Dashboard
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Supabase Database | ✅ Stable | PostgreSQL 17 |
-| Supabase Auth | ✅ Stable | JWT + RLS |
-| Supabase Storage | ✅ Stable | S3-compatible |
-| Edge Functions | ✅ Stable | send-contact-email, crm-backup |
-| Backup System | ✅ Stable | Manual/daily/weekly, retention |
-| JWT Hook | ✅ Stable | Custom claims (user_role, is_super_admin) |
-| Git Flow | ✅ Stable | main → develop → release branches |
-| Dev Environment | ✅ Stable | Separate Supabase project |
-| Documentation | ✅ Stable | /docs directory with 14 files |
+| Usage Dashboard | ✅ Stable | Churn risk, active days, top events |
+| Audit Dashboard | ✅ Stable | Timeline, search, CSV export |
+| Real-time stats | 🔄 Planned | |
 
-## Planned (v0.2+)
+## Operations
 
-| Feature | Status | Version |
-|---------|--------|---------|
-| Asset Management (Media Refactor) | ⏳ Planned | v0.2 |
-| Gallery + Categories | ⏳ Planned | v0.2 |
-| Safe Delete (usage detection) | ⏳ Planned | v0.2 |
-| Replace Asset | ⏳ Planned | v0.2 |
-| Asset Search | ⏳ Planned | v0.2 |
-| Image Optimization (WebP) | ⏳ Planned | v0.3 |
-| AI Alt Text Generation | ⏳ Planned | v0.3 |
-| Video Support | ⏳ Planned | v0.3 |
-| PDF / Document Support | ⏳ Planned | v0.3 |
-| Page Builder | ⏳ Planned | v0.3 |
-| Theme System | ⏳ Planned | v0.3 |
-| SEO Manager | ⏳ Planned | v0.3 |
-| Form Builder | ⏳ Planned | v0.3 |
-| Email Campaigns | ⏳ Planned | v0.4 |
-| Pipeline Automation | ⏳ Planned | v0.4 |
-| Subscriptions & Billing | ⏳ Planned | v0.5 |
-| Public Release (v1.0) | ⏳ Planned | v1.0 |
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Backup System | ✅ Stable | Manual/daily/weekly, edge function |
+| Supabase Edge Functions | ✅ Stable | Backups, contact form |
+| Deployment (Vercel) | ✅ Stable | Auto-deploy |
+| Public Site (Cloudflare) | ✅ Stable | Tenant public sites |
+
+## Upcoming
+
+| Feature | Status | Target |
+|---------|--------|--------|
+| Gallery 2.0 (categories, filters, bulk) | 🔄 Planned | v0.2 |
+| Rich Editor inline media | 🔄 Planned | v0.2 |
+| Page Builder (drag & drop) | 🔄 Planned | v0.3 |
+| Theme System | 🔄 Planned | v0.3 |
+| SEO Manager | 🔄 Planned | v0.3 |
+| Form Builder | 🔄 Planned | v0.3 |
+| Email Campaigns | 🔄 Planned | v0.4 |
+| Pipeline Automation | 🔄 Planned | v0.4 |
+| Subscriptions & Billing | 🔄 Planned | v0.5 |
+| Public Release (v1.0) | 🔄 Planned | v1.0 |
+
+---
+
+_Τελευταία ενημέρωση: 2026-06-27_

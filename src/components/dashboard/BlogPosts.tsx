@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
 import { blogPostsHelper } from '../../lib/dataHelpers';
+import { uploadCmsAsset } from '../../lib/media';
+import { useTenant } from '../../lib/useTenant';
+import { trackEvent } from '../../lib/analytics';
 import { BlogPost } from '../../types/supabase';
-import { uploadImage } from '../../lib/storage';
 import RichEditor from './RichEditor';
 import MediaPicker from './MediaPicker';
 
@@ -13,6 +15,7 @@ function slugify(s: string) {
 }
 
 export default function BlogPosts() {
+  const { effectiveTenantId } = useTenant();
   const [items, setItems] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -54,18 +57,27 @@ export default function BlogPosts() {
     if (editing) {
       const updated = await blogPostsHelper.update(editing.id, payload);
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
+      trackEvent('cms.blog_updated', { title: payload.title || '' }).catch(() => {});
     } else {
       const created = await blogPostsHelper.create(payload);
       setItems(prev => [...prev, created]);
+      trackEvent('cms.blog_created', { title: payload.title || '' }).catch(() => {});
+    }
+    if (payload.is_published) {
+      trackEvent('cms.blog_published', { title: payload.title || '', word_count: payload.content ? String(payload.content).length : 0 }).catch(() => {});
     }
     setSaving(false); setShowModal(false);
   };
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    const deletedItem = items.find(i => i.id === deleteId);
     await blogPostsHelper.delete(deleteId);
     setItems(prev => prev.filter(i => i.id !== deleteId));
     setDeleteId(null);
+    if (deletedItem) {
+      trackEvent('cms.blog_deleted', { title: deletedItem.title }).catch(() => {});
+    }
   };
 
   const formatDate = (d: string | null) => d ? new Date(d).toLocaleDateString('el-GR', { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
@@ -117,7 +129,7 @@ export default function BlogPosts() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowModal(false)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] bg-black/60 backdrop-blur-sm" onClick={() => setShowModal(false)}>
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-3xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold mb-4">{editing ? 'Επεξεργασία' : 'Νέο'} Άρθρο</h3>
             <div className="space-y-4">
@@ -127,7 +139,7 @@ export default function BlogPosts() {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div><label className="text-xs text-gray-500 block mb-1">Κατηγορία</label><input value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} className="input" /></div>
-                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα URL</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => heroInputRef.current?.click()} disabled={heroUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs" title="Μεταφόρτωση"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs" title="Από τη βιβλιοθήκη"><ImageIcon size={14} /></button></div><input ref={heroInputRef} type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files?.[0]; if (!file) return; setHeroUploading(true); try { const url = await uploadImage(file); setForm(f => ({ ...f, image_url: url })); } catch (err) { alert('Αποτυχία μεταφόρτωσης'); } finally { setHeroUploading(false); e.target.value = ''; } }} /><MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm(f => ({ ...f, image_url: url }))} folder="blog" /></div>
+                <div><label className="text-xs text-gray-500 block mb-1">Εικόνα URL</label><div className="flex gap-2"><input value={form.image_url} onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))} className="input flex-1" /><button type="button" onClick={() => heroInputRef.current?.click()} disabled={heroUploading} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors disabled:opacity-50 text-xs" title="Μεταφόρτωση"><Upload size={14} /></button><button type="button" onClick={() => setPickerOpen(true)} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-gray-300 transition-colors text-xs" title="Από τη βιβλιοθήκη"><ImageIcon size={14} /></button></div><input ref={heroInputRef} type="file" accept="image/*" className="hidden" onChange={async (e) => { const file = e.target.files?.[0]; if (!file) return; setHeroUploading(true); try { if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; } const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'blog-images', category: 'blog', source: 'editor' }); setForm(f => ({ ...f, image_url: media.url })); } catch (err) { alert('Αποτυχία μεταφόρτωσης'); } finally { setHeroUploading(false); e.target.value = ''; } }} /><MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm(f => ({ ...f, image_url: url }))} folder="blog" /></div>
                 <div><label className="text-xs text-gray-500 block mb-1">Κατάσταση</label><select value={form.is_published ? 'true' : 'false'} onChange={e => setForm(f => ({ ...f, is_published: e.target.value === 'true' }))} className="input"><option value="false">Προσχέδιο</option><option value="true">Δημοσιευμένο</option></select></div>
               </div>
               <div><label className="text-xs text-gray-500 block mb-1">Απόσπασμα</label><textarea value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} className="input h-16 resize-none" /></div>
@@ -140,7 +152,7 @@ export default function BlogPosts() {
       )}
 
       {deleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setDeleteId(null)}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] bg-black/60 backdrop-blur-sm" onClick={() => setDeleteId(null)}>
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold mb-2">Διαγραφή</h3><p className="text-sm text-gray-400 mb-4">Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτό το άρθρο;</p>
             <div className="flex justify-end gap-3"><button onClick={() => setDeleteId(null)} className="btn-secondary">Ακύρωση</button><button onClick={handleDelete} className="px-4 py-2 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-colors text-sm font-medium">Διαγραφή</button></div>

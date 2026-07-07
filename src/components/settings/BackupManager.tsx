@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useCallback, createElement } from 'react';
+import React, { useEffect, useState, useCallback, Fragment, createElement } from 'react';
 import { supabase } from '../../lib/supabase';
-import { RefreshCw, Shield, Clock, HardDrive, CheckCircle, XCircle, Activity, Calendar, Download, Play, Trash2 } from 'lucide-react';
+import { useTenant } from '../../lib/useTenant';
+import { RefreshCw, Shield, Clock, HardDrive, CheckCircle, XCircle, Activity, Calendar, Download, Play, Trash2, Eye, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface BackupJob {
   id: string;
@@ -19,10 +20,17 @@ const TYPE_ICONS: Record<string, any> = { manual: Play, daily: Calendar, weekly:
 const TYPE_COLORS: Record<string, string> = { manual: 'bg-blue-500/10 text-blue-400', daily: 'bg-green-500/10 text-green-400', weekly: 'bg-purple-500/10 text-purple-400' };
 
 export default function BackupManager() {
+  const tenant = useTenant();
   const [jobs, setJobs] = useState<BackupJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState('');
+  const [viewingId, setViewingId] = useState<string | null>(null);
+  const [snapshot, setSnapshot] = useState<Record<string, any[]> | null>(null);
+  const [snapshotLoading, setSnapshotLoading] = useState(false);
+  const [restoring, setRestoring] = useState(false);
+  const [restoreConfirm, setRestoreConfirm] = useState<string | null>(null);
+  const [restoreResult, setRestoreResult] = useState<{ table: string; inserted: number; updated: number }[] | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -33,13 +41,52 @@ export default function BackupManager() {
 
   useEffect(() => { load(); }, [load]);
 
+  const restoreFromSnapshot = async () => {
+    if (!snapshot || !restoreConfirm) return;
+    setRestoring(true);
+    setRestoreResult(null);
+    const results: { table: string; inserted: number; skipped: number }[] = [];
+    for (const [table, rows] of Object.entries(snapshot)) {
+      if (!rows.length) continue;
+      let inserted = 0, skipped = 0;
+      for (const row of rows) {
+        const record = { ...row };
+        const id = record.id;
+        delete record.id;
+        delete record.created_at;
+        delete record.updated_at;
+        const { data: existing } = await supabase.from(table).select('id').eq('id', id).maybeSingle();
+        if (existing) {
+          skipped++;  // υπάρχει ήδη → δεν το πειράζουμε
+        } else {
+          await supabase.from(table).insert({ ...record, id });
+          inserted++;
+        }
+      }
+      results.push({ table, inserted, skipped });
+    }
+    setRestoreResult(results);
+    setRestoring(false);
+    setRestoreConfirm(null);
+  };
+
+  const viewSnapshot = async (backupId: string | null) => {
+    if (!backupId) return;
+    setViewingId(backupId);
+    setSnapshotLoading(true);
+    setSnapshot(null);
+    const { data } = await supabase.from('content_backups').select('snapshot').eq('id', backupId).maybeSingle();
+    if (data) setSnapshot(data.snapshot as Record<string, any[]>);
+    setSnapshotLoading(false);
+  };
+
   const triggerBackup = async (type: 'manual' | 'daily' | 'weekly') => {
     setRunning(true); setError('');
     try {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/crm-backup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}` },
-        body: JSON.stringify({ type }),
+        body: JSON.stringify({ type, tenant_id: tenant.effectiveTenantId }),
       });
       if (!res.ok) {
         const err = await res.json();
@@ -160,11 +207,13 @@ export default function BackupManager() {
                   <th className="text-left py-3 px-4">Έναρξη</th>
                   <th className="text-left py-3 px-4">Διάρκεια</th>
                   <th className="text-left py-3 px-4">Σφάλμα</th>
+                  <th className="text-left py-3 px-4 w-8"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800/50">
                 {jobs.map(j => (
-                  <tr key={j.id} className="hover:bg-gray-900/50 transition-colors">
+                  <Fragment key={j.id}>
+                  <tr className="hover:bg-gray-900/50 transition-colors">
                     <td className="py-3 px-4">
                       <span className={`text-xs px-2 py-0.5 rounded-full ${TYPE_COLORS[j.type]}`}>
                         {TYPE_LABELS[j.type]}
@@ -188,7 +237,78 @@ export default function BackupManager() {
                     <td className="py-3 px-4 text-xs text-red-400 max-w-[200px] truncate">
                       {j.error_message || '—'}
                     </td>
+                    <td className="py-3 px-4">
+                      {j.status === 'success' && j.backup_id && (
+                        <button onClick={() => viewSnapshot(j.backup_id)} className="p-1 hover:bg-gray-800 rounded transition-colors" title="Προβολή backup">
+                          {viewingId === j.backup_id ? <ChevronDown size={14} className="text-blue-400" /> : <Eye size={14} className="text-gray-500 hover:text-blue-400" />}
+                        </button>
+                      )}
+                    </td>
                   </tr>
+                  {viewingId === j.backup_id && snapshot && (
+                    <tr key={`${j.id}-snap`}>
+                      <td colSpan={7} className="px-4 pb-4">
+                        <div className="bg-gray-900/60 rounded-xl p-4 space-y-3">
+                          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                            <HardDrive size={14} className="text-blue-400" />
+                            <span className="font-semibold text-gray-300">Περιεχόμενα Backup</span>
+                            <span className="text-gray-600">· {Object.keys(snapshot).length} πίνακες</span>
+                            <button onClick={() => { const b = new Blob([JSON.stringify(snapshot, null, 2)], { type: 'application/json' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = `backup-${j.type}-${new Date(j.started_at).toISOString().slice(0, 10)}.json`; a.click(); URL.revokeObjectURL(u); }}
+                              className="ml-auto flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors"
+                            ><Download size={12} /> Λήψη JSON</button>
+                            <button onClick={() => setRestoreConfirm(j.backup_id)}
+                              className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors"
+                            ><Play size={12} /> Restore</button>
+                          </div>
+                          {restoreConfirm === j.backup_id && (
+                            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2">
+                              <p className="text-xs text-amber-400 font-medium">Επαναφορά backup;</p>
+                              <p className="text-xs text-gray-400">Θα προστεθούν μόνο όσες εγγραφές λείπουν (έχουν διαγραφεί). Οι υπάρχουσες εγγραφές ΔΕΝ θα αλλαχθούν.</p>
+                              <div className="flex gap-2">
+                                <button onClick={restoreFromSnapshot} disabled={restoring} className="text-xs px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 disabled:opacity-50 transition-colors">
+                                  {restoring ? 'Επαναφορά...' : 'Επιβεβαίωση Επαναφοράς'}
+                                </button>
+                                <button onClick={() => setRestoreConfirm(null)} disabled={restoring} className="text-xs px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 transition-colors">Ακύρωση</button>
+                              </div>
+                            </div>
+                          )}
+                          {restoreResult && (
+                            <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/20">
+                              <p className="text-xs text-green-400 font-medium mb-2">✅ Επαναφορά ολοκληρώθηκε</p>
+                              <div className="space-y-1 text-xs text-gray-400">
+                                {restoreResult.map(r => (
+                                  <div key={r.table} className="flex justify-between"><code className="text-blue-300">{r.table}</code><span>{r.inserted} επαναφορά · {r.skipped} υπήρχαν ήδη</span></div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            {Object.entries(snapshot).map(([table, rows]) => (
+                              <div key={table} className="bg-gray-800/50 rounded-lg p-3">
+                                <div className="flex items-center justify-between mb-1">
+                                  <code className="text-xs text-blue-300">{table}</code>
+                                  <span className="text-[10px] text-gray-500">{rows.length} εγγραφές</span>
+                                </div>
+                                <div className="text-[10px] text-gray-500 font-mono truncate max-h-12 overflow-y-auto">
+                                  {rows.length > 0
+                                    ? rows.slice(0, 3).map((r, i) => (
+                                        <div key={i} className="truncate">
+                                          {Object.entries(r).filter(([k]) => !['snapshot', 'tenant_id', 'created_at', 'updated_at'].includes(k)).slice(0, 3).map(([k, v]) => (
+                                            <span key={k}>{k}={typeof v === 'string' ? (v.length > 30 ? v.slice(0, 30) + '…' : v) : JSON.stringify(v).slice(0, 20)} </span>
+                                          )).reduce((acc: any, x: any, i: number) => i === 0 ? [x] : [...acc, <span key={`s-${i}`} className="text-gray-600"> | </span>, x], [])}
+                                        </div>
+                                      ))
+                                    : <span className="text-gray-600">κενός πίνακας</span>}
+                                  {rows.length > 3 && <div className="text-gray-600 mt-1">… και {rows.length - 3} ακόμα</div>}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  </Fragment>
                 ))}
               </tbody>
             </table>

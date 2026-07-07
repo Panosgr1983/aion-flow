@@ -1,5 +1,5 @@
 // Run: node scripts/apply-storage-rls.mjs
-// Requires DATABASE_URL env var, or uses defaults below
+// Requires DATABASE_URL env var
 import pg from 'pg';
 
 const { Pool } = pg;
@@ -77,7 +77,12 @@ ON storage.objects FOR SELECT TO public
 USING (bucket_id = 'credentials');
 `;
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres:%21%40%23Nikos1983%3F%40%23@db.qhbgptlklsavezxpksao.supabase.co:5432/postgres';
+const DATABASE_URL = process.env.DATABASE_URL;
+if (!DATABASE_URL) {
+  console.error('ERROR: DATABASE_URL environment variable is required.');
+  console.error('Set it to your Supabase project connection string.');
+  process.exit(1);
+}
 
 async function main() {
   console.log('Connecting to database...');

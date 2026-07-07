@@ -123,4 +123,4 @@ YYYYMMDDHHMMSS_description.sql
 Η Dev βάση βρίσκεται στο Supabase project `AION Flow Dev`:
 - **Ref:** bqvjstaqqgxzjojwodwr
 - **Region:** eu-north-1
-- **Password:** DevAion1983!@#
+- **Password:** `<DEV_DB_PASSWORD>` (set via environment variable)

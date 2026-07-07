@@ -1,5 +1,82 @@
 # AION CMS — Changelog
 
+## v0.3.2 (2026-07-06)
+
+### Added
+- **`effectiveTenantId`**: Νέο πεδίο στο `TenantState` που επιστρέφει
+  `selectedTenantId` για SA και `tenant_id` για μη-SA. Όλα τα components
+  χρησιμοποιούν `tenant.effectiveTenantId` αντί για απευθείας
+  `selectedTenantId` από TenantContext.
+- **Super Admin auto-assign**: Τα emails `info@aionweb.gr` και
+  `choliasmenos.panos@gmail.com` αναγνωρίζονται αυτόματα ως super admin
+  στο `useTenant()` hook — χωρίς JWT claims ή DB lookup.
+- **Πλήρης λίστα user permissions** στο `docs/PERMISSIONS.md` με
+  πίνακα δικαιωμάτων ανά ρόλο και περιγραφή του three-tier tenant ID
+  συστήματος.
+
+### Changed
+- **AuthContext**: Στο `SIGNED_IN` event, καθαρίζεται
+  `localStorage.aion_selected_tenant` ώστε κάθε νέο login να ξεκινά χωρίς
+  προεπιλεγμένο tenant.
+- **useTenant**: Προστέθηκε localStorage sync για διόρθωση stale state
+  στο `TenantContext` μετά από νέο login.
+- **6 components** (Services, BlogPosts, Products, SiteSettingsPanel,
+  Pages, AboutPanel): Αλλαγή από `useTenantContext().selectedTenantId`
+  σε `useTenant().effectiveTenantId` για tenant-aware uploads/queries.
+
+### Fixed
+- **Login loop**: Αφαιρέθηκε `supabase.auth.refreshSession()` από το
+  auto-assign profile update — προκαλούσε `SIGNED_OUT` και redirect
+  πίσω στη login σελίδα.
+- **Stale TenantContext state**: Μετά από SIGNED_IN, το TenantContext
+  κρατούσε παλιά τιμή από localStorage — το useTenant τώρα συγχρονίζει
+  με live localStorage τιμή.
+- **Non-super-admin uploads**: Τα components χρησιμοποιούν πλέον
+  `effectiveTenantId` (το tenant_id του χρήστη) αντί για `selectedTenantId`
+  (που ήταν null για μη-SA).
+
+## v0.3.1 (2026-06-29)
+
+### Added
+- **site_logo_footer**: Ξεχωριστό πεδίο για το logo του footer (ανεξάρτητο από header)
+- **site_favicon**: Νέο πεδίο για favicon, με `keepFormat: true` (PNG χωρίς compression)
+- **site-images bucket migration**: Δημιουργία bucket + RLS policies για storage.objects
+- **Media table columns**: Προστέθηκαν `category`, `source`, `metadata`, `path`, `storage_bucket` στην production (έλειπαν από προηγούμενο migration)
+- **beforeLoad prefetch**: Site_settings φορτώνονται στο SSR μέσω `queryClient.prefetchQuery` — όλα τα settings (όνομα, λογότυπο, hero κλπ) διαθέσιμα από τον server
+
+### Changed
+- **Upload system**: Αφαιρέθηκε το auto PNG→JPEG conversion για logos (site_logo, site_logo_footer, site_favicon). Οι υπόλοιπες εικόνες συνεχίζουν κανονικά.
+- **Auto-save μετά από image upload**: Το logo αποθηκεύεται αμέσως μετά το upload — δε χρειάζεται ξεχωριστό Save
+- **dirtyKeys tracking**: Το Save αποθηκεύει ΜΟΝΟ τις ρυθμίσεις που άλλαξαν (όχι και τα 40+ settings)
+- **Parallel save**: `Promise.all` αντί για sequential loop στο handleSave
+
+### Fixed
+- **site_settings category column**: Έλειπε από production DB — το uploadCmsAsset αποτύγχανε με "Could not find the 'category' column of 'media'"
+- **New settings (site_logo_footer, site_favicon)**: Δημιουργούνται INSERT αντί για UPDATE όταν δεν υπάρχουν ακόμα στη DB
+- **setValue για νέα keys**: Προσθέτει entry στο local settings array ακόμα κι αν δεν υπάρχει στη DB
+
+## v0.3.0 (2026-06-28)
+
+### Added
+- **System Health Cockpit**: `/dashboard/settings/system` — debug dashboard with Supabase, JWT, RLS, telemetry status, event count, live analytics source, one-click `trackEvent()` test
+- **Platform Overview**: `/dashboard/platform` — mission control for super admin: active tenants, events today, leads, health, system status
+- **Platform Events**: 6 new event types — `tenant_created`, `tenant_archived`, `tenant_upgraded`, `backup_restored`, `module_installed`, `role_changed`
+- **Capability Guard**: `can()` permission layer above roles — `platform.*` capabilities blocked for non-super-admins
+- **PlatformGuard**: route-level protection for all platform pages (Observability, Usage, System)
+- **Platform → Workspace separation**: sidebar divided into Platform (super admin), Επιχείρηση (tenant workspace), Λογαριασμός (account settings)
+- **Version bump**: 0.0.0 → 0.3.0
+
+### Fixed
+- **TrackEvent tenant_id**: auto-detected from JWT session when not explicitly provided — all CMS/CRM events now store correct tenant_id
+- **AnalyticsDashboard**: hardcoded `TENANT_ID` replaced with `selectedTenantId` from tenant context
+- **UsageDashboard**: now tenant-aware — filters churn risk, activity, top events by selected tenant
+- **analyticsHelper.getDashboardData()**: queries real `orders`, `customers`, `order_items`, `products`, `categories`, `pageviews` instead of `mockAnalytics`
+- **Sidebar**: Usage and System pages now gated to super-admin only (were accessible to any user with `users.manage`)
+
+### Changed
+- **Data Principle #1**: No production dashboard reads mock data. Mock data allowed only for demo mode, local dev, empty state placeholders, and tests.
+- **Permission model**: New `can(permission, role, isSuperAdmin)` function — platform capabilities (`platform.*`) are super-admin-only; business permissions checked by role matrix
+
 ## v0.1.0 (2026-06-27)
 
 ### Added

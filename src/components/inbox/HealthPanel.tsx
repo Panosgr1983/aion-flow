@@ -61,7 +61,7 @@ export default function HealthPanel({ open, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between p-5 border-b border-gray-800">
           <div className="flex items-center gap-2">

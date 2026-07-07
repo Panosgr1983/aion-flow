@@ -14,6 +14,29 @@ npm install
 npm run dev
 ```
 
+### Local Supabase (για migrations & local development)
+
+```bash
+# 1. Install Supabase CLI
+brew install supabase/tap/supabase
+
+# 2. Link to Dev project
+supabase link --project-ref bqvjstaqqgxzjojwodwr
+
+# 3. Set DATABASE_PASSWORD via environment (not hardcoded)
+export DATABASE_PASSWORD=<your_dev_db_password>
+
+# 4. Pull latest migrations
+supabase db pull
+
+# 5. Apply migrations locally
+supabase db push --linked --password "$DATABASE_PASSWORD"
+```
+
+> **Σημείωση:** Το AION έχει built-in mock data (`mockData.ts`).  
+> Η εφαρμογή τρέχει χωρίς Supabase connection — χρήσιμο για UI development.  
+> Για full testing, link to the Dev Supabase project (όχι Production).
+
 ## Development Flow
 
 1. Κάνε fork ή checkout feature branch από `develop`
@@ -31,6 +54,7 @@ npm run dev
 - [ ] Feature flagged if risky
 - [ ] Migration testable (up + down)
 - [ ] Greek comments added
+- [ ] Telemetry event added (αν νέο user-facing action)
 - [ ] CHANGELOG updated
 
 ## Architecture Decision

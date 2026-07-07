@@ -128,3 +128,209 @@ logic. Αυτό δεν ήταν maintainable.
 - ✅ To `media.ts` είναι pure CRUD — testable, replaceable
 - ✅ Η `uploadAsset()` είναι το μόνο σημείο που αλλάζει όταν αλλάζουν requirements
 - ✅ Το `uploadImage()` παραμένει untouched → backward compatible
+
+---
+
+## ADR-005: Modular Architecture (Core + Modules)
+
+**Ημερομηνία:** 2026-06-27
+**Κατάσταση:** Εφαρμοσμένη
+
+### Πλαίσιο
+Κάθε πελάτης έχει διαφορετικές ανάγκες. Ένας φούρνος χρειάζεται διαφορετικά modules από ένα yoga retreat. Δεν μπορεί να υπάρχει "ένα CMS για όλους" γιατί δημιουργεί πολυπλοκότητα, αλλά ούτε και "ξεχωριστό fork για κάθε πελάτη" γιατί σκοτώνει την κερδοφορία.
+
+### Απόφαση
+Το AION είναι ένα repository. Ένας Core Engine. Ένα κοινό SaaS. Η διαφοροποίηση γίνεται μέσω:
+
+```
+Core Platform (πάντα ενεργό):
+  Authentication, Tenants, Users, Media,
+  Pages, SEO, Settings, Analytics, Backups
+
+Modules (ενεργοποιούνται ανά tenant):
+  CRM, Pipeline, Bookings, Email Workspace,
+  Newsletter, Eshop, Gallery, Quotes, Invoices,
+  Loyalty, Memberships
+
+Tenant Configuration:
+  Ποια modules είναι enabled
+  Navigation structure
+  Permissions
+  Default content
+```
+
+### Εναλλακτικές
+| Λύση | Απερρίφθη λόγω |
+|------|---------------|
+| Per-client fork | 40 repos, 40 deployments, 40 bugs — unsustainable |
+| One-size-fits-all | Πολυπλοκότητα, UI overload, confused users |
+
+### Επιπτώσεις
+- ✅ Ένα deployment για όλους τους πελάτες
+- ✅ Feature flags σε επίπεδο tenant
+- ✅ No code duplication across clients
+- ✅ Κάθε bug fix διορθώνεται μία φορά
+- ⚠️ Απαιτεί configuration engine (βλ. ADR-006)
+- ⚠️ Modules must be isolated (no circular dependencies)
+
+---
+
+## ADR-006: Industry Profiles & Configuration Engine
+
+**Ημερομηνία:** 2026-06-27
+**Κατάσταση:** Σχεδιασμένη (σε φάση σχεδιασμού)
+
+### Πλαίσιο
+Το ADR-005 ορίζει modular architecture. Απομένει το ερώτημα: πώς αποφασίζουμε ποια modules ενεργοποιούνται για κάθε νέο πελάτη; Η απάντηση: **Industry Profiles**. Κάθε νέος tenant επιλέγει βιομηχανία και το σύστημα ενεργοποιεί αυτόματα το κατάλληλο σύνολο modules, permissions, navigation και default content.
+
+### Απόφαση
+Το AION θα χρησιμοποιεί Industry Profiles ως configuration layer:
+
+```
+Industry Profile (π.χ. Bakery)
+  └── Enabled Modules: CMS, Gallery, Products, Offers, SEO, Newsletter
+  └── Navigation: custom menu structure
+  └── Permissions: role presets
+  └── Default Content: pages, sections, copy
+  └── Widgets: dashboard cards, analytics
+  └── Blueprint: website structure (σύνδεση με BLUEPRINTS.md)
+
+Παραδείγματα:
+  Bakery      → CMS, Gallery, Products, Offers, SEO, Newsletter
+  Yoga Retreat → CMS, Bookings, Events, Gallery, Testimonials, Email
+  Dentist     → CMS, Appointments, Patients, Services, Reviews, CRM
+  Lawyer      → CMS, Appointments, Documents, Cases, CRM, Invoices
+```
+
+### Εναλλακτικές
+| Λύση | Απερρίφθη λόγω |
+|------|---------------|
+| Χειροκίνητη επιλογή modules | Αργή onboarding, ανθρώπινο λάθος |
+| Hardcoded per tenant | Σπάει το ADR-005 |
+
+### Σχέση με Blueprints
+Τα Industry Profiles συνδέονται με τα Blueprints (βλ. `docs/BLUEPRINTS.md`):
+- **Blueprint:** Ορίζει website page architecture + SEO + copy
+- **Industry Profile:** Ορίζει CMS modules + navigation + permissions + automation
+
+Μαζί παράγουν ολόκληρο το Customer Operating System.
+
+### Επιπτώσεις
+- ✅ Onboarding 10x ταχύτερο
+- ✅ Consistent UX ανά βιομηχανία
+- ✅ Κάθε νέος πελάτης βελτιστοποιεί την πλατφόρμα
+- ✅ Τα blueprints γίνονται από website templates → OS generators
+- ⚠️ Χρειάζεται configuration engine (να διαβάζει profiles και να ενεργοποιεί modules)
+- ⚠️ Χρειάζεται migration για υπάρχοντες tenants
+- **Target:** v0.4
+
+### Implementation Note
+Ο developer δεν γράφει νέο CMS για κάθε πελάτη.
+Το AION φορτώνει διαφορετικό configuration.
+Build once. Configure infinitely.
+
+---
+
+## ADR-007: Three-Tier Tenant ID System (effectiveTenantId)
+
+**Ημερομηνία:** 2026-07-06
+**Κατάσταση:** Εφαρμοσμένη
+
+### Πλαίσιο
+Τα components χρησιμοποιούσαν απευθείας `selectedTenantId` από το
+`TenantContext`, το οποίο ήταν πάντα `null` για μη-super-admin χρήστες.
+Αυτό σήμαινε ότι τα uploads και τα queries αποτύγχαναν για tenant admins,
+editors, sales, και viewers.
+
+### Απόφαση
+Δημιουργήθηκε τριεπίπεδο σύστημα tenant ID στο `useTenant()` hook:
+
+```typescript
+interface TenantState {
+  tenantId: string | null;          // SA: selectedTenantId || null
+                                    // μη-SA: JWT/profile tenant_id
+  // (internal) selectedTenantId    // TenantContext — τι διάλεξε ο SA
+  effectiveTenantId: string | null; // SA: selectedTenantId
+                                    // μη-SA: tenantId
+}
+```
+
+### Alternatives
+| Λύση | Απερρίφθη λόγω |
+|------|---------------|
+| `useTenantContext().selectedTenantId` παντού | Δεν δούλευε για μη-SA |
+| `useTenant().tenantId` σκέτο | Σωστό αλλά μη ξεκάθαρο semantic |
+| Ξεχωριστό `useEffectiveTenantId()` hook | Υπερβολή για μία γραμμή λογικής |
+
+### Επιπτώσεις
+- ✅ Όλα τα components λειτουργούν για SA και μη-SA
+- ✅ Ξεκάθαρο semantic: `effectiveTenantId` = "τι να χρησιμοποιήσω τώρα"
+- ✅ Backward compatible (τα components άλλαξαν σταδιακά)
+- ⚠️ Απαιτείται έλεγχος: κανένα component δεν χρησιμοποιεί raw `selectedTenantId`
+
+---
+
+## ADR-008: Super Admin Auto-Assign χωρίς refreshSession()
+
+**Ημερομηνία:** 2026-07-06
+**Κατάσταση:** Εφαρμοσμένη
+
+### Πλαίσιο
+Οι super admin έπρεπε να πατάνε "self-fix" κουμπί για να ενεργοποιήσουν
+τα δικαιώματά τους. Αυτό ήταν:
+- Μη διαισθητικό (δεν ήξεραν ότι πρέπει να το πατήσουν)
+- Απαιτούσε logout/login μετά
+- Προκαλούσε confusion
+
+### Πρώτη απόπειρα (απέτυχε)
+Προστέθηκε `refreshSession()` μετά το auto-assign profile update.
+**Πρόβλημα:** Το `refreshSession()` προκαλούσε `SIGNED_OUT` event
+(λόγω JWT hook misconfiguration ή rate limiting) και ο χρήστης
+επέστρεφε στη login σελίδα.
+
+### Λύση
+1. Το `useTenant()` hook ελέγχει το email του χρήστη
+2. Αν είναι στα `KNOWN_SUPER_ADMIN_EMAILS`, θέτει `isSuperAdmin: true` άμεσα
+3. Ενημερώνει το profile στη DB χωρίς `await` — fire-and-forget
+4. ΔΕΝ καλείται `refreshSession()` — το profile update είναι για persistence
+
+### Επιπτώσεις
+- ✅ Ο SA βλέπει άμεσα τα δικαιώματά του
+- ✅ Το profile persistei για επόμενα login
+- ✅ ΔΕΝ υπάρχει κίνδυνος sign-out
+- ⚠️ Τα JWT claims δεν ανανεώνονται μέχρι το επόμενο login
+
+---
+
+## ADR-009: Clear tenant selection on SIGNED_IN
+
+**Ημερομηνία:** 2026-07-06
+**Κατάσταση:** Εφαρμοσμένη
+
+### Πλαίσιο
+Ο super admin, μετά από login, έβλεπε αυτόματα τον τελευταίο tenant
+που είχε επιλέξει (από localStorage). Αυτό ήταν ανεπιθύμητο — ο SA
+θέλει να βλέπει ΠΡΩΤΑ την οθόνη επιλογής tenant σε κάθε νέο login.
+
+### Απόφαση
+Στο `SIGNED_IN` event του `AuthContext`, προστέθηκε:
+```ts
+localStorage.removeItem('aion_selected_tenant');
+```
+
+### Sync fix
+Μετά το SIGNED_IN, το `TenantContext` έχει stale state (κρατά την
+παλιά τιμή από localStorage). Το `useTenant()` το ανιχνεύει και το
+διορθώνει:
+```ts
+if (selectedTenantId !== lsTenantId) {
+  setSelectedTenantId(lsTenantId);
+  return; // effect re-runs
+}
+```
+
+### Επιπτώσεις
+- ✅ Login → tenant selection grid πάντα
+- ✅ Refresh στη διάρκεια session → persistence
+- ✅ Logout → cleared
+- ⚠️ Χρειάστηκε sync fix στο useTenant

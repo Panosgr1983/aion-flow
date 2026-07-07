@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Eye, EyeOff, ChevronDown, Upload, Image as ImageIcon } from 'lucide-react';
 import { siteSettingsHelper } from '../../lib/dataHelpers';
-import { uploadImage } from '../../lib/storage';
+import { uploadCmsAsset } from '../../lib/media';
+import { useTenant } from '../../lib/useTenant';
+import { trackEvent } from '../../lib/analytics';
 import MediaPicker from './MediaPicker';
 
 const DEFAULT_PAGES = [
@@ -28,6 +30,7 @@ interface PageContent {
 const emptyPageData = (): PageData => ({ hero_image: '', title: '', subtitle: '' });
 
 export default function Pages() {
+  const { effectiveTenantId } = useTenant();
   const [visibility, setVisibility] = useState<Record<string, boolean>>({});
   const [pageContent, setPageContent] = useState<PageContent>({});
   const [loading, setLoading] = useState(true);
@@ -81,8 +84,9 @@ export default function Pages() {
   const handleImageUpload = async (path: string, file: File) => {
     setUploadingFor(path);
     try {
-      const url = await uploadImage(file, 'site-images');
-      updateContent(path, 'hero_image', url);
+      if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+      const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'page', source: 'editor' });
+      updateContent(path, 'hero_image', media.url);
     } catch {
       alert('Αποτυχία μεταφόρτωσης');
     } finally {
@@ -110,6 +114,7 @@ export default function Pages() {
       }
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
+      trackEvent('cms.page_updated', { page_slug: 'multiple', fields_changed: ['visibility', 'content'] }).catch(() => {});
     } catch {
       alert('Αποτυχία αποθήκευσης');
     } finally {

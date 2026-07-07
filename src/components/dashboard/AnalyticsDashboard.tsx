@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { BarChart3, MousePointerClick, Users, TrendingUp, Globe, Calendar } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { DailyStat } from '../../types/supabase';
+import { useTenantContext } from '../../lib/TenantContext';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const TENANT_ID = '00000000-0000-0000-0000-000000000001';
-
 export default function AnalyticsDashboard() {
+  const { selectedTenantId } = useTenantContext();
   const [stats, setStats] = useState<DailyStat[]>([]);
   const [topPages, setTopPages] = useState<{ path: string; count: number }[]>([]);
   const [totalViews, setTotalViews] = useState(0);
@@ -15,17 +15,19 @@ export default function AnalyticsDashboard() {
 
   useEffect(() => {
     async function load() {
-      const { data: daily } = await supabase
+      let dailyQuery = supabase
         .from('daily_stats')
         .select('*')
-        .eq('tenant_id', TENANT_ID)
         .order('date', { ascending: true })
         .limit(90);
+      if (selectedTenantId) dailyQuery = dailyQuery.eq('tenant_id', selectedTenantId);
+      const { data: daily } = await dailyQuery;
 
-      const { data: raw } = await supabase
+      let pageviewQuery = supabase
         .from('pageviews')
-        .select('path, ip_hash')
-        .eq('tenant_id', TENANT_ID);
+        .select('path, ip_hash');
+      if (selectedTenantId) pageviewQuery = pageviewQuery.eq('tenant_id', selectedTenantId);
+      const { data: raw } = await pageviewQuery;
 
       if (daily) setStats(daily);
       if (raw) {
@@ -45,7 +47,7 @@ export default function AnalyticsDashboard() {
       setLoading(false);
     }
     load();
-  }, []);
+  }, [selectedTenantId]);
 
   const total30 = stats.slice(-30).reduce((s, d) => s + d.pageviews, 0);
 

@@ -1,13 +1,16 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Plus, Search, CreditCard as Edit2, Trash2, X, Package, Star, Upload, Image as ImageIcon, GripVertical } from 'lucide-react';
 import { productsHelper, categoriesHelper, siteSettingsHelper } from '../../lib/dataHelpers';
-import { uploadImage } from '../../lib/storage';
+import { uploadCmsAsset } from '../../lib/media';
+import { useTenant } from '../../lib/useTenant';
+import { trackEvent } from '../../lib/analytics';
 import { Product, Category } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
 
 const emptyForm = { name: '', slug: '', description: '', price: '', compare_price: '', sku: '', stock_quantity: '', category_id: '', image_url: '', is_active: true, is_featured: false, sort_order: 0 };
 
 export default function Products() {
+  const { effectiveTenantId } = useTenant();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -83,9 +86,11 @@ export default function Products() {
     if (editing) {
       const updated = await productsHelper.update(editing.id, payload);
       setProducts(prev => prev.map(p => p.id === editing.id ? updated : p));
+      trackEvent('cms.product_updated', { name: payload.name, fields_changed: Object.keys(payload) }).catch(() => {});
     } else {
       const created = await productsHelper.create(payload);
       setProducts(prev => [created, ...prev]);
+      trackEvent('cms.product_created', { name: payload.name, category: form.category_id || 'none' }).catch(() => {});
     }
     if (form.image_url && form.sku?.startsWith('BOOK-')) {
       try { await syncImageToAboutBooks(form.image_url, form.name); } catch {}
@@ -96,9 +101,13 @@ export default function Products() {
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    const deletedItem = products.find(p => p.id === deleteId);
     await productsHelper.delete(deleteId);
     setProducts(prev => prev.filter(p => p.id !== deleteId));
     setDeleteId(null);
+    if (deletedItem) {
+      trackEvent('cms.product_deleted', { name: deletedItem.name }).catch(() => {});
+    }
   };
 
   const sorted = [...filtered].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
@@ -264,7 +273,7 @@ export default function Products() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/60 backdrop-blur-sm">
           <div className="card w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-semibold">{editing ? 'Επεξεργασία' : 'Νέο'} Προϊόν</h3>
@@ -316,8 +325,9 @@ export default function Products() {
                   if (!file) return;
                   setImageUploading(true);
                   try {
-                    const url = await uploadImage(file, 'site-images');
-                    setForm(f => ({ ...f, image_url: url }));
+                    if (!effectiveTenantId) { alert('Δεν βρέθηκε tenant'); return; }
+                    const media = await uploadCmsAsset(file, { tenantId: effectiveTenantId, bucket: 'site-images', category: 'product', source: 'editor' });
+                    setForm(f => ({ ...f, image_url: media.url }));
                   } catch { alert('Αποτυχία μεταφόρτωσης'); }
                   finally { setImageUploading(false); e.target.value = ''; }
                 }} />
@@ -355,7 +365,7 @@ export default function Products() {
       <MediaPicker open={pickerOpen} onClose={() => setPickerOpen(false)} onSelect={(url) => setForm(f => ({ ...f, image_url: url }))} />
 
       {deleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] p-4 bg-black/60 backdrop-blur-sm">
           <div className="card w-full max-w-sm p-6">
             <h3 className="text-lg font-semibold mb-2">Διαγραφή Προϊόντος</h3>
             <p className="text-gray-400 text-sm mb-6">Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το προϊόν; Η ενέργεια δεν μπορεί να αναιρεθεί.</p>

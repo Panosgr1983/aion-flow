@@ -71,11 +71,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
         const jwtTenantId = (session.user as any).tenant_id as string | undefined;
+        sessionStorage.setItem('aion_login_time', String(Date.now()));
         trackEvent('cms.login', { session_source: 'dashboard' }, {
           userId: session.user.id,
           tenantId: jwtTenantId,
           sessionId: createSessionId(),
         });
+        // Always start with no tenant selected on fresh login
+        localStorage.removeItem('aion_selected_tenant');
       }
       setSession(session);
       setUser(session?.user ?? null);
@@ -117,12 +120,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    const loginTime = sessionStorage.getItem('aion_login_time');
+    const duration = loginTime ? Math.floor((Date.now() - parseInt(loginTime)) / 1000) : 0;
+    try {
+      await trackEvent('cms.logout', { session_duration_seconds: duration }, {
+        userId: user?.id,
+        tenantId: (user as any)?.tenant_id,
+      });
+    } catch {}
     if (isDemoMode) {
       localStorage.removeItem('aion_demo_auth');
       setUser(null);
       return;
     }
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch {}
+    setUser(null);
+    setSession(null);
+    localStorage.removeItem('aion_selected_tenant');
   };
 
   return (

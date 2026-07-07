@@ -2,6 +2,15 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { TenantProvider } from './lib/TenantContext';
 import LandingPage from './pages/LandingPage';
+import LandingPageNew from './pages/LandingPageNew';
+import LandingPageNewV2 from './pages/LandingPageNewV2';
+import LandingPageNewV3 from './pages/LandingPageNewV3';
+import LandingPageNewV4 from './pages/LandingPageNewV4';
+import LandingPageNewV5 from './pages/LandingPageNewV5';
+import LandingPageNewV6 from './pages/LandingPageNewV6';
+import LandingPageNewDeathstar from './pages/LandingPageNewDeathstar';
+import LandingPageNewSales from './pages/LandingPageNewSales';
+import VersionsList from './pages/VersionsList';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import Dashboard from './pages/Dashboard';
@@ -28,7 +37,17 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<LandingPageNewDeathstar />} />
+      <Route path="/original" element={<LandingPage />} />
+      <Route path="/new" element={<LandingPageNew />} />
+      <Route path="/new-v2" element={<LandingPageNewV2 />} />
+      <Route path="/new-v3" element={<LandingPageNewV3 />} />
+      <Route path="/new-v4" element={<LandingPageNewV4 />} />
+      <Route path="/new-v5" element={<LandingPageNewV5 />} />
+      <Route path="/new-v6" element={<LandingPageNewV6 />} />
+      <Route path="/new-version-deathstar" element={<LandingPageNewDeathstar />} />
+      <Route path="/new-sales" element={<LandingPageNewSales />} />
+      <Route path="/versions" element={<VersionsList />} />
       <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
       <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <SignUpPage />} />
       <Route

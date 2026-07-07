@@ -19,10 +19,12 @@ Deno.serve(async (req) => {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
   try {
-    const { type = 'manual' } = await req.json().catch(() => ({ type: 'manual' }));
+    const { type = 'manual', tenant_id } = await req.json().catch(() => ({ type: 'manual' }));
     if (!['manual', 'daily', 'weekly'].includes(type)) {
       return new Response(JSON.stringify({ error: 'Invalid type' }), { status: 400, headers: CORS_HEADERS });
     }
+
+    const tenantId = tenant_id || '00000000-0000-0000-0000-000000000001';
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -77,15 +79,16 @@ Deno.serve(async (req) => {
         .update({ status: 'success', backup_id: backup.id, size_bytes: totalBytes, completed_at: new Date().toISOString() })
         .eq('id', jobId);
 
-      // Track usage event
-      await supabase.from('usage_events').insert({
+      // Track usage event (fire-and-forget)
+      // Track usage event (fire-and-forget)
+      supabase.from('usage_events').insert({
         tenant_id: tenantId,
         user_id: userId,
         event_name: 'platform.backup_created',
         event_version: 1,
         metadata: { size_mb: Math.round(totalBytes / 1024 / 1024), status: 'success' },
         source: 'worker',
-      }).catch(e => console.error('Usage event error:', e));
+      }).then(undefined, e => console.error('Usage event error:', e));
 
       // Retention cleanup
       const retentionDays = RETENTION[type].days;
@@ -115,14 +118,14 @@ Deno.serve(async (req) => {
         .update({ status: 'failed', error_message: err.message, completed_at: new Date().toISOString() })
         .eq('id', jobId);
 
-      await supabase.from('usage_events').insert({
+      supabase.from('usage_events').insert({
         tenant_id: tenantId,
         user_id: userId,
         event_name: 'platform.backup_created',
         event_version: 1,
         metadata: { size_mb: 0, status: 'failed', error: err.message },
         source: 'worker',
-      }).catch(() => {});
+      }).then(undefined, () => {});
 
       return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS_HEADERS });
     }

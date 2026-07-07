@@ -58,13 +58,13 @@ git merge release/v0.2
 
 ### Apply migrations to DEV
 ```bash
-supabase db push --linked --password "DevPass123!"
+supabase db push --linked --password "$DEV_DB_PASSWORD"
 ```
 
 ### Apply migrations to PROD
 ```bash
 supabase link --project-ref PROD_REF
-supabase db push --linked --password "ProdPass!"
+supabase db push --linked --password "$PROD_DB_PASSWORD"
 ```
 
 ## Environment Variables
