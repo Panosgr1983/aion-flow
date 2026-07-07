@@ -349,33 +349,30 @@ export default function SiteSettingsPanel() {
               {renderField('contact_hero_title', 'Title')}
               {renderField('contact_hero_subtitle', 'Subtitle', { rows: 2 })}
 
-              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Contact Details</h3>
+              <div className="bg-blue-950/40 border border-blue-900/30 rounded-lg p-4 mb-6">
+                <p className="text-xs text-blue-400">
+                  <strong>➡️ Τα στοιχεία επικοινωνίας</strong> (τηλέφωνο, email, διεύθυνση, social, maps, ωράριο)
+                  μεταφέρθηκαν στο <strong>Business Information</strong> panel για κεντρική διαχείριση.
+                </p>
+              </div>
+
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Contact Details (Labels Only)</h3>
               <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_phone_label', 'Phone Card Label')}
-                {renderField('contact_phone_hint', 'Phone Hint')}
+                {renderField('contact_phone_note', 'Phone Note')}
               </div>
-              {renderField('contact_phone_note', 'Phone Note')}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_address_label', 'Address Label')}
                 {renderField('contact_address_hint', 'Address Hint')}
               </div>
-              {renderField('contact_address_line_1', 'Address Line 1')}
-              {renderField('contact_address_line_2', 'Address Line 2')}
               {renderField('contact_hours_label', 'Hours Label')}
-              {renderField('contact_hours_line_1', 'Hours Line 1')}
-              {renderField('contact_hours_line_2', 'Hours Line 2')}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_social_label', 'Social Label')}
                 {renderField('contact_social_facebook_url', 'Facebook URL', { isUrl: true })}
               </div>
-              {renderField('contact_map_embed_url', 'Google Maps Embed URL', { isUrl: true, rows: 3 })}
               {renderField('contact_map_title', 'Map Iframe Title')}
               {renderField('contact_open_maps_text', '"Άνοιγμα στους Χάρτες" Link Text')}
               {renderField('contact_form_heading', 'Form Heading')}
-              <div className="grid grid-cols-2 gap-4">
-                {renderField('contact_address_area', 'Περιοχή (π.χ. Νέο Ηράκλειο)')}
-                {renderField('contact_address_postal_code', 'Τ.Κ. (π.χ. 14121)')}
-              </div>
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Email Configuration</h3>
               {renderField('contact_email', 'Email λήψης (στο email αυτό θα στέλνονται τα μηνύματα)')}
 
@@ -429,22 +426,24 @@ export default function SiteSettingsPanel() {
               {renderField('site_tagline', 'Slogan / Περιγραφή', { rows: 2 })}
               {renderField('footer_copyright', 'Copyright Text')}
 
-              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Στοιχεία Επικοινωνίας</h3>
+              <div className="bg-blue-950/40 border border-blue-900/30 rounded-lg p-4 mb-6">
+                <p className="text-xs text-blue-400">
+                  <strong>➡️ Τα στοιχεία επικοινωνίας</strong> (τηλέφωνο, email, διεύθυνση, social)
+                  μεταφέρθηκαν στο <strong>Business Information</strong> panel.
+                  Εδώ έμειναν μόνο οι ετικέτες (labels).
+                </p>
+              </div>
+
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Στοιχεία Επικοινωνίας (Ετικέτες)</h3>
               <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_email_label', 'Ετικέτα Email')}
-                {renderField('contact_email', 'Email')}
-              </div>
-              <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_phone_label', 'Ετικέτα Τηλεφώνου')}
-                {renderField('contact_phone_hint', 'Τηλέφωνο')}
               </div>
               {renderField('contact_phone_note', 'Σημείωση Τηλεφώνου')}
               <div className="grid grid-cols-2 gap-4">
-                {renderField('contact_address_label', 'Διεύθυνση (οδός, αριθμός)')}
-                {renderField('contact_address_hint', 'Διεύθυνση (περιοχή)')}
+                {renderField('contact_address_label', 'Ετικέτα Διεύθυνσης')}
+                {renderField('contact_address_hint', 'Υπόδειξη Διεύθυνσης')}
               </div>
-              {renderField('contact_address_line_1', 'Διεύθυνση Line 1')}
-              {renderField('contact_address_line_2', 'Διεύθυνση Line 2')}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('contact_social_label', 'Social Label')}
                 {renderField('contact_social_facebook_url', 'Facebook URL', { isUrl: true })}

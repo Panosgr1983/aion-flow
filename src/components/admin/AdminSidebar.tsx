@@ -49,6 +49,7 @@ const contentItems: NavItem[] = [
   { path: '/dashboard/about', icon: User, label: 'Σχετικά', permission: 'cms.edit' },
   { path: '/dashboard/cta', icon: Globe, label: 'Κουμπιά CTA', permission: 'cms.edit' },
   { path: '/dashboard/pages', icon: Eye, label: 'Σελίδες', permission: 'cms.edit' },
+  { path: '/dashboard/business-info', icon: Building2, label: 'Business Info', permission: 'cms.edit' },
   { path: '/dashboard/site-settings', icon: Settings, label: 'Ρυθμίσεις Site', permission: 'settings.all' },
 ];
 
