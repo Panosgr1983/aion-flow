@@ -3,7 +3,8 @@ export type ArtistStatus = 'draft' | 'review' | 'published';
 export interface Biographies {
   id: string;
   tenant_id: string;
-  content: string;
+  professional_type: string;
+  content: any;
   short_bio: string;
   birth_year: string;
   birth_place: string;

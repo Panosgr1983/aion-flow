@@ -186,6 +186,30 @@
 ### Build
 - ✅ Zero errors, 2,380 modules transformed, 1.7 MB bundle
 
+## v0.5.0-dev (2026-07-08) — Week 1: Biography CRUD
+
+### Added
+- **Biography CRUD panel** (`src/modules/portfolio/pages/BiographyCRUD.tsx`):
+  - Full form: professional_type, short_bio, birth_year, birth_place, pseudonyms
+  - RichEditor for bio content (TipTap)
+  - MediaPicker for profile portrait
+  - Status selector (draft/review/published)
+  - Verified toggle
+  - Upsert pattern (single row per tenant)
+  - Archive button (soft delete)
+  - Validation (4-digit birth year)
+  - History logging (content_history)
+  - Empty state + error state + loading state
+  - Has-changes tracking for save button state
+- **professional_type column** on `biographies` table (migration applied)
+- **Biographies type** updated with professional_type field
+
+### Changed
+- Portfolio manifest: biography routes use BiographyCRUD (was read-only BiographyPanel)
+
+### Migration
+- `ALTER TABLE biographies ADD COLUMN professional_type TEXT DEFAULT 'actor'` (applied to production)
+
 ## v0.4.1-dev (2026-07-08) — Registry Stabilization
 
 ### Added

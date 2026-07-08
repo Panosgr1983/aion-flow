@@ -14,7 +14,7 @@
 */
 
 import ModuleRegistry from '../../lib/ModuleRegistry';
-import BiographyPanel from './pages/BiographyPanel';
+import BiographyCRUD from './pages/BiographyCRUD';
 import FilmographyPanel from './pages/FilmographyPanel';
 import TelevisionPanel from './pages/TelevisionPanel';
 import TheatrePanel from './pages/TheatrePanel';
@@ -30,8 +30,8 @@ ModuleRegistry.register({
   description: 'Διαχείριση ψηφιακού χαρτοφυλακίου για δημιουργικά επαγγέλματα',
   featureFlag: 'portfolio_module',
   routes: [
-    { path: '/dashboard/portfolio', element: BiographyPanel, label: 'Βιογραφικό', sidebar: true, permission: 'portfolio.view' },
-    { path: '/dashboard/portfolio/bio', element: BiographyPanel, label: 'Βιογραφικό', sidebar: true, permission: 'portfolio.view' },
+    { path: '/dashboard/portfolio', element: BiographyCRUD, label: 'Βιογραφικό', sidebar: true, permission: 'portfolio.view' },
+    { path: '/dashboard/portfolio/bio', element: BiographyCRUD, label: 'Βιογραφικό', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/films', element: FilmographyPanel, label: 'Ταινίες', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/tv', element: TelevisionPanel, label: 'Τηλεόραση', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/theatre', element: TheatrePanel, label: 'Θέατρο', sidebar: true, permission: 'portfolio.view' },
