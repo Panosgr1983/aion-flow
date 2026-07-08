@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Save, RefreshCw, Upload, Plus, Trash2, GripVertical } from 'lucide-react';
-import { siteSettingsHelper, FOLDER_OPTIONS } from '../../lib/dataHelpers';
+import { siteSettingsHelper, blogPostsHelper, FOLDER_OPTIONS } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenant } from '../../lib/useTenant';
 import { SiteSetting } from '../../types/supabase';
@@ -61,6 +61,7 @@ export default function SiteSettingsPanel() {
   const [editFooterNav, setEditFooterNav] = useState<NavLink[]>([]);
   const [editBio, setEditBio] = useState<string[]>([]);
   const [pickerTarget, setPickerTarget] = useState<string | null>(null);
+  const [blogCategories, setBlogCategories] = useState<string[]>([]);
   const dirtyKeys = useRef(new Set<string>());
 
   const loadSettings = async () => {
@@ -76,6 +77,13 @@ export default function SiteSettingsPanel() {
   };
 
   useEffect(() => { loadSettings(); }, []);
+
+  useEffect(() => {
+    blogPostsHelper.getAll().then(posts => {
+      const cats = [...new Set(posts.map(p => p.category).filter(Boolean) as string[])];
+      setBlogCategories(cats.sort());
+    }).catch(() => {});
+  }, []);
 
   const getValue = (key: string): string => {
     const s = settings.find(s => s.key === key);
@@ -322,8 +330,34 @@ export default function SiteSettingsPanel() {
                 {renderField('seminar_section_cta_link', '"View All" Link URL')}
               </div>
               <div className="grid grid-cols-2 gap-4">
-                {renderField('seminar_section_count', 'Number of articles (2 or 3)')}
-                {renderField('seminar_section_category', 'Blog Category Filter')}
+                <div>
+                  <label className="text-xs text-gray-500 block mb-1.5">Number of articles</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={getValue('seminar_section_count') || '2'}
+                    onChange={e => setValue('seminar_section_count', e.target.value)}
+                    className="input flex-1 w-full"
+                  />
+                  <div className="text-[10px] text-gray-700 mt-0.5 font-mono">seminar_section_count</div>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 block mb-1.5">Blog Category Filter</label>
+                  <select
+                    value={getValue('seminar_section_category') || 'ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ'}
+                    onChange={e => setValue('seminar_section_category', e.target.value)}
+                    className="input flex-1 w-full"
+                  >
+                    {blogCategories.length === 0 && (
+                      <option value="ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ">ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ</option>
+                    )}
+                    {blogCategories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                  <div className="text-[10px] text-gray-700 mt-0.5 font-mono">seminar_section_category</div>
+                </div>
               </div>
 
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Other Sections</h3>
