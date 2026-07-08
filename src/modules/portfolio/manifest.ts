@@ -20,8 +20,8 @@ import TelevisionCRUD from './pages/TelevisionCRUD';
 import TheatreCRUD from './pages/TheatreCRUD';
 import TimelineCRUD from './pages/TimelineCRUD';
 import GalleryCRUD from './pages/GalleryCRUD';
-import PressPanel from './pages/PressPanel';
-import ShowreelPanel from './pages/ShowreelPanel';
+import PressCRUD from './pages/PressCRUD';
+import ShowreelCRUD from './pages/ShowreelCRUD';
 
 ModuleRegistry.register({
   name: 'portfolio',
@@ -37,8 +37,8 @@ ModuleRegistry.register({
     { path: '/dashboard/portfolio/theatre', element: TheatreCRUD, label: 'Θέατρο', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/timeline', element: TimelineCRUD, label: 'Χρονολόγιο', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/gallery', element: GalleryCRUD, label: 'Gallery', sidebar: true, permission: 'portfolio.view' },
-    { path: '/dashboard/portfolio/press', element: PressPanel, label: 'Press', sidebar: true, permission: 'portfolio.view' },
-    { path: '/dashboard/portfolio/showreels', element: ShowreelPanel, label: 'Showreels', sidebar: true, permission: 'portfolio.view' },
+    { path: '/dashboard/portfolio/press', element: PressCRUD, label: 'Press', sidebar: true, permission: 'portfolio.view' },
+    { path: '/dashboard/portfolio/showreels', element: ShowreelCRUD, label: 'Showreels', sidebar: true, permission: 'portfolio.view' },
   ],
   sidebar: {
     label: 'Χαρτοφυλάκιο',

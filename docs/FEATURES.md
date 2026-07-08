@@ -106,8 +106,8 @@
 | Theatre editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
 | Timeline editor | ✅ Stable | Full CRUD: categories, year/month, status, preview |
 | Gallery editor | ✅ Stable | Full CRUD: grid, lightbox, metadata, MediaPicker |
-| Press viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
-| Showreels viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Press editor | ✅ Stable | Full CRUD: body, featured, MediaPicker, history |
+| Showreels editor | ✅ Stable | Full CRUD: video, platform, duration, thumbnail, history |
 | Portfolio DB tables | 🟡 Beta | 8 tables + media extension (actor-specific schema) |
 | Portfolio sidebar group | 🟡 Beta | Registry-driven, conditional on feature flag |
 | Architecture Patterns | ✅ Stable | 12 patterns in `docs/patterns/` |

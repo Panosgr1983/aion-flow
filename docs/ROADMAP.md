@@ -131,8 +131,8 @@
 - [ ] **Panel 4: Gallery CRUD** — media linking + metadata editor
 - [ ] **Panel 5: Television CRUD** — simple CRUD (same pattern)
 - [ ] **Panel 6: Theatre CRUD** — simple CRUD (same pattern)
-- [ ] **Panel 7: Press CRUD** — minimal fields
-- [ ] **Panel 8: Showreels CRUD** — minimal fields
+- [x] **Panel 7: Press CRUD** — full fields, body, featured, MediaPicker, history
+- [x] **Panel 8: Showreels CRUD** — video URL, platform, duration, thumbnail, status, history
 
 ### Per-panel deliverables
 
