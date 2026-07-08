@@ -15,7 +15,7 @@
 
 import ModuleRegistry from '../../lib/ModuleRegistry';
 import BiographyCRUD from './pages/BiographyCRUD';
-import FilmographyPanel from './pages/FilmographyPanel';
+import FilmographyCRUD from './pages/FilmographyCRUD';
 import TelevisionPanel from './pages/TelevisionPanel';
 import TheatrePanel from './pages/TheatrePanel';
 import TimelinePanel from './pages/TimelinePanel';
@@ -32,7 +32,7 @@ ModuleRegistry.register({
   routes: [
     { path: '/dashboard/portfolio', element: BiographyCRUD, label: 'Βιογραφικό', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/bio', element: BiographyCRUD, label: 'Βιογραφικό', sidebar: true, permission: 'portfolio.view' },
-    { path: '/dashboard/portfolio/films', element: FilmographyPanel, label: 'Ταινίες', sidebar: true, permission: 'portfolio.view' },
+    { path: '/dashboard/portfolio/films', element: FilmographyCRUD, label: 'Ταινίες', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/tv', element: TelevisionPanel, label: 'Τηλεόραση', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/theatre', element: TheatrePanel, label: 'Θέατρο', sidebar: true, permission: 'portfolio.view' },
     { path: '/dashboard/portfolio/timeline', element: TimelinePanel, label: 'Χρονολόγιο', sidebar: true, permission: 'portfolio.view' },

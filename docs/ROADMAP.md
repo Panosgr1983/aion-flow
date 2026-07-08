@@ -123,7 +123,8 @@
 ### Sequence (one panel at a time)
 
 - [x] **Panel 1: Biography CRUD** — RichEditor + MediaPicker + upsert + history
-- [ ] **Panel 2: Filmography CRUD** — entries CRUD + media + sorting
+- [x] **Panel 2: Filmography CRUD** — entries CRUD + media + sorting + history
+- [ ] **Panel 3: Timeline CRUD** — category + drag & drop
 - [ ] **Panel 3: Timeline CRUD** — category + drag & drop
 - [ ] **Panel 4: Gallery CRUD** — media linking + metadata editor
 - [ ] **Panel 5: Television CRUD** — simple CRUD (same pattern)

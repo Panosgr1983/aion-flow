@@ -210,6 +210,27 @@
 ### Migration
 - `ALTER TABLE biographies ADD COLUMN professional_type TEXT DEFAULT 'actor'` (applied to production)
 
+## v0.5.1-dev (2026-07-08) — Week 2: Filmography CRUD
+
+### Added
+- **Filmography CRUD panel** (`src/modules/portfolio/pages/FilmographyCRUD.tsx`):
+  - List view with all entries, status badges, edit/delete actions
+  - Create/edit form: title, title_en, year, genre, director, duration, role, sort_order
+  - RichEditor for description
+  - MediaPicker for poster image
+  - IMDb + Trailer URL fields with validation
+  - Status selector (draft/review/published) + verified toggle
+  - Hard delete with confirmation dialog
+  - History logging on create/update/delete
+  - Empty state with "Προσθέστε την πρώτη" action
+  - Sort order field (numeric)
+
+### Changed
+- Portfolio manifest: films route uses FilmographyCRUD (was read-only FilmographyPanel)
+
+### Build
+- ✅ Zero errors, 2,382 modules
+
 ## v0.4.1-dev (2026-07-08) — Registry Stabilization
 
 ### Added

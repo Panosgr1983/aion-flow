@@ -101,7 +101,7 @@
 | Module Registry | ✅ Stable | `ModuleRegistry.ts` — self-registering modules |
 | Module Manifest | ✅ Stable | `portfolio/manifest.ts` — routes, sidebar, permissions |
 | Biography editor | ✅ Stable | Full CRUD: RichEditor, MediaPicker, upsert, history |
-| Filmography viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Filmography editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
 | Television viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Theatre viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Timeline viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
