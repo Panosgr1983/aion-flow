@@ -123,4 +123,85 @@ UX θα βελτιωθεί με skeleton loaders.
 
 ---
 
-_Τελευταία ενημέρωση: 2026-06-27_
+_Τελευταία ενημέρωση: 2026-06-27
+
+---
+
+### #9. VIDEO_FILMOGRAPHY constant in dionisis-xanthos is DEPRECATED
+
+**Περιγραφή:**  
+Η σταθερά `VIDEO_FILMOGRAPHY` (hardcoded array of video objects) στο dionisis-xanthos πρέπει να μεταναστεύσει σε DB table (media with media_type='video').
+
+**Why it exists:** Προσωρινή λύση για γρήγορο launch.  
+**Wanted:** DB-driven filmography with CMS UI.  
+**Blocked by:** Artist Module (KNOWN_ISSUES #7), media_type column (KNOWN_ISSUES #9).  
+**Effort:** Medium.
+
+---
+
+### #10. media table needs media_type column for artist module
+
+**Περιγραφή:**  
+Το `media` table χρειάζεται ένα `media_type` column ('photo', 'video', 'document', 'audio') για να υποστηρίξει τον Artist Module.
+
+**Why it exists:** Το αρχικό schema δεν προέβλεπε κατηγοριοποίηση media.  
+**Wanted:** ALTER TABLE migration + CMS UI filter.  
+**Blocked by:** Nothing — DB migration.  
+**Effort:** Small (migration) + Medium (UI).
+
+---
+
+### #11. No reusable Artist Module in aion-flow yet
+
+**Περιγραφή:**  
+Τα components του dionisis-xanthos (ArtistList, ArtistDetail, ArtistFilmography, ArtistBiography, ArtistMediaGallery) ζουν μόνο στο reference project. Δεν υπάρχει portable module στο aion-flow.
+
+**Why it exists:** Το aion-flow εστίασε σε CMS editors πρώτα.  
+**Wanted:** `src/modules/artist/` with reusable components + routes.  
+**Blocked by:** KNOWN_ISSUES #7.  
+**Effort:** Large.
+
+---
+
+### #12. 44 hardcoded content strings in dionisis-xanthos need CMS migration
+
+**Περιγραφή:**  
+Στο dionisis-xanthos εντοπίστηκαν 44 hardcoded strings (hero titles, section headings, CTAs, bio text, labels) που πρέπει να μεταφερθούν σε DB.
+
+**Why it exists:** Αρχική ανάπτυξη με content hardcoded για ταχύτητα.  
+**Wanted:** Πλήρης content audit → DB migration → CMS UI.  
+**Blocked by:** —  
+**Effort:** Large (content audit + migration + UI per field).
+
+---
+
+### #13. Timeline component has unused `isLeft` variable
+
+**Περιγραφή:**  
+Στο Timeline component του dionisis-xanthos, η μεταβλητή `isLeft` ορίζεται αλλά δεν χρησιμοποιείται (πιθανό legacy από alternating layout).
+
+**Why it exists:** Αλλαγή design κατά την ανάπτυξη χωρίς cleanup.  
+**Wanted:** Αφαίρεση dead code.  
+**Effort:** Trivial.
+
+---
+
+### #14. GalleryToolbar has unnecessary `justify-between` with single child
+
+**Περιγραφή:**  
+Στο GalleryToolbar, το `justify-between` class εφαρμόζεται σε container που έχει μόνο ένα child, καθιστώντας το layout class περιττό.
+
+**Why it exists:** Πιθανό legacy από toolbar που είχε περισσότερα elements.  
+**Wanted:** Αφαίρεση περιττού class.  
+**Effort:** Trivial.
+
+---
+
+### #15. GalleryToolbar.tsx unused/unnecessary classes
+
+**Περιγραφή:**  
+Το GalleryToolbar.tsx περιέχει επιπλέον classes που δεν εξυπηρετούν κανένα σκοπό μετά από design iterations.
+
+**Why it exists:** Accumulated cruft από επαναλαμβανόμενες αλλαγές UI.  
+**Wanted:** Καθαρισμός και simplification.  
+**Effort:** Trivial (5 min)._

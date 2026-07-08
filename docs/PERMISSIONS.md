@@ -239,3 +239,64 @@ choliasmenos.panos@gmail.com. Χρησιμοποιείται μόνο αν η au
 - JWT claims (`user_role`, `is_super_admin`)
 - RLS access status
 - Analytics source (live vs mock)
+
+## 9. Artist Module (Feature-Gated)
+
+### 9.1 Permission Entry
+
+| Capability | admin | editor | sales | viewer | super_admin |
+|------------|-------|--------|-------|--------|-------------|
+| `artist_module` | ✅ | ❌ | ❌ | ❌ | ✅ (bypass) |
+
+### 9.2 Two-Layer Gating
+
+The artist module is gated at **two independent layers**:
+
+1. **Database layer — `tenant_features` table**: Each tenant row has a `tenant_features.features` JSONB column. The module is only visible if `features ? 'artist_module'` resolves to `true` for that tenant.
+2. **Runtime layer — `canAccess()`**: The capability check `can('artist_module', role, isSuperAdmin)` must also pass. This prevents non-admin roles from accessing the module even if the feature flag is enabled.
+
+```typescript
+// Both conditions must be true:
+const featureEnabled = featureMap?.artist_module === true;
+const hasPermission = can('artist_module', role, isSuperAdmin);
+```
+
+### 9.3 Tenant Industry Filter
+
+Only tenants matching specific criteria see the artist module:
+
+- Tenants with `industry = 'artist'` in the `tenants` table are **auto-eligible** — the module appears in their sidebar without manual flagging.
+- Tenants with other industries can also be granted access by a Super Admin via the **explicit feature flag** toggle in CMS → Settings → Features.
+- The sidebar `canAccessModule()` function checks both `industry` and `featureMap`:
+
+```typescript
+// src/lib/permissions.ts (conceptual)
+const ARTIST_INDUSTRIES = ['artist'];
+const isArtistIndustry = ARTIST_INDUSTRIES.includes(tenantIndustry);
+const hasArtistFlag = featureMap?.artist_module === true;
+const showArtistModule = (isArtistIndustry || hasArtistFlag) && hasPermission;
+```
+
+### 9.4 Super Admin Bypass
+
+Super Admins **always** see the artist module regardless of:
+
+- `tenant_features` flags
+- `industry` field value
+- Tenant selection
+
+```typescript
+// canAccess('artist_module') for SA returns true without DB checks
+if (isSuperAdmin) return true;
+```
+
+This ensures the SA can access, preview, and debug artist features for any tenant from the Platform perspective.
+
+### 9.5 Adding a New Feature-Gated Module
+
+1. Add permission string to `Permission` type in `src/lib/permissions.ts`
+2. Add entry to `PERMISSION_MATRIX` for desired roles
+3. Add feature key to `FEATURE_MODULES` list in sidebar config
+4. Use `canAccess('module_name')` in sidebar visibility logic
+5. Add industry auto-eligibility logic if applicable
+6. Create the feature toggle UI in CMS → Settings → Features

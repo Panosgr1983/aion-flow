@@ -18,7 +18,7 @@
 ## Stack
 
 ```
-Frontend:    React 18, Vite, TypeScript, Tailwind CSS, TipTap
+Frontend:    React 18.3, Vite 5.4.8, TypeScript, Tailwind CSS, TipTap
 Backend:     Supabase (PostgreSQL 15+), Supabase Auth, Supabase Storage
 Edge:        Supabase Edge Functions (Deno)
 Auth:        Supabase Auth + Custom JWT Hook
@@ -224,3 +224,87 @@ trackEvent('cms.login', { session_source: 'dashboard' }, { tenantId })
 ```
 
 Δες [TELEMETRY.md](./TELEMETRY.md) για πλήρη αναφορά.
+
+---
+
+## Multi-Project Support (v0.1)
+
+Το AION υποστηρίζει σύνδεση με εξωτερικά Supabase projects για διαχείριση πελατειακών sites που βρίσκονται σε διαφορετική βάση.
+
+### multiProjectClient.ts
+- Βρίσκεται στο `src/lib/multiProjectClient.ts`
+- Δημιουργεί Supabase client για εξωτερικό project βάσει credentials
+- Χρησιμοποιείται από components που διαχειρίζονται remote sites
+
+### external_project fields (tenants table)
+- `connection_url` — Supabase URL του εξωτερικού project
+- `api_key` — anon/service key για το εξωτερικό project
+- `worker_url` — URL του Cloudflare Worker για deployment
+
+### Reference: kolokotronis-pshychologist-main
+- Εξωτερικό project μέσω `aion_website` connection
+- Το tenant site είναι deployed στο Cloudflare Workers
+- Το CMS (aion-flow-v2) ελέγχει settings μέσω Supabase
+- Το public site διαβάζει δεδομένα από την shared βάση
+
+---
+
+## Current Tenant Model (July 2026)
+
+### Default UUID
+- `00000000-0000-0000-0000-000000000001` είναι **banned** σε runtime code
+- Ποτέ δεν χρησιμοποιείται ως hardcoded reference
+
+### KNOWN_SUPER_ADMIN_EMAILS
+```typescript
+const KNOWN_SUPER_ADMIN_EMAILS = [
+  'info@aionweb.gr',
+  'choliasmenos.panos@gmail.com'
+]
+```
+
+### JWT custom_access_token_hook Flow
+1. User logs in → Supabase Auth triggers `custom_access_token_hook`
+2. Hook injects `user_role` + `is_super_admin` στο JWT token
+3. RLS policies διαβάζουν τα claims για access control
+
+### Three-Tier Tenant ID
+- `tenantId` — ID του tenant του χρήστη (από JWT/profile)
+- `selectedTenantId` — επιλογή SA από Project Switcher (TenantContext, localStorage)
+- `effectiveTenantId` — χρησιμοποιείται από όλα τα components
+
+---
+
+## Shared Supabase Model
+
+### Project Details
+- **URL:** `https://qhbgptlklsavezxpksao.supabase.co`
+- Χρησιμοποιείται από aion-flow-v2 και kolokotronis-pshychologist-main
+- Table isolation μέσω `tenant_id` σε κάθε πίνακα
+
+### Anon Keys (Publishable)
+- `sb_publishable_zKTp8O_IAPrvEEXs6qgO4w_d9BNqSYC` — publishable anon key
+- Service role key (`sb_secret_...`) διαθέσιμη μόνο σε aion-flow-v2 `.env`
+
+---
+
+## Planned: Artist Module v0.1
+
+Νέο module για καλλιτέχνες / πολιτιστικές προσωπικότητες.
+
+### New Tables (8)
+1. `artist_biographies` — βιογραφικά στοιχεία
+2. `artist_filmography` — φιλμογραφία
+3. `artist_television` — τηλεοπτικές εμφανίσεις
+4. `artist_theatre` — θεατρικές παραστάσεις
+5. `artist_timelines` — χρονολόγιο σταδιοδρομίας
+6. `artist_gallery` — φωτογραφίες/έργα
+7. `artist_press` — άρθρα/συνεντεύξεις
+8. `artist_showreels` — βίντεο/demo reels
+
+### Feature Flag
+- `artist_module` μέσω `tenant_features` table
+- Non-breaking, additive migrations only
+
+### Reference Project
+- dionisis-xanthos (Next.js, separate Supabase instance)

@@ -334,3 +334,57 @@ if (selectedTenantId !== lsTenantId) {
 - ✅ Refresh στη διάρκεια session → persistence
 - ✅ Logout → cleared
 - ⚠️ Χρειάστηκε sync fix στο useTenant
+
+---
+
+## ADR-010: Artist Module Integration Strategy
+
+**Ημερομηνία:** 2026-07-08
+**Κατάσταση:** Αποφασισμένη
+
+### Πλαίσιο
+Το AION χρειάζεται να υποστηρίξει καλλιτέχνες (ηθοποιούς, μουσικούς, εικαστικούς) με εξειδικευμένο module για βιογραφικά, φιλμογραφία, τηλεόραση, θέατρο, χρονολόγιο και gallery.
+
+### Απόφαση
+Το Artist Module υλοποιείται ως additive module πίσω από feature flag:
+
+- 8 νέοι πίνακες στη βάση
+- Επέκταση πίνακα media (media_type column)
+- Feature flag gating (`artist_module`)
+- Ανεξάρτητα routes (κανένα υπάρχον route δεν τροποποιείται)
+- Υπάρχοντα panels untouched
+
+### Rationale
+- Non-breaking integration — κανένας υπάρχων tenant δεν επηρεάζεται
+- Ξεχωριστό reference project (kolokotronis-website)
+- Additive migrations μόνο (no destructive operations)
+- Feature flag επιτρέπει σταδιακό rollout
+
+### Επιπτώσεις
+- ✅ Κανένας υπάρχων tenant δεν επηρεάζεται
+- ✅ Additive migrations μόνο
+- ✅ Ανεξάρτητα routes, panels untouched
+- ⚠️ Απαιτεί documentation update πριν υλοποίηση
+
+---
+
+## ADR-011: Documentation-First Development
+
+**Ημερομηνία:** 2026-07-08
+**Κατάσταση:** Αποφασισμένη
+
+### Πλαίσιο
+Πριν από κάθε νέα υλοποίηση, όλα τα documentation files πρέπει να είναι ενημερωμένα με την τρέχουσα αρχιτεκτονική.
+
+### Απόφαση
+Όλα τα docs ενημερώνονται σε single pass πριν γραφτεί οποιοδήποτε νέο code για το Artist Module.
+
+### Rationale
+- Η τρέχουσα αρχιτεκτονική πρέπει να είναι πλήρως documented πριν από extension
+- Αποφυγή documentation debt
+- Single source of truth για developers
+
+### Επιπτώσεις
+- ✅ Όλα τα 10 docs ενημερώθηκαν σε single pass (July 2026)
+- ✅ Clear baseline πριν νέα ανάπτυξη
+- ⚠️ Απαιτεί discipline για maintenance

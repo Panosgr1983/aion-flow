@@ -1,6 +1,6 @@
 # AION CMS — Features
 
-> Version: **v0.3.2** — δες `VERSIONS.md` για πλήρες changelog.
+> Version: **v0.4.0-dev** — δες `VERSIONS.md` για πλήρες changelog.
 > Τι μπορεί να κάνει το AION σήμερα.
 
 ## Feature Status Legend
@@ -25,6 +25,8 @@
 | Site Settings | ✅ Stable | Logo, favicon, hero, colors, footer, contact |
 | Pages | ✅ Stable | Edit hero + content per route |
 | Blog | ✅ Stable | CRUD, featured image, categories |
+| Seminar Section (Homepage) | ✅ Stable | Independent section on homepage; title, subtitle, CTA, count, category filter, visibility — all editable from Site Settings; cards from Blog CMS |
+| Recent Articles Section (Homepage) | ✅ Stable | Same pattern as Seminar — independent homepage section, 7 editable fields, cards from Blog CMS, default hidden |
 | Products | ✅ Stable | CRUD, images, categories, prices, stock |
 | Services | ✅ Stable | CRUD, images, icons, ordering |
 | Categories | ✅ Stable | CRUD, tree structure |
@@ -35,6 +37,19 @@
 | Core Values | ✅ Stable | CRUD |
 | CTA Panel | ✅ Stable | Configurable call-to-action |
 | SEO | ✅ Stable | Meta tags, OG images per page |
+
+## Artist Module (Planned v0.1)
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Biography editor | 🔄 Planned | |
+| Filmography CRUD | 🔄 Planned | |
+| Television CRUD | 🔄 Planned | |
+| Theatre CRUD | 🔄 Planned | |
+| Timeline editor | 🔄 Planned | |
+| Gallery management | 🔄 Planned | |
+| Press mentions | ❌ Future | |
+| Showreels | ❌ Future | |
 
 ## Media Architecture
 
@@ -48,6 +63,7 @@
 | Bulk select/delete | 🔄 Planned | |
 | Image optimization | 🔄 Planned | Auto-resize, WebP |
 | Usage detection | 🔄 Planned | Warn before delete if in-use |
+| `media_type` column (artist extension) | 🔄 Planned | Taxonomy for artist-specific media types |
 
 ## CRM
 
@@ -78,6 +94,13 @@
 | Deployment (Vercel) | ✅ Stable | Auto-deploy |
 | Public Site (Cloudflare) | ✅ Stable | Tenant public sites |
 
+## Multi-Project Support
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| External tenant sites | 🟡 Beta | kolokotronis-website via Cloudflare Workers |
+| Cross-project Supabase connection | 🟡 Beta | Shared Supabase across independent projects |
+
 ## Upcoming
 
 | Feature | Status | Target |
@@ -95,4 +118,4 @@
 
 ---
 
-_Τελευταία ενημέρωση: 2026-06-27_
+_Τελευταία ενημέρωση: 2026-07-08_

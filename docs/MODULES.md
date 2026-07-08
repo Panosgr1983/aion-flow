@@ -267,4 +267,86 @@ Authentication
 
 ---
 
-_Τελευταία ενημέρωση: 2026-06-27_
+---
+
+### 8. Artist Module (Planned v0.1)
+
+**Purpose:** Digital archive for artists, actors, musicians, writers, and other cultural figures.
+
+**Source reference project:** `dionisis-xanthos/` (Next.js 16, separate Supabase instance)
+
+**Components to migrate:**
+```
+src/modules/artist/
+├── components/
+│   ├── Timeline.tsx         Career timeline with icons
+│   ├── GalleryViewer.tsx    Gallery orchestrator (filters + grid + lightbox)
+│   ├── GalleryCard.tsx      Single image card
+│   ├── GalleryGrid.tsx      Responsive image grid
+│   ├── GalleryLightbox.tsx  Fullscreen lightbox with keyboard nav
+│   ├── GalleryFilters.tsx   Category filter pills
+│   ├── GalleryToolbar.tsx   Photo count display
+│   ├── ContactForm.tsx      Already generic
+│   ├── FilmCard.tsx         Filmography card
+│   ├── TelevisionTable.tsx  Expandable TV entries
+│   ├── TheatreCard.tsx      Theatre performance card
+│   └── BioPortrait.tsx      Bio sidebar with portrait
+├── pages/
+│   ├── ArtistHomePage.tsx   Template homepage
+│   ├── BioPage.tsx          Biography + timeline
+│   ├── FilmographyPage.tsx  Film grid + video films
+│   ├── TelevisionPage.tsx   TV appearance table
+│   ├── TheatrePage.tsx      Theatre card grid
+│   ├── GalleryPage.tsx      Full gallery page
+│   └── ContactPage.tsx      Contact form page
+├── types/
+│   └── artist.ts            All 10+ interfaces
+└── db/
+    ├── queries.ts           Tenant-aware DB queries
+    └── schema.ts            Table schemas for reference
+```
+
+**New DB tables (8):**
+- `biographies` — Bio content, portrait, birth info, pseudonyms
+- `filmography_entries` — Film roles, credits, metadata, trailer, IMDb
+- `television_entries` — TV appearances, channel, role, descriptions
+- `theatre_entries` — Theatre performances, venue, playwright
+- `career_timelines` — Career milestones with icons, year, description
+- `gallery_items` — Photo gallery linked to `media` table
+- `press_items` — Press mentions (post-MVP)
+- `showreels` — Video reels (post-MVP)
+
+**Existing tables extended:**
+- `media` — Add `media_type` column (poster/portrait/gallery/document/video/other)
+- `tenant_features` — Add `artist_module` flag
+- `site_settings` — Reuse for artist name, tagline, SEO
+
+**Status:** 🔄 Planned (v0.1)
+**Tenant-aware:** ✅ (all queries via existing `withTenant()`)
+**Feature flag:** `artist_module` (gated via `canAccess()`)
+**Key files:** Pending migration to `src/modules/artist/`
+
+---
+
+### Module Dependency Graph (Updated)
+
+```
+Authentication
+    └── Multi-Tenant
+            ├── CMS (all editors)
+            ├── Media
+            ├── SEO
+            ├── CRM
+            ├── Analytics
+            ├── Commerce
+            │       └── Orders
+            ├── Operations (docs)
+            └── Artist Module (v0.1+)
+                    └── Timeline
+                    └── Gallery
+                    └── Contact
+```
+
+---
+
+_Τελευταία ενημέρωση: 2026-07-08_

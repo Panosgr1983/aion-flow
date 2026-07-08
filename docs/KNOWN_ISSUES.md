@@ -102,4 +102,59 @@ Upload μεγάλων αρχείων (>5MB) μπορεί να αποτύχει �
 
 ---
 
-_Τελευταία ενημέρωση: 2026-06-27_
+_Τελευταία ενημέρωση: 2026-06-27
+
+---
+
+### #7. Artist Module not yet implemented
+
+**Περιγραφή:**  
+Το Artist Module (filmography, biography, media gallery per artist) δεν έχει υλοποιηθεί. Υπάρχει μόνο στο dionisis-xanthos ως reference implementation.
+
+**Priority:** Medium  
+**Planned:** v0.1  
+**Module:** CMS — Artist
+
+---
+
+### #8. External project UI not available
+
+**Περιγραφή:**  
+Το kolokotronis-website settings (site_settings, business_hours, services, testimonials κλπ.) δεν είναι επεξεργάσιμα από το AION CMS UI. Υπάρχουν στη DB αλλά το CMS δεν έχει UI για tenant-specific ρυθμίσεις εξωτερικών project.
+
+**Priority:** Medium  
+**Planned:** TBD  
+**Module:** CMS — Multi-tenant
+
+---
+
+### #9. media table missing media_type column
+
+**Περιγραφή:**  
+Το `media` table δεν έχει `media_type` column (π.χ. 'photo', 'video', 'document'). Απαραίτητο για την κατηγοριοποίηση media ανά artist (Artist Module).
+
+**Priority:** Medium  
+**Planned:** v0.1  
+**Module:** Database / Media
+
+---
+
+### #10. No multi-language support
+
+**Περιγραφή:**  
+Το `locale` column υπάρχει στο `dionisis-xanthos` schema (services, blog, pages) αλλά δεν χρησιμοποιείται στο aion-flow. Δεν υποστηρίζεται multi-language περιεχόμενο.
+
+**Priority:** Low  
+**Planned:** TBD  
+**Module:** CMS — Internationalization
+
+---
+
+### #11. Contact form alert() removed in dionisis-xanthos but aion-flow still uses legacy pattern
+
+**Περιγραφή:**  
+Το dionisis-xanthos έχει αντικαταστήσει το `alert()` με toast notifications στο contact form. Το aion-flow χρησιμοποιεί ακόμα το legacy `alert()` pattern. Απαιτείται synchronization.
+
+**Priority:** Low  
+**Planned:** TBD  
+**Module:** CMS — UI Patterns_

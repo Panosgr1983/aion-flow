@@ -96,3 +96,46 @@
 - Security audit
 - Public documentation site
 - Onboarding flow
+
+---
+
+## 🔜 v0.4 "Artist Module" (Current)
+
+- [ ] Documentation Update Pass (July 2026)
+- [ ] Update all 10 docs with current architecture
+- [ ] Artist Module v0.1 — read-only CMS shell
+- [ ] New DB migrations (8 artist tables)
+- [ ] media table extension (media_type column)
+- [ ] Feature flag: artist_module
+- [ ] Artist CMS panels (read-only)
+- [ ] Artist public templates (read-only)
+
+---
+
+## 🔄 v0.5 "Website Builder" (planned)
+
+- Page Builder (drag & drop sections)
+- Theme system (color palettes, fonts, spacing)
+- SEO Manager (bulk editor, sitemap, schema)
+- Form Builder (contact, booking, newsletter)
+- Industry Profiles (ADR-006)
+- Image optimization (auto-resize, WebP)
+
+---
+
+## 🔄 v0.6 "Artist Module v0.2" (planned)
+
+- CRUD for all artist panels
+- Gallery 2.0 with media_type filtering
+- Timeline drag & drop ordering
+- Media metadata editor (alt, caption, copyright)
+
+---
+
+## 🔄 v0.7 "Platform Scale" (planned)
+
+- Email campaigns (mass send, templates)
+- Pipeline automation (auto-move leads, triggers)
+- Reporting (pipeline velocity, win rate, forecast)
+- Drag & drop media upload
+- Usage detection (warn before media delete)

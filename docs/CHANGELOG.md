@@ -1,5 +1,37 @@
 # AION CMS — Changelog
 
+## v0.3.3 (2026-07-08)
+
+### Added
+- **Seminar Section (Homepage)**: Νέο ανεξάρτητο section "Ομιλίες & Σεμινάρια" στο homepage του Kolokotronis. 7 editable πεδία στο Site Settings → "Ομιλίες & Σεμινάρια Section" tab:
+  - **visible** (toggle): εμφάνιση/απόκρυψη
+  - **title** (text): επικεφαλίδα
+  - **subtitle** (textarea): υπότιτλος
+  - **cta_text** (text): κείμενο CTA
+  - **cta_link** (text): σύνδεσμος CTA
+  - **count** (number, min=1 max=10): πόσες κάρτες να εμφανίζονται
+  - **category** (select, auto-populated): ποια κατηγορία blog να φιλτράρεται
+- **blog_section_title**: Ανεξάρτητη ρύθμιση τίτλου blog page (reset σε "Πρόσφατα Άρθρα")
+- **Seminar section DB defaults**: 7 νέες `site_settings` keys (`seminar_section_*`) με default values πλήρως λειτουργικά
+- **Blog Home Section (Homepage)**: Νέο ανεξάρτητο section "Πρόσφατα Άρθρα" στο homepage, ακολουθώντας ακριβώς το ίδιο pattern με το Seminar Section. 7 editable πεδία στο Site Settings → "Πρόσφατα Άρθρα Section (Homepage)" tab:
+  - **visible** (toggle, default `false`): ενότητα κρυμμένη μέχρι ενεργοποίησης από CMS
+  - **title** (text): επικεφαλίδα
+  - **subtitle** (textarea): υπότιτλος
+  - **cta_text** (text): κείμενο CTA
+  - **cta_link** (text): σύνδεσμος CTA
+  - **count** (number, min=1 max=10): πόσες κάρτες
+  - **category** (select, auto-populated με "— Όλες οι κατηγορίες —"): φίλτρο κατηγορίας
+- **Blog Home DB defaults**: 7 νέες `site_settings` keys (`blog_home_section_*`) με `visible=false`
+- **All categories option**: Τόσο seminar όσο και blog home category dropdown έχουν επιλογή "— Όλες οι κατηγορίες —" που εμφανίζει posts από όλες τις κατηγορίες
+
+### Changed
+- **Blog CMS labels**: "Blog Section" tab → "Blog Settings"
+- **Homepage independence**: Το homepage seminar section είναι πλήρως ανεξάρτητο από το blog page — αλλαγές στο seminar section ΔΕΝ επηρεάζουν το blog
+- **Old blog section removed from homepage**: Η παλιά hardcoded ενότητα "Πρόσφατα Άρθρα" (με `blogPosts.slice(0, 3)`) αντικαταστάθηκε από το νέο `blog_home_section_*` σύστημα. `useBlogPosts()` αφαιρέθηκε από το homepage.
+
+### Fixed
+- **blog_section_title isolation**: Δεν χρησιμοποιείται πλέον για το homepage seminar section — έχει δικό του ξεχωριστό title field
+
 ## v0.3.2 (2026-07-06)
 
 ### Added
