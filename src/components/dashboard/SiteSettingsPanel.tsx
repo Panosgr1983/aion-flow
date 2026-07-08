@@ -316,9 +316,14 @@ export default function SiteSettingsPanel() {
                 </button>
               </div>
               {renderField('seminar_section_title', 'Section Title')}
+              {renderField('seminar_section_subtitle', 'Subtitle / Description', { rows: 2 })}
               <div className="grid grid-cols-2 gap-4">
                 {renderField('seminar_section_cta_text', '"View All" Link Text')}
                 {renderField('seminar_section_cta_link', '"View All" Link URL')}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('seminar_section_count', 'Number of articles (2 or 3)')}
+                {renderField('seminar_section_category', 'Blog Category Filter')}
               </div>
 
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Other Sections</h3>

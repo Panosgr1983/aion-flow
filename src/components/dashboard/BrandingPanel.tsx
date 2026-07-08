@@ -70,10 +70,15 @@ export default function BrandingPanel() {
 
   const handleSave = async () => {
     setSaving(true);
-    await coreEntitiesHelper.upsert(tenant.effectiveTenantId, entityType, data);
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      await coreEntitiesHelper.upsert(tenant.effectiveTenantId, entityType, data);
+      setSaving(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (e) {
+      console.error('Save failed:', e);
+      setSaving(false);
+    }
   };
 
   const handleRefresh = () => { setLoading(true); loadData(); };

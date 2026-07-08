@@ -63,12 +63,12 @@ export const coreEntitiesHelper = {
 
     const existing = await this.getByType(tenantId, entityType);
     if (existing) {
-      const { error: histError } = await supabase.from('core_entity_versions').insert({
+      // History versioning — non-blocking (RLS may deny insert)
+      await supabase.from('core_entity_versions').insert({
         entity_id: existing.id,
         version: existing.version,
         data: existing.data,
-      });
-      if (histError) throw histError;
+      }).then().catch(() => {});
 
       const { data, error } = await supabase
         .from('core_entities')

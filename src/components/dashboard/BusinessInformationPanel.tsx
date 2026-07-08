@@ -17,7 +17,7 @@ const DEFAULT_BUSINESS = {
     facebook: '', instagram: '', linkedin: '', youtube: '', tiktok: '', twitter: '', threads: '',
   },
   hours: {
-    monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: '',
+    visible: true, monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: '',
   },
 };
 
@@ -59,10 +59,15 @@ export default function BusinessInformationPanel() {
 
   const handleSave = async () => {
     setSaving(true);
-    await coreEntitiesHelper.upsert(tenant.effectiveTenantId, entityType, biz);
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      await coreEntitiesHelper.upsert(tenant.effectiveTenantId, entityType, biz);
+      setSaving(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (e) {
+      console.error('Save failed:', e);
+      setSaving(false);
+    }
   };
 
   const handleRefresh = () => { setLoading(true); loadData(); };
@@ -230,6 +235,18 @@ export default function BusinessInformationPanel() {
         {tab === 'hours' && (
           <>
             <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2">🕐 Ωράριο Λειτουργίας</h3>
+            <div className="flex items-center gap-3 mb-4 p-3 bg-gray-900 rounded-lg border border-gray-800">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={biz.hours.visible !== false}
+                  onChange={e => setBiz(prev => ({ ...prev, hours: { ...prev.hours, visible: e.target.checked } }))}
+                  className="sr-only peer"
+                />
+                <div className="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
+              </label>
+              <span className="text-xs text-gray-400">Προβολή ωραρίου στο site</span>
+            </div>
             <p className="text-xs text-gray-500 mb-4">Αφήστε κενό αν η μέρα είναι αργία.</p>
             <div className="space-y-3">
               {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day, i) => {
