@@ -7,6 +7,17 @@
 
 ---
 
+## Golden Rule #0 — Generalize When Proven, Not When Predicted
+
+Μην γενικεύεις επειδή μπορείς θεωρητικά.
+Γενίκευσε μόνο όταν ένα pattern έχει αποδειχθεί σε 2+ περιπτώσεις.
+
+**Παράδειγμα:** Το Portfolio Module χρησιμοποιεί actor-specific tables (biographies, filmography_entries). Η γενίκευση σε generic portfolio schema θα γίνει όταν υπάρχει δεύτερο vertical (π.χ. μουσικός) που επιβεβαιώνει ή διορθώνει το μοντέλο.
+
+Αυτή η αρχή προστατεύει από over-engineering και κρατά την αρχιτεκτονική clean.
+
+---
+
 ## Golden Rule #1 — No Docs. No Done.
 
 Ένα feature, module ή panel δεν θεωρείται ολοκληρωμένο μέχρι να υπάρχουν:
