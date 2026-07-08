@@ -113,6 +113,8 @@ export default function AdminSidebar() {
   const canAccessModule = (item: NavItem): boolean => {
     const perm = item.permission;
     if (perm && !can(perm, userRole, tenant.isSuperAdmin)) return false;
+    // Super admin bypasses all feature flags
+    if (tenant.isSuperAdmin) return true;
     const path = item.path.split('/').pop() || '';
     // Check feature flag for content/CRM modules
     const feature = FEATURE_MODULES[path];
