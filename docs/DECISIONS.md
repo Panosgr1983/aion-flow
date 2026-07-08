@@ -388,3 +388,99 @@ if (selectedTenantId !== lsTenantId) {
 - ✅ Όλα τα 10 docs ενημερώθηκαν σε single pass (July 2026)
 - ✅ Clear baseline πριν νέα ανάπτυξη
 - ⚠️ Απαιτεί discipline για maintenance
+
+---
+
+## ADR-012: Documentation-First Architecture Rule
+
+**Ημερομηνία:** 2026-07-08
+**Κατάσταση:** Εφαρμοσμένη
+
+### Πλαίσιο
+Με την προσθήκη του Portfolio Module και την εξέλιξη του AION Flow από CMS
+σε modular SaaS πλατφόρμα, χρειάζεται αυστηρός κανόνας για το πώς
+γίνονται αρχιτεκτονικές αλλαγές.
+
+### Απόφαση
+Καμία αρχιτεκτονική αλλαγή ή νέο module δεν υλοποιείται χωρίς:
+
+1. **Architecture analysis** — Πώς επηρεάζει την πλατφόρμα
+2. **Documentation update** — Ενημέρωση όλων των σχετικών docs πριν από κώδικα
+3. **Approval** — Αρχιτεκτονική εγκρίνεται
+4. **Implementation** — Μόνο τότε ξεκινάει η υλοποίηση
+
+### Προϋποθέσεις
+- Υπάρχει documentation, άρα υπάρχει λειτουργικότητα
+- Δεν υπάρχει documentation → θεωρείται technical debt
+- No undocumented architecture is allowed
+
+### Pre-Commit Checklist
+```
+Architecture changed?
+  YES → Documentation updated?
+    YES → Commit
+    NO → STOP
+  NO → Commit
+```
+
+### Documentation Update Checklist
+Κάθε νέο module ή μεγάλη αλλαγή ελέγχει:
+
+**Core Architecture:**
+- ARCHITECTURE.md, DATABASE.md, MODULES.md, FEATURES.md
+- ROADMAP.md, DECISIONS.md, CHANGELOG.md
+
+**Development:**
+- CODING_STANDARDS.md, CONTRIBUTING.md, TECH_DEBT.md
+- KNOWN_ISSUES.md, DEPLOYMENT.md, PERMISSIONS.md
+
+**Module Documentation:** docs/modules/<module>/
+- README, ARCHITECTURE, DATABASE, CMS, RESEARCH, MEDIA
+- QA, DESIGN, WORKFLOW, CHANGELOG, ROADMAP, LESSONS_LEARNED
+
+### Επιπτώσεις
+- ✅ Καμία undocumented λειτουργικότητα
+- ✅ Single source of truth
+- ✅ Εύκολο onboarding νέων developers
+- ⚠️ Απαιτεί discipline
+- ⚠️ Μπορεί να καθυστερήσει μικρές αλλαγές (αλλά αποτρέπει μεγάλα προβλήματα)
+
+---
+
+## ADR-013: Module Registry System
+
+**Ημερομηνία:** 2026-07-08
+**Κατάσταση:** Εφαρμοσμένη (v0.15)
+
+### Πλαίσιο
+Κάθε νέο module απαιτούσε χειροκίνητες αλλαγές σε:
+- Dashboard routes (imports + Route elements)
+- AdminSidebar (nav items)
+- access.ts (FEATURE_MODULES)
+- types/supabase.ts (TenantFeature)
+- useTenant.ts (feature map)
+
+Αυτό δεν κλιμακώνεται για πολλαπλά modules.
+
+### Απόφαση
+Δημιουργία ModuleRegistry (`src/lib/ModuleRegistry.ts`):
+- Κάθε module δηλώνει manifest: routes, sidebar, permissions, flags
+- Dashboard.tsx διαβάζει routes από registry
+- AdminSidebar.tsx διαβάζει sidebar groups από registry
+- Registration γίνεται με `import '../modules/portfolio/manifest'`
+- Feature flag gating αυτόματο
+
+### Alternatives
+| Approach | Rejected because |
+|----------|-----------------|
+| File-system based routing | Vite δεν το υποστηρίζει χωρίς plugin |
+| JSON config per module | Χάνουμε TypeScript safety |
+| Central registry with all imports | Κάθε νέο module απαιτεί αλλαγή registry |
+
+### Επιπτώσεις
+- ✅ Zero manual wiring για νέα modules (μετά το αρχικό refactor)
+- ✅ Feature flag gating αυτόματη
+- ✅ Sidebar groups αυτόματα
+- ✅ Dynamic loading μελλοντικά
+- ⚠️ Υπάρχοντα modules (CMS, CRM) δεν έχουν μεταφερθεί ακόμα
+- ⚠️ Lazy loading όχι ακόμα (future optimization)

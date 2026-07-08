@@ -94,20 +94,25 @@
 | Deployment (Vercel) | ✅ Stable | Auto-deploy |
 | Public Site (Cloudflare) | ✅ Stable | Tenant public sites |
 
-## Artist Module (v0.1 — Read-only)
+## Portfolio Module (v0.1 — Read-only)
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Biography viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Filmography viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Television viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Theatre viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Timeline viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Gallery viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Press viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Showreels viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
-| Artist DB tables | 🟡 Beta | 8 new tables + media extension |
-| Artist sidebar group | 🟡 Beta | Conditional on feature flag |
+| Module Registry | ✅ Stable | `ModuleRegistry.ts` — self-registering modules |
+| Module Manifest | ✅ Stable | `portfolio/manifest.ts` — routes, sidebar, permissions |
+| Biography viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Filmography viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Television viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Theatre viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Timeline viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Gallery viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Press viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Showreels viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Portfolio DB tables | 🟡 Beta | 8 tables + media extension (actor-specific schema) |
+| Portfolio sidebar group | 🟡 Beta | Registry-driven, conditional on feature flag |
+| Architecture Patterns | ✅ Stable | 12 patterns in `docs/patterns/` |
+| Documentation-First Rule | ✅ Stable | ADR-012, pre-commit checklist |
+| Generic Portfolio Schema | 🔄 Planned | v0.2 — portfolio_profiles, portfolio_entries |
 
 ## Multi-Project Support
 

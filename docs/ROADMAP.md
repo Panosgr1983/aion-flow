@@ -99,20 +99,35 @@
 
 ---
 
-## 🔜 v0.4 "Artist Module" (Current)
+## ✅ v0.4 "Portfolio Module" (Completed)
 
-- [ ] Documentation Update Pass (July 2026)
-- [ ] Update all 10 docs with current architecture
-- [ ] Artist Module v0.1 — read-only CMS shell
-- [ ] New DB migrations (8 artist tables)
-- [ ] media table extension (media_type column)
-- [ ] Feature flag: artist_module
-- [ ] Artist CMS panels (read-only)
-- [ ] Artist public templates (read-only)
+- [x] Documentation Update Pass (all 10 docs)
+- [x] Portfolio Module v0.1 — read-only CMS shell
+- [x] Module Registry system (self-registering modules)
+- [x] Module Manifest pattern (routes, sidebar, permissions in single file)
+- [x] docs/patterns/ — 12 reusable architectural patterns
+- [x] ADR-012: Documentation-First Architecture Rule
+- [x] ADR-013: Module Registry System
+- [x] New DB migrations (8 portfolio tables)
+- [x] media table extension (media_type column)
+- [x] Feature flag: portfolio_module (artist_module kept for backward compat)
+- [x] Portfolio CMS panels (read-only, via registry)
+- [x] Architecture Refactor Pass (v0.15): Artist → Portfolio
 
 ---
 
-## 🔄 v0.5 "Website Builder" (planned)
+## 🔜 v0.5 "Portfolio Module v0.2" (Current)
+
+- [ ] Generic portfolio schema (portfolio_profiles, portfolio_entries)
+- [ ] CRUD for all portfolio panels
+- [ ] Gallery 2.0 with media_type filtering
+- [ ] Timeline drag & drop ordering
+- [ ] Media metadata editor (alt, caption, copyright)
+- [ ] Portfolio public templates
+
+---
+
+## 🔄 v0.6 "Website Builder" (planned)
 
 - Page Builder (drag & drop sections)
 - Theme system (color palettes, fonts, spacing)
@@ -120,15 +135,6 @@
 - Form Builder (contact, booking, newsletter)
 - Industry Profiles (ADR-006)
 - Image optimization (auto-resize, WebP)
-
----
-
-## 🔄 v0.6 "Artist Module v0.2" (planned)
-
-- CRUD for all artist panels
-- Gallery 2.0 with media_type filtering
-- Timeline drag & drop ordering
-- Media metadata editor (alt, caption, copyright)
 
 ---
 
