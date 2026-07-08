@@ -105,7 +105,7 @@
 | Television editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
 | Theatre editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
 | Timeline editor | ✅ Stable | Full CRUD: categories, year/month, status, preview |
-| Gallery viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Gallery editor | ✅ Stable | Full CRUD: grid, lightbox, metadata, MediaPicker |
 | Press viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Showreels viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Portfolio DB tables | 🟡 Beta | 8 tables + media extension (actor-specific schema) |
