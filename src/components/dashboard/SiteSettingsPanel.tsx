@@ -302,6 +302,25 @@ export default function SiteSettingsPanel() {
                 {renderField('contact_cta_link', 'CTA Button Link')}
               </div>
 
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Ομιλίες & Σεμινάρια Section</h3>
+              <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-xl">
+                <label className="text-sm text-gray-300">Εμφάνιση ενότητας στην Αρχική</label>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={getValue('seminar_section_visible') !== 'false'}
+                  onClick={() => setValue('seminar_section_visible', getValue('seminar_section_visible') !== 'false' ? 'false' : 'true')}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${getValue('seminar_section_visible') !== 'false' ? 'bg-blue-600' : 'bg-gray-700'}`}
+                >
+                  <span className={`inline-block size-4 rounded-full bg-white transition-transform ${getValue('seminar_section_visible') !== 'false' ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+              {renderField('seminar_section_title', 'Section Title')}
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('seminar_section_cta_text', '"View All" Link Text')}
+                {renderField('seminar_section_cta_link', '"View All" Link URL')}
+              </div>
+
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Other Sections</h3>
               {renderField('testimonials_section_title', 'Testimonials Section Title')}
               {renderField('blog_section_title', 'Blog Section Title')}
