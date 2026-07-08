@@ -185,3 +185,34 @@
 
 ### Build
 - ✅ Zero errors, 2,380 modules transformed, 1.7 MB bundle
+
+## v0.4.1-dev (2026-07-08) — Registry Stabilization
+
+### Added
+- **ModuleRegistry.ts**: Self-registering module system (routes, sidebar, permissions)
+- **Portfolio manifest.ts**: First module to use the registry
+- **docs/patterns/**: 12 reusable architectural patterns
+- **ADR-012**: Documentation-First Architecture Rule
+- **ADR-013**: Module Registry System
+
+### Changed
+- **Artist Module → Portfolio Module**: Generic name covering actors, musicians, painters, writers, etc.
+- **Dashboard routes**: Dynamic from ModuleRegistry.getRoutes()
+- **AdminSidebar**: Dynamic from ModuleRegistry.getEnabled()
+- Feature flag: added `portfolio_module` (artist_module kept for backward compat)
+
+### Migration
+- `20260708000002_artist_module.sql` applied to production Supabase ✓
+- All 8 tables created: biographies, filmography_entries, television_entries, theatre_entries, career_timelines, gallery_items, press_items, showreels
+- media table extended: media_type, photographer, copyright, source_url
+
+### Smoke Test Results
+- ✅ Kolokotronis (no portfolio_module) → no portfolio UI
+- ✅ Tenant with portfolio_module=true → portfolio menu visible
+- ✅ Dynamic routes from ModuleRegistry work correctly
+- ✅ Sidebar groups: no duplication (single getEnabled() call)
+- ✅ artist_module backward compat: both flags accepted
+- ✅ Build: zero errors (2,382 modules)
+- ✅ Deploy: aion-flowv2.vercel.app (HTTP 200)
+- ✅ Migration: production Supabase (8 tables + media extension)
+- ✅ No leftover `modules/artist` references in Dashboard or Sidebar
