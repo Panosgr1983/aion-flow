@@ -126,7 +126,7 @@
 - [x] **Panel 2: Filmography CRUD** — entries CRUD + media + sorting + history
 - [x] **Panel 3: Television CRUD** — (same pattern as Filmography)
 - [x] **Panel 4: Theatre CRUD** — (same pattern as Filmography)
-- [ ] **Panel 5: Timeline CRUD** — category + drag & drop
+- [x] **Panel 5: Timeline CRUD** — categories, year/month, sort_order, history
 - [ ] **Panel 3: Timeline CRUD** — category + drag & drop
 - [ ] **Panel 4: Gallery CRUD** — media linking + metadata editor
 - [ ] **Panel 5: Television CRUD** — simple CRUD (same pattern)

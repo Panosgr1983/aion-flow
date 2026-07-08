@@ -104,7 +104,7 @@
 | Filmography editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
 | Television editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
 | Theatre editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
-| Timeline viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Timeline editor | ✅ Stable | Full CRUD: categories, year/month, status, preview |
 | Gallery viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Press viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Showreels viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
