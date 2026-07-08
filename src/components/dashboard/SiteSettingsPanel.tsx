@@ -125,6 +125,7 @@ export default function SiteSettingsPanel() {
   };
 
   const updateJsonSetting = (key: string, value: any) => {
+    dirtyKeys.current.add(key);
     setSettings(prev => prev.map(s => s.key === key ? { ...s, value } : s));
   };
 
