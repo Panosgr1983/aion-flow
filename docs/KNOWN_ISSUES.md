@@ -106,13 +106,13 @@ _Τελευταία ενημέρωση: 2026-06-27
 
 ---
 
-### #7. Artist Module not yet implemented
+### ~~#7. Artist Module not yet implemented~~ ✅ RESOLVED v0.4.0-dev
 
 **Περιγραφή:**  
-Το Artist Module (filmography, biography, media gallery per artist) δεν έχει υλοποιηθεί. Υπάρχει μόνο στο dionisis-xanthos ως reference implementation.
+Το Artist Module υλοποιήθηκε ως v0.1 — read-only CMS shell. 8 panels (Biography, Filmography, Television, Theatre, Timeline, Gallery, Press, Showreels) πίσω από feature flag `artist_module`. Additive migration με 8 νέους πίνακες + media table extension.
 
-**Priority:** Medium  
-**Planned:** v0.1  
+**Priority:** Medium → Resolved  
+**Planned:** v0.1 → ✅ v0.4.0-dev  
 **Module:** CMS — Artist
 
 ---

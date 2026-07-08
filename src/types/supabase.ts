@@ -229,6 +229,10 @@ export interface Tenant {
   settings: Record<string, unknown>;
   created_at: string;
   updated_at: string;
+  supabase_project_url?: string;
+  supabase_anon_key?: string;
+  supabase_service_key?: string;
+  external_project_enabled?: boolean;
 }
 
 export interface Service {
@@ -348,7 +352,7 @@ export type MessageDirection = 'incoming' | 'outgoing';
 export type MessageStatus = 'new' | 'read' | 'replied' | 'archived';
 export type ConversationStatus = 'active' | 'closed' | 'archived' | 'spam';
 export type TenantStatus = 'trial' | 'active' | 'suspended' | 'cancelled';
-export type TenantFeature = 'cms' | 'crm' | 'inbox' | 'pipeline' | 'email_workspace' | 'eshop' | 'bookings';
+export type TenantFeature = 'cms' | 'crm' | 'inbox' | 'pipeline' | 'email_workspace' | 'eshop' | 'bookings' | 'artist_module';
 export type LeadStage = 'new' | 'contacted' | 'proposal' | 'won' | 'lost';
 export type DraftStatus = 'draft' | 'scheduled' | 'sending' | 'sent' | 'failed';
 

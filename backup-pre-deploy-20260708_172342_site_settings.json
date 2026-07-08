@@ -1,0 +1,1391 @@
+[
+    {
+        "id": "218d6df5-da72-4641-a978-dfa00a3f87dc",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_hero_title",
+        "value": "\u0392\u0399\u039f\u0393\u03a1\u0391\u03a6\u0399\u039a\u039f",
+        "category": "about",
+        "description": "About page hero title",
+        "created_at": "2026-06-06T19:46:16.981858+00:00",
+        "updated_at": "2026-07-06T10:04:32.843+00:00"
+    },
+    {
+        "id": "25c2ec71-1a4f-424e-bf80-b83eaa38c8af",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "hero_cta_secondary_text",
+        "value": "\u03a0\u03ce\u03c2 \u03bc\u03c0\u03bf\u03c1\u03ce \u03bd\u03b1 \u03c3\u03b1\u03c2 \u03c5\u03c0\u03bf\u03c3\u03c4\u03b7\u03c1\u03af\u03be\u03c9",
+        "category": "home",
+        "description": "Hero secondary link text",
+        "created_at": "2026-06-06T19:46:14.089341+00:00",
+        "updated_at": "2026-06-28T00:55:32.262+00:00"
+    },
+    {
+        "id": "036cfe13-9eab-491e-bb18-2fa937144f5d",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_hero_eyebrow",
+        "value": "\u0395\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03af\u03b1",
+        "category": "contact",
+        "description": "Contact page hero eyebrow",
+        "created_at": "2026-06-06T19:46:18.393279+00:00",
+        "updated_at": "2026-06-28T00:55:19.445+00:00"
+    },
+    {
+        "id": "ff589824-6ebc-43a5-a1bd-d9bea62b80e4",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "credentials_section_title",
+        "value": "\u03a3\u03c0\u03bf\u03c5\u03b4\u03ad\u03c2 & \u03a0\u03b9\u03c3\u03c4\u03bf\u03c0\u03bf\u03b9\u03ae\u03c3\u03b5\u03b9\u03c2",
+        "category": "about",
+        "description": "Credentials section title",
+        "created_at": "2026-06-06T19:46:18.195137+00:00",
+        "updated_at": "2026-07-06T10:04:34.814+00:00"
+    },
+    {
+        "id": "2c1f616c-8047-4b48-b78a-fa0add9166fb",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_section_link_text",
+        "value": "\u0394\u03b5\u03af\u03c4\u03b5 \u03cc\u03bb\u03b5\u03c2 \u03c4\u03b9\u03c2 \u03b5\u03ba\u03b4\u03b7\u03bb\u03ce\u03c3\u03b5\u03b9\u03c2",
+        "category": "home",
+        "description": "Blog section \"view all\" link text",
+        "created_at": "2026-06-06T19:46:16.608264+00:00",
+        "updated_at": "2026-06-29T14:28:14.867+00:00"
+    },
+    {
+        "id": "3cfd9a7c-0fa4-4058-9c59-1aeae1509ad0",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "smtp_from_name",
+        "value": "\u039d\u03b9\u03ba\u03cc\u03bb\u03b1\u03c2 \u039a\u03bf\u03bb\u03bf\u03ba\u03bf\u03c4\u03c1\u03ce\u03bd\u03b7\u03c2",
+        "category": "contact",
+        "description": "",
+        "created_at": "2026-06-09T20:47:59.582123+00:00",
+        "updated_at": "2026-06-28T00:55:23.564+00:00"
+    },
+    {
+        "id": "8bea0ffc-7b6d-43e2-b42f-f4223cbdb2ca",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_bio_eyebrow",
+        "value": "\u0397 \u03b4\u03b9\u03b1\u03b4\u03c1\u03bf\u03bc\u03ae \u03bc\u03bf\u03c5",
+        "category": "about",
+        "description": "About bio section eyebrow",
+        "created_at": "2026-06-06T19:46:17.403277+00:00",
+        "updated_at": "2026-07-06T10:04:27.921+00:00"
+    },
+    {
+        "id": "1746e447-e8ba-4cc3-9471-7760da5007b2",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "smtp_host",
+        "value": "smtp.gmail.com",
+        "category": "contact",
+        "description": "",
+        "created_at": "2026-06-09T20:47:59.256121+00:00",
+        "updated_at": "2026-06-28T00:55:23.858+00:00"
+    },
+    {
+        "id": "bb94a621-491d-4fd1-a125-e05b4e46f728",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_hero_title",
+        "value": "\u039a\u03bb\u03b5\u03af\u03c3\u03c4\u03b5 \u03c4\u03bf \u03c1\u03b1\u03bd\u03c4\u03b5\u03b2\u03bf\u03cd \u03c3\u03b1\u03c2",
+        "category": "contact",
+        "description": "Contact page hero title",
+        "created_at": "2026-06-06T19:46:18.590846+00:00",
+        "updated_at": "2026-06-28T00:55:20.089+00:00"
+    },
+    {
+        "id": "bacc002b-4df5-4d5b-b735-07d7f7b0cba2",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_section_title",
+        "value": "\u03a0\u03c1\u03cc\u03c3\u03c6\u03b1\u03c4\u03b1 \u0386\u03c1\u03b8\u03c1\u03b1",
+        "category": "home",
+        "description": "Blog section title",
+        "created_at": "2026-06-06T19:46:16.423438+00:00",
+        "updated_at": "2026-07-06T10:09:30.053+00:00"
+    },
+    {
+        "id": "6a4bca1d-336b-43de-8229-afe75e246247",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "hero_heading",
+        "value": "\u0395\u03bd\u03c3\u03c5\u03bd\u03b1\u03af\u03c3\u03b8\u03b7\u03c3\u03b7\n\u0391\u03c0\u03bf\u03b4\u03bf\u03c7\u03ae\n\u03a3\u03c5\u03bd\u03bf\u03b4\u03bf\u03b9\u03c0\u03bf\u03c1\u03af\u03b1\n\u039c\u03b5\u03c4\u03b1\u03bc\u03cc\u03c1\u03c6\u03c9\u03c3\u03b7",
+        "category": "home",
+        "description": "Hero section main heading (H1)",
+        "created_at": "2026-06-06T19:46:13.205884+00:00",
+        "updated_at": "2026-06-28T00:55:32.572+00:00"
+    },
+    {
+        "id": "ec3e0c80-ad3d-4749-9bbb-fff26b199611",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_hero_subtitle",
+        "value": "\u0397 \u03b4\u03b9\u03b1\u03b4\u03c1\u03bf\u03bc\u03ae \u03bc\u03bf\u03c5",
+        "category": "about",
+        "description": "About page hero subtitle",
+        "created_at": "2026-06-06T19:46:17.183427+00:00",
+        "updated_at": "2026-07-06T10:04:32.375+00:00"
+    },
+    {
+        "id": "421b6e0a-0bf6-4611-9a27-21a77679288a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_section_paragraph_2",
+        "value": "\u0395\u03af\u03bc\u03b1\u03b9 \u03a8\u03c5\u03c7\u03bf\u03bb\u03cc\u03b3\u03bf\u03c2, \u03a8\u03c5\u03c7\u03bf\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae\u03c2, \u03a3\u03cd\u03bc\u03b2\u03bf\u03c5\u03bb\u03bf\u03c2 \u03a8\u03c5\u03c7\u03b9\u03ba\u03ae\u03c2 \u03a5\u03b3\u03b5\u03af\u03b1\u03c2 \u03ba\u03b1\u03b9 \u0395\u03bd\u03b1\u03bb\u03bb\u03b1\u03ba\u03c4\u03b9\u03ba\u03cc\u03c2 \u0398\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae\u03c2 \u03ba\u03b1\u03b9 \u03c3\u03c5\u03bd\u03b5\u03c1\u03b3\u03ac\u03b6\u03bf\u03bc\u03b1\u03b9 \u03bc\u03b5 \u03b5\u03bd\u03ae\u03bb\u03b9\u03ba\u03b5\u03c2 \u03c0\u03bf\u03c5 \u03b5\u03c0\u03b9\u03b8\u03c5\u03bc\u03bf\u03cd\u03bd \u03bd\u03b1 \u03c3\u03c5\u03bd\u03b4\u03b5\u03b8\u03bf\u03cd\u03bd \u03c0\u03b9\u03bf \u03b2\u03b1\u03b8\u03b9\u03ac \u03bc\u03b5 \u03c4\u03b7\u03bd \u03cd\u03c0\u03b1\u03c1\u03be\u03ae \u03c4\u03bf\u03c5\u03c2 \u03ba\u03b1\u03b9 \u03bd\u03b1 \u03b6\u03ae\u03c3\u03bf\u03c5\u03bd \u03bc\u03b9\u03b1 \u03c0\u03b9\u03bf \u03bf\u03c5\u03c3\u03b9\u03b1\u03c3\u03c4\u03b9\u03ba\u03ae \u03b6\u03c9\u03ae, \u03bc\u03b5 \u03c0\u03bb\u03b7\u03c1\u03cc\u03c4\u03b7\u03c4\u03b1, \u03b1\u03c5\u03c4\u03bf\u03b5\u03ba\u03c4\u03af\u03bc\u03b7\u03c3\u03b7, \u03b3\u03b1\u03bb\u03ae\u03bd\u03b7, \u03b2\u03b1\u03b8\u03b9\u03ac \u03b1\u03bd\u03ac\u03c3\u03b1, \u03cc\u03c1\u03b9\u03b1 \u03ba\u03b1\u03b9 \u03c8\u03c5\u03c7\u03b9\u03ba\u03ae \u03b1\u03bd\u03ac\u03c4\u03b1\u03c3\u03b7. \n(\u03a6\u03c9\u03c4\u03bf\u03b3\u03c1\u03b1\u03c6\u03af\u03b1: \u039d\u03b9\u03ba\u03cc\u03bb\u03b1\u03c2 \u039a\u03bf\u03bb\u03bf\u03ba\u03bf\u03c4\u03c1\u03ce\u03bd\u03b7\u03c2 & Dr. Joe Dispenza, 22/5/2015, \u0395\u03b8\u03bd\u03b9\u03ba\u03cc \u038a\u03b4\u03c1\u03c5\u03bc\u03b1 \u0395\u03c1\u03b5\u03c5\u03bd\u03ce\u03bd, \u0391\u03b8\u03ae\u03bd\u03b1, 3\u03ae\u03bc\u03b5\u03c1\u03bf \u03c3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03bf).",
+        "category": "home",
+        "description": "About preview paragraph 2",
+        "created_at": "2026-06-06T19:46:15.6375+00:00",
+        "updated_at": "2026-07-04T14:08:06.756+00:00"
+    },
+    {
+        "id": "82be52bc-f58a-4999-958e-3dd87897b8d2",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "services_section_link_text",
+        "value": "\u038c\u03bb\u03b5\u03c2 \u03bf\u03b9 \u03c5\u03c0\u03b7\u03c1\u03b5\u03c3\u03af\u03b5\u03c2",
+        "category": "home",
+        "description": "Services section \"view all\" link text",
+        "created_at": "2026-06-06T19:46:14.873785+00:00",
+        "updated_at": "2026-06-28T00:55:33.504+00:00"
+    },
+    {
+        "id": "e9faa137-0562-41e1-ac82-42c85b01ca2e",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "services_section_title",
+        "value": "\u039c\u03ad\u03b8\u03bf\u03b4\u03bf\u03b9/\u039c\u03bf\u03bd\u03bf\u03c0\u03ac\u03c4\u03b9\u03b1 \u03b5\u03bd\u03b4\u03bf\u03c3\u03ba\u03cc\u03c0\u03b7\u03c3\u03b7\u03c2, \u03b1\u03bd\u03b1\u03ba\u03ac\u03bb\u03c5\u03c8\u03b7\u03c2, \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1\u03c2",
+        "category": "home",
+        "description": "Services section title",
+        "created_at": "2026-06-06T19:46:14.672415+00:00",
+        "updated_at": "2026-06-28T00:55:33.827+00:00"
+    },
+    {
+        "id": "3fb23e04-0952-4f53-ac21-3dd7a4af2fd9",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "books_hero_title",
+        "value": "\u03a3\u03c5\u03b3\u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03cc \u0388\u03c1\u03b3\u03bf",
+        "category": "about",
+        "description": "Books page hero title",
+        "created_at": "2026-06-06T21:51:40.576764+00:00",
+        "updated_at": "2026-06-28T00:55:16.92+00:00"
+    },
+    {
+        "id": "5039ab8a-dfc0-4270-ac01-7099bb8d4982",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "hero_cta_primary_text",
+        "value": "\u0392\u0399\u039f\u0393\u03a1\u0391\u03a6\u0399\u039a\u039f",
+        "category": "home",
+        "description": "Hero primary button text",
+        "created_at": "2026-06-06T19:46:13.693907+00:00",
+        "updated_at": "2026-06-28T08:43:55.314+00:00"
+    },
+    {
+        "id": "47865123-10b1-4236-bfb5-ec1e07fcccd0",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_phone_hint",
+        "value": "+30 697 437 1139",
+        "category": "contact",
+        "description": "Phone number",
+        "created_at": "2026-06-06T19:46:19.162232+00:00",
+        "updated_at": "2026-06-28T00:55:21.667+00:00"
+    },
+    {
+        "id": "803ec3f3-6594-4e29-a62e-92872c4d0fa4",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_section_eyebrow",
+        "value": "\u03a3\u03c7\u03b5\u03c4\u03b9\u03ba\u03ac \u03bc\u03b5 \u03b5\u03bc\u03ad\u03bd\u03b1",
+        "category": "home",
+        "description": "About preview section eyebrow",
+        "created_at": "2026-06-06T19:46:15.069881+00:00",
+        "updated_at": "2026-06-29T13:43:58.116+00:00"
+    },
+    {
+        "id": "a55c65b5-874d-4c87-9de6-b29299e35f4f",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_phone_label",
+        "value": "\u03a4\u03b7\u03bb\u03ad\u03c6\u03c9\u03bd\u03bf",
+        "category": "contact",
+        "description": "Phone card label",
+        "created_at": "2026-06-06T19:46:18.971466+00:00",
+        "updated_at": "2026-06-28T00:55:21.975+00:00"
+    },
+    {
+        "id": "fed112bf-8930-4cf8-a283-ea179464d848",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "testimonials_section_title",
+        "value": "\u0393\u03bd\u03ce\u03bc\u03b5\u03c2 \u03c0\u03b5\u03bb\u03b1\u03c4\u03ce\u03bd \u03b3\u03b9\u03b1 \u03c4\u03bf\u03bd \u039d\u03b9\u03ba\u03cc\u03bb\u03b1 \u039a\u03bf\u03bb\u03bf\u03ba\u03bf\u03c4\u03c1\u03ce\u03bd\u03b7",
+        "category": "home",
+        "description": "Testimonials section title",
+        "created_at": "2026-06-06T19:46:16.214432+00:00",
+        "updated_at": "2026-06-28T00:55:34.121+00:00"
+    },
+    {
+        "id": "2295e746-0c31-432d-8bf4-c76549aef51c",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "smtp_pass",
+        "value": "vzqtdrushuhvhfbk",
+        "category": "contact",
+        "description": "",
+        "created_at": "2026-06-09T20:47:59.456183+00:00",
+        "updated_at": "2026-06-28T00:55:24.186+00:00"
+    },
+    {
+        "id": "f16c134e-2296-4262-9313-b70d4c837f60",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "smtp_port",
+        "value": "587",
+        "category": "contact",
+        "description": "",
+        "created_at": "2026-06-09T20:47:59.329122+00:00",
+        "updated_at": "2026-06-28T00:55:24.488+00:00"
+    },
+    {
+        "id": "191072b5-0822-4c8b-8fda-e393bb86a2e6",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_portrait",
+        "value": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/about-portrait.jpg",
+        "category": "about",
+        "description": "About page portrait image",
+        "created_at": "2026-06-06T19:46:18.009461+00:00",
+        "updated_at": "2026-07-06T10:04:33.322+00:00"
+    },
+    {
+        "id": "5d03ac75-3349-4d0a-bc50-88a421abba12",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_section_title",
+        "value": "\u039d\u03b9\u03ba\u03cc\u03bb\u03b1\u03c2 \u039a\u03bf\u03bb\u03bf\u03ba\u03bf\u03c4\u03c1\u03ce\u03bd\u03b7\u03c2",
+        "category": "home",
+        "description": "About preview section title",
+        "created_at": "2026-06-06T19:46:15.255393+00:00",
+        "updated_at": "2026-06-28T00:55:30.406+00:00"
+    },
+    {
+        "id": "3bf7cfe8-2289-4eed-94d8-9a00d290004d",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "hero_cta_primary_link",
+        "value": "/about",
+        "category": "home",
+        "description": "Hero primary button link",
+        "created_at": "2026-06-06T19:46:13.887914+00:00",
+        "updated_at": "2026-06-28T00:55:31.339+00:00"
+    },
+    {
+        "id": "84581fc6-35df-4bb9-9f2f-fc7bba62d648",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "hero_subtitle",
+        "value": "\u0388\u03bd\u03b1\u03c2 \u03b1\u03c3\u03c6\u03b1\u03bb\u03ae\u03c2 \u03c7\u03ce\u03c1\u03bf\u03c2 \u03b3\u03b9\u03b1 \u03b5\u03c0\u03b5\u03be\u03b5\u03c1\u03b3\u03b1\u03c3\u03af\u03b1, \u03b5\u03bc\u03c0\u03b5\u03c1\u03af\u03b5\u03be\u03b7, \u03b5\u03bd\u03b8\u03cd\u03bc\u03b7\u03c3\u03b7, \u03b5\u03c0\u03af\u03b3\u03bd\u03c9\u03c3\u03b7, \u03b3\u03b1\u03bb\u03ae\u03bd\u03b7, \u03c0\u03bb\u03b7\u03c1\u03cc\u03c4\u03b7\u03c4\u03b1, \u03b5\u03be\u03ad\u03bb\u03b9\u03be\u03b7 \u03ba\u03b1\u03b9 \u03bd\u03ad\u03b5\u03c2 \u03b1\u03c6\u03b5\u03c4\u03b7\u03c1\u03af\u03b5\u03c2",
+        "category": "home",
+        "description": "Hero section subtitle",
+        "created_at": "2026-06-06T18:33:45.909+00:00",
+        "updated_at": "2026-06-28T00:55:33.19+00:00"
+    },
+    {
+        "id": "18fdddec-3637-4d5e-9267-7f49bb0f1c01",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "hero_image",
+        "value": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783154277016-gq4wen.jpg",
+        "category": "home",
+        "description": "Hero background image URL",
+        "created_at": "2026-06-06T19:46:14.486843+00:00",
+        "updated_at": "2026-07-04T08:48:04.911+00:00"
+    },
+    {
+        "id": "6b4de0ac-7419-45a2-b799-214b506e60bf",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_section_cta_text",
+        "value": "\u0392\u0399\u039f\u0393\u03a1\u0391\u03a6\u0399\u039a\u039f",
+        "category": "home",
+        "description": "About CTA button text",
+        "created_at": "2026-06-06T19:46:15.833662+00:00",
+        "updated_at": "2026-06-28T09:14:08.993+00:00"
+    },
+    {
+        "id": "29c03c2e-16f2-4dd2-bf4d-1b1683065a84",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_email",
+        "value": "nikolashealing@yahoo.gr",
+        "category": "contact",
+        "description": "Contact form email recipient",
+        "created_at": "2026-06-09T09:23:06.431725+00:00",
+        "updated_at": "2026-06-28T09:48:13.002+00:00"
+    },
+    {
+        "id": "c9e46c43-c377-4b90-82b5-9134f3de917e",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_hero_eyebrow",
+        "value": "\u0392\u03b9\u03bf\u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03cc",
+        "category": "about",
+        "description": "About page hero eyebrow",
+        "created_at": "2026-06-06T19:46:16.791113+00:00",
+        "updated_at": "2026-07-06T10:04:30.908+00:00"
+    },
+    {
+        "id": "86c70836-ce27-47a5-8dc0-c86d7654d50c",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_bio_title",
+        "value": "\u0392\u0399\u039f\u0393\u03a1\u0391\u03a6\u0399\u039a\u039f",
+        "category": "about",
+        "description": "About bio section title",
+        "created_at": "2026-06-06T19:46:17.604027+00:00",
+        "updated_at": "2026-07-06T10:04:28.916+00:00"
+    },
+    {
+        "id": "4e0802e5-e696-4609-abd5-bfcb66e80f25",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_section_portrait",
+        "value": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783517422358-62lpzz.jpg",
+        "category": "home",
+        "description": "About section portrait image",
+        "created_at": "2026-06-06T19:46:16.013346+00:00",
+        "updated_at": "2026-07-08T13:30:23.327+00:00"
+    },
+    {
+        "id": "0be353e2-e4e0-43c0-b358-682253307993",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "smtp_user",
+        "value": "choliasmenos.panos@gmail.com",
+        "category": "contact",
+        "description": "",
+        "created_at": "2026-06-09T20:47:59.391675+00:00",
+        "updated_at": "2026-06-28T00:55:24.803+00:00"
+    },
+    {
+        "id": "388f6de6-90a8-48d7-8639-652f1769d5e5",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_home_section_visible",
+        "value": "false",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-08T13:19:13.215636+00:00",
+        "updated_at": "2026-07-08T13:19:13.215636+00:00"
+    },
+    {
+        "id": "09bcdf95-b5c1-442e-a2a1-8f200f249b20",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "smtp_from_email",
+        "value": "choliasmenos.panos@gmail.com",
+        "category": "contact",
+        "description": "",
+        "created_at": "2026-06-09T20:47:59.518696+00:00",
+        "updated_at": "2026-06-28T00:55:23.238+00:00"
+    },
+    {
+        "id": "a25cddb4-7cfa-456b-b348-5e4609b481e2",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "hero_cta_secondary_link",
+        "value": "/services",
+        "category": "home",
+        "description": "Hero secondary link",
+        "created_at": "2026-06-06T19:46:14.283542+00:00",
+        "updated_at": "2026-06-28T00:55:31.963+00:00"
+    },
+    {
+        "id": "1f10a6f5-756b-41e7-89c9-cfcb26fc8114",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_home_section_title",
+        "value": "\u03a0\u03c1\u03cc\u03c3\u03c6\u03b1\u03c4\u03b1 \u0386\u03c1\u03b8\u03c1\u03b1",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-08T13:19:13.582393+00:00",
+        "updated_at": "2026-07-08T13:19:13.582393+00:00"
+    },
+    {
+        "id": "4308e22e-8bbf-46d0-ae98-a8b19cca52a6",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "footer_nav_links",
+        "value": [
+            {
+                "path": "/",
+                "label": "\u0391\u03c1\u03c7\u03b9\u03ba\u03ae"
+            },
+            {
+                "path": "/about",
+                "label": "\u0392\u03b9\u03bf\u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03cc"
+            },
+            {
+                "path": "/services",
+                "label": "\u03a5\u03c0\u03b7\u03c1\u03b5\u03c3\u03af\u03b5\u03c2"
+            },
+            {
+                "path": "/services/omades",
+                "label": "\u039f\u03bc\u03ac\u03b4\u03b5\u03c2"
+            },
+            {
+                "path": "/books",
+                "label": "\u0392\u03b9\u03b2\u03bb\u03af\u03b1"
+            },
+            {
+                "path": "/blog",
+                "label": "\u039f\u03bc\u03b9\u03bb\u03af\u03b5\u03c2, \u03a3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1"
+            }
+        ],
+        "category": "navigation",
+        "description": "Footer navigation links (JSON array)",
+        "created_at": "2026-06-06T19:46:22.575087+00:00",
+        "updated_at": "2026-06-28T00:55:34.444+00:00"
+    },
+    {
+        "id": "36abfdba-511b-4087-9baf-6377e7c2df23",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_map_embed_url",
+        "value": "https://www.google.com/maps?q=\u0391\u03c0\u03cc\u03bb\u03bb\u03c9\u03bd\u03bf\u03c2+30,+\u039d\u03ad\u03bf+\u0397\u03c1\u03ac\u03ba\u03bb\u03b5\u03b9\u03bf+14121,+\u0395\u03bb\u03bb\u03ac\u03b4\u03b1&output=embed",
+        "category": "contact",
+        "description": "Google Maps embed iframe URL",
+        "created_at": "2026-06-06T19:46:20.673676+00:00",
+        "updated_at": "2026-06-28T00:55:21.334+00:00"
+    },
+    {
+        "id": "4bf50f00-ddc5-4ccf-a5f1-d8afdd3ddfae",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "page_data",
+        "value": {
+            "/": {
+                "title": "",
+                "subtitle": "",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783154277016-gq4wen.jpg"
+            },
+            "/blog": {
+                "title": "\u039f\u039c\u0399\u039b\u0399\u0395\u03a3, \u03a3\u0395\u039c\u0399\u039d\u0391\u03a1\u0399\u0391, \u039f\u039c\u0391\u0394\u0395\u03a3",
+                "subtitle": "\u0395\u03bd\u03b7\u03bc\u03b5\u03c1\u03ce\u03c3\u03bf\u03c5 \u03ba\u03b1\u03b9 \u03c6\u03c4\u03b9\u03ac\u03be\u03b5 \u03c4\u03bf \u03c0\u03c1\u03cc\u03b3\u03c1\u03b1\u03bc\u03bc\u03ac \u03c3\u03bf\u03c5 \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03b5\u03af\u03c3\u03b1\u03b9 \u03bc\u03ad\u03c3\u03b1 \u03c3\u03c4\u03bf\u03c5\u03c2 \u03c3\u03c5\u03bc\u03bc\u03b5\u03c4\u03ad\u03c7\u03bf\u03bd\u03c4\u03b5\u03c2",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782610759707-uaesh1.legacy-1782610759707"
+            },
+            "/about": {
+                "title": "\u039d\u0399\u039a\u039f\u039b\u0391\u03a3",
+                "subtitle": "",
+                "hero_image": ""
+            },
+            "/services": {
+                "title": "",
+                "subtitle": "\u039c\u03bf\u03bd\u03bf\u03c0\u03ac\u03c4\u03b9\u03b1 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2/\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1\u03c2",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782609326963-aoqr41.jpg"
+            },
+            "/services/": {
+                "title": "\u039f\u03bc\u03ac\u03b4\u03b5\u03c2",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783368109420-mlcht4.jpg"
+            },
+            "/services/--": {
+                "title": "\u039f\u03bc\u03ac\u03b4\u03b5\u03c2 ",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783368248617-yygce0.jpg"
+            },
+            "/services/emdr": {
+                "title": "EMDR",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780992758749-qa46w5.jpg"
+            },
+            "/services/iadc": {
+                "title": "IADC (\u0398\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1 \u03b1\u03bd\u03b5\u03c0\u03af\u03bb\u03c5\u03c4\u03bf\u03c5 \u03c0\u03ad\u03bd\u03b8\u03bf\u03c5\u03c2)",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780992928526-dlx9t6.jpg"
+            },
+            "/services/reiki": {
+                "title": "\u03a1\u03ad\u03b9\u03ba\u03b9 (\u03a3\u03c5\u03bd\u03b5\u03b4\u03c1\u03af\u03b5\u03c2, \u0395\u03ba\u03c0\u03b1\u03af\u03b4\u03b5\u03c5\u03c3\u03b7 \u0391\u0384 \u03ba\u03b1\u03b9 \u0392\u0384 \u0392\u03b1\u03b8\u03bc\u03bf\u03cd, \u039c\u03b1\u03b8\u03b7\u03c4\u03b5\u03af\u03b1 Master)",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780834388122-zjreo7.jpg"
+            },
+            "/services/omades": {
+                "title": "\u039f\u03bc\u03ac\u03b4\u03b5\u03c2",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783440615279-9gjdmo.jpg"
+            },
+            "/services/epignosi": {
+                "title": "\u0395\u03c0\u03af\u03b3\u03bd\u03c9\u03c3\u03b7",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780990691240-5igjpf.jpg"
+            },
+            "/services/focusing": {
+                "title": "Focusing",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780834636739-u76hqq.jpg"
+            },
+            "/services/autognosia": {
+                "title": "\u03a8\u03c5\u03c7\u03bf\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1, \u03a3\u03c5\u03bc\u03b2\u03bf\u03c5\u03bb\u03b5\u03c5\u03c4\u03b9\u03ba\u03ae",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783334173617-mfcz6a.legacy-1783334173617"
+            },
+            "/services/mindfulness": {
+                "title": "Mindfulness",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780834739146-g8873n.jpg"
+            },
+            "/services/pre-therapy": {
+                "title": "Pre-Therapy",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780989695574-r7cyco.jpg"
+            },
+            "/services/esoteriko-paidi": {
+                "title": "\u0398\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1 \u0395\u03c3\u03c9\u03c4\u03b5\u03c1\u03b9\u03ba\u03bf\u03cd \u03a0\u03b1\u03b9\u03b4\u03b9\u03bf\u03cd",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782609505051-nk225s.jpg"
+            },
+            "/services/seminar-omilies": {
+                "title": "\u03a3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1 & \u039f\u03bc\u03b9\u03bb\u03af\u03b5\u03c2",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782610759707-uaesh1.legacy-1782610759707"
+            },
+            "/services/anthoiamata-mpach": {
+                "title": "\u0391\u03bd\u03b8\u03bf\u03ca\u03ac\u03bc\u03b1\u03c4\u03b1 \u039c\u03c0\u03b1\u03c7",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780990218629-on4vlg.jpg"
+            },
+            "/services/monopati-eytyxias": {
+                "title": "\u039c\u03bf\u03bd\u03bf\u03c0\u03ac\u03c4\u03b9 \u0395\u03c5\u03c4\u03c5\u03c7\u03af\u03b1\u03c2",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782610678263-wol59z.legacy-1782610678263"
+            },
+            "/services/anadromiki-therapeia": {
+                "title": "\u0391\u03bd\u03b1\u03b4\u03c1\u03bf\u03bc\u03b9\u03ba\u03ae \u0398\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780991915808-44mzed.jpg"
+            },
+            "/services/dialogismos-oramatismos": {
+                "title": "\u0394\u03b9\u03b1\u03bb\u03bf\u03b3\u03b9\u03c3\u03bc\u03cc\u03c2 & \u039f\u03c1\u03b1\u03bc\u03b1\u03c4\u03b9\u03c3\u03bc\u03cc\u03c2",
+                "hero_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782610046031-73aul4.jpg"
+            }
+        },
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-07T11:45:28.500239+00:00",
+        "updated_at": "2026-07-08T11:21:56.461+00:00"
+    },
+    {
+        "id": "cebb8da7-5da5-4305-aad2-96eab3054157",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "site_tagline",
+        "value": "\u0388\u03bd\u03b1\u03c2 \u03b1\u03c3\u03c6\u03b1\u03bb\u03ae\u03c2 \u03c7\u03ce\u03c1\u03bf\u03c2 \u03b3\u03b9\u03b1 \u03c0\u03bf\u03c1\u03b5\u03af\u03b1 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2, \u03ba\u03ac\u03b8\u03b1\u03c1\u03c3\u03b7\u03c2 \u03ba\u03b1\u03b9 \u03bd\u03ad\u03b1\u03c2 \u03b1\u03c6\u03b5\u03c4\u03b7\u03c1\u03af\u03b1\u03c2.",
+        "category": "site",
+        "description": "Site tagline (footer)",
+        "created_at": "2026-06-06T19:46:21.611448+00:00",
+        "updated_at": "2026-06-29T14:20:53.381+00:00"
+    },
+    {
+        "id": "242d6804-a679-4f10-9164-526e593bceea",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seo_default_title",
+        "value": "\u039d\u03b9\u03ba\u03cc\u03bb\u03b1\u03c2 \u039a\u03bf\u03bb\u03bf\u03ba\u03bf\u03c4\u03c1\u03ce\u03bd\u03b7\u03c2 \u2014 \u03a8\u03c5\u03c7\u03bf\u03bb\u03cc\u03b3\u03bf\u03c2, \u03a8\u03c5\u03c7\u03bf\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae\u03c2 | \u039d\u03ad\u03bf \u0397\u03c1\u03ac\u03ba\u03bb\u03b5\u03b9\u03bf",
+        "category": "seo",
+        "description": "Default site title",
+        "created_at": "2026-06-06T19:46:23.520347+00:00",
+        "updated_at": "2026-06-29T15:44:47.37+00:00"
+    },
+    {
+        "id": "36636c3e-7641-4d19-a7b7-959011974cac",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_bio_paragraphs",
+        "value": [
+            " \u0393\u03b5\u03bd\u03bd\u03ae\u03b8\u03b7\u03ba\u03b1 \u03ba\u03b1\u03b9 \u03bc\u03b5\u03b3\u03ac\u03bb\u03c9\u03c3\u03b1 \u03c3\u03c4\u03bf \u0393\u03b1\u03bb\u03ac\u03c4\u03c3\u03b9 \u03ba\u03b1\u03b9 \u03b3\u03b9\u03b1 \u03b1\u03c1\u03ba\u03b5\u03c4\u03ac \u03c7\u03c1\u03cc\u03bd\u03b9\u03b1 \u03b1\u03c3\u03c7\u03bf\u03bb\u03ae\u03b8\u03b7\u03ba\u03b1 \u03bc\u03b5 \u03c4\u03bf \u03c0\u03bf\u03b4\u03cc\u03c3\u03c6\u03b1\u03b9\u03c1\u03bf \u03ba\u03b1\u03b9 \u03c4\u03b7\u03bd \u03be\u03c5\u03bb\u03bf\u03c5\u03c1\u03b3\u03b9\u03ba\u03ae \u03c4\u03ad\u03c7\u03bd\u03b7. \u03a3\u03c4\u03b1 33 \u03bc\u03bf\u03c5, \u03ac\u03c1\u03c7\u03b9\u03c3\u03b1 \u03bc\u03b9\u03b1 \u03c0\u03bf\u03c1\u03b5\u03af\u03b1 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2/\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1\u03c2, \u03b8\u03ad\u03bb\u03bf\u03bd\u03c4\u03b1\u03c2 \u03bd\u03b1 \u03c6\u03c4\u03ac\u03c3\u03c9 \u03c3\u03c4\u03b7 \u03c1\u03af\u03b6\u03b1 \u03c4\u03c9\u03bd \u03c8\u03c5\u03c7\u03b9\u03ba\u03ce\u03bd \u03c4\u03c1\u03b1\u03c5\u03bc\u03ac\u03c4\u03c9\u03bd \u03c4\u03b7\u03c2 \u03c0\u03b1\u03b9\u03b4\u03b9\u03ba\u03ae\u03c2 \u03ba\u03b1\u03b9 \u03b5\u03c6\u03b7\u03b2\u03b9\u03ba\u03ae\u03c2 \u03bc\u03bf\u03c5 \u03b7\u03bb\u03b9\u03ba\u03af\u03b1\u03c2. \u0391\u03c6\u03b5\u03c4\u03b7\u03c1\u03af\u03b1 \u03ae\u03c4\u03b1\u03bd \u03bc\u03b9\u03b1 \u03c6\u03c1\u03ac\u03c3\u03b7 \u03c0\u03bf\u03c5 \u03b5\u03af\u03c0\u03b1 \u03c3\u03c4\u03bf\u03bd \u03b5\u03b1\u03c5\u03c4\u03cc \u03bc\u03bf\u03c5 \u03ba\u03b1\u03b9 \u03c0\u03bf\u03c5 \u03b2\u03b3\u03ae\u03ba\u03b5 \u03bc\u03ad\u03c3\u03b1 \u03b1\u03c0\u03cc \u03c4\u03b7\u03bd \u03b1\u03bd\u03ac\u03b3\u03ba\u03b7 \u03c4\u03b7\u03c2 \u03c8\u03c5\u03c7\u03ae\u03c2 \u03bc\u03bf\u03c5: \"\u039d\u03b9\u03ba\u03cc\u03bb\u03b1, \u03c7\u03c1\u03b5\u03b9\u03ac\u03b6\u03b5\u03c4\u03b1\u03b9 \u03bd\u03b1 \u03b2\u03c1\u03b5\u03b9\u03c2 \u03ad\u03bd\u03b1 \u03c4\u03c1\u03cc\u03c0\u03bf \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03b3\u03b1\u03bb\u03b7\u03bd\u03ad\u03c8\u03b5\u03b9\u03c2!\", \u03b5\u03bd\u03bd\u03bf\u03ce\u03bd\u03c4\u03b1\u03c2 \u03ba\u03ac\u03c4\u03b9 \u03c6\u03c5\u03c3\u03b9\u03ba\u03cc, \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03b9\u03ba\u03cc \u03ba\u03b1\u03b9 \u03c5\u03b3\u03b9\u03ad\u03c2. \u03a4\u03bf \u03c0\u03bf\u03b4\u03cc\u03c3\u03c6\u03b1\u03b9\u03c1\u03bf \u03ba\u03b1\u03b9 \u03b7 \u03c0\u03bf\u03af\u03b7\u03c3\u03b7 \u03c0\u03bf\u03c5 \u03ad\u03b3\u03c1\u03b1\u03c6\u03b1 \u03b1\u03c0\u03cc \u03c4\u03b1 \u03c7\u03c1\u03cc\u03bd\u03b9\u03b1 \u03c4\u03bf\u03c5 \u0394\u03b7\u03bc\u03bf\u03c4\u03b9\u03ba\u03bf\u03cd, \u03ae\u03c4\u03b1\u03bd \u03b7 \u03c3\u03b1\u03bd\u03af\u03b4\u03b1 \u03c3\u03c9\u03c4\u03b7\u03c1\u03af\u03b1\u03c2 \u03ba\u03b1\u03b9 \u03bc\u03b9\u03b1 \u03b4\u03b9\u03ad\u03be\u03bf\u03b4\u03bf\u03c2 \u03b5\u03ba\u03c4\u03cc\u03bd\u03c9\u03c3\u03b7\u03c2. \u0391\u03c0\u03cc \u03b5\u03ba\u03b5\u03af \u03ba\u03b1\u03b9 \u03c0\u03ad\u03c1\u03b1, \u03b8\u03ad\u03bb\u03b7\u03c3\u03b1 \u03bd\u03b1 \u03bc\u03c0\u03c9 \u03c3\u03c4\u03bf \u03b5\u03c0\u03af\u03c0\u03b5\u03b4\u03bf \u03c4\u03b7\u03c2 \u03b5\u03be\u03ad\u03bb\u03b9\u03be\u03b7\u03c2 \u03ba\u03b1\u03b9 \u03c4\u03b7\u03c2 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1\u03c2. \u039c\u03b5\u03c4\u03ac \u03b1\u03c0\u03cc \u03b4\u03b9\u03ac\u03c6\u03bf\u03c1\u03b1 \u03c3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1 \u03ba\u03b1\u03b9 \u03bf\u03bc\u03b9\u03bb\u03af\u03b5\u03c2 \u03c0\u03bf\u03c5 \u03c0\u03b1\u03c1\u03b1\u03ba\u03bf\u03bb\u03bf\u03cd\u03b8\u03b7\u03c3\u03b1, \u03bc\u03c0\u03ae\u03ba\u03b5 \u03c3\u03c4\u03b7 \u03b6\u03c9\u03ae \u03bc\u03bf\u03c5 \u03c4\u03bf \u03c1\u03ad\u03b9\u03ba\u03b9, \u03c0\u03bf\u03c5 \u03b1\u03c0\u03bf\u03c4\u03ad\u03bb\u03b5\u03c3\u03b5 \u03c4\u03bf\u03bd \u03c0\u03c1\u03ce\u03c4\u03bf \u03ba\u03b1\u03b9 \u03ba\u03cd\u03c1\u03b9\u03bf \u03b4\u03c1\u03cc\u03bc\u03bf \u03c4\u03b7\u03c2 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1\u03c2, \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2 \u03ba\u03b1\u03b9 \u03c0\u03bd\u03b5\u03c5\u03bc\u03b1\u03c4\u03b9\u03ba\u03ae\u03c2 \u03bc\u03bf\u03c5 \u03b5\u03be\u03ad\u03bb\u03b9\u03be\u03b7\u03c2. \u0391\u03ba\u03bf\u03bb\u03bf\u03cd\u03b8\u03b7\u03c3\u03b1\u03bd \u03c0\u03bf\u03bb\u03bb\u03ad\u03c2 \u03b2\u03b9\u03c9\u03bc\u03b1\u03c4\u03b9\u03ba\u03ad\u03c2 \u03c3\u03c0\u03bf\u03c5\u03b4\u03ad\u03c2, \u03c0\u03bf\u03c5 \u03b7 \u03ba\u03ac\u03b8\u03b5 \u03bc\u03b9\u03b1 \u03ae\u03c4\u03b1\u03bd \u03ba\u03b1\u03b9 \u03ad\u03bd\u03b1 \u03c6\u03c9\u03c4\u03b5\u03b9\u03bd\u03cc \u03b2\u03ae\u03bc\u03b1 \u03c3\u03c4\u03b7 \u03b6\u03c9\u03ae \u03bc\u03bf\u03c5 \u03ba\u03b1\u03b9 \u03c3\u03c4\u03b7 \u03b3\u03b1\u03bb\u03ae\u03bd\u03b7 \u03bc\u03bf\u03c5 (\u0391\u03c5\u03c4\u03ac \u03c4\u03b1 \u03b2\u03ae\u03bc\u03b1\u03c4\u03b1, \u03b8\u03b1 \u03c4\u03b1 \u03b4\u03b5\u03b9\u03c2 \u03c0\u03b1\u03c1\u03b1\u03ba\u03ac\u03c4\u03c9, \u03c3\u03c4\u03b7\u03bd \u03b5\u03bd\u03cc\u03c4\u03b7\u03c4\u03b1 \"\u03a3\u03c0\u03bf\u03c5\u03b4\u03ad\u03c2 & \u03a0\u03b9\u03c3\u03c4\u03bf\u03c0\u03bf\u03b9\u03ae\u03c3\u03b5\u03b9\u03c2''). \n\u0391\u03c0\u03bf\u03c4\u03ad\u03bb\u03b5\u03c3\u03bc\u03b1 \u03b1\u03c5\u03c4\u03ae\u03c2 \u03c4\u03b7\u03c2 \u03c0\u03bf\u03c1\u03b5\u03af\u03b1\u03c2, \u03ae\u03c4\u03b1\u03bd \u03bd\u03b1 \u03c3\u03c7\u03b7\u03bc\u03b1\u03c4\u03b9\u03c3\u03c4\u03b5\u03af \u03b7 \u03b4\u03c5\u03bd\u03b1\u03bc\u03b9\u03ba\u03ae \u03b5\u03bd\u03cc\u03c2 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae, \u03c0\u03bf\u03c5 \u03c4\u03b1\u03b9\u03c1\u03b9\u03ac\u03b6\u03b5\u03b9 \u03c3\u03c4\u03b1 \u03bb\u03b5\u03b3\u03cc\u03bc\u03b5\u03bd\u03b1 \u03c4\u03bf\u03c5 Carl Jung, \u03ba\u03b1\u03b8\u03ce\u03c2 \u03bf\u03bd\u03cc\u03bc\u03b1\u03b6\u03b5 \u03c4\u03bf\u03bd \u03ba\u03b1\u03c4\u03ac\u03bb\u03bb\u03b7\u03bb\u03bf \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae \"Wounded Healer''.",
+            "\u03a3\u03c4\u03bf \u03bc\u03bf\u03bd\u03bf\u03c0\u03ac\u03c4\u03b9 \u03c4\u03bf\u03c5 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae, \u03c3\u03c5\u03bd\u03bf\u03b4\u03b5\u03cd\u03c9 \u03ba\u03b1\u03b9 \u03c5\u03c0\u03bf\u03c3\u03c4\u03b7\u03c1\u03af\u03b6\u03c9 \u03b1\u03bd\u03b8\u03c1\u03ce\u03c0\u03bf\u03c5\u03c2 \u03c0\u03bf\u03c5 \u03b5\u03c0\u03b9\u03b8\u03c5\u03bc\u03bf\u03cd\u03bd \u03bd\u03b1 \u03b4\u03b7\u03bc\u03b9\u03bf\u03c5\u03c1\u03b3\u03ae\u03c3\u03bf\u03c5\u03bd \u03bc\u03b9\u03b1 \u03bd\u03ad\u03b1 \u03c3\u03c7\u03ad\u03c3\u03b7 \u03bc\u03b5 \u03c4\u03bf\u03bd \u03b5\u03b1\u03c5\u03c4\u03cc \u03c4\u03bf\u03c5\u03c2 \u03ba\u03b1\u03b9 \u03c4\u03b7 \u03b6\u03c9\u03ae, \u03bc\u03ad\u03c3\u03b1 \u03b1\u03c0\u03cc \u03b2\u03ae\u03bc\u03b1\u03c4\u03b1 \u03ba\u03ac\u03b8\u03b1\u03c1\u03c3\u03b7\u03c2, \u03b1\u03c5\u03c4\u03bf\u03b1\u03c0\u03bf\u03b4\u03bf\u03c7\u03ae\u03c2, \u03c8\u03c5\u03c7\u03b9\u03ba\u03ae\u03c2 \u03b1\u03bd\u03b8\u03b5\u03ba\u03c4\u03b9\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1\u03c2, \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7\u03c2 \u03bc\u03b5 \u03c4\u03b9\u03c2 \u03b5\u03b3\u03b3\u03b5\u03bd\u03b5\u03af\u03c2 \u03b4\u03b5\u03be\u03b9\u03cc\u03c4\u03b7\u03c4\u03ad\u03c2 \u03c4\u03bf\u03c5\u03c2, \u03b5\u03c0\u03b1\u03c6\u03ae, \u03b1\u03bd\u03b1\u03b3\u03bd\u03ce\u03c1\u03b9\u03c3\u03b7 \u03ba\u03b1\u03b9 \u03ad\u03ba\u03c6\u03c1\u03b1\u03c3\u03b7 \u03c3\u03c5\u03bd\u03b1\u03b9\u03c3\u03b8\u03b7\u03bc\u03ac\u03c4\u03c9\u03bd, \u03bb\u03cd\u03c4\u03c1\u03c9\u03c3\u03b7 \u03ba\u03b1\u03b9 \u03c3\u03c5\u03bc\u03c6\u03b9\u03bb\u03af\u03c9\u03c3\u03b7 \u03bc\u03b5 \u03c4\u03bf \u03c0\u03b1\u03c1\u03b5\u03bb\u03b8\u03cc\u03bd. \u039f\u03b9 \u03c8\u03c5\u03c7\u03bf\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03b9\u03ba\u03ad\u03c2 \u03bc\u03ad\u03b8\u03bf\u03b4\u03bf\u03b9 \u03c0\u03bf\u03c5 \u03c3\u03c5\u03bd\u03b4\u03c5\u03ac\u03b6\u03c9, \u03c0\u03c1\u03bf\u03c3\u03b1\u03c1\u03bc\u03cc\u03b6\u03bf\u03bd\u03c4\u03b1\u03b9 \u03ba\u03ac\u03b8\u03b5 \u03c6\u03bf\u03c1\u03ac \u03c3\u03c4\u03b9\u03c2 \u03b1\u03bd\u03ac\u03b3\u03ba\u03b5\u03c2 \u03c4\u03bf\u03c5 \u03b5\u03bd\u03b4\u03b9\u03b1\u03c6\u03b5\u03c1\u03cc\u03bc\u03b5\u03bd\u03bf\u03c5. \u03a4\u03bf \u03c4\u03b1\u03be\u03af\u03b4\u03b9 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03ac\u03bd\u03c4\u03b1 \u03bf\u03c5\u03c3\u03b9\u03ce\u03b4\u03b5\u03c2, \u03b1\u03c0\u03bf\u03ba\u03b1\u03bb\u03c5\u03c0\u03c4\u03b9\u03ba\u03cc \u03ba\u03b1\u03b9 \u03b1\u03c0\u03b5\u03bb\u03b5\u03c5\u03b8\u03b5\u03c1\u03c9\u03c4\u03b9\u03ba\u03cc. \n",
+            "\u039d\u03b9\u03ce\u03b8\u03c9 \u03c3\u03c5\u03b3\u03ba\u03af\u03bd\u03b7\u03c3\u03b7 \u03ba\u03b1\u03b9 \u03b5\u03c5\u03c4\u03c5\u03c7\u03af\u03b1 \u03c0\u03bf\u03c5, \u03bc\u03ad\u03c3\u03b1 \u03c3' \u03b1\u03c5\u03c4\u03cc \u03c4\u03bf \u03b5\u03c5\u03bb\u03bf\u03b3\u03b7\u03bc\u03ad\u03bd\u03bf \u03c4\u03b1\u03be\u03af\u03b4\u03b9 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2, \u03c3\u03c5\u03bd\u03ac\u03bd\u03c4\u03b7\u03c3\u03b1 \u03c0\u03bf\u03bb\u03cd \u03c3\u03b7\u03bc\u03b1\u03bd\u03c4\u03b9\u03ba\u03bf\u03cd\u03c2 \u03b5\u03c0\u03b9\u03c3\u03c4\u03ae\u03bc\u03bf\u03bd\u03b5\u03c2 \u03ba\u03b1\u03b9 \u03c0\u03bd\u03b5\u03c5\u03bc\u03b1\u03c4\u03b9\u03ba\u03bf\u03cd\u03c2 \u03b4\u03b1\u03c3\u03ba\u03ac\u03bb\u03bf\u03c5\u03c2, \u03c3\u03b5 \u03bf\u03bc\u03b9\u03bb\u03af\u03b5\u03c2 \u03ba\u03b1\u03b9 \u03c3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1, \u03bf\u03b9 \u03bf\u03c0\u03bf\u03af\u03bf\u03b9 \u03ad\u03b2\u03b1\u03bb\u03b1\u03bd \u03c4\u03b7\u03bd \u03b1\u03bd\u03b5\u03be\u03af\u03c4\u03b7\u03bb\u03b7 \u03c3\u03c6\u03c1\u03b1\u03b3\u03af\u03b4\u03b1 \u03c4\u03bf\u03c5\u03c2 \u03c3\u03c4\u03b7 \u03b6\u03c9\u03ae \u03bc\u03bf\u03c5, \u03c6\u03c9\u03c4\u03af\u03b6\u03bf\u03bd\u03c4\u03b1\u03c2 \u03c0\u03b1\u03bd\u03c4\u03bf\u03c4\u03b9\u03bd\u03ac \u03c4\u03b1 \u03b2\u03ae\u03bc\u03b1\u03c4\u03ac \u03bc\u03bf\u03c5 (Hans TenDam, Marion Boon, Jane Simington, Vitor Rodrigues, Dr. Joe Dispenza, Irvin Yalom, Deepak Chopra, Wayne Dyer, Naomi Stephan, Julia Hastings, Patrick Holford, Jane Peterson, Uri Geller, Marlo Morgan, Alan Kohen, Colin Turner, Sonia Shoquette, Bert Hellinger, Sharlotte Palmgren, Cesar Valdez \u03ba.\u03ac. \n\n",
+            "\u03a0\u03c1\u03b1\u03ba\u03c4\u03b9\u03ba\u03ae: \u039f\u03b9\u03ba\u03bf\u03c4\u03c1\u03bf\u03c6\u03b5\u03af\u03bf \u0391\u03b3\u03af\u03bf\u03c5 \u039d\u03b9\u03ba\u03bf\u03bb\u03ac\u03bf\u03c5, \u038a\u0391\u03a3\u0399\u03a3 (\u03a0\u03c1\u03b1\u03ba\u03c4\u03b9\u03ba\u03ae 600 \u03ce\u03c1\u03b5\u03c2 \u03ba\u03b1\u03b9 \u03b5\u03b8\u03b5\u03bb\u03bf\u03bd\u03c4\u03b9\u03c3\u03bc\u03cc\u03c2 \u2013  \u03a3\u03c7\u03b9\u03b6\u03bf\u03c6\u03c1\u03ad\u03bd\u03b5\u03b9\u03b1, \u039d\u03bf\u03b7\u03c4\u03b9\u03ba\u03ae \u03c5\u03c3\u03c4\u03ad\u03c1\u03b7\u03c3\u03b7, \u039a\u03b1\u03c4\u03ac\u03b8\u03bb\u03b9\u03c8\u03b7, \u0399\u03b4\u03b5\u03bf\u03c8\u03c5\u03c7\u03b1\u03bd\u03b1\u03b3\u03ba\u03b1\u03c3\u03c4\u03b9\u03ba\u03ae \u03b4\u03b9\u03b1\u03c4\u03b1\u03c1\u03b1\u03c7\u03ae): 2021-2023.\n\u03a0\u03c1\u03bf\u03cb\u03c0\u03b7\u03c1\u03b5\u03c3\u03af\u03b1: 1. \u039a\u03bf\u03b9\u03bd\u03c9\u03bd\u03b9\u03ba\u03ae \u03a5\u03c0\u03b7\u03c1\u03b5\u03c3\u03af\u03b1 \u0394\u03ae\u03bc\u03bf\u03c5 \u0393\u03b1\u03bb\u03b1\u03c4\u03c3\u03af\u03bf\u03c5 (\u03a8\u03c5\u03c7\u03bf\u03bb\u03cc\u03b3\u03bf\u03c2, 1/9/2023-30/8/2025), \u03a3\u03c5\u03bd\u03b5\u03b4\u03c1\u03af\u03b5\u03c2 \u03bc\u03b5 \u03c0\u03bf\u03bb\u03af\u03c4\u03b5\u03c2 \u03c4\u03bf\u03c5 \u0393\u03b1\u03bb\u03b1\u03c4\u03c3\u03af\u03bf\u03c5, \u0394\u03b9\u03b5\u03c0\u03b9\u03c3\u03c4\u03b7\u03bc\u03bf\u03bd\u03b9\u03ba\u03ad\u03c2 \u03c3\u03c5\u03bd\u03b1\u03bd\u03c4\u03ae\u03c3\u03b5\u03b9\u03c2, \u03a3\u03c5\u03bd\u03c4\u03bf\u03bd\u03b9\u03c3\u03bc\u03cc\u03c2 \u039f\u03bc\u03ac\u03b4\u03b1\u03c2 \u039d\u03bf\u03b7\u03c4\u03b9\u03ba\u03ae\u03c2 \u0395\u03bd\u03b4\u03c5\u03bd\u03ac\u03bc\u03c9\u03c3\u03b7\u03c2 (\u03b3\u03b9\u03b1 \u03ac\u03c4\u03bf\u03bc\u03b1 \u03c4\u03c1\u03af\u03c4\u03b7\u03c2 \u03b7\u03bb\u03b9\u03ba\u03af\u03b1\u03c2), \u039f\u03bc\u03b9\u03bb\u03af\u03b5\u03c2 \u03c3\u03b5 \u03c3\u03c7\u03bf\u03bb\u03b5\u03af\u03b1 \u03c4\u03bf\u03c5 \u0394\u03ae\u03bc\u03bf\u03c5 \u0393\u03b1\u03bb\u03b1\u03c4\u03c3\u03af\u03bf\u03c5, \u0386\u03c1\u03b8\u03c1\u03b1 \u03c3\u03c4\u03b7\u03bd \u03b5\u03c6\u03b7\u03bc\u03b5\u03c1\u03af\u03b4\u03b1 \u03a0\u03b1\u03bb\u03bc\u03cc\u03c2 \u03c4\u03bf\u03c5 \u0393\u03b1\u03bb\u03b1\u03c4\u03c3\u03af\u03bf\u03c5 & \u03c3\u03c4\u03bf site \u03c4\u03bf\u03c5 \u0394\u03ae\u03bc\u03bf\u03c5 \u0393\u03b1\u03bb\u03b1\u03c4\u03c3\u03af\u03bf\u03c5,\n2. \u03a4\u03bc\u03ae\u03bc\u03b1 \u039a\u03bf\u03b9\u03bd\u03c9\u03bd\u03b9\u03ba\u03ae\u03c2 \u0391\u03bb\u03bb\u03b7\u03bb\u03b5\u03b3\u03b3\u03cd\u03b7\u03c2 \u0394\u03ae\u03bc\u03bf\u03c5 \u0391\u03b8\u03b7\u03bd\u03b1\u03af\u03c9\u03bd (\u03a8\u03c5\u03c7\u03bf\u03bb\u03cc\u03b3\u03bf\u03c2, 3/11/2025-2/11/2027), \u039f\u03bc\u03ac\u03b4\u03b5\u03c2 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2 \u03c3\u03b5 \u03ad\u03be\u03b9 \u039b\u03ad\u03c3\u03c7\u03b5\u03c2 \u03a6\u03b9\u03bb\u03af\u03b1\u03c2.\n\u03a3\u03cd\u03bb\u03bb\u03bf\u03b3\u03bf\u03b9: \u039c\u03ad\u03bb\u03bf\u03c2 \u03c4\u03bf\u03c5 \u03a3\u0395\u03a8 (\u03a3\u03cd\u03bb\u03bb\u03bf\u03b3\u03bf\u03c2 \u0395\u03bb\u03bb\u03ae\u03bd\u03c9\u03bd \u03a8\u03c5\u03c7\u03bf\u03bb\u03cc\u03b3\u03c9\u03bd).\n",
+            "\u03a0\u03b1\u03c1\u03ac\u03bb\u03bb\u03b7\u03bb\u03b1 \u03bc\u03b5 \u03c4\u03b7 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03b9\u03ba\u03ae \u03c0\u03bf\u03c1\u03b5\u03af\u03b1, \u03c5\u03c0\u03ac\u03c1\u03c7\u03bf\u03c5\u03bd \u03ba\u03b1\u03b9 \u03ac\u03bb\u03bb\u03bf\u03b9 \u03b4\u03c1\u03cc\u03bc\u03bf\u03b9 \u03ba\u03b1\u03b9 \u03c4\u03c1\u03cc\u03c0\u03bf\u03b9 \u03ad\u03ba\u03c6\u03c1\u03b1\u03c3\u03b7\u03c2 \u03b3\u03b9\u03b1 \u03bc\u03ad\u03bd\u03b1, \u03bc\u03ad\u03c3\u03b1 \u03b1\u03c0\u03cc \u03c4\u03bf \u03ba\u03b1\u03bb\u03bb\u03b9\u03c4\u03b5\u03c7\u03bd\u03b9\u03ba\u03cc \u03c6\u03ac\u03c3\u03bc\u03b1. \u039f \u03c0\u03c1\u03ce\u03c4\u03bf\u03c2 \u03c4\u03c1\u03cc\u03c0\u03bf\u03c2 \u03b5\u03af\u03bd\u03b1\u03b9 \u03b7 \u03c3\u03c5\u03b3\u03b3\u03c1\u03b1\u03c6\u03ae \u03b2\u03b9\u03b2\u03bb\u03af\u03c9\u03bd (\u03c0\u03bf\u03af\u03b7\u03c3\u03b7, \u03b4\u03b9\u03b7\u03b3\u03ae\u03bc\u03b1\u03c4\u03b1, \u03bc\u03c5\u03b8\u03b9\u03c3\u03c4\u03bf\u03c1\u03ae\u03bc\u03b1\u03c4\u03b1 \u03ba.\u03ac.). \u0388\u03c7\u03c9 \u03c4\u03b7 \u03c7\u03b1\u03c1\u03ac \u03bd\u03b1 \u03ad\u03c7\u03bf\u03c5\u03bd \u03b5\u03ba\u03b4\u03bf\u03b8\u03b5\u03af \u03bc\u03ad\u03c7\u03c1\u03b9 \u03c4\u03ce\u03c1\u03b1 9 \u03b2\u03b9\u03b2\u03bb\u03af\u03b1 \u03bc\u03bf\u03c5, \u03bc\u03b5 \u03c0\u03b9\u03bf \u03b3\u03bd\u03c9\u03c3\u03c4\u03ac, \u03b4\u03cd\u03bf \u03bc\u03c5\u03b8\u03b9\u03c3\u03c4\u03bf\u03c1\u03ae\u03bc\u03b1\u03c4\u03b1 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2 \u03ba\u03b1\u03b9 \u03c0\u03bd\u03b5\u03c5\u03bc\u03b1\u03c4\u03b9\u03ba\u03ae\u03c2 \u03b1\u03bd\u03b1\u03b6\u03ae\u03c4\u03b7\u03c3\u03b7\u03c2: ''\u03a4\u03bf \u039c\u03b1\u03b3\u03b9\u03ba\u03cc \u03a4\u03b1\u03be\u03af\u03b4\u03b9\u0384\u0384, \u03b5\u03ba\u03b4\u03cc\u03c3\u03b5\u03b9\u03c2 \u0394\u03b9\u03cc\u03c0\u03c4\u03c1\u03b1 2007 (\u0391\u0384 \u0392\u03c1\u03b1\u03b2\u03b5\u03af\u03bf \u039c\u03c5\u03b8\u03b9\u03c3\u03c4\u03bf\u03c1\u03ae\u03bc\u03b1\u03c4\u03bf\u03c2 2008 \u2013 \u0394\u03b9\u03b5\u03b8\u03bd\u03ae\u03c2 \u0395\u03c4\u03b1\u03b9\u03c1\u03b5\u03af\u03b1 \u0395\u03bb\u03bb\u03ae\u03bd\u03c9\u03bd \u039b\u03bf\u03b3\u03bf\u03c4\u03b5\u03c7\u03bd\u03ce\u03bd), ''Tabula Rasa - \u0397 \u0386\u03b3\u03c1\u03b1\u03c6\u03b7 \u03a0\u03bb\u03ac\u03ba\u03b1 \u03c4\u03b7\u03c2 \u03a8\u03c5\u03c7\u03ae\u03c2'', \u03b5\u03ba\u03b4\u03cc\u03c3\u03b5\u03b9\u03c2 \u0399\u03b2\u03af\u03c3\u03ba\u03bf\u03c2 2024. \u039f \u03b4\u03b5\u03cd\u03c4\u03b5\u03c1\u03bf\u03c2 \u03c4\u03c1\u03cc\u03c0\u03bf\u03c2 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03c1\u03bf\u03ad\u03ba\u03c4\u03b1\u03c3\u03b7 \u03c4\u03bf\u03c5 \u03c0\u03c1\u03ce\u03c4\u03bf\u03c5: \u03c3\u03c4\u03af\u03c7\u03bf\u03b9 \u03c0\u03bf\u03c5, \u03ba\u03ac\u03c0\u03bf\u03b9\u03bf\u03b9 \u03b1\u03c0\u03cc \u03b1\u03c5\u03c4\u03bf\u03cd\u03c2, \u03b5\u03af\u03c7\u03b1\u03bd \u03c4\u03b7\u03bd \u03b5\u03c5\u03ba\u03b1\u03b9\u03c1\u03af\u03b1 \u03bd\u03b1 \u03b3\u03af\u03bd\u03bf\u03c5\u03bd \u03c4\u03c1\u03b1\u03b3\u03bf\u03cd\u03b4\u03b9\u03b1 \u03b1\u03c0\u03cc \u03c3\u03b7\u03bc\u03b1\u03bd\u03c4\u03b9\u03ba\u03bf\u03cd\u03c2 \u03ba\u03b1\u03bb\u03bb\u03b9\u03c4\u03ad\u03c7\u03bd\u03b5\u03c2 (\u0393\u03b9\u03ac\u03bd\u03bd\u03b7\u03c2 \u0396\u03bf\u03c5\u03b3\u03b1\u03bd\u03ad\u03bb\u03b7\u03c2, \u03a6\u03af\u03bb\u03b9\u03c0\u03c0\u03bf\u03c2 \u03a0\u03bb\u03b9\u03ac\u03c4\u03c3\u03b9\u03ba\u03b1\u03c2, \u03a0\u03cc\u03c0\u03b7 \u0391\u03c3\u03c4\u03b5\u03c1\u03b9\u03ac\u03b4\u03b7, \u039f.\u039c.\u039d.\u0399.\u0391, \u0391\u03bb\u03ad\u03be\u03b1\u03bd\u03b4\u03c1\u03bf\u03c2 \u0398\u03b5\u03bf\u03b4\u03c9\u03c1\u03ae\u03c2). \u03a4\u03bf \u03c4\u03c1\u03af\u03c4\u03bf \u03bc\u03bf\u03bd\u03bf\u03c0\u03ac\u03c4\u03b9 \u03ba\u03b1\u03bb\u03bb\u03b9\u03c4\u03b5\u03c7\u03bd\u03b9\u03ba\u03ae\u03c2 \u03ad\u03ba\u03c6\u03c1\u03b1\u03c3\u03b7\u03c2, \u03ad\u03c7\u03b5\u03b9 \u03c4\u03b9\u03c2 \u03c1\u03af\u03b6\u03b5\u03c2 \u03c4\u03bf\u03c5 \u03c3\u03c4\u03b7\u03bd \u03be\u03c5\u03bb\u03bf\u03c5\u03c1\u03b3\u03b9\u03ba\u03ae \u03c4\u03ad\u03c7\u03bd\u03b7 \u03c0\u03bf\u03c5 \u03b5\u03be\u03ac\u03c3\u03ba\u03b7\u03c3\u03b1 \u03c3\u03c4\u03bf \u03c0\u03b1\u03c1\u03b5\u03bb\u03b8\u03cc\u03bd, \u03bc\u03cc\u03bd\u03bf \u03c0\u03bf\u03c5 \u03c4\u03ce\u03c1\u03b1 \u03c6\u03c4\u03b9\u03ac\u03c7\u03bd\u03c9 \u03ba\u03b1\u03c4\u03b1\u03c3\u03ba\u03b5\u03c5\u03ad\u03c2 \u03ba\u03b1\u03b9 \u03b3\u03bb\u03c5\u03c0\u03c4\u03ac \u03b1\u03c0\u03cc \u03be\u03cd\u03bb\u03bf \u03ba\u03b1\u03b9 \u03b8\u03b1\u03bb\u03b1\u03c3\u03c3\u03cc\u03be\u03c5\u03bb\u03b1, \u03bc\u03b5\u03c4\u03b1\u03c4\u03c1\u03ad\u03c0\u03bf\u03bd\u03c4\u03b1\u03c2 \u03c4\u03bf \u03b1\u03b3\u03b1\u03c0\u03b7\u03bc\u03ad\u03bd\u03bf \u03bc\u03bf\u03c5 \u03c5\u03bb\u03b9\u03ba\u03cc \u03c3\u03b5 \u03bf\u03bc\u03b9\u03bb\u03bf\u03cd\u03c3\u03b1 \u03c3\u03b9\u03c9\u03c0\u03ae. \n\u0395\u03c0\u03af\u03c3\u03b7\u03c2, \u03ad\u03c7\u03c9 \u03b5\u03c0\u03b9\u03bc\u03b5\u03bb\u03b7\u03b8\u03b5\u03af \u03b2\u03b9\u03b2\u03bb\u03af\u03b1 \u03c4\u03b7\u03c2 Doreen Virtue (\u00ab\u03a0\u03bf\u03c1\u03b5\u03af\u03b1 \u03c0\u03c1\u03bf\u03c2 \u03c4\u03bf \u03c6\u03c9\u03c2\u00bb, \u00ab\u0398\u03b5\u03ca\u03ba\u03ae \u03ba\u03b1\u03b8\u03bf\u03b4\u03ae\u03b3\u03b7\u03c3\u03b7\u00bb), \u03c4\u03c9\u03bd Lee Carroll & Jan Tober (\u00ab\u03a0\u03b1\u03b9\u03b4\u03b9\u03ac \u03c3\u03b5 \u03b2\u03b1\u03b8\u03cd \u03bc\u03c0\u03bb\u03b5\u00bb), \u03c4\u03bf\u03c5 Bert Hellinger (\u00ab\u039c\u03bf\u03bd\u03bf\u03c0\u03ac\u03c4\u03b9\u03b1 \u03c4\u03b7\u03c2 \u03b1\u03b3\u03ac\u03c0\u03b7\u03c2\u00bb, \u00ab\u0397 \u03c6\u03b1\u03b9\u03bd\u03bf\u03bc\u03b5\u03bd\u03bf\u03bb\u03bf\u03b3\u03b9\u03ba\u03ae \u03c3\u03ba\u03ad\u03c8\u03b7 \u03c4\u03bf\u03c5 Bert Hellinger\u00bb) \u03ba\u03b1\u03b9 \u03c4\u03b7\u03c2 Sharlotte Palmgren (\u00ab\u0391\u03bd \u03ae\u03be\u03b5\u03c1\u03b5\u03c2 \u03c0\u03cc\u03c3\u03bf \u03c0\u03bf\u03bb\u03cd \u03c3\u03b5 \u03b1\u03b3\u03b1\u03c0\u03ce\u00bb). ",
+            "\u0391\u03c1\u03c7\u03b9\u03ba\u03ae \u03c6\u03c9\u03c4\u03bf\u03b3\u03c1\u03b1\u03c6\u03af\u03b1 (\u03b5\u03c0\u03ac\u03bd\u03c9): \u03a4\u03bf Kintsugi, \u03c0\u03bf\u03c5 \u03c3\u03b7\u03bc\u03b1\u03af\u03bd\u03b5\u03b9 \"\u03c7\u03c1\u03c5\u03c3\u03ae \u03ad\u03bd\u03c9\u03c3\u03b7\", \u03b5\u03af\u03bd\u03b1\u03b9 \u03bc\u03b9\u03b1 \u03c0\u03b1\u03bb\u03b9\u03ac \u03b9\u03b1\u03c0\u03c9\u03bd\u03b9\u03ba\u03ae \u03c4\u03b5\u03c7\u03bd\u03b9\u03ba\u03ae \u03c0\u03bf\u03c5 \u03ad\u03c7\u03b5\u03b9 \u03b1\u03bd\u03b1\u03c7\u03b8\u03b5\u03af \u03c3\u03b5 \u03c4\u03ad\u03c7\u03bd\u03b7. \u039e\u03b5\u03ba\u03af\u03bd\u03b7\u03c3\u03b5 \u03b1\u03c0\u03cc \u03c4\u03b7\u03bd \u03b1\u03bd\u03ac\u03b3\u03ba\u03b7 \u03b5\u03c0\u03b9\u03b4\u03b9\u03cc\u03c1\u03b8\u03c9\u03c3\u03b7\u03c2 \u03c3\u03c0\u03b1\u03c3\u03bc\u03ad\u03bd\u03c9\u03bd \u03c0\u03bf\u03c1\u03c3\u03b5\u03bb\u03ac\u03bd\u03b9\u03bd\u03c9\u03bd \u03b1\u03bd\u03c4\u03b9\u03ba\u03b5\u03b9\u03bc\u03ad\u03bd\u03c9\u03bd. \u039c\u03b5 \u03c4\u03b7 \u03c7\u03c1\u03ae\u03c3\u03b7 \u03c4\u03bf\u03c5 \u03c7\u03c1\u03c5\u03c3\u03bf\u03cd \u03b3\u03b9\u03b1 \u03c4\u03b7 \u03c3\u03c5\u03b3\u03ba\u03cc\u03bb\u03bb\u03b7\u03c3\u03b7 \u03c4\u03c9\u03bd \u03ba\u03bf\u03bc\u03bc\u03b1\u03c4\u03b9\u03ce\u03bd, \u03c4\u03bf \u03b5\u03c0\u03b9\u03c3\u03ba\u03b5\u03c5\u03b1\u03c3\u03bc\u03ad\u03bd\u03bf \u03b1\u03bd\u03c4\u03b9\u03ba\u03b5\u03af\u03bc\u03b5\u03bd\u03bf \u03ae\u03c4\u03b1\u03bd \u03b1\u03b9\u03c3\u03b8\u03b7\u03c4\u03b9\u03ba\u03ac \u03ac\u03c8\u03bf\u03b3\u03bf \u03ba\u03b1\u03b9 \u03c3\u03c5\u03c7\u03bd\u03ac \u03c0\u03b9\u03bf \u03c0\u03bf\u03bb\u03cd\u03c4\u03b9\u03bc\u03bf \u03b1\u03c0\u03cc \u03c4\u03bf \u03b1\u03c1\u03c7\u03b9\u03ba\u03cc. \u03a4\u03bf \u03ba\u03b9\u03bd\u03c4\u03c3\u03bf\u03cd\u03b3\u03ba\u03b9, \u03cc\u03bc\u03c9\u03c2, \u03b5\u03af\u03bd\u03b1\u03b9 \u03ba\u03ac\u03c4\u03b9 \u03c0\u03b5\u03c1\u03b9\u03c3\u03c3\u03cc\u03c4\u03b5\u03c1\u03bf \u03b1\u03c0\u03cc \u03ad\u03bd\u03b1 \u03c7\u03b5\u03b9\u03c1\u03bf\u03c4\u03ad\u03c7\u03bd\u03b7\u03bc\u03b1: \u03b5\u03af\u03bd\u03b1\u03b9 \u03bc\u03b9\u03b1 \u03c0\u03bf\u03b9\u03b7\u03c4\u03b9\u03ba\u03ae \u03bc\u03b5\u03c4\u03b1\u03c6\u03bf\u03c1\u03ac \u03b3\u03b9\u03b1 \u03cc\u03c3\u03b1 \u03c0\u03b5\u03c1\u03bd\u03bf\u03cd\u03bd \u03bf\u03b9 \u03ac\u03bd\u03b8\u03c1\u03c9\u03c0\u03bf\u03b9 \u03cc\u03c4\u03b1\u03bd \u03b7 \u03b6\u03c9\u03ae \u03c4\u03bf\u03c5\u03c2 \"\u03b3\u03af\u03bd\u03b5\u03c4\u03b1\u03b9 \u03b8\u03c1\u03cd\u03c8\u03b1\u03bb\u03b1\", \u03cc\u03c4\u03b1\u03bd \u03b2\u03b9\u03ce\u03bd\u03bf\u03c5\u03bd \u03bc\u03b9\u03b1 \u03b5\u03c0\u03ce\u03b4\u03c5\u03bd\u03b7 \u03ba\u03c1\u03af\u03c3\u03b7 \u03ae \u03bc\u03b9\u03b1 \u03b1\u03c0\u03ce\u03bb\u03b5\u03b9\u03b1 \u03ba\u03b1\u03b9 \u03bc\u03b5\u03c4\u03ac \u03c0\u03c1\u03bf\u03c3\u03c0\u03b1\u03b8\u03bf\u03cd\u03bd \u03bd\u03b1 \u03bc\u03b1\u03b6\u03ad\u03c8\u03bf\u03c5\u03bd \u03c4\u03b1 \u03ba\u03bf\u03bc\u03bc\u03ac\u03c4\u03b9\u03b1 \u03c4\u03bf\u03c5\u03c2 \u03ba\u03b1\u03b9 \u03bd\u03b1 \u03c6\u03c4\u03b9\u03ac\u03be\u03bf\u03c5\u03bd \u03bc\u03b9\u03b1 \u03bd\u03ad\u03b1 \u03b6\u03c9\u03ae \u03c0\u03bf\u03c5, \u03c7\u03ac\u03c1\u03b7 \u03c3\u03c4\u03b7 \u03bc\u03b5\u03c4\u03bf\u03c5\u03c3\u03af\u03c9\u03c3\u03b7 \u03c4\u03bf\u03c5 \u03c0\u03cc\u03bd\u03bf\u03c5, \u03bc\u03c0\u03bf\u03c1\u03b5\u03af \u03bd\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c0\u03b9\u03bf \u03c0\u03bb\u03ae\u03c1\u03b7\u03c2 \u03b1\u03c0\u03cc \u03c4\u03b7 \u03b6\u03c9\u03ae \u03c0\u03bf\u03c5 \u03ad\u03c7\u03b1\u03c3\u03b1\u03bd. \u0388\u03c4\u03c3\u03b9, \u03ad\u03bd\u03b1 \u03b1\u03c0\u03bb\u03cc \"\u03c7\u03b5\u03b9\u03c1\u03bf\u03c4\u03ad\u03c7\u03bd\u03b7\u03bc\u03b1\" \u03bc\u03bf\u03b9\u03ac\u03b6\u03b5\u03b9 \u03bd\u03b1 \u03b5\u03ba\u03c0\u03bb\u03b7\u03c1\u03ce\u03bd\u03b5\u03b9 \u03ad\u03bd\u03b1 \u03b1\u03c1\u03c7\u03ad\u03b3\u03bf\u03bd\u03bf \u03cc\u03bd\u03b5\u03b9\u03c1\u03bf \u03c4\u03c9\u03bd \u03b1\u03bd\u03b8\u03c1\u03ce\u03c0\u03c9\u03bd:  \u03bd\u03b1 \u03c9\u03c1\u03b9\u03bc\u03ac\u03b6\u03bf\u03c5\u03bd \u03ba\u03b1\u03b9 \u03bd\u03b1 \u03b4\u03c5\u03bd\u03b1\u03bc\u03ce\u03bd\u03bf\u03c5\u03bd \u03bc\u03ad\u03c3\u03b1 \u03b1\u03c0\u03cc \u03c4\u03b9\u03c2 \u03c0\u03bb\u03b7\u03b3\u03ad\u03c2 \u03ba\u03b1\u03b9 \u03c4\u03b9\u03c2 \u03ae\u03c4\u03c4\u03b5\u03c2 \u03c4\u03bf\u03c5\u03c2 \u03b1\u03bd\u03c4\u03af \u03bd\u03b1 \u03c3\u03c0\u03ac\u03bd\u03b5, \u03ba\u03b9 \u03ad\u03c4\u03c3\u03b9, \u03bd\u03b1 \u03bd\u03b9\u03ce\u03b8\u03bf\u03c5\u03bd \u03bc\u03b5\u03b3\u03b1\u03bb\u03cd\u03c4\u03b5\u03c1\u03b7 \u03b1\u03c5\u03c4\u03bf\u03b5\u03ba\u03c4\u03af\u03bc\u03b7\u03c3\u03b7, \u03b1\u03b3\u03ac\u03c0\u03b7 \u03b3\u03b9\u03b1 \u03c4\u03bf\u03bd \u03b5\u03b1\u03c5\u03c4\u03cc \u03c4\u03bf\u03c5\u03c2, \u03c4\u03bf\u03c5\u03c2 \u03ac\u03bb\u03bb\u03bf\u03c5\u03c2 \u03ba\u03b1\u03b9 \u03c4\u03b7 \u03b6\u03c9\u03ae. \u0388\u03bd\u03b1 \u03c0\u03b1\u03c1\u03ac\u03b4\u03b5\u03b9\u03b3\u03bc\u03b1, \u03b5\u03af\u03bd\u03b1\u03b9 \u03b1\u03c5\u03c4\u03cc \u03c0\u03bf\u03c5 \u03c0\u03b5\u03c1\u03b9\u03ad\u03b3\u03c1\u03b1\u03c8\u03b5 \u03bf Carl Jung \u03c9\u03c2 ''Wounded healer'' \u03c4\u03bf 1951, \u03c3\u03c4\u03bf \u03b4\u03bf\u03ba\u03af\u03bc\u03b9\u03cc \u03c4\u03bf\u03c5 ''Fundamental Questions of Psychotherapy'', \u03cc\u03c0\u03bf\u03c5 \u03b1\u03bd\u03b1\u03c6\u03ad\u03c1\u03b5\u03b9 \u03c0\u03c9\u03c2 \u03c4\u03b1 \u03c0\u03c1\u03bf\u03c3\u03c9\u03c0\u03b9\u03ba\u03ac \u03c4\u03c1\u03b1\u03cd\u03bc\u03b1\u03c4\u03b1 \u03ba\u03b1\u03b9 \u03bf\u03b9 \u03c3\u03c5\u03bd\u03b1\u03b9\u03c3\u03b8\u03b7\u03bc\u03b1\u03c4\u03b9\u03ba\u03ad\u03c2 \u03b5\u03c5\u03b1\u03bb\u03c9\u03c4\u03cc\u03c4\u03b7\u03c4\u03b5\u03c2 \u03c4\u03bf\u03c5 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae, \u03b1\u03c0\u03bf\u03c4\u03b5\u03bb\u03bf\u03cd\u03bd \u03b1\u03ba\u03c1\u03b9\u03b2\u03ce\u03c2 \u03c4\u03b1 \u03b5\u03c1\u03b3\u03b1\u03bb\u03b5\u03af\u03b1 \u03c0\u03bf\u03c5 \u03c4\u03bf\u03c5 \u03b5\u03c0\u03b9\u03c4\u03c1\u03ad\u03c0\u03bf\u03c5\u03bd \u03bd\u03b1 \u03ba\u03b1\u03c4\u03b1\u03bd\u03bf\u03b5\u03af \u03c3\u03b5 \u03b2\u03ac\u03b8\u03bf\u03c2 \u03ba\u03b1\u03b9 \u03bd\u03b1 \u03c5\u03c0\u03bf\u03c3\u03c4\u03b7\u03c1\u03af\u03b6\u03b5\u03b9 \u03b1\u03c0\u03bf\u03c4\u03b5\u03bb\u03b5\u03c3\u03bc\u03b1\u03c4\u03b9\u03ba\u03ac \u03c4\u03bf\u03c5\u03c2 \u03b1\u03c3\u03b8\u03b5\u03bd\u03b5\u03af\u03c2 \u03c4\u03bf\u03c5, \u03c3\u03c4\u03bf \u03bc\u03bf\u03bd\u03bf\u03c0\u03ac\u03c4\u03b9 \u03c4\u03b7\u03c2 \u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1\u03c2 \u03c4\u03bf\u03c5\u03c2. \u0397 \u03ad\u03bd\u03bd\u03bf\u03b9\u03b1 \u03b1\u03c5\u03c4\u03ae, \u03b2\u03b1\u03c3\u03af\u03b6\u03b5\u03c4\u03b1\u03b9 \u03c3\u03c4\u03bf\u03bd \u03b5\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03cc \u03bc\u03cd\u03b8\u03bf \u03c4\u03bf\u03c5 \u03a7\u03b5\u03af\u03c1\u03c9\u03bd\u03b1 \u039a\u03ad\u03bd\u03c4\u03b1\u03c5\u03c1\u03bf\u03c5."
+        ],
+        "category": "about",
+        "description": "About bio paragraphs (JSON array)",
+        "created_at": "2026-06-06T19:46:17.817509+00:00",
+        "updated_at": "2026-07-06T10:04:28.382+00:00"
+    },
+    {
+        "id": "fd600720-4b15-4829-bc79-2d9238d775b5",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "books_hero_subtitle",
+        "value": "\u03a4\u03b1 \u03b2\u03b9\u03b2\u03bb\u03af\u03b1 & \u03bf\u03b9 \u03b5\u03ba\u03b4\u03cc\u03c3\u03b5\u03b9\u03c2 \u03bc\u03bf\u03c5",
+        "category": "about",
+        "description": "Books page hero subtitle",
+        "created_at": "2026-06-06T21:51:40.776616+00:00",
+        "updated_at": "2026-06-28T00:55:16.592+00:00"
+    },
+    {
+        "id": "bcc2035e-85d1-42ab-87c1-dc7eafde1c45",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_hero_subtitle",
+        "value": "\u0395\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03ae\u03c3\u03c4\u03b5 \u03b3\u03b9\u03b1 \u03c4\u03b7\u03bd \u03c0\u03c1\u03ce\u03c4\u03b7 \u03c3\u03b1\u03c2 \u03c3\u03c5\u03bd\u03b5\u03b4\u03c1\u03af\u03b1",
+        "category": "contact",
+        "description": "Contact page hero subtitle",
+        "created_at": "2026-06-06T19:46:18.771331+00:00",
+        "updated_at": "2026-06-28T00:55:19.767+00:00"
+    },
+    {
+        "id": "9b8bea94-7450-47dd-82ad-0f9c04b8ef2a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_hours_label",
+        "value": "\u03a9\u03c1\u03ac\u03c1\u03b9\u03bf",
+        "category": "contact",
+        "description": "Hours card label",
+        "created_at": "2026-06-06T19:46:19.730108+00:00",
+        "updated_at": "2026-06-28T00:55:20.405+00:00"
+    },
+    {
+        "id": "06d14b3b-5148-4bca-806b-34cdfe6ee093",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_address_label",
+        "value": "\u0391\u03c0\u03cc\u03bb\u03bb\u03c9\u03bd\u03bf\u03c2 30, \u03b9\u03c3\u03cc\u03b3\u03b5\u03b9\u03bf",
+        "category": "contact",
+        "description": "Address card label",
+        "created_at": "2026-06-06T19:46:19.34503+00:00",
+        "updated_at": "2026-06-28T00:55:17.838+00:00"
+    },
+    {
+        "id": "149d747a-396d-49f9-b7a4-72f6147ad3d0",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seminar_section_count",
+        "value": "2",
+        "category": "home",
+        "description": "Number of seminar articles to show on homepage",
+        "created_at": "2026-07-08T12:42:26.145268+00:00",
+        "updated_at": "2026-07-08T12:42:26.145268+00:00"
+    },
+    {
+        "id": "f768d16a-5ac6-4bf9-b638-64596bf64117",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seminar_section_visible",
+        "value": "true",
+        "category": "home",
+        "description": "Show seminar section on homepage",
+        "created_at": "2026-07-08T12:42:26.145268+00:00",
+        "updated_at": "2026-07-08T12:42:26.145268+00:00"
+    },
+    {
+        "id": "fdc2ca89-a275-437f-a802-14b3d5e21e15",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seminar_section_subtitle",
+        "value": "\u0395\u03bd\u03b7\u03bc\u03b5\u03c1\u03c9\u03b8\u03b5\u03af\u03c4\u03b5 \u03b3\u03b9\u03b1 \u03c4\u03b9\u03c2 \u03b5\u03c0\u03b5\u03c1\u03c7\u03cc\u03bc\u03b5\u03bd\u03b5\u03c2 \u03bf\u03bc\u03b9\u03bb\u03af\u03b5\u03c2, \u03c3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1 \u03ba\u03b1\u03b9 \u03b4\u03c1\u03ac\u03c3\u03b5\u03b9\u03c2.",
+        "category": "home",
+        "description": "Seminar section subtitle on homepage",
+        "created_at": "2026-07-08T12:42:26.145268+00:00",
+        "updated_at": "2026-07-08T12:42:26.145268+00:00"
+    },
+    {
+        "id": "df9291df-846c-4ce1-8345-57e956b1966b",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_social_label",
+        "value": "Social",
+        "category": "contact",
+        "description": "Social card label",
+        "created_at": "2026-06-06T19:46:20.301551+00:00",
+        "updated_at": "2026-06-28T00:55:22.918+00:00"
+    },
+    {
+        "id": "c25fa02d-0f02-4fbf-bb79-df90143a9f61",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "cta_band_button_text",
+        "value": "\u039a\u03bb\u03b5\u03af\u03c3\u03c4\u03b5 \u03c1\u03b1\u03bd\u03c4\u03b5\u03b2\u03bf\u03cd",
+        "category": "cta",
+        "description": "CTA band button text",
+        "created_at": "2026-06-06T19:46:23.152844+00:00",
+        "updated_at": "2026-06-28T00:55:25.411+00:00"
+    },
+    {
+        "id": "a398d76a-e4a1-4e93-bc85-429384262a31",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_email_label",
+        "value": "Email",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-27T10:28:40.766845+00:00",
+        "updated_at": "2026-06-28T00:55:26.332+00:00"
+    },
+    {
+        "id": "8a135b60-22e7-496c-a05d-35c01ae8196a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "home_books_showcase_enabled",
+        "value": "false",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-07T08:15:27.811218+00:00",
+        "updated_at": "2026-06-28T00:55:26.667+00:00"
+    },
+    {
+        "id": "2ef671b9-7160-4902-9094-5a0bccd4cd83",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "header_cta_link",
+        "value": "/contact",
+        "category": "site",
+        "description": "Header CTA button link",
+        "created_at": "2026-06-06T19:46:22.181965+00:00",
+        "updated_at": "2026-06-28T00:55:36.325+00:00"
+    },
+    {
+        "id": "43b3d432-bebb-4909-8834-dc54101849aa",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "site_monogram",
+        "value": "\u039d\u039a",
+        "category": "site",
+        "description": "Site monogram (header/footer logo)",
+        "created_at": "2026-06-06T19:46:21.239901+00:00",
+        "updated_at": "2026-06-28T00:55:36.945+00:00"
+    },
+    {
+        "id": "cea763f6-fdfc-4bb2-baa8-0004a020bfd9",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "site_logo_footer",
+        "value": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782608802134-30od01.png",
+        "category": "logo",
+        "description": "",
+        "created_at": "2026-06-28T01:06:44.558165+00:00",
+        "updated_at": "2026-06-28T01:07:01.856+00:00"
+    },
+    {
+        "id": "8796353f-c298-48dc-8924-09fa8c590842",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "site_favicon",
+        "value": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782608916878-pn1aot.png",
+        "category": "seo",
+        "description": "",
+        "created_at": "2026-06-28T01:06:58.772688+00:00",
+        "updated_at": "2026-06-28T01:08:38.82+00:00"
+    },
+    {
+        "id": "f2a96923-d6f1-4546-b707-8736b4ce624a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seminar_section_cta_link",
+        "value": "/blog?category=\u039f\u039c\u0399\u039b\u0399\u0395\u03a3%20\u03a3\u0395\u039c\u0399\u039d\u0391\u03a1\u0399\u0391",
+        "category": "home",
+        "description": "CTA link for seminar section",
+        "created_at": "2026-07-08T12:42:26.145268+00:00",
+        "updated_at": "2026-07-08T12:42:26.145268+00:00"
+    },
+    {
+        "id": "ec8122da-4dd0-4a71-a41f-fe5ceb45e9b2",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seminar_section_category",
+        "value": "",
+        "category": "home",
+        "description": "Blog category to filter for seminar section",
+        "created_at": "2026-07-08T12:42:26.145268+00:00",
+        "updated_at": "2026-07-08T13:07:04.887+00:00"
+    },
+    {
+        "id": "8c74fb51-3748-4917-9154-6ca76bd618c6",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seminar_section_title",
+        "value": "\u039f\u03bc\u03b9\u03bb\u03af\u03b5\u03c2, \u03a3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1, \u039f\u03bc\u03ac\u03b4\u03b5\u03c2",
+        "category": "home",
+        "description": "Seminar section title on homepage",
+        "created_at": "2026-07-08T12:42:26.145268+00:00",
+        "updated_at": "2026-07-08T13:07:04.896+00:00"
+    },
+    {
+        "id": "5ca4b8b0-ad34-4dae-903c-3504a357df43",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seminar_section_cta_text",
+        "value": "\u0395\u03bd\u03b7\u03bc\u03b5\u03c1\u03c9\u03b8\u03ae\u03c4\u03b5 \u03b3\u03b9\u03b1  \u03bf\u03bc\u03b9\u03bb\u03af\u03b5\u03c2, \u03c3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1 & \u03bf\u03bc\u03ac\u03b4\u03b5\u03c2",
+        "category": "home",
+        "description": "CTA link text for seminar section",
+        "created_at": "2026-07-08T12:42:26.145268+00:00",
+        "updated_at": "2026-07-08T13:08:22.018+00:00"
+    },
+    {
+        "id": "f0e02db7-bc00-489c-bb51-b07c192bcf9a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_home_section_subtitle",
+        "value": "\u0394\u03b9\u03b1\u03b2\u03ac\u03c3\u03c4\u03b5 \u03c4\u03b1 \u03c0\u03b9\u03bf \u03c0\u03c1\u03cc\u03c3\u03c6\u03b1\u03c4\u03b1 \u03ac\u03c1\u03b8\u03c1\u03b1 \u03ba\u03b1\u03b9 \u03b5\u03bd\u03b7\u03bc\u03b5\u03c1\u03ce\u03c3\u03b5\u03b9\u03c2.",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-08T13:19:13.795011+00:00",
+        "updated_at": "2026-07-08T13:19:13.795011+00:00"
+    },
+    {
+        "id": "1d02ff3b-3598-40c1-b200-ee4eea84f398",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_home_section_cta_text",
+        "value": "\u0394\u03b5\u03af\u03c4\u03b5 \u03cc\u03bb\u03b1 \u03c4\u03b1 \u03ac\u03c1\u03b8\u03c1\u03b1",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-08T13:19:13.960328+00:00",
+        "updated_at": "2026-07-08T13:19:13.960328+00:00"
+    },
+    {
+        "id": "bda42cae-915a-458a-b8b6-55fd8a680f63",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "site_logo",
+        "value": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1782608108231-2bgli8.png",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-27T10:33:39.545058+00:00",
+        "updated_at": "2026-06-28T00:55:28.515+00:00"
+    },
+    {
+        "id": "4a2035a5-06be-4cb0-8c0c-73bd699514d4",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_address_hint",
+        "value": "\u039d\u03ad\u03bf \u0397\u03c1\u03ac\u03ba\u03bb\u03b5\u03b9\u03bf, \u0391\u03b8\u03ae\u03bd\u03b1 14121",
+        "category": "contact",
+        "description": "Address card hint text",
+        "created_at": "2026-06-06T19:46:19.534968+00:00",
+        "updated_at": "2026-06-28T00:55:17.522+00:00"
+    },
+    {
+        "id": "6632d1af-0470-4de1-afe0-c8a214ad7613",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "site_subtitle",
+        "value": "\u03a8\u03c5\u03c7\u03bf\u03bb\u03cc\u03b3\u03bf\u03c2, \u03a8\u03c5\u03c7\u03bf\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03ae\u03c2",
+        "category": "site",
+        "description": "Site subtitle under name",
+        "created_at": "2026-06-06T19:46:21.41761+00:00",
+        "updated_at": "2026-06-28T00:55:37.553+00:00"
+    },
+    {
+        "id": "f820685b-8ecd-46a6-af7a-5d5e8ecc90a5",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "nav_links",
+        "value": [
+            {
+                "path": "/",
+                "label": "\u0391\u03c1\u03c7\u03b9\u03ba\u03ae"
+            },
+            {
+                "path": "/about",
+                "label": "\u0392\u03b9\u03bf\u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03cc"
+            },
+            {
+                "path": "/services",
+                "label": "\u03a5\u03c0\u03b7\u03c1\u03b5\u03c3\u03af\u03b5\u03c2"
+            },
+            {
+                "path": "/services/omades",
+                "label": "\u039f\u03bc\u03ac\u03b4\u03b5\u03c2"
+            },
+            {
+                "path": "/books",
+                "label": "\u0392\u03b9\u03b2\u03bb\u03af\u03b1"
+            },
+            {
+                "path": "/services/seminar-omilies",
+                "label": "\u039f\u03bc\u03b9\u03bb\u03af\u03b5\u03c2, \u03a3\u03b5\u03bc\u03b9\u03bd\u03ac\u03c1\u03b9\u03b1"
+            }
+        ],
+        "category": "navigation",
+        "description": "Navigation links (JSON array)",
+        "created_at": "2026-06-06T19:46:22.382117+00:00",
+        "updated_at": "2026-07-08T10:27:54.367+00:00"
+    },
+    {
+        "id": "c542abc2-8c0b-4e56-b9af-3c62c853872a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_social_facebook_url",
+        "value": "https://www.facebook.com/nikolas.kolokotronis/",
+        "category": "contact",
+        "description": "Facebook URL",
+        "created_at": "2026-06-06T19:46:20.488731+00:00",
+        "updated_at": "2026-06-28T00:55:22.614+00:00"
+    },
+    {
+        "id": "3b6aba34-3ae0-445c-8ce1-58feb7bba0b1",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "cta_band_button_link",
+        "value": "/contact",
+        "category": "cta",
+        "description": "CTA band button link",
+        "created_at": "2026-06-06T19:46:23.33372+00:00",
+        "updated_at": "2026-06-28T00:55:25.099+00:00"
+    },
+    {
+        "id": "a7819fae-b871-4328-a844-11ea90bbc4fd",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "home_books_showcase_title",
+        "value": "\u03a3\u03c5\u03b3\u03b3\u03c1\u03b1\u03c6\u03b9\u03ba\u03cc \u0388\u03c1\u03b3\u03bf",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-07T08:15:27.955636+00:00",
+        "updated_at": "2026-06-28T00:55:27.582+00:00"
+    },
+    {
+        "id": "a07ae8e2-15ef-446b-a6e5-92ccacc6d69a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_form_heading",
+        "value": "\u0398\u03b1 \u03c3\u03b1\u03c2 \u03b1\u03c0\u03b1\u03bd\u03c4\u03ae\u03c3\u03c9 \u03b5\u03bd\u03c4\u03cc\u03c2 24 \u03c9\u03c1\u03ce\u03bd",
+        "category": "contact",
+        "description": "Contact form heading",
+        "created_at": "2026-06-06T19:46:20.853154+00:00",
+        "updated_at": "2026-06-28T00:55:19.144+00:00"
+    },
+    {
+        "id": "8e9fe96f-8777-4a43-b6ac-f5d779b7d70e",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_hours_line_1",
+        "value": "\u0394\u03b5\u03c5\u03c4 \u2013 \u03a0\u03b1\u03c1: 13:00 \u2013 21:00",
+        "category": "contact",
+        "description": "Hours line 1",
+        "created_at": "2026-06-06T19:46:19.931543+00:00",
+        "updated_at": "2026-06-28T00:55:20.747+00:00"
+    },
+    {
+        "id": "819818e1-2ac0-46ca-95b0-071e2ba5c20f",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "cta_band_title",
+        "value": "\u03a4\u03bf \u03c4\u03ce\u03c1\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03b7 \u03ba\u03b1\u03c4\u03ac\u03bb\u03bb\u03b7\u03bb\u03b7 \u03c3\u03c4\u03b9\u03b3\u03bc\u03ae. \u0397 \u03b6\u03c9\u03ae \u03c3\u03bf\u03c5, \u03c3\u03bf\u03c5 \u03b1\u03bd\u03ae\u03ba\u03b5\u03b9.",
+        "category": "cta",
+        "description": "CTA band title",
+        "created_at": "2026-06-06T19:46:22.754452+00:00",
+        "updated_at": "2026-06-28T00:55:26.049+00:00"
+    },
+    {
+        "id": "215f830a-2379-4142-a6a6-63974ff5c62c",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "home_books_showcase_link_text",
+        "value": "\u0394\u03b5\u03af\u03c4\u03b5 \u03cc\u03bb\u03b1 \u03c4\u03b1 \u03b2\u03b9\u03b2\u03bb\u03af\u03b1",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-07T08:15:28.049053+00:00",
+        "updated_at": "2026-06-28T00:55:26.97+00:00"
+    },
+    {
+        "id": "46ff0e25-24b8-45d1-8dff-ac0c011017c0",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_home_section_cta_link",
+        "value": "/blog",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-08T13:19:14.121258+00:00",
+        "updated_at": "2026-07-08T13:19:14.121258+00:00"
+    },
+    {
+        "id": "1b7917ea-4a3d-4fb9-8450-5e6c627ab51d",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "footer_copyright",
+        "value": "\u039d\u03b9\u03ba\u03cc\u03bb\u03b1\u03c2 \u039a\u03bf\u03bb\u03bf\u03ba\u03bf\u03c4\u03c1\u03ce\u03bd\u03b7\u03c2. All Rights Reserved.",
+        "category": "site",
+        "description": "Footer copyright text",
+        "created_at": "2026-06-06T19:46:21.813286+00:00",
+        "updated_at": "2026-06-29T14:21:42.384+00:00"
+    },
+    {
+        "id": "0be561e9-cc81-40d2-bd11-076827b4fc23",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_address_area",
+        "value": "\u039d\u03ad\u03bf \u0397\u03c1\u03ac\u03ba\u03bb\u03b5\u03b9\u03bf",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "a28dde26-366c-448f-8150-e6b694e8c45a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_address_postal_code",
+        "value": "14121",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "0fb1b4a4-ae55-40e6-a52a-d7b11567e004",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_section_eyebrow",
+        "value": "\u03a3\u03c4\u03bf\u03b9\u03c7\u03b5\u03af\u03b1 \u03b5\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03af\u03b1\u03c2",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "77461209-a016-4905-ac27-c2037d45d407",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_cta_text",
+        "value": "\u039a\u03bb\u03b5\u03af\u03c3\u03c4\u03b5 \u03c1\u03b1\u03bd\u03c4\u03b5\u03b2\u03bf\u03cd",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "b472ace5-db70-48c5-a26e-ac9fee32ca40",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_cta_link",
+        "value": "/contact",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "57f8b514-af81-4220-8c64-3d9716882588",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_address_heading",
+        "value": "\u0394\u03b9\u03b5\u03cd\u03b8\u03c5\u03bd\u03c3\u03b7",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "82b93156-1ee9-420a-875f-727bf3f57e93",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_map_title",
+        "value": "\u03a7\u03ac\u03c1\u03c4\u03b7\u03c2",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "6fcec402-8389-4485-8ccc-568c311d09a8",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_open_maps_text",
+        "value": "\u0386\u03bd\u03bf\u03b9\u03b3\u03bc\u03b1 \u03c3\u03c4\u03bf\u03c5\u03c2 \u03a7\u03ac\u03c1\u03c4\u03b5\u03c2",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "83cbdb9a-7af0-479d-945c-9aa357ee3925",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "footer_heading_nav",
+        "value": "\u03a0\u03bb\u03bf\u03ae\u03b3\u03b7\u03c3\u03b7",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "cbc4189c-ac32-4bc9-982c-1fde33f59346",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "footer_heading_contact",
+        "value": "\u0395\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03af\u03b1",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "bd31cf4d-b91d-4d14-b515-5cf7d32a7b9a",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "footer_privacy_text",
+        "value": "\u03a0\u03bf\u03bb\u03b9\u03c4\u03b9\u03ba\u03ae \u0391\u03c0\u03bf\u03c1\u03c1\u03ae\u03c4\u03bf\u03c5",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "2b4dbe34-ebb2-491b-b633-3ccaf8fb27e5",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "footer_terms_text",
+        "value": "\u038c\u03c1\u03bf\u03b9 \u03a7\u03c1\u03ae\u03c3\u03b7\u03c2",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-07T17:09:16.920284+00:00",
+        "updated_at": "2026-07-07T17:09:16.920284+00:00"
+    },
+    {
+        "id": "d7aa610f-b8b6-45a5-a100-88084cf32786",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seo_default_description",
+        "value": "\u0388\u03bd\u03b1\u03c2 \u03b1\u03c3\u03c6\u03b1\u03bb\u03ae\u03c2 \u03c7\u03ce\u03c1\u03bf\u03c2 \u03b3\u03b9\u03b1 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1, \u03b5\u03c3\u03c9\u03c4\u03b5\u03c1\u03b9\u03ba\u03cc \u03c4\u03b1\u03be\u03af\u03b4\u03b9 \u03ba\u03b1\u03b9 \u03b1\u03c0\u03bf\u03b4\u03bf\u03c7\u03ae.",
+        "category": "seo",
+        "description": "Default meta description",
+        "created_at": "2026-06-06T19:46:23.719184+00:00",
+        "updated_at": "2026-07-08T08:22:49.987+00:00"
+    },
+    {
+        "id": "d05ea7b9-0bc6-4842-b064-25dbc1eace66",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "seo_default_og_image",
+        "value": "",
+        "category": "seo",
+        "description": "Default OG image URL",
+        "created_at": "2026-06-06T19:46:23.907331+00:00",
+        "updated_at": "2026-06-28T00:55:35.392+00:00"
+    },
+    {
+        "id": "be7445cb-a1e0-41a5-99ba-befe7c9e845c",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_hero_image",
+        "value": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1783177842344-eg9ae7.avif",
+        "category": "about",
+        "description": "About page hero background image URL",
+        "created_at": "2026-06-06T21:40:56.142651+00:00",
+        "updated_at": "2026-07-06T10:04:31.385+00:00"
+    },
+    {
+        "id": "5e0786d2-3d55-491d-9fd0-3fb6135110d1",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_hero_positioning",
+        "value": "\u03a8\u03c5\u03c7\u03bf\u03b8\u03b5\u03c1\u03b1\u03c0\u03b5\u03af\u03b1 \u2022 \u03a3\u03c5\u03b3\u03b3\u03c1\u03b1\u03c6\u03ae \u2022 \u03a0\u03c1\u03bf\u03c3\u03c9\u03c0\u03b9\u03ba\u03ae \u0391\u03bd\u03ac\u03c0\u03c4\u03c5\u03be\u03b7",
+        "category": "about",
+        "description": "About hero positioning/tagline line",
+        "created_at": "2026-06-06T21:40:56.338849+00:00",
+        "updated_at": "2026-07-06T10:04:31.898+00:00"
+    },
+    {
+        "id": "eb949ab1-c301-4f82-88da-e78165e15d9e",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_pull_quote_author",
+        "value": "",
+        "category": "about",
+        "description": "Pull quote author name",
+        "created_at": "2026-06-06T21:40:57.526479+00:00",
+        "updated_at": "2026-07-06T10:04:34.347+00:00"
+    },
+    {
+        "id": "95ccd410-ac87-4bed-ac36-44e8cd6689c4",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_address_line_2",
+        "value": "\u039d\u03ad\u03bf \u0397\u03c1\u03ac\u03ba\u03bb\u03b5\u03b9\u03bf, \u0391\u03b8\u03ae\u03bd\u03b1 14121",
+        "category": "contact",
+        "description": "Address line 2 (city/area)",
+        "created_at": "2026-06-06T20:53:17.07125+00:00",
+        "updated_at": "2026-06-28T00:55:18.489+00:00"
+    },
+    {
+        "id": "05606cf3-e480-4474-95ce-7dfe00cf9bde",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_home_section_count",
+        "value": "2",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-08T13:19:14.318071+00:00",
+        "updated_at": "2026-07-08T13:19:14.318071+00:00"
+    },
+    {
+        "id": "9ecd5ef8-dddd-4f0a-904b-2aee30964329",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_address_line_1",
+        "value": "\u0391\u03c0\u03cc\u03bb\u03bb\u03c9\u03bd\u03bf\u03c2 30, \u03b9\u03c3\u03cc\u03b3\u03b5\u03b9\u03bf",
+        "category": "contact",
+        "description": "Address line 1",
+        "created_at": "2026-06-06T20:53:16.875332+00:00",
+        "updated_at": "2026-06-28T00:55:18.141+00:00"
+    },
+    {
+        "id": "e6d759ed-bf00-471e-a101-94688bf1a0ca",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "header_cta_text",
+        "value": "\u039a\u03bb\u03b5\u03af\u03c3\u03c4\u03b5 \u03c1\u03b1\u03bd\u03c4\u03b5\u03b2\u03bf\u03cd",
+        "category": "site",
+        "description": "Header CTA button text",
+        "created_at": "2026-06-06T19:46:22.001133+00:00",
+        "updated_at": "2026-06-28T00:55:36.619+00:00"
+    },
+    {
+        "id": "4da408aa-33bb-4e94-891c-9fb5a4759203",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "site_name",
+        "value": "\u039d\u03b9\u03ba\u03cc\u03bb\u03b1\u03c2 \u039a\u03bf\u03bb\u03bf\u03ba\u03bf\u03c4\u03c1\u03ce\u03bd\u03b7\u03c2",
+        "category": "site",
+        "description": "Site name (header/footer)",
+        "created_at": "2026-06-06T19:46:21.051828+00:00",
+        "updated_at": "2026-06-28T00:55:37.241+00:00"
+    },
+    {
+        "id": "a0a76e36-8375-4e28-9d48-0b5330756e9f",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_hours_line_2",
+        "value": "\u039a\u03b1\u03c4\u03cc\u03c0\u03b9\u03bd \u03b5\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03af\u03b1\u03c2 ",
+        "category": "contact",
+        "description": "Hours line 2",
+        "created_at": "2026-06-06T19:46:20.110909+00:00",
+        "updated_at": "2026-06-28T00:55:21.049+00:00"
+    },
+    {
+        "id": "eca69cb9-6141-4be3-93f3-1217c950b3ad",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "contact_phone_note",
+        "value": "\u039a\u03b1\u03bb\u03ad\u03c3\u03c4\u03b5 \u03b3\u03b9\u03b1 \u03ac\u03bc\u03b5\u03c3\u03b7 \u03b5\u03be\u03c5\u03c0\u03b7\u03c1\u03ad\u03c4\u03b7\u03c3\u03b7",
+        "category": "contact",
+        "description": "Phone card hint text",
+        "created_at": "2026-06-06T20:53:16.475463+00:00",
+        "updated_at": "2026-06-28T00:55:22.29+00:00"
+    },
+    {
+        "id": "1c2a5168-5740-486b-ab6e-cbc3559f4a8e",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "cta_band_subtitle",
+        "value": "\u0397 \u03c8\u03c5\u03c7\u03b9\u03ba\u03ae \u03c5\u03b3\u03b5\u03af\u03b1 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c4\u03bf \u03c0\u03bf\u03bb\u03c5\u03c4\u03b9\u03bc\u03cc\u03c4\u03b5\u03c1\u03bf \u03b1\u03b3\u03b1\u03b8\u03cc. \u0397 \u03b1\u03c0\u03cc\u03c6\u03b1\u03c3\u03b7 \u03b5\u03af\u03bd\u03b1\u03b9 \u03b4\u03b9\u03ba\u03ae \u03c3\u03bf\u03c5. \u039a\u03ac\u03bd\u03b5 \u03c4\u03bf \u03b2\u03ae\u03bc\u03b1 \u03c3\u03ae\u03bc\u03b5\u03c1\u03b1.",
+        "category": "cta",
+        "description": "CTA band subtitle",
+        "created_at": "2026-06-06T19:46:22.950726+00:00",
+        "updated_at": "2026-06-28T00:55:25.725+00:00"
+    },
+    {
+        "id": "e72dfe2b-f9c3-47ef-9ba2-82d21c0d54ad",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "home_books_showcase_link_url",
+        "value": "/books",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-07T08:15:28.144683+00:00",
+        "updated_at": "2026-06-28T00:55:27.282+00:00"
+    },
+    {
+        "id": "8f7c9d5a-da7d-48a7-b117-48ebc62bf140",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_achievements",
+        "value": [
+            {
+                "icon": "clock",
+                "label": "\u03a7\u03c1\u03cc\u03bd\u03b9\u03b1 \u03b5\u03bc\u03c0\u03b5\u03b9\u03c1\u03af\u03b1\u03c2",
+                "value": "26+"
+            },
+            {
+                "icon": "book",
+                "label": "\u0392\u03b9\u03b2\u03bb\u03af\u03b1",
+                "value": "9"
+            },
+            {
+                "icon": "sparkles",
+                "label": "\u0398\u03b5\u03c1\u03b1\u03c0\u03b5\u03c5\u03c4\u03b9\u03ba\u03ad\u03c2 \u03c0\u03c1\u03bf\u03c3\u03b5\u03b3\u03b3\u03af\u03c3\u03b5\u03b9\u03c2",
+                "value": "20+"
+            },
+            {
+                "icon": "heart",
+                "label": "\u038f\u03c1\u03b5\u03c2 \u03c0\u03c1\u03b1\u03ba\u03c4\u03b9\u03ba\u03ae\u03c2 & \u03b5\u03b8\u03b5\u03bb\u03bf\u03bd\u03c4\u03b9\u03c3\u03bc\u03bf\u03cd",
+                "value": "600"
+            }
+        ],
+        "category": "about",
+        "description": "Achievement stats (JSON array)",
+        "created_at": "2026-06-06T21:40:56.538835+00:00",
+        "updated_at": "2026-07-06T10:04:27.35+00:00"
+    },
+    {
+        "id": "1309e4dd-42eb-4438-a1cf-ac37108ef56f",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_section_paragraph_1",
+        "value": "\u0395\u03af\u03bc\u03b1\u03b9 \u03b5\u03b4\u03ce \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03c3\u03b5 \u03c3\u03c5\u03bd\u03bf\u03b4\u03b5\u03cd\u03c3\u03c9 \u03ba\u03b1\u03b9 \u03bd\u03b1 \u03c3\u03b5 \u03c5\u03c0\u03bf\u03c3\u03c4\u03b7\u03c1\u03af\u03be\u03c9 \u03c3\u03c4\u03bf \u03c0\u03c1\u03bf\u03c3\u03c9\u03c0\u03b9\u03ba\u03cc \u03c3\u03bf\u03c5 \u03c4\u03b1\u03be\u03af\u03b4\u03b9. \u03a7\u03c9\u03c1\u03af\u03c2 \u03c3\u03c5\u03bc\u03b2\u03bf\u03c5\u03bb\u03ad\u03c2 \u03ba\u03b1\u03b9 \u03b5\u03c0\u03b9\u03ba\u03c1\u03af\u03c3\u03b5\u03b9\u03c2, \u03c3\u03c5\u03bd\u03b5\u03c1\u03b3\u03b1\u03b6\u03cc\u03bc\u03b1\u03c3\u03c4\u03b5 \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03c3\u03c5\u03bd\u03b4\u03b5\u03b8\u03b5\u03af\u03c2 \u03bc\u03b5 \u03c4\u03b1 \u03c7\u03b1\u03c1\u03af\u03c3\u03bc\u03b1\u03c4\u03ac \u03c3\u03bf\u03c5, \u03c4\u03b9\u03c2 \u03b4\u03c5\u03bd\u03b1\u03c4\u03cc\u03c4\u03b7\u03c4\u03ad\u03c2 \u03c3\u03bf\u03c5 \u03ba\u03b1\u03b9 \u03c4\u03b9\u03c2 \u03b5\u03c3\u03c9\u03c4\u03b5\u03c1\u03b9\u03ba\u03ad\u03c2 \u03c3\u03bf\u03c5 \u03b8\u03b5\u03c4\u03b9\u03ba\u03ad\u03c2 \u03c0\u03b7\u03b3\u03ad\u03c2, \u03ce\u03c3\u03c4\u03b5 \u03b7 \u03b6\u03c9\u03ae \u03c3\u03bf\u03c5 \u03bd\u03b1 \u03b1\u03c0\u03bf\u03ba\u03c4\u03ae\u03c3\u03b5\u03b9 \u03c6\u03c9\u03c2 \u03ba\u03b1\u03b9 \u03bd\u03cc\u03b7\u03bc\u03b1, \u03bc\u03ad\u03c3\u03b1 \u03b1\u03c0\u03cc \u03c4\u03bf\u03bd \u03b1\u03c5\u03c4\u03bf\u03c3\u03b5\u03b2\u03b1\u03c3\u03bc\u03cc, \u03c4\u03b7\u03bd \u03b1\u03c5\u03c4\u03bf\u03b1\u03c0\u03bf\u03b4\u03bf\u03c7\u03ae \u03ba\u03b1\u03b9 \u03c4\u03b7\u03bd \u03c5\u03bb\u03bf\u03c0\u03bf\u03af\u03b7\u03c3\u03b7 \u03c4\u03c9\u03bd \u03c3\u03c4\u03cc\u03c7\u03c9\u03bd \u03c3\u03bf\u03c5. \u0397 \u03b1\u03bd\u03ac\u03bb\u03b7\u03c8\u03b7 \u03c4\u03b7\u03c2 \u03b5\u03c5\u03b8\u03cd\u03bd\u03b7\u03c2, \u03b7 \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7 \u03bc\u03b5 \u03c4\u03b7\u03bd \u03b5\u03bd\u03b7\u03bb\u03b9\u03ba\u03af\u03c9\u03c3\u03b7 \u03ba\u03b1\u03b9 \u03b7 \u03c0\u03bb\u03ae\u03c1\u03b7\u03c2 \u03b5\u03bd\u03c3\u03c9\u03bc\u03ac\u03c4\u03c9\u03c3\u03b7 \u03c4\u03bf\u03c5 \u03b5\u03c3\u03c9\u03c4\u03b5\u03c1\u03b9\u03ba\u03bf\u03cd \u03c0\u03b1\u03b9\u03b4\u03b9\u03bf\u03cd, \u03b5\u03af\u03bd\u03b1\u03b9 \u03bc\u03b5\u03c1\u03b9\u03ba\u03ac \u03b1\u03c0\u03cc \u03c4\u03b1 \u03b4\u03ce\u03c1\u03b1 \u03c0\u03bf\u03c5 \u03bc\u03c0\u03bf\u03c1\u03b5\u03af\u03c2 \u03bd\u03b1 \u03c0\u03c1\u03bf\u03c3\u03c6\u03ad\u03c1\u03b5\u03b9\u03c2 \u03c3\u03c4\u03b7\u03bd \u03cd\u03c0\u03b1\u03c1\u03be\u03ae \u03c3\u03bf\u03c5. ",
+        "category": "home",
+        "description": "About preview paragraph 1",
+        "created_at": "2026-06-06T19:46:15.438976+00:00",
+        "updated_at": "2026-06-28T00:55:29.475+00:00"
+    },
+    {
+        "id": "154b68bc-ed01-465c-8cdd-5b50f4765b2b",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "blog_home_section_category",
+        "value": "",
+        "category": "general",
+        "description": "",
+        "created_at": "2026-07-08T13:19:14.487424+00:00",
+        "updated_at": "2026-07-08T13:19:14.487424+00:00"
+    },
+    {
+        "id": "5d143bde-3394-403d-baa9-73fb46b8df42",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_books",
+        "value": [
+            {
+                "url": "https://www.evripidis.gr/product/286237/tabula-rasa-/",
+                "isbn": "9786185505943",
+                "type": "\u039c\u03c5\u03b8\u03b9\u03c3\u03c4\u03cc\u03c1\u03b7\u03bc\u03b1",
+                "year": 2024,
+                "title": "Tabula Rasa \u2013 \u0397 \u0386\u03b3\u03c1\u03b1\u03c6\u03b7 \u03a0\u03bb\u03ac\u03ba\u03b1 \u03c4\u03b7\u03c2 \u03a8\u03c5\u03c7\u03ae\u03c2",
+                "featured": true,
+                "subtitle": "\u039c\u03c5\u03b8\u03b9\u03c3\u03c4\u03cc\u03c1\u03b7\u03bc\u03b1 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2",
+                "publisher": "\u0399\u03b2\u03af\u03c3\u03ba\u03bf\u03c2",
+                "sort_order": 10,
+                "cover_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/book-covers/tabula-rasa.jpg",
+                "description": "\u0388\u03bd\u03b1 \u03c3\u03cd\u03b3\u03c7\u03c1\u03bf\u03bd\u03bf \u03bc\u03c5\u03b8\u03b9\u03c3\u03c4\u03cc\u03c1\u03b7\u03bc\u03b1 \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2 \u03c0\u03bf\u03c5 \u03be\u03b5\u03b4\u03b9\u03c0\u03bb\u03ce\u03bd\u03b5\u03c4\u03b1\u03b9 \u03c3\u03b5 \u03c4\u03c1\u03af\u03b1 \u03b5\u03c0\u03af\u03c0\u03b5\u03b4\u03b1: \u03c4\u03b7\u03bd \u03ba\u03b1\u03b8\u03b7\u03bc\u03b5\u03c1\u03b9\u03bd\u03ae \u03b6\u03c9\u03ae \u03c4\u03bf\u03c5 \u03ae\u03c1\u03c9\u03b1, \u03c4\u03b9\u03c2 \u03c3\u03c5\u03bd\u03b1\u03bd\u03c4\u03ae\u03c3\u03b5\u03b9\u03c2 \u03c4\u03bf\u03c5 \u03bc\u03b5 \u03ad\u03bd\u03b1\u03bd \u03c0\u03bd\u03b5\u03c5\u03bc\u03b1\u03c4\u03b9\u03ba\u03cc \u03b4\u03ac\u03c3\u03ba\u03b1\u03bb\u03bf \u03ba\u03b1\u03b9 \u03c4\u03bf\u03bd \u03b8\u03ac\u03bb\u03b1\u03bc\u03bf \u03b5\u03bd\u03c4\u03b1\u03c4\u03b9\u03ba\u03ae\u03c2 \u03b5\u03bd\u03cc\u03c2 \u03bd\u03bf\u03c3\u03bf\u03ba\u03bf\u03bc\u03b5\u03af\u03bf\u03c5. \u039f \u03b4\u03ac\u03c3\u03ba\u03b1\u03bb\u03bf\u03c2 \u03c4\u03bf\u03c5 \u03bc\u03b9\u03bb\u03ac\u03b5\u03b9 \u03bc\u03b5 \u03c4\u03c1\u03b5\u03b9\u03c2 \u03bb\u03ad\u03be\u03b5\u03b9\u03c2 \u03ba\u03ac\u03b8\u03b5 \u03c6\u03bf\u03c1\u03ac \u2014 \u03b5\u03af\u03bd\u03b1\u03b9 \u03c4\u03c5\u03c7\u03b1\u03af\u03b5\u03c2 \u03ae \u03bf\u03b4\u03b7\u03b3\u03bf\u03cd\u03bd \u03c3\u03c4\u03bf\u03bd \u03b1\u03c0\u03ce\u03c4\u03b5\u03c1\u03bf \u03c3\u03ba\u03bf\u03c0\u03cc \u03c4\u03bf\u03c5;"
+            },
+            {
+                "url": "https://www.politeianet.gr/el/products/9789603643418-nikos-kolokotronhs-dioptra-to-magiko-taxidi",
+                "isbn": "9789603643418",
+                "type": "\u039c\u03c5\u03b8\u03b9\u03c3\u03c4\u03cc\u03c1\u03b7\u03bc\u03b1",
+                "year": 2008,
+                "title": "\u03a4\u03bf \u039c\u03b1\u03b3\u03b9\u03ba\u03cc \u03a4\u03b1\u03be\u03af\u03b4\u03b9",
+                "featured": true,
+                "subtitle": "\u0391' \u0392\u03c1\u03b1\u03b2\u03b5\u03af\u03bf \u039c\u03c5\u03b8\u03b9\u03c3\u03c4\u03bf\u03c1\u03ae\u03bc\u03b1\u03c4\u03bf\u03c2 2008",
+                "publisher": "\u0394\u03b9\u03cc\u03c0\u03c4\u03c1\u03b1",
+                "sort_order": 30,
+                "cover_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780825478970-tah90j.jpg",
+                "description": "\u039f \u03bd\u03b5\u03b1\u03c1\u03cc\u03c2 \u0393\u03b9\u03ac\u03bd\u03bd\u03b7\u03c2, \u03bc\u03b5 \u03ad\u03bd\u03b1\u03bd \u03bc\u03c0\u03cc\u03b3\u03bf \u03c0\u03c1\u03ac\u03b3\u03bc\u03b1\u03c4\u03b1 \u03c1\u03b9\u03b3\u03bc\u03ad\u03bd\u03b1 \u03c3\u03c4\u03b7\u03bd \u03c0\u03bb\u03ac\u03c4\u03b7 \u03c4\u03bf\u03c5, \u03c4\u03b1\u03be\u03b9\u03b4\u03b5\u03cd\u03b5\u03b9 \u03c3\u03c4\u03bf \u0395\u03c5\u03c4\u03c5\u03c7\u03bf\u03c7\u03ce\u03c1\u03b9. \u0395\u03ba\u03b5\u03af \u03b3\u03bd\u03c9\u03c1\u03af\u03b6\u03b5\u03b9 \u03c4\u03bf\u03bd \u03ac\u03c1\u03c7\u03bf\u03bd\u03c4\u03b1 \u0395\u03c5\u03b8\u03cd\u03bc\u03b9\u03bf \u0393\u03b5\u03bb\u03b1\u03c3\u03c4\u03cc \u03ba\u03b1\u03b9 \u03c4\u03b7\u03bd \u03bf\u03b9\u03ba\u03bf\u03b3\u03ad\u03bd\u03b5\u03b9\u03ac \u03c4\u03bf\u03c5. \u039c\u03b1\u03b6\u03af \u03c4\u03bf\u03c5\u03c2 \u03c0\u03b5\u03c1\u03bd\u03ac\u03b5\u03b9 \u03c4\u03bf\u03bd \u03bc\u03ae\u03bd\u03b1 \u03c4\u03b7\u03c2 \u0391\u03b3\u03ac\u03c0\u03b7\u03c2 \u03ba\u03b1\u03b9 \u03b4\u03b9\u03b4\u03ac\u03c3\u03ba\u03b5\u03c4\u03b1\u03b9 \u03bc\u03b5 \u03b1\u03c0\u03bb\u03bf\u03cd\u03c2 \u03c4\u03c1\u03cc\u03c0\u03bf\u03c5\u03c2 \u03c0\u03ce\u03c2 \u03bd\u03b1 \u03b6\u03b5\u03b9 \u03b9\u03b4\u03b1\u03bd\u03b9\u03ba\u03ac, \u03bc\u03b5 \u03b5\u03c0\u03b9\u03ba\u03bf\u03b9\u03bd\u03c9\u03bd\u03af\u03b1, \u03c7\u03b1\u03bc\u03cc\u03b3\u03b5\u03bb\u03bf, \u03b5\u03bc\u03c0\u03b9\u03c3\u03c4\u03bf\u03c3\u03cd\u03bd\u03b7, \u03b1\u03b3\u03ac\u03c0\u03b7, \u03b4\u03b7\u03bc\u03b9\u03bf\u03c5\u03c1\u03b3\u03b9\u03ba\u03cc\u03c4\u03b7\u03c4\u03b1, \u03b5\u03c0\u03af\u03b3\u03bd\u03c9\u03c3\u03b7 \u03ba\u03b1\u03b9 \u03b5\u03be\u03ad\u03bb\u03b9\u03be\u03b7."
+            },
+            {
+                "url": "https://www.evripidis.gr/product/57024/minymata-kai-epafi-me-toys-agioys-kartes-/",
+                "isbn": "9789606631238",
+                "type": "\u03a0\u03bd\u03b5\u03c5\u03bc\u03b1\u03c4\u03b9\u03ba\u03ae \u0391\u03bd\u03ac\u03c0\u03c4\u03c5\u03be\u03b7",
+                "year": 0,
+                "title": "\u039c\u03b7\u03bd\u03cd\u03bc\u03b1\u03c4\u03b1 & \u0395\u03c0\u03b1\u03c6\u03ae \u03bc\u03b5 \u03c4\u03bf\u03c5\u03c2 \u0391\u03b3\u03af\u03bf\u03c5\u03c2",
+                "url_alt": "https://www.public.gr/product/books/greek-books/anthropology-social-sciences/religion/minumata-kai-epafi-me-tous-agious/0438464",
+                "featured": true,
+                "subtitle": "\u0392\u03b9\u03b2\u03bb\u03af\u03bf & \u039a\u03ac\u03c1\u03c4\u03b5\u03c2",
+                "publisher": "\u039a\u03c1\u03cd\u03c9\u03bd",
+                "sort_order": 40,
+                "cover_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780821915395-4d3k5l.jpg",
+                "description": "\u0395\u03be\u03ae\u03bd\u03c4\u03b1 \u03b5\u03c0\u03c4\u03ac \u03ac\u03b3\u03b9\u03bf\u03b9 \u03c4\u03b7\u03c2 \u039f\u03c1\u03b8\u03bf\u03b4\u03bf\u03be\u03af\u03b1\u03c2 \u03c0\u03b1\u03c1\u03bf\u03c5\u03c3\u03b9\u03ac\u03b6\u03bf\u03bd\u03c4\u03b1\u03b9 \u03ba\u03b1\u03b9 \u03c4\u03b9\u03bc\u03ce\u03bd\u03c4\u03b1\u03b9 \u03bc\u03ad\u03c3\u03b1 \u03b1\u03c0\u03cc \u03c3\u03b7\u03bc\u03b1\u03bd\u03c4\u03b9\u03ba\u03ac \u03c3\u03c4\u03bf\u03b9\u03c7\u03b5\u03af\u03b1 \u03c4\u03bf\u03c5 \u03b2\u03af\u03bf\u03c5 \u03c4\u03bf\u03c5\u03c2, \u03bc\u03b5 \u03bd\u03ad\u03bf\u03c5\u03c2 \u03cd\u03bc\u03bd\u03bf\u03c5\u03c2 \u03ba\u03b1\u03b9 \u03c0\u03c1\u03bf\u03c3\u03b5\u03c5\u03c7\u03ad\u03c2. \u03a4\u03bf \u03c3\u03b5\u03c4 \u03ba\u03b1\u03c1\u03c4\u03ce\u03bd \u03b5\u03af\u03bd\u03b1\u03b9 \u03ad\u03bd\u03b1 \u03c0\u03c1\u03b1\u03ba\u03c4\u03b9\u03ba\u03cc \u03b5\u03c1\u03b3\u03b1\u03bb\u03b5\u03af\u03bf \u03b1\u03c5\u03c4\u03bf\u03b3\u03bd\u03c9\u03c3\u03af\u03b1\u03c2, \u03b1\u03b3\u03ac\u03c0\u03b7\u03c2 & \u03b5\u03be\u03ad\u03bb\u03b9\u03be\u03b7\u03c2 \u03b3\u03b9\u03b1 \u03c3\u03cd\u03bd\u03b4\u03b5\u03c3\u03b7 \u03bc\u03b5 \u03c4\u03bf\u03c5\u03c2 \u03b1\u03b3\u03af\u03bf\u03c5\u03c2 \u03ba\u03b1\u03b9 \u03bb\u03ae\u03c8\u03b7 \u03bc\u03b7\u03bd\u03c5\u03bc\u03ac\u03c4\u03c9\u03bd \u03ba\u03b1\u03b8\u03bf\u03b4\u03ae\u03b3\u03b7\u03c3\u03b7\u03c2."
+            },
+            {
+                "url": "https://www.evripidis.gr/product/78520/i-monaksia-den-exei-ilikia-/",
+                "isbn": "9789605180720",
+                "type": "\u0394\u03b9\u03b7\u03b3\u03ae\u03bc\u03b1\u03c4\u03b1",
+                "year": 2000,
+                "title": "\u0397 \u039c\u03bf\u03bd\u03b1\u03be\u03b9\u03ac \u03b4\u03b5\u03bd \u03ad\u03c7\u03b5\u03b9 \u0397\u03bb\u03b9\u03ba\u03af\u03b1",
+                "featured": true,
+                "subtitle": "\u0394\u03b9\u03b7\u03b3\u03ae\u03bc\u03b1\u03c4\u03b1",
+                "publisher": "\u038a\u03bd\u03b4\u03b9\u03ba\u03c4\u03bf\u03c2",
+                "sort_order": 20,
+                "cover_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780825449715-ls639g.jpg",
+                "description": "\u039f\u03ba\u03c4\u03ce \u03b9\u03c3\u03c4\u03bf\u03c1\u03af\u03b5\u03c2 \u03c0\u03b1\u03c1\u03bc\u03ad\u03bd\u03b5\u03c2 \u03b1\u03c0\u03cc \u03c4\u03bf\u03bd \u03bc\u03b1\u03b3\u03b9\u03ba\u03cc \u03c0\u03af\u03bd\u03b1\u03ba\u03b1 \u03c4\u03b7\u03c2 \u03b6\u03c9\u03ae\u03c2. \u039f\u03ba\u03c4\u03ce \u03c0\u03bf\u03c1\u03c4\u03c1\u03b1\u03af\u03c4\u03b1-\u03c8\u03c5\u03c7\u03bf\u03b3\u03c1\u03b1\u03c6\u03ae\u03bc\u03b1\u03c4\u03b1 \u03ba\u03b1\u03b8\u03b7\u03bc\u03b5\u03c1\u03b9\u03bd\u03ce\u03bd \u03b1\u03bd\u03b8\u03c1\u03ce\u03c0\u03c9\u03bd \u03c0\u03bf\u03c5 \u03c3\u03c5\u03bd\u03b1\u03bd\u03c4\u03ac\u03bc\u03b5 \u03ba\u03ac\u03b8\u03b5 \u03c3\u03c4\u03b9\u03b3\u03bc\u03ae, \u03c0\u03bf\u03c5 \u03c3\u03c5\u03bd\u03b1\u03bd\u03b1\u03c3\u03c4\u03c1\u03b5\u03c6\u03cc\u03bc\u03b1\u03c3\u03c4\u03b5, \u03b1\u03bb\u03bb\u03ac \u03af\u03c3\u03c9\u03c2 \u03b4\u03b5\u03bd \u03b3\u03bd\u03c9\u03c1\u03af\u03b6\u03bf\u03c5\u03bc\u03b5 \u03c0\u03c1\u03b1\u03b3\u03bc\u03b1\u03c4\u03b9\u03ba\u03ac."
+            },
+            {
+                "url": "",
+                "isbn": "",
+                "type": "\u03a0\u03bf\u03af\u03b7\u03c3\u03b7",
+                "year": 0,
+                "title": "\u03a3\u03b5 \u03a6\u03cc\u03bd\u03c4\u03bf \u039a\u03cc\u03ba\u03ba\u03b9\u03bd\u03bf",
+                "featured": true,
+                "subtitle": "\u03a0\u03bf\u03b9\u03b7\u03c4\u03b9\u03ba\u03ae \u03c3\u03c5\u03bb\u03bb\u03bf\u03b3\u03ae",
+                "publisher": "\u0388\u03c8\u03b9\u03bb\u03bf\u03bd",
+                "sort_order": 60,
+                "cover_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780784302046-3fczua.jpg",
+                "description": "\u03a0\u03bf\u03b9\u03b7\u03c4\u03b9\u03ba\u03ae \u03c3\u03c5\u03bb\u03bb\u03bf\u03b3\u03ae \u03c0\u03bf\u03c5 \u03b5\u03be\u03b5\u03c1\u03b5\u03c5\u03bd\u03ac \u03c4\u03b1 \u03b1\u03bd\u03b8\u03c1\u03ce\u03c0\u03b9\u03bd\u03b1 \u03c3\u03c5\u03bd\u03b1\u03b9\u03c3\u03b8\u03ae\u03bc\u03b1\u03c4\u03b1 \u03bc\u03ad\u03c3\u03b1 \u03b1\u03c0\u03cc \u03ad\u03bd\u03c4\u03bf\u03bd\u03b5\u03c2 \u03b5\u03b9\u03ba\u03cc\u03bd\u03b5\u03c2 \u03ba\u03b1\u03b9 \u03bb\u03c5\u03c1\u03b9\u03ba\u03ae \u03b3\u03c1\u03b1\u03c6\u03ae."
+            },
+            {
+                "url": "https://www.politeianet.gr/el/products/9789607062703-nikos-kolokotronhs-epsilon-gualino-oneiro",
+                "isbn": "9607062701",
+                "type": "\u03a0\u03bf\u03af\u03b7\u03c3\u03b7",
+                "year": 1997,
+                "title": "\u0393\u03c5\u03ac\u03bb\u03b9\u03bd\u03bf \u038c\u03bd\u03b5\u03b9\u03c1\u03bf",
+                "featured": true,
+                "subtitle": "\u03a0\u03bf\u03b9\u03b7\u03c4\u03b9\u03ba\u03ae \u03c3\u03c5\u03bb\u03bb\u03bf\u03b3\u03ae",
+                "publisher": "\u0388\u03c8\u03b9\u03bb\u03bf\u03bd",
+                "sort_order": 70,
+                "cover_image": "",
+                "description": "\u03a0\u03bf\u03b9\u03ae\u03bc\u03b1\u03c4\u03b1 \u03c0\u03bf\u03c5 \u03b1\u03c0\u03bf\u03c4\u03c5\u03c0\u03ce\u03bd\u03bf\u03c5\u03bd \u03c3\u03c4\u03b9\u03b3\u03bc\u03ad\u03c2, \u03c3\u03c5\u03bd\u03b1\u03b9\u03c3\u03b8\u03ae\u03bc\u03b1\u03c4\u03b1 \u03ba\u03b1\u03b9 \u03bf\u03bd\u03b5\u03b9\u03c1\u03b9\u03ba\u03ad\u03c2 \u03ba\u03b1\u03c4\u03b1\u03c3\u03c4\u03ac\u03c3\u03b5\u03b9\u03c2 \u03bc\u03b5 \u03b5\u03c5\u03b1\u03b9\u03c3\u03b8\u03b7\u03c3\u03af\u03b1 \u03ba\u03b1\u03b9 \u03b2\u03b1\u03b8\u03cd\u03c4\u03b7\u03c4\u03b1."
+            },
+            {
+                "url": "",
+                "isbn": "9789607062468",
+                "type": "\u03a0\u03bf\u03af\u03b7\u03c3\u03b7",
+                "year": 1994,
+                "title": "\u03a7\u03c9\u03c1\u03af\u03c2 \u039c\u03b1\u03ba\u03b9\u03b3\u03b9\u03ac\u03b6",
+                "featured": true,
+                "subtitle": "\u03a0\u03bf\u03b9\u03b7\u03c4\u03b9\u03ba\u03ae \u03c3\u03c5\u03bb\u03bb\u03bf\u03b3\u03ae",
+                "publisher": "\u0388\u03c8\u03b9\u03bb\u03bf\u03bd",
+                "sort_order": 50,
+                "cover_image": "https://qhbgptlklsavezxpksao.supabase.co/storage/v1/object/public/site-images/1780821888845-oci1sn.jpg",
+                "description": "\u03a0\u03bf\u03b9\u03ae\u03bc\u03b1\u03c4\u03b1 \u03b3\u03c5\u03bc\u03bd\u03ac \u03b1\u03c0\u03cc \u03b5\u03c0\u03b9\u03c4\u03ae\u03b4\u03b5\u03c5\u03c3\u03b7, \u03bc\u03b5 \u03b5\u03b9\u03bb\u03b9\u03ba\u03c1\u03af\u03bd\u03b5\u03b9\u03b1 \u03ba\u03b1\u03b9 \u03ac\u03bc\u03b5\u03c3\u03b7 \u03b5\u03c0\u03b1\u03c6\u03ae \u03bc\u03b5 \u03c4\u03b1 \u03c3\u03c5\u03bd\u03b1\u03b9\u03c3\u03b8\u03ae\u03bc\u03b1\u03c4\u03b1 \u03ba\u03b1\u03b9 \u03c4\u03b9\u03c2 \u03b1\u03bd\u03b8\u03c1\u03ce\u03c0\u03b9\u03bd\u03b5\u03c2 \u03b5\u03bc\u03c0\u03b5\u03b9\u03c1\u03af\u03b5\u03c2."
+            }
+        ],
+        "category": "about",
+        "description": "Books showcase (JSON array)",
+        "created_at": "2026-06-06T21:40:56.740161+00:00",
+        "updated_at": "2026-07-06T10:04:29.376+00:00"
+    },
+    {
+        "id": "b78b7beb-33e0-4ab2-a507-253a84aa31f3",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_books_cta_text",
+        "value": "\u0394\u03b5\u03af\u03c4\u03b5 \u03cc\u03bb\u03b1 \u03c4\u03b1 \u03b2\u03b9\u03b2\u03bb\u03af\u03b1",
+        "category": "about",
+        "description": "Books section CTA text",
+        "created_at": "2026-06-06T21:40:56.924373+00:00",
+        "updated_at": "2026-07-06T10:04:29.88+00:00"
+    },
+    {
+        "id": "96534093-2c03-49a9-b82c-71b28ae0770c",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_books_cta_url",
+        "value": "/books",
+        "category": "about",
+        "description": "Books section CTA link",
+        "created_at": "2026-06-06T21:40:57.130613+00:00",
+        "updated_at": "2026-07-06T10:04:30.363+00:00"
+    },
+    {
+        "id": "2316621b-dd20-4948-b4e5-ad7f44981308",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "about_pull_quote",
+        "value": "",
+        "category": "about",
+        "description": "Pull quote text",
+        "created_at": "2026-06-06T21:40:57.339245+00:00",
+        "updated_at": "2026-07-06T10:04:33.81+00:00"
+    },
+    {
+        "id": "6121aa82-2c6f-45a0-b19f-e80d19b16e50",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "key": "page_visibility",
+        "value": {
+            "/": true,
+            "/blog": true,
+            "/about": true,
+            "/books": false,
+            "/terms": true,
+            "/contact": true,
+            "/privacy": true,
+            "/services": true
+        },
+        "category": "general",
+        "description": "",
+        "created_at": "2026-06-07T08:15:28.249765+00:00",
+        "updated_at": "2026-07-08T11:21:55.738+00:00"
+    }
+]

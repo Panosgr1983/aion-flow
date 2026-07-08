@@ -40,6 +40,16 @@ import TenantSiteManagement from '../components/dashboard/TenantSiteManagement';
 import ErrorBoundary from '../components/dashboard/ErrorBoundary';
 // import EmailSyncManager from '../components/settings/EmailSyncManager';
 
+// Artist Module v0.1 — read-only panels
+import BiographyPanel from '../modules/artist/pages/BiographyPanel';
+import FilmographyPanel from '../modules/artist/pages/FilmographyPanel';
+import TelevisionPanel from '../modules/artist/pages/TelevisionPanel';
+import TheatrePanel from '../modules/artist/pages/TheatrePanel';
+import TimelinePanel from '../modules/artist/pages/TimelinePanel';
+import GalleryPanel from '../modules/artist/pages/GalleryPanel';
+import PressPanel from '../modules/artist/pages/PressPanel';
+import ShowreelPanel from '../modules/artist/pages/ShowreelPanel';
+
 export default function Dashboard() {
   const { isDemoMode } = useAuth();
   const tenant = useTenant();
@@ -92,6 +102,16 @@ export default function Dashboard() {
             <Route path="pipeline" element={<PlatformGuard><PipelinePage /></PlatformGuard>} />
             <Route path="tenant" element={<TenantOverview />} />
             <Route path="tenant-site" element={<TenantSiteManagement />} />
+            {/* Artist Module v0.1 — read-only panels */}
+            <Route path="artist" element={<BiographyPanel />} />
+            <Route path="artist/bio" element={<BiographyPanel />} />
+            <Route path="artist/films" element={<FilmographyPanel />} />
+            <Route path="artist/tv" element={<TelevisionPanel />} />
+            <Route path="artist/theatre" element={<TheatrePanel />} />
+            <Route path="artist/timeline" element={<TimelinePanel />} />
+            <Route path="artist/gallery" element={<GalleryPanel />} />
+            <Route path="artist/press" element={<PressPanel />} />
+            <Route path="artist/showreels" element={<ShowreelPanel />} />
           </Routes>
           </ErrorBoundary>
         </main>

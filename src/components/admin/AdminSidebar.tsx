@@ -16,7 +16,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal, Building2 } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal, Building2, Film, Monitor, Theater, Clock, Images, Newspaper, Video } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
 import { supabase } from '../../lib/supabase';
@@ -268,6 +268,37 @@ export default function AdminSidebar() {
             )}
           </Link>
         ))}
+
+        {/* Artist Module v0.1 — conditional on feature flag */}
+        {(tenant.isSuperAdmin || tenant.featureMap?.artist_module) && (
+          <>
+            {!collapsed && <div className="text-[10px] text-gray-500 uppercase tracking-wider px-3 pt-4 pb-1 flex items-center gap-2"><Film size={10} /> Καλλιτέχνης</div>}
+            {[
+              { path: '/dashboard/artist', icon: User, label: 'Βιογραφικό' },
+              { path: '/dashboard/artist/films', icon: Film, label: 'Ταινίες' },
+              { path: '/dashboard/artist/tv', icon: Monitor, label: 'Τηλεόραση' },
+              { path: '/dashboard/artist/theatre', icon: Theater, label: 'Θέατρο' },
+              { path: '/dashboard/artist/timeline', icon: Clock, label: 'Χρονολόγιο' },
+              { path: '/dashboard/artist/gallery', icon: Images, label: 'Gallery' },
+              { path: '/dashboard/artist/press', icon: Newspaper, label: 'Press' },
+              { path: '/dashboard/artist/showreels', icon: Video, label: 'Showreels' },
+            ].map(({ path, icon: Icon, label }) => (
+              <Link
+                key={path}
+                to={path}
+                title={collapsed ? label : undefined}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive(path)
+                    ? 'bg-blue-600/20 text-blue-400 border border-blue-500/20'
+                    : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/60'
+                } ${collapsed ? 'justify-center' : ''}`}
+              >
+                <Icon size={18} className="shrink-0" />
+                {!collapsed && <span>{label}</span>}
+              </Link>
+            ))}
+          </>
+        )}
       </nav>
 
       <div className="p-3 border-t border-gray-800/50 space-y-1">

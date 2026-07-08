@@ -94,6 +94,21 @@
 | Deployment (Vercel) | ✅ Stable | Auto-deploy |
 | Public Site (Cloudflare) | ✅ Stable | Tenant public sites |
 
+## Artist Module (v0.1 — Read-only)
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Biography viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Filmography viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Television viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Theatre viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Timeline viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Gallery viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Press viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Showreels viewer | 🟡 Beta | Read-only, behind `artist_module` flag |
+| Artist DB tables | 🟡 Beta | 8 new tables + media extension |
+| Artist sidebar group | 🟡 Beta | Conditional on feature flag |
+
 ## Multi-Project Support
 
 | Feature | Status | Notes |

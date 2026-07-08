@@ -14,7 +14,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useTenantContext } from '../../lib/TenantContext';
-import { Zap, CheckCircle, AlertTriangle, Loader } from 'lucide-react';
+import { Zap, CheckCircle, AlertTriangle, Loader, ExternalLink } from 'lucide-react';
 
 interface TenantCard {
   id: string;
@@ -23,6 +23,7 @@ interface TenantCard {
   status: string;
   plan_name: string;
   industry: string | null;
+  external_project_enabled?: boolean;
 }
 
 export default function TenantSelector() {
@@ -32,7 +33,7 @@ export default function TenantSelector() {
   const { setSelectedTenantId, selectedTenantId } = useTenantContext();
 
   useEffect(() => {
-    supabase.from('tenants').select('id, name, slug, status, plan_name, industry').order('name').then(({ data }) => {
+    supabase.from('tenants').select('id, name, slug, status, plan_name, industry, external_project_enabled').order('name').then(({ data }) => {
       if (data) setTenants(data as TenantCard[]);
       setLoading(false);
     });
@@ -88,9 +89,14 @@ export default function TenantSelector() {
                       {isActive ? 'Ενεργό' : t.status === 'trial' ? 'Δοκιμή' : t.status}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     {t.plan_name && <span className="px-2 py-0.5 bg-gray-800 rounded-full">{t.plan_name}</span>}
                     {t.industry && <span>{t.industry}</span>}
+                    {(t as any).external_project_enabled && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-violet-400 bg-violet-500/10 px-1.5 py-0.5 rounded-full">
+                        <ExternalLink size={9} /> External
+                      </span>
+                    )}
                   </div>
                   {isSelected && (
                     <div className="absolute inset-0 rounded-2xl border-2 border-blue-500/50 flex items-center justify-center bg-blue-500/5">

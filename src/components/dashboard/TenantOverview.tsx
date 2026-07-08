@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useTenant } from '../../lib/useTenant';
 import { useTenantContext } from '../../lib/TenantContext';
-import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users } from 'lucide-react';
+import { checkProjectConnection } from '../../lib/multiProjectClient';
+import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users, ExternalLink, Globe } from 'lucide-react';
 
 interface RecentActivity {
   id: string;
@@ -23,12 +24,15 @@ export default function TenantOverview() {
   const [allTenants, setAllTenants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [projectConnection, setProjectConnection] = useState<{ ok: boolean; latency: number; error?: string } | null>(null);
+  const isExternalProject = !!(tenantInfo as any)?.external_project_enabled;
+  const hasExternalProjects = allTenants.some((t: any) => t.external_project_enabled);
 
   const tenantId = tenant.effectiveTenantId;
 
   useEffect(() => {
     if (tenant.isSuperAdmin && !tenantId) {
-      supabase.from('tenants').select('id, name, plan_name, industry, status').order('name').then(({ data }) => {
+      supabase.from('tenants').select('id, name, plan_name, industry, status, supabase_project_url, external_project_enabled').order('name').then(({ data }) => {
         if (data) setAllTenants(data);
         setLoading(false);
       });
@@ -37,25 +41,35 @@ export default function TenantOverview() {
     if (!tenantId) { setLoading(false); return; }
     setLoading(true);
     setError('');
+    setProjectConnection(null);
 
-    Promise.all([
-      supabase.from('tenants').select('*').eq('id', tenantId).single(),
-      supabase.from('services').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId),
-      supabase.from('blog_posts').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId),
-      supabase.from('site_settings').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId).eq('category', 'pages'),
-      supabase.from('media').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId),
-      tenant.isSuperAdmin
-        ? supabase.from('content_history').select('id, table_name, entity_name, operation, created_at, user_id').eq('tenant_id', tenantId).order('created_at', { ascending: false }).limit(10)
-        : Promise.resolve({ data: [] }),
-    ]).then(([info, svc, blog, pages, med, activity]) => {
-      if (info?.data) setTenantInfo(info.data);
-      setStats({
-        services: (svc as any).count || 0,
-        blog: (blog as any).count || 0,
-        pages: (pages as any).count || 0,
-        media: (med as any).count || 0,
-      });
-      if (activity?.data) setRecentActivity(activity.data as RecentActivity[]);
+    supabase.from('tenants').select('*').eq('id', tenantId).single().then((info) => {
+      if (info?.data) {
+        setTenantInfo(info.data);
+        const hasProject = !!(info.data as any).external_project_enabled;
+        if (hasProject) {
+          checkProjectConnection(tenantId).then(setProjectConnection);
+          setStats({ services: 0, blog: 0, pages: 0, media: 0 });
+        } else {
+          Promise.all([
+            supabase.from('services').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId),
+            supabase.from('blog_posts').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId),
+            supabase.from('site_settings').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId).eq('category', 'pages'),
+            supabase.from('media').select('id', { count: 'exact', head: true }).eq('tenant_id', tenantId),
+            tenant.isSuperAdmin
+              ? supabase.from('content_history').select('id, table_name, entity_name, operation, created_at, user_id').eq('tenant_id', tenantId).order('created_at', { ascending: false }).limit(10)
+              : Promise.resolve({ data: [] }),
+          ]).then(([svc, blog, pages, med, activity]) => {
+            setStats({
+              services: (svc as any).count || 0,
+              blog: (blog as any).count || 0,
+              pages: (pages as any).count || 0,
+              media: (med as any).count || 0,
+            });
+            if (activity?.data) setRecentActivity(activity.data as RecentActivity[]);
+          });
+        }
+      }
       setLoading(false);
     }).catch((e) => { setError(e.message); setLoading(false); });
   }, [tenantId, tenant.isSuperAdmin]);
@@ -180,27 +194,34 @@ export default function TenantOverview() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {allTenants.map(t => (
-            <button
-              key={t.id}
-              onClick={() => setSelectedTenantId(t.id)}
-              className="card p-5 text-left hover:bg-gray-800/40 transition-all group border border-transparent hover:border-blue-500/30"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="size-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                  <Building2 size={18} className="text-blue-400" />
+              <button
+                key={t.id}
+                onClick={() => setSelectedTenantId(t.id)}
+                className="card p-5 text-left hover:bg-gray-800/40 transition-all group border border-transparent hover:border-blue-500/30"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="size-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                    <Building2 size={18} className="text-blue-400" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-medium text-gray-200 group-hover:text-white transition-colors truncate">{t.name}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      {t.plan_name && <p className="text-xs text-gray-500">{t.plan_name}</p>}
+                      {(t as any).external_project_enabled && (
+                        <span className="inline-flex items-center gap-1 text-[10px] text-violet-400 bg-violet-500/10 px-1.5 py-0.5 rounded-full">
+                          <ExternalLink size={10} /> External Project
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <p className="font-medium text-gray-200 group-hover:text-white transition-colors truncate">{t.name}</p>
-                  {t.plan_name && <p className="text-xs text-gray-500">{t.plan_name}</p>}
+                <div className="flex items-center gap-3 text-xs text-gray-600">
+                  {t.industry && <span>{t.industry}</span>}
+                  <span className={t.status === 'active' ? 'text-green-500' : 'text-amber-500'}>
+                    {t.status === 'active' ? 'Ενεργό' : t.status}
+                  </span>
                 </div>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-gray-600">
-                {t.industry && <span>{t.industry}</span>}
-                <span className={t.status === 'active' ? 'text-green-500' : 'text-amber-500'}>
-                  {t.status === 'active' ? 'Ενεργό' : t.status}
-                </span>
-              </div>
-            </button>
+              </button>
           ))}
           {allTenants.length === 0 && !loading && (
             <div className="col-span-full card p-12 text-center">
@@ -241,10 +262,17 @@ export default function TenantOverview() {
     <div className="space-y-5 animate-fade-in">
       {/* Tenant Banner */}
       {tenantInfo && (
-        <div className="card p-5 border-l-4 border-l-blue-500">
+        <div className={`card p-5 ${isExternalProject ? 'border-l-4 border-l-violet-500' : 'border-l-4 border-l-blue-500'}`}>
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <h2 className="text-lg font-semibold">{tenantInfo.name}</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-semibold">{tenantInfo.name}</h2>
+                {isExternalProject && (
+                  <span className="inline-flex items-center gap-1 text-[10px] text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded-full">
+                    <ExternalLink size={10} /> External Project
+                  </span>
+                )}
+              </div>
               <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
                 {tenantInfo.plan_name && <span>📋 {tenantInfo.plan_name}</span>}
                 {tenantInfo.industry && <span>🏢 {tenantInfo.industry}</span>}
@@ -261,74 +289,141 @@ export default function TenantOverview() {
         </div>
       )}
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {statCards.map(c => (
-          <div key={c.label} className="card p-4">
-            <div className="flex items-center gap-3">
-              <div className={`size-10 rounded-xl ${c.bg} flex items-center justify-center`}>
-                <c.icon size={18} className={c.color} />
+      {isExternalProject ? (
+        <>
+          {/* External Project Info */}
+          <div className="card p-6">
+            <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><Globe size={14} className="text-violet-400" /> Σύνδεση με External Project</h3>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-900/50">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs text-gray-500 mb-1">Supabase Project URL</p>
+                  <p className="text-sm font-mono text-gray-300 break-all">{(tenantInfo as any).supabase_project_url}</p>
+                </div>
+                <a href={(tenantInfo as any).supabase_project_url} target="_blank" rel="noopener noreferrer" className="btn-ghost p-2 shrink-0">
+                  <ExternalLink size={14} className="text-gray-500" />
+                </a>
               </div>
+
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-900/50">
+                <div className={`size-3 rounded-full ${projectConnection === null ? 'bg-gray-500 animate-pulse' : projectConnection.ok ? 'bg-green-500' : 'bg-red-500'}`} />
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs text-gray-500 mb-1">Κατάσταση Σύνδεσης</p>
+                  {projectConnection === null ? (
+                    <p className="text-sm text-gray-400">Έλεγχος σύνδεσης...</p>
+                  ) : projectConnection.ok ? (
+                    <p className="text-sm text-green-400">Συνδεδεμένο ({projectConnection.latency}ms)</p>
+                  ) : (
+                    <div>
+                      <p className="text-sm text-red-400">Αποτυχία σύνδεσης</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{projectConnection.error}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {(tenantInfo as any).domain && (
+                <a href={`https://${(tenantInfo as any).domain}`} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-gray-900/50 hover:bg-gray-800/40 transition-colors group">
+                  <Globe size={16} className="text-gray-500 group-hover:text-blue-400" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs text-gray-500 mb-1">Website</p>
+                    <p className="text-sm text-gray-300 group-hover:text-blue-400 transition-colors">{(tenantInfo as any).domain}</p>
+                  </div>
+                  <ExternalLink size={14} className="text-gray-600 group-hover:text-blue-400 shrink-0" />
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* External Project Notice */}
+          <div className="card p-6 border border-violet-500/20 bg-violet-500/5">
+            <div className="flex items-start gap-3">
+              <AlertTriangle size={18} className="text-violet-400 shrink-0 mt-0.5" />
               <div>
-                <p className="text-lg font-bold text-gray-100">{c.value}</p>
-                <p className="text-xs text-gray-500">{c.label}</p>
+                <h3 className="text-sm font-semibold text-violet-300 mb-1">Ανεξάρτητο Supabase Project</h3>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  Ο tenant αυτός έχει δικό του ανεξάρτητο Supabase project. 
+                  Το CMS content (services, blog, κλπ.) βρίσκεται στο δικό του project 
+                  και δεν είναι άμεσα επεξεργάσιμο από το AION Flow CMS panels. 
+                  Η δυνατότητα CMS editing για external projects θα προστεθεί σε επόμενη έκδοση.
+                </p>
               </div>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Content Section */}
-      <div className="card p-5">
-        <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><FileText size={14} className="text-blue-400" /> CMS Περιεχόμενο</h3>
-        <div className="space-y-3">
-          {[
-            { label: 'Υπηρεσίες', count: stats?.services || 0, path: '/dashboard/services' },
-            { label: 'Blog Posts', count: stats?.blog || 0, path: '/dashboard/blog' },
-            { label: 'Σελίδες', count: stats?.pages || 0, path: '/dashboard/pages' },
-            { label: 'Media Files', count: stats?.media || 0, path: '/dashboard/media' },
-          ].map(s => (
-            <Link key={s.label} to={s.path} className="flex items-center justify-between py-1.5 hover:text-gray-200 transition-colors">
-              <span className="text-sm text-gray-400">{s.label}</span>
-              <span className="text-sm font-medium text-gray-200">{s.count}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <Link to="/dashboard/services/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-blue-500/50 hover:text-blue-400 transition-all">
-          <Plus size={14} /> Νέα Υπηρεσία
-        </Link>
-        <Link to="/dashboard/blog/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-purple-500/50 hover:text-purple-400 transition-all">
-          <Plus size={14} /> Νέο Blog Post
-        </Link>
-        <Link to="/dashboard/pages/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-cyan-500/50 hover:text-cyan-400 transition-all">
-          <Plus size={14} /> Νέα Σελίδα
-        </Link>
-        <Link to="/dashboard/media" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-emerald-500/50 hover:text-emerald-400 transition-all">
-          <Plus size={14} /> Upload Media
-        </Link>
-      </div>
-
-      {/* Recent Activity */}
-      {recentActivity.length > 0 && (
-        <div className="card p-5">
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><History size={14} className="text-gray-400" /> Πρόσφατη Δραστηριότητα</h3>
-          <div className="space-y-2">
-            {recentActivity.map(a => (
-              <div key={a.id} className="flex items-center justify-between py-1.5 text-sm">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-gray-800 text-gray-400 shrink-0">{getOperationLabel(a.operation)}</span>
-                  <span className="text-gray-300 truncate">{a.entity_name}</span>
-                  <span className="text-gray-600 text-xs shrink-0">({getTableLabel(a.table_name)})</span>
+        </>
+      ) : (
+        <>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {statCards.map(c => (
+              <div key={c.label} className="card p-4">
+                <div className="flex items-center gap-3">
+                  <div className={`size-10 rounded-xl ${c.bg} flex items-center justify-center`}>
+                    <c.icon size={18} className={c.color} />
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-gray-100">{c.value}</p>
+                    <p className="text-xs text-gray-500">{c.label}</p>
+                  </div>
                 </div>
-                <span className="text-xs text-gray-600 shrink-0 ml-3">{new Date(a.created_at).toLocaleDateString('el-GR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
               </div>
             ))}
           </div>
-        </div>
+
+          {/* Content Section */}
+          <div className="card p-5">
+            <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><FileText size={14} className="text-blue-400" /> CMS Περιεχόμενο</h3>
+            <div className="space-y-3">
+              {[
+                { label: 'Υπηρεσίες', count: stats?.services || 0, path: '/dashboard/services' },
+                { label: 'Blog Posts', count: stats?.blog || 0, path: '/dashboard/blog' },
+                { label: 'Σελίδες', count: stats?.pages || 0, path: '/dashboard/pages' },
+                { label: 'Media Files', count: stats?.media || 0, path: '/dashboard/media' },
+              ].map(s => (
+                <Link key={s.label} to={s.path} className="flex items-center justify-between py-1.5 hover:text-gray-200 transition-colors">
+                  <span className="text-sm text-gray-400">{s.label}</span>
+                  <span className="text-sm font-medium text-gray-200">{s.count}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <Link to="/dashboard/services/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-blue-500/50 hover:text-blue-400 transition-all">
+              <Plus size={14} /> Νέα Υπηρεσία
+            </Link>
+            <Link to="/dashboard/blog/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-purple-500/50 hover:text-purple-500 transition-all">
+              <Plus size={14} /> Νέο Blog Post
+            </Link>
+            <Link to="/dashboard/pages/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-cyan-500/50 hover:text-cyan-400 transition-all">
+              <Plus size={14} /> Νέα Σελίδα
+            </Link>
+            <Link to="/dashboard/media" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-emerald-500/50 hover:text-emerald-400 transition-all">
+              <Plus size={14} /> Upload Media
+            </Link>
+          </div>
+
+          {/* Recent Activity */}
+          {recentActivity.length > 0 && (
+            <div className="card p-5">
+              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><History size={14} className="text-gray-400" /> Πρόσφατη Δραστηριότητα</h3>
+              <div className="space-y-2">
+                {recentActivity.map(a => (
+                  <div key={a.id} className="flex items-center justify-between py-1.5 text-sm">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-800 text-gray-400 shrink-0">{getOperationLabel(a.operation)}</span>
+                      <span className="text-gray-300 truncate">{a.entity_name}</span>
+                      <span className="text-gray-600 text-xs shrink-0">({getTableLabel(a.table_name)})</span>
+                    </div>
+                    <span className="text-xs text-gray-600 shrink-0 ml-3">{new Date(a.created_at).toLocaleDateString('el-GR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

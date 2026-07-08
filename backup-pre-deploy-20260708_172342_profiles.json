@@ -1,0 +1,47 @@
+[
+    {
+        "id": "54c9271c-9699-4668-8d54-65100c9df329",
+        "email": "choliasmenos.panos@gmail.com",
+        "full_name": "",
+        "avatar_url": "",
+        "role": "admin",
+        "timezone": "Europe/Athens",
+        "locale": "el",
+        "is_active": true,
+        "last_login_at": null,
+        "created_at": "2026-06-10T15:14:21.382195+00:00",
+        "updated_at": "2026-06-10T15:14:21.382195+00:00",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "is_super_admin": true
+    },
+    {
+        "id": "1e4924b5-2313-4ee7-a2d3-3c1b52943777",
+        "email": "admin@kolokotronis.gr",
+        "full_name": "",
+        "avatar_url": "",
+        "role": "admin",
+        "timezone": "Europe/Athens",
+        "locale": "el",
+        "is_active": true,
+        "last_login_at": null,
+        "created_at": "2026-06-10T15:07:53.91114+00:00",
+        "updated_at": "2026-06-10T15:07:53.91114+00:00",
+        "tenant_id": "00000000-0000-0000-0000-000000000001",
+        "is_super_admin": false
+    },
+    {
+        "id": "3d39bc81-8f7e-41ff-91a9-ee16bea2591c",
+        "email": "info@aionweb.gr",
+        "full_name": "",
+        "avatar_url": "",
+        "role": "admin",
+        "timezone": "Europe/Athens",
+        "locale": "el",
+        "is_active": true,
+        "last_login_at": null,
+        "created_at": "2026-06-10T15:14:21.721764+00:00",
+        "updated_at": "2026-06-10T15:14:21.721764+00:00",
+        "tenant_id": null,
+        "is_super_admin": true
+    }
+]

@@ -71,4 +71,14 @@ export const FEATURE_MODULES: Record<string, TenantFeature> = {  services: 'cms'
   orders: 'eshop',
   customers: 'eshop',
   categories: 'eshop',
+  // Artist Module
+  'artist': 'artist_module',
+  'artist-bio': 'artist_module',
+  'artist-films': 'artist_module',
+  'artist-tv': 'artist_module',
+  'artist-theatre': 'artist_module',
+  'artist-timeline': 'artist_module',
+  'artist-gallery': 'artist_module',
+  'artist-press': 'artist_module',
+  'artist-showreels': 'artist_module',
 };

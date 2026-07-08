@@ -143,3 +143,45 @@
 - Cloudflare Worker deployment for public sites
 - Dual Supabase environment (Production + Dev)
 - Feature branch development flow
+
+## v0.4.0-dev (2026-07-08)
+
+### Added
+- **Documentation Update Pass**: All 10 architecture docs updated with current state
+- **Artist Module INTEGRATION_PLAN.md**: Complete integration plan for artist module in `docs/modules/artist/`
+- **Artist Module v0.1 — Read-only CMS Shell**:
+  - `src/modules/artist/` structure with types, DB helpers, 8 read-only panels
+  - `artist_module` feature flag in `TenantFeature` type + `useTenant.ts`
+  - Conditional sidebar menu (only shown when `artist_module = true`)
+  - 9 new routes under `/dashboard/artist/*`
+  - 8 read-only panels: Biography, Filmography, Television, Theatre, Timeline, Gallery, Press, Showreels
+  - Additive migration `20260708000002_artist_module.sql`: 8 new tables, media table extension, RLS policies
+  - Empty states for all panels when no data exists
+- **media table extension**: `media_type`, `photographer`, `copyright`, `source_url` columns
+- **Artist types**: `Biographies`, `FilmographyEntry`, `TelevisionEntry`, `TheatreEntry`, `CareerTimeline`, `GalleryItem`, `PressItem`, `Showreel`
+- **Artist DB helpers**: Read-only queries for all 8 tables in `src/modules/artist/db/queries.ts`
+
+### Changed
+- `TenantFeature` type: added `artist_module`
+- `FEATURE_MODULES` in `access.ts`: added artist paths
+- `useTenant.ts` SA feature map: includes `artist_module: true`
+- `AdminSidebar.tsx`: new "Καλλιτέχνης" nav group with conditional rendering
+- `Dashboard.tsx`: 9 new artist routes
+
+### Documentation Updated
+- `docs/MODULES.md` — Artist Module section + updated dependency graph
+- `docs/FEATURES.md` — v0.4.0-dev bump, Artist Module features
+- `docs/DATABASE.md` — 8 new tables, media column extensions
+- `docs/ROADMAP.md` — v0.4 Artist Module milestone
+- `docs/PERMISSIONS.md` — Artist Module permissions
+- `docs/DEPLOYMENT.md` — Artist module deployment phases
+- `docs/ARCHITECTURE.md` — Artist Module planned section
+- `docs/KNOWN_ISSUES.md` — Updated
+- `docs/TECH_DEBT.md` — Updated
+- `docs/modules/artist/INTEGRATION_PLAN.md` — Updated with v0.1 status
+
+### Migration
+- `20260708000002_artist_module.sql` — 8 new artist tables, media extension, RLS policies
+
+### Build
+- ✅ Zero errors, 2,380 modules transformed, 1.7 MB bundle

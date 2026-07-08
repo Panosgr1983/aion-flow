@@ -345,10 +345,11 @@ export default function SiteSettingsPanel() {
                 <div>
                   <label className="text-xs text-gray-500 block mb-1.5">Blog Category Filter</label>
                   <select
-                    value={getValue('seminar_section_category') || 'ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ'}
+                    value={getValue('seminar_section_category') || ''}
                     onChange={e => setValue('seminar_section_category', e.target.value)}
                     className="input flex-1 w-full"
                   >
+                    <option value="">— Όλες οι κατηγορίες —</option>
                     {blogCategories.length === 0 && (
                       <option value="ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ">ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ</option>
                     )}
@@ -357,6 +358,57 @@ export default function SiteSettingsPanel() {
                     ))}
                   </select>
                   <div className="text-[10px] text-gray-700 mt-0.5 font-mono">seminar_section_category</div>
+                </div>
+              </div>
+
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Πρόσφατα Άρθρα Section (Homepage)</h3>
+              <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-xl">
+                <label className="text-sm text-gray-300">Εμφάνιση ενότητας στην Αρχική</label>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={getValue('blog_home_section_visible') !== 'false'}
+                  onClick={() => setValue('blog_home_section_visible', getValue('blog_home_section_visible') !== 'false' ? 'false' : 'true')}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${getValue('blog_home_section_visible') !== 'false' ? 'bg-blue-600' : 'bg-gray-700'}`}
+                >
+                  <span className={`inline-block size-4 rounded-full bg-white transition-transform ${getValue('blog_home_section_visible') !== 'false' ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+              {renderField('blog_home_section_title', 'Section Title')}
+              {renderField('blog_home_section_subtitle', 'Subtitle / Description', { rows: 2 })}
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('blog_home_section_cta_text', '"View All" Link Text')}
+                {renderField('blog_home_section_cta_link', '"View All" Link URL')}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-gray-500 block mb-1.5">Number of articles</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={getValue('blog_home_section_count') || '2'}
+                    onChange={e => setValue('blog_home_section_count', e.target.value)}
+                    className="input flex-1 w-full"
+                  />
+                  <div className="text-[10px] text-gray-700 mt-0.5 font-mono">blog_home_section_count</div>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 block mb-1.5">Blog Category Filter</label>
+                  <select
+                    value={getValue('blog_home_section_category') || ''}
+                    onChange={e => setValue('blog_home_section_category', e.target.value)}
+                    className="input flex-1 w-full"
+                  >
+                    <option value="">— Όλες οι κατηγορίες —</option>
+                    {blogCategories.length === 0 && (
+                      <option value="ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ">ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ</option>
+                    )}
+                    {blogCategories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                  <div className="text-[10px] text-gray-700 mt-0.5 font-mono">blog_home_section_category</div>
                 </div>
               </div>
 
