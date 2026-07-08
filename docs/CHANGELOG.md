@@ -186,6 +186,21 @@
 ### Build
 - ✅ Zero errors, 2,380 modules transformed, 1.7 MB bundle
 
+## v0.5.3-dev (2026-07-08) — Week 3: Television + Theatre CRUD
+
+### Added
+- **Television CRUD panel** — list/create/edit/delete + MediaPicker + history logging
+- **Theatre CRUD panel** — list/create/edit/delete + MediaPicker + history logging
+- **Development Constitution** (`docs/CONSTITUTION.md`) — 8 Golden Rules, Definition of Done
+- **Portfolio MASTER** (`docs/modules/portfolio/MASTER.md`) — central module reference
+- **Reports**: week-03-television.md, week-03-theatre.md
+
+### Changed
+- Portfolio manifest: TV + Theatre routes use CRUD panels (were read-only)
+
+### Build
+- ✅ Zero errors, 2,382 modules
+
 ## v0.5.0-dev (2026-07-08) — Week 1: Biography CRUD
 
 ### Added

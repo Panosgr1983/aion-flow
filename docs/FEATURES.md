@@ -102,8 +102,8 @@
 | Module Manifest | ✅ Stable | `portfolio/manifest.ts` — routes, sidebar, permissions |
 | Biography editor | ✅ Stable | Full CRUD: RichEditor, MediaPicker, upsert, history |
 | Filmography editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
-| Television viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
-| Theatre viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
+| Television editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
+| Theatre editor | ✅ Stable | Full CRUD: list, create, edit, delete, media, history |
 | Timeline viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Gallery viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
 | Press viewer | 🟡 Beta | Read-only, behind `portfolio_module` flag |
