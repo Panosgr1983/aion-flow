@@ -116,14 +116,29 @@
 
 ---
 
-## 🔜 v0.5 "Portfolio Module v0.2" (Current)
+## 🔜 v0.5 "Portfolio CRUD" (Current — Planning Complete)
 
-- [ ] Generic portfolio schema (portfolio_profiles, portfolio_entries)
-- [ ] CRUD for all portfolio panels
-- [ ] Gallery 2.0 with media_type filtering
-- [ ] Timeline drag & drop ordering
-- [ ] Media metadata editor (alt, caption, copyright)
-- [ ] Portfolio public templates
+**Rule:** No panel complete without docs update.
+
+### Sequence (one panel at a time)
+
+- [ ] **Panel 1: Biography CRUD** — RichEditor + MediaPicker + upsert
+- [ ] **Panel 2: Filmography CRUD** — entries CRUD + media + sorting
+- [ ] **Panel 3: Timeline CRUD** — category + drag & drop
+- [ ] **Panel 4: Gallery CRUD** — media linking + metadata editor
+- [ ] **Panel 5: Television CRUD** — simple CRUD (same pattern)
+- [ ] **Panel 6: Theatre CRUD** — simple CRUD (same pattern)
+- [ ] **Panel 7: Press CRUD** — minimal fields
+- [ ] **Panel 8: Showreels CRUD** — minimal fields
+
+### Per-panel deliverables
+
+```
+code + migration (if needed) + QA + docs update + commit
+```
+
+### v0.5 CRUD Plan documented at:
+`docs/modules/portfolio/INTEGRATION_PLAN.md` — full field specs, components, validation, permissions, history logging, MediaPicker/RichEditor integration per panel.
 
 ---
 

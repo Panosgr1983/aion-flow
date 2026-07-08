@@ -402,4 +402,165 @@ Total: ~8-10 days (first implementation)
 
 ---
 
+## v0.5 — Portfolio CRUD Plan
+
+**Approved:** 2026-07-08
+**Rule:** No panel is complete without documentation update.
+**Sequence:** One panel at a time, build → test → commit → docs.
+
+### Panel 1: Biography / Profile CRUD
+
+| Aspect | Detail |
+|--------|--------|
+| **Fields** | name, professional_type (select), bio (RichEditor), short_bio, birth_year, birth_place, pseudonyms[], featured_media_id (MediaPicker), seo_title, seo_description, status, verified |
+| **Components** | RichEditor (TipTap), MediaPicker, text inputs, select, toggle |
+| **Validation** | name required (2-100 chars), bio optional, birth_year optional (4 digits) |
+| **Permissions** | portfolio.edit (save), portfolio.view (read) |
+| **History** | Log to content_history on every update |
+| **Empty state** | "Δεν υπάρχει βιογραφικό. Δημιουργήστε το πρώτο." + Create button |
+| **Save behavior** | Upsert (single row per tenant) — INSERT if none, UPDATE if exists |
+| **Delete behavior** | Soft delete (set status='archived') or hard delete |
+| **DB table** | `biographies` |
+| **Frontend** | `/dashboard/portfolio` and `/dashboard/portfolio/bio` |
+| **Docs to update** | INTEGRATION_PLAN, MODULES, FEATURES, DATABASE, PERMISSIONS, CHANGELOG |
+
+### Panel 2: Filmography / Portfolio Entries CRUD
+
+| Aspect | Detail |
+|--------|--------|
+| **Fields** | title, title_en, year, role, genre, director, duration, description (RichEditor), featured_media_id (MediaPicker), trailer_url, imdb_url, sort_order, status, verified |
+| **Components** | RichEditor, MediaPicker, text/url inputs, number inputs, sortable list |
+| **Validation** | title required, year optional (1900-2030), urls valid format |
+| **Permissions** | portfolio.edit |
+| **History** | Log to content_history on CUD |
+| **Empty state** | "Δεν υπάρχουν καταχωρημένες ταινίες." + Create button |
+| **Save behavior** | Standard INSERT/UPDATE per row |
+| **Delete behavior** | Soft delete or hard delete with confirmation |
+| **Sorting** | Drag & drop reorder (sort_order) |
+| **DB table** | `filmography_entries` |
+| **Frontend** | `/dashboard/portfolio/films` |
+| **Media** | MediaPicker for poster image, trailer_url link field |
+
+### Panel 3: Television CRUD
+
+Same pattern as Filmography but for `television_entries`:
+| **Fields** | title, year, channel, role, episode_title, description, featured_media_id, sort_order, status, verified |
+| **Components** | Same as Filmography |
+| **Frontend** | `/dashboard/portfolio/tv` |
+
+### Panel 4: Theatre CRUD
+
+Same pattern for `theatre_entries`:
+| **Fields** | title, year, venue, playwright, role, notes, featured_media_id, sort_order, status, verified |
+| **Frontend** | `/dashboard/portfolio/theatre` |
+
+### Panel 5: Timeline CRUD
+
+| Aspect | Detail |
+|--------|--------|
+| **Fields** | year, month (optional), title, title_en, description, category (select: film/tv/theatre/award/personal/other), icon, media_url, sort_order, status, verified |
+| **Components** | Text inputs, category dropdown, year/month pickers, optional image URL |
+| **Validation** | title required, year required (1900-2030) |
+| **Empty state** | "Δεν υπάρχουν γεγονότα. Προσθέστε το πρώτο." |
+| **Sorting** | Drag & drop, auto-sort by year on insert |
+| **DB table** | `career_timelines` |
+| **Frontend** | `/dashboard/portfolio/timeline` |
+| **Icon mapping** | Auto-assigned from category (Film→film, Monitor→tv, etc.) |
+
+### Panel 6: Gallery CRUD + Media Linking
+
+| Aspect | Detail |
+|--------|--------|
+| **Fields** | media_id (MediaPicker), image_url (auto from media), caption, alt_text, category (select: film_stills/behind_scenes/portraits/theatre/events/other), photographer, copyright, sort_order, status, verified |
+| **Components** | MediaPicker (full), inline image preview, metadata editor, category select |
+| **Validation** | image_url required (from MediaPicker), caption optional |
+| **Empty state** | "Δεν υπάρχουν φωτογραφίες. Προσθέστε την πρώτη." |
+| **Media linking** | Create media record → upload → link to gallery_item |
+| **Sorting** | Drag & drop reorder |
+| **DB table** | `gallery_items` + `media` |
+| **Frontend** | `/dashboard/portfolio/gallery` |
+
+### Panel 7: Press CRUD
+
+| Aspect | Detail |
+|--------|--------|
+| **Fields** | title, publication, date, url, excerpt, featured_media_id, sort_order, status, verified |
+| **Components** | Text/URL inputs, date picker |
+| **Frontend** | `/dashboard/portfolio/press` |
+
+### Panel 8: Showreels CRUD
+
+| Aspect | Detail |
+|--------|--------|
+| **Fields** | title, description, url (YouTube/Vimeo embed), platform, sort_order |
+| **Components** | Text/URL inputs |
+| **Frontend** | `/dashboard/portfolio/showreels` |
+
+---
+
+### MediaPicker Integration Points
+
+| Panel | MediaPicker Usage |
+|-------|-------------------|
+| Biography | Profile portrait (1 image) |
+| Filmography | Poster per entry (1 image) |
+| Television | Thumbnail per entry (1 image) |
+| Theatre | Poster per entry (1 image) |
+| Gallery | Multiple images per entry |
+| Timeline | Optional image per event |
+
+### RichEditor Integration Points
+
+| Panel | RichEditor Usage |
+|-------|------------------|
+| Biography | Full bio content |
+| Filmography | Description per entry |
+| Television | Description per entry |
+| Theatre | Notes per entry |
+| Timeline | Description per event |
+
+### History Logging Pattern
+
+```typescript
+// On every create/update/delete:
+await supabase.from('content_history').insert({
+  tenant_id,
+  table_name: 'filmography_entries',
+  record_id: entry.id,
+  operation: 'create' | 'update' | 'delete',
+  snapshot_before: before,
+  snapshot_after: after,
+  created_by: user.id,
+});
+```
+
+### QA Checklist (per panel)
+
+- [ ] CREATE: form saves correctly, redirects to list
+- [ ] READ: existing data displays correctly
+- [ ] UPDATE: changes persist after save
+- [ ] DELETE: confirmation dialog, row removed
+- [ ] Validation: required fields enforced
+- [ ] MediaPicker: opens, selects, saves
+- [ ] RichEditor: TipTap loads, content saves
+- [ ] Sort order: drag & drop updates correctly
+- [ ] Empty state: shown when no data
+- [ ] Permissions: editor can save, viewer cannot
+- [ ] History: content_history logged
+- [ ] Build: zero errors
+- [ ] Docs: all 5+ docs updated
+
+### Execution Sequence
+
+```
+Week 1: Biography CRUD (simplest, single row per tenant)
+Week 2: Filmography CRUD (most complex: media + rich text)
+Week 3: Timeline CRUD (medium: sortable + category)
+Week 4: Gallery CRUD (media-heavy)
+Week 5: Television + Theatre CRUD (simple: same pattern)
+Week 6: Press + Showreels CRUD (simple: minimal fields)
+```
+
+---
+
 *This plan freezes the dionisis-xanthos project as Reference v1 and provides a safe, modular migration path into the AION Flow platform. No production functionality is affected until Phase 1 approval.*
