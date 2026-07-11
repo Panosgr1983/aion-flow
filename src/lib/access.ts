@@ -73,4 +73,6 @@ export const FEATURE_MODULES: Record<string, TenantFeature> = {  services: 'cms'
   categories: 'eshop',
   // Portfolio Module (via Module Registry)
   'portfolio': 'portfolio_module',
+  // Retreat Module (via Module Registry)
+  'retreat': 'retreat_module',
 };

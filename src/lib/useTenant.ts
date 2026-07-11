@@ -145,7 +145,7 @@ export function useTenant(): TenantState {
         tenantId,
         effectiveTenantId,
         featureMap: isSuperAdmin
-          ? { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true, artist_module: true, portfolio_module: true }
+          ? { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true, artist_module: true, portfolio_module: true, retreat_module: true, locale_module: true, retreat_booking: true }
           : null,
         tenantStatus: 'active',
         loading: false,

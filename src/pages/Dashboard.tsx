@@ -43,6 +43,7 @@ import ErrorBoundary from '../components/dashboard/ErrorBoundary';
 // Module Registry — portfolio module self-registers on import
 import ModuleRegistry from '../lib/ModuleRegistry';
 import '../modules/portfolio/manifest';
+import '../modules/retreat/manifest';
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();

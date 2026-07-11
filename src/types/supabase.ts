@@ -352,7 +352,7 @@ export type MessageDirection = 'incoming' | 'outgoing';
 export type MessageStatus = 'new' | 'read' | 'replied' | 'archived';
 export type ConversationStatus = 'active' | 'closed' | 'archived' | 'spam';
 export type TenantStatus = 'trial' | 'active' | 'suspended' | 'cancelled';
-export type TenantFeature = 'cms' | 'crm' | 'inbox' | 'pipeline' | 'email_workspace' | 'eshop' | 'bookings' | 'portfolio_module' | 'artist_module';
+export type TenantFeature = 'cms' | 'crm' | 'inbox' | 'pipeline' | 'email_workspace' | 'eshop' | 'bookings' | 'portfolio_module' | 'artist_module' | 'retreat_module' | 'locale_module' | 'retreat_booking';
 export type LeadStage = 'new' | 'contacted' | 'proposal' | 'won' | 'lost';
 export type DraftStatus = 'draft' | 'scheduled' | 'sending' | 'sent' | 'failed';
 
