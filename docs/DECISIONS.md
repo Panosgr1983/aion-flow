@@ -484,3 +484,62 @@ Architecture changed?
 - ✅ Dynamic loading μελλοντικά
 - ⚠️ Υπάρχοντα modules (CMS, CRM) δεν έχουν μεταφερθεί ακόμα
 - ⚠️ Lazy loading όχι ακόμα (future optimization)
+
+---
+
+## ADR-014: Locale Module — Platform Multi-Language Support
+
+**Ημερομηνία:** 2026-07-08
+**Κατάσταση:** Σχεδιασμένη
+
+### Πλαίσιο
+Το Ktima Kareli χρειάζεται bilingual site (GR/EN). Το AION Flow σήμερα δεν υποστηρίζει multi-language content. Η απόφαση είναι αν θα γίνει platform-wide feature ή app-specific λύση.
+
+### Απόφαση
+Platform-wide locale module, πίσω από feature flag `locale_module` (default: false).
+
+- `locale_translations` table: key → value_el/value_en pairs
+- `locale` column σε content tables που το χρειάζονται
+- Translations editor panel στο CMS
+- Κανένας υπάρχων tenant δεν επηρεάζεται
+
+### Rationale
+- Το Ktima Kareli απαιτεί ήδη bilingual support (proven need)
+- Η platform-wide προσέγγιση αποφεύγει technical debt από app-specific λύσεις
+- Feature flag προστατεύει τους υπάρχοντες tenants
+
+### Επιπτώσεις
+- ✅ Όλοι οι μελλοντικοί bilingual tenants ωφελούνται
+- ✅ Κανένας υπάρχων tenant δεν επηρεάζεται
+- ⚠️ Απαιτεί locale columns σε όσα content tables χρησιμοποιούνται από τον tenant
+- ⚠️ GR/EN μόνο για v0.7 (όχι 3+ γλώσσες ακόμα)
+
+---
+
+## ADR-015: Retreat Vertical Module
+
+**Ημερομηνία:** 2026-07-08
+**Κατάσταση:** Σχεδιασμένη
+
+### Πλαίσιο
+Το Ktima Kareli (wellness retreat) χρειάζεται διαχείριση experiences, workshops, events, FAQ, και booking pipeline. Το υπάρχον Portfolio Module είναι frozen και σχεδιασμένο για δημιουργικά επαγγέλματα.
+
+### Απόφαση
+Νέο vertical module: **Retreat Module**, ξεχωριστό από Portfolio.
+
+- Feature flag: `retreat_module` (default: false)
+- Module Registry: self-registering manifest
+- Reuse GalleryCRUD, MediaPicker, RichEditor, ModuleRegistry από υπάρχοντα modules
+- Νέο: Experiences CRUD, Workshops CRUD, Events CRUD, FAQ CRUD, Bookings Manager
+
+### Rationale
+- Το Retreat Module έχει διαφορετικό content model από το Portfolio
+- Το freeze του Portfolio Module προστατεύει τη σταθερότητά του
+- Η επαναχρησιμοποίηση shared components αποφεύγει code duplication
+
+### Επιπτώσεις
+- ✅ Ξεκάθαρη διαχωριστική γραμμή μεταξύ verticals
+- ✅ Κανένα frozen module δεν επηρεάζεται
+- ✅ Shared components (Gallery, MediaPicker, κλπ.) επαναχρησιμοποιούνται
+- ⚠️ Νέος κώδικας για retreat-specific panels
+- ⚠️ Απαιτεί label mapping για client-facing names
