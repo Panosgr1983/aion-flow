@@ -157,4 +157,48 @@ _Τελευταία ενημέρωση: 2026-06-27
 
 **Priority:** Low  
 **Planned:** TBD  
-**Module:** CMS — UI Patterns_
+**Module:** CMS — UI Patterns
+
+---
+
+### #12. No multi-language support
+
+**Περιγραφή:**  
+Το AION Flow δεν υποστηρίζει multi-language content (GR/EN). Το Ktima Kareli χρειάζεται bilingual site. Το Locale Module έχει σχεδιαστεί (ADR-014) αλλά δεν υλοποιηθεί.
+
+**Priority:** High (for Ktima Kareli)  
+**Planned:** v0.7  
+**Module:** Locale
+
+---
+
+### #13. No booking pipeline
+
+**Περιγραφή:**  
+Δεν υπάρχει pipeline για booking form submissions. Το Ktima Kareli χρειάζεται form με date range, guests, arrival/departure. Το υπάρχον contact_submissions δεν επαρκεί.
+
+**Priority:** High (for Ktima Kareli)  
+**Planned:** v0.6  
+**Module:** Retreat — Bookings
+
+---
+
+### #14. No FAQ CRUD
+
+**Περιγραφή:**  
+Το Ktima Kareli έχει FAQ section στο public site αλλά το CMS δεν έχει panel για διαχείριση FAQ. Προς το παρόν τα FAQ είναι hardcoded.
+
+**Priority:** Medium  
+**Planned:** v0.6 (Retreat Module)  
+**Module:** Retreat — FAQ
+
+---
+
+### #15. No per-tenant label customization
+
+**Περιγραφή:**  
+Τα labels στο CMS είναι global. To Ktima Kareli χρειάζεται διαφορετικά labels από το Kolokotronis (π.χ. "Εμπειρίες" αντί για "Υπηρεσίες").
+
+**Priority:** Medium  
+**Planned:** v0.6 (Retreat Module)  
+**Module:** Platform — Labels

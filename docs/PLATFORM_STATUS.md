@@ -15,6 +15,8 @@ AION Flow is a modular multi-tenant SaaS platform for digital businesses and cre
 |-----------|---------|--------|
 | Platform Core | v0.5.3-dev | Active development |
 | Portfolio Module | v1.0 | ✅ Architecture Freeze |
+| Retreat Module | v0.6 | 🔄 Planned |
+| Locale Module | v0.7 | 🔄 Planned |
 | CMS Module | v0.3 | Stable |
 | CRM Module | v0.3 | Stable |
 | Multi-Project Support | v0.1 | Beta |
@@ -52,6 +54,13 @@ AION Flow is a modular multi-tenant SaaS platform for digital businesses and cre
 | Portfolio — Press CRUD | 1.0 | v0.5 | Full-text + MediaPicker |
 | Portfolio — Showreels CRUD | 1.0 | v0.5 | Video + platform + duration |
 
+## Planned Modules
+
+| Module | Version | Feature Flag | Target |
+|--------|---------|-------------|--------|
+| Retreat Module | v0.6 | `retreat_module` | Q3 2026 |
+| Locale Module | v0.7 | `locale_module` | Q3 2026 |
+
 ## Experimental / Beta
 
 | Feature | Version | Notes |
@@ -77,6 +86,8 @@ AION Flow is a modular multi-tenant SaaS platform for digital businesses and cre
 | Tenant Isolation | ✅ Frozen | JWT hook + RLS + three-tier IDs |
 | Documentation Process | ✅ Frozen | ADR-012, CONSTITUTION.md |
 | Portfolio Module | 🔒 **Frozen** | Tagged v1.0, bug fixes only |
+| Retreat Module | 🔄 Planned | v0.6, design complete |
+| Locale Module | 🔄 Planned | v0.7, design complete |
 
 ## Documentation Coverage
 
@@ -154,9 +165,11 @@ Vertical starter kits for: Psychology, Actor/Portfolio, Hotel, Restaurant, Café
 2. **No Docs. No Done.** — every panel requires code + QA + docs + report + commit
 
 ### What's Next
-1. **v1.0.x Platform Hardening** — performance, security, tests, accessibility
-2. **AION Blueprint Engine** — vertical starter kits
-3. **Knowledge Engine** — searchable documentation within the platform
+1. **v0.6 Retreat Module** — Ktima Kareli tenant, Experiences, Workshops, Events, FAQ, Bookings
+2. **v0.7 Locale Module** — platform-wide multi-language GR/EN
+3. **v0.8 Platform Hardening** — performance, security, tests, accessibility
+4. **AION Blueprint Engine** — vertical starter kits (future)
+5. **Knowledge Engine** — searchable documentation within the platform (future)
 
 ---
 

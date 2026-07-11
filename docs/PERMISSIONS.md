@@ -300,3 +300,27 @@ This ensures the SA can access, preview, and debug artist features for any tenan
 4. Use `canAccess('module_name')` in sidebar visibility logic
 5. Add industry auto-eligibility logic if applicable
 6. Create the feature toggle UI in CMS → Settings → Features
+
+---
+
+### 9.6 Portfolio Module (v1.0, frozen)
+
+| Permission | Description | admin | editor | viewer |
+|-----------|-------------|-------|--------|--------|
+| `portfolio.view` | Read-only portfolio panels | ✅ | ✅ | ✅ |
+| `portfolio.edit` | Create/edit/delete portfolio content | ✅ | ✅ | ❌ |
+
+### 9.7 Retreat Module (planned v0.6)
+
+| Permission | Description | admin | editor | viewer |
+|-----------|-------------|-------|--------|--------|
+| `retreat.view` | Read-only retreat panels | ✅ | ✅ | ✅ |
+| `retreat.edit` | Create/edit/delete retreat content | ✅ | ✅ | ❌ |
+| `retreat.bookings` | Manage booking submissions | ✅ | ❌ | ❌ |
+
+### 9.8 Locale Module (planned v0.7)
+
+| Permission | Description | admin | editor | viewer |
+|-----------|-------------|-------|--------|--------|
+| `locale.view` | View translations | ✅ | ✅ | ✅ |
+| `locale.edit` | Edit translations | ✅ | ✅ | ❌ |

@@ -204,4 +204,48 @@ _Τελευταία ενημέρωση: 2026-06-27
 
 **Why it exists:** Accumulated cruft από επαναλαμβανόμενες αλλαγές UI.  
 **Wanted:** Καθαρισμός και simplification.  
-**Effort:** Trivial (5 min)._
+**Effort:** Trivial (5 min).
+
+---
+
+### #16. No multi-language support (Locale Module)
+
+**Περιγραφή:**  
+Το AION Flow δεν υποστηρίζει multi-language content. Το Ktima Kareli χρειάζεται GR/EN bilingual site. Η λύση έχει σχεδιαστεί (ADR-014, locale-module.md) αλλά δεν έχει υλοποιηθεί.
+
+**Why it exists:** Δεν υπήρχε ανάγκη μέχρι τώρα.  
+**Wanted:** Locale Module v0.7.  
+**Effort:** Medium (2-3 days).
+
+---
+
+### #17. No booking pipeline
+
+**Περιγραφή:**  
+Το Ktima Kareli χρειάζεται booking form με date range, guests, arrival/departure. Η υπάρχουσα φόρμα επικοινωνίας (contact_submissions) δεν έχει τα απαραίτητα πεδία.
+
+**Why it exists:** Δεν υπήρχε ανάγκη booking pipeline μέχρι τώρα.  
+**Wanted:** Booking pipeline (booking-pipeline.md pattern).  
+**Effort:** Medium (1-2 days).
+
+---
+
+### #18. No FAQ module
+
+**Περιγραφή:**  
+Το Ktima Kareli έχει FAQ section στην public site. Δεν υπάρχει CMS panel για διαχείριση FAQ.
+
+**Why it exists:** Δεν υπήρχε ανάγκη FAQ μέχρι τώρα.  
+**Wanted:** FAQ CRUD panel (μέρος του Retreat Module).  
+**Effort:** Low (0.5 day).
+
+---
+
+### #19. No label mapping system
+
+**Περιγραφή:**  
+Τα labels στο CMS (π.χ. "Υπηρεσίες") δεν προσαρμόζονται ανά tenant. Το Ktima Kareli χρειάζεται "Εμπειρίες" αντί για "Υπηρεσίες".
+
+**Why it exists:** Δεν υπήρχε ανάγκη per-tenant labels μέχρι τώρα.  
+**Wanted:** Label mapping config ανά tenant manifest.  
+**Effort:** Low (0.5 day).
