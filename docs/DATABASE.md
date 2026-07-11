@@ -317,8 +317,28 @@ created_at      timestamptz
 - FK on `tenant_id` for all tables
 - FK on `created_by` for all tables
 
-### Artist Module (planned)
+### Portfolio Module (v1.0 — completed)
 - PK on `id` for all tables
 - FK on `tenant_id` for all tables
-- FK on `artist_id` for detail tables
-- FK on `created_by` where applicable
+- `biographies`: single-row per tenant (`professional_type`, `content`, `short_bio`, `birth_year`, `birth_place`, `pseudonyms[]`, `featured_media_id`, `status`, `verified`)
+- `filmography_entries`: multi-entry (`title`, `title_en`, `year`, `role`, `genre`, `director`, `duration`, `description`, `featured_media_id`, `trailer_url`, `imdb_url`, `sort_order`, `status`, `verified`)
+- `television_entries`: same pattern as filmography (`channel`, `episode_title`)
+- `theatre_entries`: same pattern (`venue`, `playwright`, `notes`)
+- `career_timelines`: category-based (`year`, `month`, `title`, `title_en`, `description`, `category`, `icon`, `media_url`, `sort_order`, `status`, `verified`)
+- `gallery_items`: media-linked (`media_id`, `image_url`, `caption`, `alt_text`, `category`, `photographer`, `copyright`, `sort_order`, `status`, `verified`)
+- `press_items`: full-text (`publication`, `date`, `url`, `excerpt`, `body`, `featured`, `featured_media_id`, `sort_order`, `status`, `verified`)
+- `showreels`: video (`url`, `platform`, `thumbnail_url`, `duration`, `description`, `featured`, `sort_order`, `status`)
+
+### Retreat Module (planned v0.6)
+- PK on `id` for all tables
+- FK on `tenant_id` for all tables
+- `experiences`: retreat activities (`title`, `description`, `duration`, `level`, `includes[]`, `image_url`, `sort_order`, `status`, `locale`)
+- `workshops`: same structure as experiences (`group_size`)
+- `retreat_events`: bilingual events (`title`, `title_en`, `date`, `organizer`, `capacity`, `price`, `description`, `description_en`, `includes[]`, `includes_en[]`, `image_url`, `sort_order`, `status`, `locale`)
+- `faq_entries`: Q&A (`question`, `answer`, `sort_order`, `status`, `locale`)
+- `booking_submissions`: booking form data (`name`, `email`, `phone`, `guests`, `arrival_date`, `departure_date`, `message`, `status`, `read`, `notes`)
+
+### Locale Module (planned v0.7)
+- PK on `id` for all tables
+- `locale_translations`: UNIQUE on `(tenant_id, key)` (`key`, `value_el`, `value_en`, `category`, `description`)
+- `locale` column on content tables: `TEXT DEFAULT 'el'` (only for tables used by locale-enabled tenants)

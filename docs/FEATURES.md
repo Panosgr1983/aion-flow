@@ -114,6 +114,29 @@
 | Documentation-First Rule | ✅ Stable | ADR-012, pre-commit checklist |
 | Generic Portfolio Schema | 🔄 Planned | v0.2 — portfolio_profiles, portfolio_entries |
 
+## Retreat Module (Planned v0.6)
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Experiences CRUD | 🔄 Planned | Activities, durations, levels, includes |
+| Workshops CRUD | 🔄 Planned | Group sessions |
+| Events CRUD (bilingual) | 🔄 Planned | GR/EN title, description, includes |
+| FAQ CRUD | 🔄 Planned | Simple Q&A management |
+| Bookings Manager | 🔄 Planned | Submission pipeline + status management |
+| Booking Form (public) | 🔄 Planned | Date range, guests, arrival/departure |
+| Gallery reuse | 🔄 Planned | Same GalleryCRUD from Portfolio |
+| retreat_module flag | 🔄 Planned | Feature flag gating |
+
+## Locale Module (Planned v0.7)
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Translations Editor | 🔄 Planned | Key-value GR/EN panel |
+| locale_translations table | 🔄 Planned | UNIQUE(tenant_id, key) |
+| Public site locale toggle | 🔄 Planned | localStorage-persisted |
+| locale columns on content | 🔄 Planned | Only for tables that need it |
+| locale_module flag | 🔄 Planned | Default false, gated per tenant |
+
 ## Multi-Project Support
 
 | Feature | Status | Notes |

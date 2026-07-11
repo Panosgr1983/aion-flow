@@ -127,10 +127,7 @@
 - [x] **Panel 3: Television CRUD** — (same pattern as Filmography)
 - [x] **Panel 4: Theatre CRUD** — (same pattern as Filmography)
 - [x] **Panel 5: Timeline CRUD** — categories, year/month, sort_order, history
-- [ ] **Panel 3: Timeline CRUD** — category + drag & drop
-- [ ] **Panel 4: Gallery CRUD** — media linking + metadata editor
-- [ ] **Panel 5: Television CRUD** — simple CRUD (same pattern)
-- [ ] **Panel 6: Theatre CRUD** — simple CRUD (same pattern)
+- [x] **Panel 6: Gallery CRUD** — grid, lightbox, metadata, MediaPicker, history
 - [x] **Panel 7: Press CRUD** — full fields, body, featured, MediaPicker, history
 - [x] **Panel 8: Showreels CRUD** — video URL, platform, duration, thumbnail, status, history
 
@@ -145,21 +142,40 @@ code + migration (if needed) + QA + docs update + commit
 
 ---
 
-## 🔄 v0.6 "Website Builder" (planned)
+## 🔜 v0.6 "Retreat Module" (Current — Planning Phase)
 
-- Page Builder (drag & drop sections)
-- Theme system (color palettes, fonts, spacing)
-- SEO Manager (bulk editor, sitemap, schema)
-- Form Builder (contact, booking, newsletter)
-- Industry Profiles (ADR-006)
-- Image optimization (auto-resize, WebP)
+- [ ] **Tenant + Data Setup** — create Ktima Kareli tenant, user, migrate hardcoded content → CMS panels
+- [ ] **Experiences CRUD** — activities, durations, levels, includes list, image
+- [ ] **Workshops CRUD** — group sessions (same pattern as Experiences)
+- [ ] **Events CRUD** — bilingual GR/EN, date, organizer, capacity, price
+- [ ] **FAQ CRUD** — simple Q&A management
+- [ ] **Bookings Manager** — submission pipeline (form → DB → email → manage)
+- [ ] **Gallery reuse** — same GalleryCRUD from Portfolio
+- [ ] **Public site migration** — connect SPA to shared Supabase
+- [ ] **Label mapping** — client-facing names for all panels
+- [ ] **Reports** — week-01 through week-04
 
 ---
 
-## 🔄 v0.7 "Platform Scale" (planned)
+## 🔜 v0.7 "Locale Module" (Planned)
 
-- Email campaigns (mass send, templates)
-- Pipeline automation (auto-move leads, triggers)
-- Reporting (pipeline velocity, win rate, forecast)
-- Drag & drop media upload
-- Usage detection (warn before media delete)
+- [ ] **locale_translations table** — key → value_el/value_en
+- [ ] **Translations Editor panel** — searchable key-value CRUD
+- [ ] **Public site locale toggle** — localStorage-persisted GR/EN
+- [ ] **locale columns** on content tables (as needed)
+- [ ] **Import 101 translation keys** from existing ktima-kareli translations.ts
+- [ ] **Archive hardcoded translations** — replace with Supabase reads
+- [ ] **Feature flag: locale_module** — default false, gated per tenant
+
+---
+
+## 🔜 v0.8 "Platform Hardening" (Planned)
+
+- Performance optimization (bundle splitting, lazy loading)
+- Security audit (RLS, permissions, JWT claims)
+- Automated testing (unit, integration, E2E)
+- Accessibility audit (WCAG)
+- Backup & restore validation
+- Error boundaries across all panels
+- Accessibility: skip links, aria labels, keyboard nav
+- Documentation consistency audit

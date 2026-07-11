@@ -288,23 +288,78 @@ const KNOWN_SUPER_ADMIN_EMAILS = [
 
 ---
 
-## Planned: Artist Module v0.1
+## Portfolio Module v1.0 (Completed)
 
-Νέο module για καλλιτέχνες / πολιτιστικές προσωπικότητες.
+Το πρώτο ολοκληρωμένο vertical module του AION Flow. Διαχείριση ψηφιακού χαρτοφυλακίου για δημιουργικά επαγγέλματα.
 
-### New Tables (8)
-1. `artist_biographies` — βιογραφικά στοιχεία
-2. `artist_filmography` — φιλμογραφία
-3. `artist_television` — τηλεοπτικές εμφανίσεις
-4. `artist_theatre` — θεατρικές παραστάσεις
-5. `artist_timelines` — χρονολόγιο σταδιοδρομίας
-6. `artist_gallery` — φωτογραφίες/έργα
-7. `artist_press` — άρθρα/συνεντεύξεις
-8. `artist_showreels` — βίντεο/demo reels
+### Status
+- **Tag:** `portfolio-v1.0`
+- **Architecture:** Frozen (bug fixes only)
+
+### 8 CRUD Panels
+| Panel | Table | Type |
+|-------|-------|------|
+| Biography | `biographies` | Single-row upsert |
+| Filmography | `filmography_entries` | Multi-entry CRUD |
+| Television | `television_entries` | Multi-entry CRUD |
+| Theatre | `theatre_entries` | Multi-entry CRUD |
+| Timeline | `career_timelines` | Category-based CRUD |
+| Gallery | `gallery_items` | Grid + lightbox CRUD |
+| Press | `press_items` | Full-text CRUD |
+| Showreels | `showreels` | Video CRUD |
 
 ### Feature Flag
-- `artist_module` μέσω `tenant_features` table
-- Non-breaking, additive migrations only
+- `portfolio_module` (backward compat: `artist_module`)
 
 ### Reference Project
 - dionisis-xanthos (Next.js, separate Supabase instance)
+
+---
+
+## Retreat Module v0.6 (Planned)
+
+Δεύτερο vertical module. Διαχείριση wellness retreat / καταφυγίου.
+
+### Status
+- **Planned:** v0.6
+- **Feature Flag:** `retreat_module` (default: false)
+
+### New Tables (5)
+1. `experiences` — εμπειρίες / δραστηριότητες
+2. `workshops` — εργαστήρια / workshops
+3. `retreat_events` — εκδηλώσεις με GR/EN bilingual fields
+4. `faq_entries` — συχνές ερωτήσεις
+5. `booking_submissions` — κρατήσεις (από booking pipeline)
+
+### Reuses from Platform
+- GalleryCRUD (από Portfolio Module)
+- MediaPicker, RichEditor (από CMS Core)
+- ModuleRegistry (από Platform Core)
+
+### Reference Project
+- ktima-kareli-site (Vite SPA, shared Supabase)
+
+---
+
+## Locale Module v0.7 (Planned)
+
+Platform-wide multi-language support.
+
+### Status
+- **Planned:** v0.7
+- **Feature Flag:** `locale_module` (default: false)
+
+### New Tables (1)
+1. `locale_translations` — key → value_el / value_en pairs
+
+### Affected Tables
+- `locale` column (TEXT DEFAULT 'el') σε content tables που το χρειάζονται
+
+### Current Tenant Map
+
+| Tenant | Type | Supabase | Modules | Locale |
+|--------|------|----------|---------|--------|
+| AION Flow CMS | Platform | Shared | All | el |
+| Kolokotronis | Psychology | Shared | CMS, CRM | el |
+| Ktima Kareli | Retreat | Shared | CMS, Retreat, Gallery, Locale, Booking | el/en |
+| Xanthos (ref) | Portfolio | Separate | — (reference only) | el |

@@ -328,6 +328,54 @@ src/modules/artist/
 
 ---
 
+### 9. Retreat Module (Planned v0.6)
+
+**Purpose:** Wellness retreats, καταφύγια, φυσιολατρικά καταλύματα.
+
+**Feature flag:** `retreat_module` (default: false)
+
+**Panels:**
+- Experiences CRUD — activities/durations/levels
+- Workshops CRUD — group sessions
+- Events CRUD — bilingual GR/EN
+- FAQ CRUD — Q&A management
+- Bookings Manager — submission pipeline
+
+**Reuses from Portfolio:**
+- GalleryCRUD, MediaPicker, RichEditor, ModuleRegistry
+
+**New tables (5):** experiences, workshops, retreat_events, faq_entries, booking_submissions
+
+**Status:** 🔄 Planned (v0.6)
+**Tenant-aware:** ✅ (existing withTenant() pattern)
+
+---
+
+### 10. Locale Module (Planned v0.7)
+
+**Purpose:** Platform-wide multi-language support (GR/EN).
+
+**Feature flag:** `locale_module` (default: false)
+
+**Components to migrate:**
+```
+src/modules/locale/
+├── pages/
+│   └── TranslationsEditor.tsx    CMS panel for key-value GR/EN editing
+├── types/
+│   └── locale.ts                 TranslationKey, LocaleEntry interfaces
+└── db/
+    └── queries.ts                CRUD for locale_translations
+```
+
+**New tables (1):** locale_translations
+**Affected tables:** locale column (TEXT DEFAULT 'el') on content tables
+
+**Status:** 🔄 Planned (v0.7)
+**Tenant-aware:** ✅ (via tenant_id + feature flag)
+
+---
+
 ### Module Dependency Graph (Updated)
 
 ```
@@ -341,10 +389,24 @@ Authentication
             ├── Commerce
             │       └── Orders
             ├── Operations (docs)
-            └── Artist Module (v0.1+)
-                    └── Timeline
-                    └── Gallery
-                    └── Contact
+            ├── Portfolio Module (v1.0, frozen)
+            │       └── Biography
+            │       └── Filmography
+            │       └── Television
+            │       └── Theatre
+            │       └── Timeline
+            │       └── Gallery (shared)
+            │       └── Press
+            │       └── Showreels
+            ├── Retreat Module (v0.6, planned)
+            │       └── Experiences
+            │       └── Workshops
+            │       └── Events
+            │       └── FAQ
+            │       └── Bookings
+            │       └── Gallery (reused from Portfolio)
+            └── Locale Module (v0.7, planned)
+                    └── Translations Editor
 ```
 
 ---
