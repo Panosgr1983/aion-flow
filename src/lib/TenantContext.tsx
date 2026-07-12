@@ -16,6 +16,7 @@
 */
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from './supabase';
 
 const STORAGE_KEY = 'aion_selected_tenant';
 
@@ -31,9 +32,19 @@ const TenantContext = createContext<TenantContextType>({
 
 export function TenantProvider({ children }: { children: ReactNode }) {
   const [selectedTenantId, setSelectedTenantId] = useState<string | null>(() => {
-    // Restore from localStorage
     try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
   });
+
+  // Sync with auth state: on SIGNED_IN, always clear tenant selection
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') {
+        setSelectedTenantId(null);
+        try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const persist = (id: string | null) => {
     setSelectedTenantId(id);
