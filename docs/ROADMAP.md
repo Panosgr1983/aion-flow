@@ -146,12 +146,12 @@ code + migration (if needed) + QA + docs update + commit
 
 - [x] **Tenant + Data Setup** — Ktima Kareli created (tenant ID a6a0e182...)
 - [x] **Experiences CRUD** — activities, durations, levels, includes list, image, history
-- [ ] **Workshops CRUD** — group sessions (same pattern as Experiences)
-- [ ] **Events CRUD** — bilingual GR/EN, date, organizer, capacity, price
-- [ ] **FAQ CRUD** — simple Q&A management
-- [ ] **Bookings Manager** — submission pipeline (form → DB → email → manage)
+- [x] **Workshops CRUD** — group sessions (same pattern as Experiences)
+- [x] **Events CRUD** — bilingual GR/EN, date, organizer, capacity, price
+- [x] **FAQ CRUD** — simple Q&A management
+- [x] **Bookings Manager** — submission pipeline (form → DB → email → manage)
 - [ ] **Gallery reuse** — same GalleryCRUD from Portfolio
-- [ ] **Public site migration** — connect SPA to shared Supabase
+- [x] **Public site migration** — Supabase client, BookingForm, all pages read from DB with fallback
 - [ ] **Label mapping** — client-facing names for all panels
 - [ ] **Reports** — week-01 through week-04
 
