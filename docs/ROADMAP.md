@@ -144,8 +144,8 @@ code + migration (if needed) + QA + docs update + commit
 
 ## 🔜 v0.6 "Retreat Module" (Current — Planning Phase)
 
-- [ ] **Tenant + Data Setup** — create Ktima Kareli tenant, user, migrate hardcoded content → CMS panels
-- [ ] **Experiences CRUD** — activities, durations, levels, includes list, image
+- [x] **Tenant + Data Setup** — Ktima Kareli created (tenant ID a6a0e182...)
+- [x] **Experiences CRUD** — activities, durations, levels, includes list, image, history
 - [ ] **Workshops CRUD** — group sessions (same pattern as Experiences)
 - [ ] **Events CRUD** — bilingual GR/EN, date, organizer, capacity, price
 - [ ] **FAQ CRUD** — simple Q&A management

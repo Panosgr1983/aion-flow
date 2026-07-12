@@ -15,7 +15,7 @@ AION Flow is a modular multi-tenant SaaS platform for digital businesses and cre
 |-----------|---------|--------|
 | Platform Core | v0.5.3-dev | Active development |
 | Portfolio Module | v1.0 | ✅ Architecture Freeze |
-| Retreat Module | v0.6 | 🔄 Planned |
+| Retreat Module | v0.6 | 🟡 Active Development |
 | Locale Module | v0.7 | 🔄 Planned |
 | CMS Module | v0.3 | Stable |
 | CRM Module | v0.3 | Stable |
@@ -113,6 +113,7 @@ AION Flow is a modular multi-tenant SaaS platform for digital businesses and cre
 | AION Flow CMS | aion-flowv2.vercel.app | ✅ Online |
 | Kolokotronis Site | kolokotronis-website.vercel.app | ✅ Online |
 | Dionysis Xanthos (ref) | dionisis-xanthos.vercel.app | ✅ Online |
+| Ktima Kareli | — (SPA not yet migrated) | 🔜 Planned |
 
 ## Technical Debt Score: Low-Medium
 

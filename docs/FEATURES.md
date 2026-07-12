@@ -118,7 +118,7 @@
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Experiences CRUD | 🔄 Planned | Activities, durations, levels, includes |
+| Experiences CRUD | 🟡 Beta | Activities, durations, levels, includes, tags, MediaPicker |
 | Workshops CRUD | 🔄 Planned | Group sessions |
 | Events CRUD (bilingual) | 🔄 Planned | GR/EN title, description, includes |
 | FAQ CRUD | 🔄 Planned | Simple Q&A management |
