@@ -56,19 +56,52 @@ Validate → Standardize
 | ModuleRegistry registration | Portfolio, Retreat | manifest.ts |
 | feature flag gating | All modules | `access.ts` + `useTenant.ts` |
 
-## AKES Level Map
+## AKES Architecture
 
-| Level | Name | Status | Description |
-|-------|------|--------|-------------|
-| L1 | Documentation | ✅ Complete | Architecture, modules, tenants, methods, playbooks, reference |
-| L2 | Validation | ✅ Complete | Tenant isolation, checklists, blockers, known issues, tech debt |
-| L3 | Memory | 🟡 Growing | Session logs, history, lessons learned, decision memory |
-| L4 | Intelligence | 🔄 Future (AKES v2) | Reuse analytics, method confidence, engineering KPIs, AI confidence |
+```
+AKES v1.0 (Current)
+  ├── Knowledge Engine
+  │   ├── Documentation (L1) ✅
+  │   ├── Validation (L2) ✅
+  │   └── Memory (L3) 🟡 Growing
 
-The Intelligence Layer (L4) is NOT implemented yet. It will be enabled when:
-- 10-20 tenants exist with validated methods data
-- AIONCLAW integration is active
-- See `docs/01_PLATFORM/ROADMAP.md` → AKES v2
+AKES v1.1 (Planned — next)
+  └── Governance Engine
+      ├── Definition of Excellence
+      ├── Engineering Maturity Score
+      ├── Executable Playbooks (stateful workflows)
+      ├── Release Gates
+      └── Coach Mode
+
+AKES v2 (Future)
+  └── Intelligence Engine
+      ├── Reuse Analytics
+      ├── Method Confidence
+      ├── Engineering KPIs
+      └── AI Confidence
+```
+
+### Level Map
+
+| Level | Name | Engine | Status | Description |
+|-------|------|--------|--------|-------------|
+| L1 | Documentation | Knowledge | ✅ Complete | Architecture, modules, tenants, methods, playbooks, reference |
+| L2 | Validation | Knowledge | ✅ Complete | Tenant isolation, checklists, blockers, known issues, tech debt |
+| L3 | Memory | Knowledge | 🟡 Growing | Session logs, history, lessons learned, decision memory |
+| L4 | Governance | Governance | 🔄 Planned (v1.1) | Rules, gates, scorecards, Definition of Excellence, coach mode |
+| L5 | Intelligence | Intelligence | 🔄 Future (v2.0) | Reuse analytics, method confidence, engineering KPIs, AI confidence |
+
+### AKES v1.1 — Governance Engine (Planned)
+
+The AKES becomes a TEACHER, not just memory. Before any action, it coaches:
+- "Did you read CREATE_MODULE.md?"
+- "Did you run Reuse Audit?"
+- "Did you pass Tenant Isolation?"
+
+Pre-deployment, it enforces:
+- Build ❌ Typecheck ❌ Isolation ❌ Telemetry ❌ Docs Updated → BLOCKED
+
+**NOT yet implemented.** See `docs/01_PLATFORM/ROADMAP.md` → AKES v1.1.
 
 ## What NOT to Do
 

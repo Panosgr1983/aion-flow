@@ -182,6 +182,30 @@ code + migration (if needed) + QA + docs update + commit
 
 ---
 
+## 🔜 AKES v1.1 — Governance Layer (Next)
+
+### Vision
+Το AKES αποκτά δύο engines:
+1. **Knowledge Engine** — documentation, memory, decisions, methods, reuse, playbooks (υπάρχον)
+2. **Governance Engine** — rules, checklists, validation, scorecards, Definition of Excellence, release gates (νέο)
+
+### Components
+
+| Component | Description |
+|-----------|-------------|
+| **Definition of Excellence** | Module scorecard: docs + telemetry + permissions + flags + isolation + tests + playbook + reuse + migration + rollback + changelog + zero hardcoded + zero TODOs + AI memory updated |
+| **Engineering Maturity Score** | Per-release KPI: Architecture, Documentation, Security, Automation, Localization, AI |
+| **Executable Playbooks** | Playbooks become stateful workflows. Each step has a check/status. Blocked if prerequisite fails. |
+| **Release Gates** | Pre-deploy checklist: Build ✅ Typecheck ✅ Isolation ✅ Telemetry ✅ Docs updated → BLOCKED if any fails |
+| **Coach Mode** | Before creating anything, AKES coaches: "Did you check CREATE_MODULE.md? Did you run Reuse Audit? Is there an existing module?" |
+
+### Prerequisites
+- AKES v1.0 stable (documentation + memory complete)
+- Playbooks directory populated with key workflows
+- TENANT_ISOLATION_CHECKLIST integrated
+
+---
+
 ## 🔄 AKES v2 — Intelligence Layer (Future)
 
 **Precondition:** 10-20 active tenants with validated methods data.
