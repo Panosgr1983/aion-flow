@@ -1,7 +1,7 @@
 # AION Flow — Tenant Credentials
 
-**Last Updated:** 2026-07-12
-**Classification:** Internal (do not share with clients without password change)
+**Last Updated:** 2026-07-13
+**Classification:** Internal — metadata only. Full credentials in `CREDENTIALS.private.md` (gitignored).
 
 ---
 
@@ -33,7 +33,7 @@
 | Field | Value |
 |-------|-------|
 | **Email** | `client@ktimakareli.gr` |
-| **Password** | `ktimakareli2026` |
+| **Password** | `[see CREDENTIALS.private.md]` |
 | **Role** | Admin |
 | **Tenant ID** | `a6a0e182-2e86-4b3a-9601-b055e56a605e` |
 | **Feature flags** | `cms`, `portfolio_module` (gallery), `retreat_module`, `locale_module`, `retreat_booking` |
@@ -56,8 +56,8 @@
 | Field | Value |
 |-------|-------|
 | **URL** | `https://qhbgptlklsavezxpksao.supabase.co` |
-| **Anon key** | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoYmdwdGxrbHNhdmV6eHBrc2FvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0NDU2MzQsImV4cCI6MjA5OTAyMTYzNH0.1Gx-QqPJpP6ML6U2Uo-4kZZgLpsMq9SNBZ7rL6Q9B6w` |
-| **Service role key** | `sb_secret_o0hY7pCNei6K0wR-qDeRxA_cbRLHQ5U` |
+| **Anon key** | `[see CREDENTIALS.private.md]` |
+| **Service role key** | `[see CREDENTIALS.private.md]` |
 
 ---
 

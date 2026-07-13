@@ -31,6 +31,8 @@ dist-ssr
 # Credentials — never committed
 docs/AION-Credentials.xlsx
 docs/AION-Users-Access-Report.csv
+CREDENTIALS.private.md
+docs/CREDENTIALS.private.md
 
 # Binary spreadsheet files
 *.ods

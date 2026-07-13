@@ -1,21 +1,19 @@
 /*
   ═══════════════════════════════════════════════════════════════
-  AION Flow — Tenant Context Hook
+  AION Flow — Tenant Context Hook (Phase 3A)
 
-  Διαβάζει το tenant context:
-    1. Από JWT claims (fast path — custom_access_token_hook)
-    2. Από profiles table (fallback — direct DB query)
-    3. Auto-upsert profile αν δεν υπάρχει (τελευταία προσπάθεια)
+  Διαβάζει το tenant context με branching βάσει generation:
+    - Gen1 (Legacy): loadLegacyTenantContext — frozen current behavior
+    - Gen2 (Next Gen): loadGen2TenantContext — real status + features
 
-  Τα JWT claims περιλαμβάνουν:
-    - tenant_id     → Σε ποιο tenant ανήκει ο χρήστης
-    - role          → admin / editor / sales / viewer
-    - is_super_admin → Bypass όλων των ελέγχων
+  Πηγές:
+    1. JWT claims (fast path — custom_access_token_hook)
+    2. Profiles table (fallback — direct DB query)
+    3. Auto-upsert profile (τελευταία προσπάθεια)
 
-  Χρησιμοποιείται από:
-    - AdminSidebar  → Feature-based nav hiding
-    - Dashboard     → Suspension banner + TenantSelector
-    - Route guards  → Feature protection
+  CRITICAL INVARIANT:
+    Ο Κολοκοτρώνης (Gen1) πρέπει να έχει ακριβώς το ίδιο
+    observable behavior μετά από κάθε αλλαγή shared code.
   ═══════════════════════════════════════════════════════════════
 */
 
@@ -23,24 +21,10 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTenantContext } from './TenantContext';
 import { supabase } from './supabase';
+import { resolveTenantContext, TenantContext } from './loadTenantContext';
 
 /** Δομή tenant context που επιστρέφει το hook */
-interface TenantState {
-  isSuperAdmin: boolean;
-  /** Για SA: selectedTenantId || null. Για μη-SA: tenant_id από JWT/profile */
-  tenantId: string | null;
-  /**
-   * Το tenant ID που πρέπει να χρησιμοποιούν ΟΛΑ τα components
-   * για φιλτράρισμα περιεχομένου, uploads, queries κλπ.
-   *
-   *   SA  → selectedTenantId (από TenantContext / Project Switcher)
-   *   μη-SA → tenantId (από JWT claims ή profiles table)
-   */
-  effectiveTenantId: string | null;
-  featureMap: Record<string, boolean> | null;
-  tenantStatus: string | null;
-  loading: boolean;
-}
+export type TenantState = TenantContext;
 
 /**
  * Διαβάζει tenant context από JWT claims + TenantContext.
@@ -88,7 +72,9 @@ export function useTenant(): TenantState {
     effectiveTenantId: null,
     featureMap: null,
     tenantStatus: null,
+    generation: null,
     loading: true,
+    error: null,
   });
 
   const KNOWN_SUPER_ADMIN_EMAILS = ['info@aionweb.gr', 'choliasmenos.panos@gmail.com'];
@@ -98,7 +84,7 @@ export function useTenant(): TenantState {
       setState(s => ({ ...s, loading: false }));
       return;
     }
-    setState(s => ({ ...s, loading: true }));
+    setState(s => ({ ...s, loading: true, error: null }));
 
     const u = user as any;
     const userEmail = u.email as string | undefined;
@@ -119,37 +105,19 @@ export function useTenant(): TenantState {
       if (knownSuperAdmin && !jwtSuperAdmin) {
         supabase.from('profiles').update({ is_super_admin: true }).eq('id', user.id);
       }
-      setState({
-        isSuperAdmin: true,
-        tenantId: selectedTenantId || null,
-        effectiveTenantId: selectedTenantId || null,
-        featureMap: { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true },
-        tenantStatus: 'active',
-        loading: false,
-      });
+      // SA path: resolve via generation-based branching
+      resolveTenantContext(selectedTenantId || null, true).then(setState);
       return;
     }
 
     // Try 2: Fallback — fetch/upsert profile from DB
     fetchProfile(user.id).then(({ is_super_admin, tenant_id }) => {
       const isSuperAdmin = is_super_admin || jwtSuperAdmin;
-      const tenantId = isSuperAdmin
-        ? (selectedTenantId || null)  // SA: never auto-attach to personal tenant
-        : (tenant_id || jwtTenantId || null);
       const effectiveTenantId = isSuperAdmin
         ? selectedTenantId
         : (tenant_id || jwtTenantId || null);
 
-      setState({
-        isSuperAdmin,
-        tenantId,
-        effectiveTenantId,
-        featureMap: isSuperAdmin
-          ? { cms: true, crm: true, inbox: true, pipeline: true, email_workspace: true, eshop: true, bookings: true, artist_module: true, portfolio_module: true, retreat_module: true, locale_module: true, retreat_booking: true }
-          : null,
-        tenantStatus: 'active',
-        loading: false,
-      });
+      resolveTenantContext(effectiveTenantId, isSuperAdmin).then(setState);
     });
   }, [user, isDemoMode, selectedTenantId]);
 
