@@ -81,6 +81,10 @@
 | 09_AI_MEMORY.METHOD_TEMPLATE | Method Template | 09_AI_MEMORY/METHOD_TEMPLATE.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-08-to-2026-07-12 | Session Log — 2026-07-08 to 2026-07-12 | 09_AI_MEMORY/SESSION_LOGS/2026-07-08-to-2026-07-12.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-13 | Session Log: 2026-07-13 — AKES v1.5 Relations | 09_AI_MEMORY/SESSION_LOGS/2026-07-13.md | — | — |  |
+| vision.aion-ecosystem | AION Ecosystem Vision | 10_VISION/AION_ECOSYSTEM.md | vision | — | ecosystem, vision, flŐW, akes, nexus, cl |
+| vision.nexus | AION NEXUS Vision | 10_VISION/NEXUS_VISION.md | vision | — | nexus, ai, orchestrator, vision |
+| vision.pulse | AION PULSE Vision | 10_VISION/PULSE_VISION.md | vision | — | pulse, telemetry, observability, vision |
+| vision.readme | 10_VISION — Future State Documents | 10_VISION/README.md | vision | — | vision, future, strategy |
 | ARCHITECTURE | AION — Platform Architecture Overview | ARCHITECTURE.md | — | — |  |
 | BACKUP | AION CMS — Backup & Disaster Recovery | BACKUP.md | — | — |  |
 | BLUEPRINTS | AION CMS — Blueprint Registry | BLUEPRINTS.md | — | — |  |

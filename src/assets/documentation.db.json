@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-07-13T12:42:23.550Z",
-    "git_commit": "374dfa4",
+    "generated_at": "2026-07-13T13:14:01.502Z",
+    "git_commit": "a4158e3",
     "index_version": "1.1",
-    "docs_count": 164,
+    "docs_count": 168,
     "stale_docs_count": 0,
     "mmi_modules": [
       {
@@ -171,7 +171,8 @@
       },
       "by_tenant": {
         "aion-flow": [
-          "akes"
+          "akes",
+          "vision.nexus"
         ],
         "kolokotronis": [
           "blog",
@@ -185,14 +186,19 @@
           "media",
           "portfolio",
           "retreat"
+        ],
+        "akes": [
+          "vision.nexus"
         ]
       },
       "by_method": {
         "module-maturity": [
-          "akes"
+          "akes",
+          "vision.nexus"
         ],
         "tenant-isolation": [
-          "akes"
+          "akes",
+          "vision.nexus"
         ],
         "tenant-resolution": [
           "blog",
@@ -212,6 +218,9 @@
         ],
         "media-upload": [
           "media"
+        ],
+        "relationship-engine": [
+          "vision.nexus"
         ]
       },
       "by_playbook": {
@@ -222,10 +231,12 @@
       },
       "reusable_for": {
         "Platform teams": [
-          "akes"
+          "akes",
+          "vision.nexus"
         ],
         "Engineering organizations": [
-          "akes"
+          "akes",
+          "vision.nexus"
         ],
         "Hotels": [
           "blog",
@@ -1629,6 +1640,96 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
+      "used_by": [],
+      "relationships": null,
+      "mmi": null
+    },
+    {
+      "id": "vision.aion-ecosystem",
+      "title": "AION Ecosystem Vision",
+      "path": "10_VISION/AION_ECOSYSTEM.md",
+      "status": "vision",
+      "maturity": "concept",
+      "tags": [
+        "ecosystem",
+        "vision",
+        "flŐW",
+        "akes",
+        "nexus",
+        "claw"
+      ],
+      "owner": "AION Web Solutions",
+      "last_reviewed": "2026-07-13",
+      "review_after": "2026-10-13",
+      "used_by": [],
+      "relationships": null,
+      "mmi": null
+    },
+    {
+      "id": "vision.nexus",
+      "title": "AION NEXUS Vision",
+      "path": "10_VISION/NEXUS_VISION.md",
+      "status": "vision",
+      "maturity": "concept",
+      "tags": [
+        "nexus",
+        "ai",
+        "orchestrator",
+        "vision"
+      ],
+      "owner": "AION Web Solutions",
+      "last_reviewed": "2026-07-13",
+      "review_after": "2026-10-13",
+      "used_by": [
+        "aion-flow",
+        "akes"
+      ],
+      "relationships": {
+        "related_methods": [
+          "module-maturity",
+          "tenant-isolation",
+          "relationship-engine"
+        ],
+        "reusable_for": [
+          "Platform teams",
+          "Engineering organizations"
+        ]
+      },
+      "mmi": null
+    },
+    {
+      "id": "vision.pulse",
+      "title": "AION PULSE Vision",
+      "path": "10_VISION/PULSE_VISION.md",
+      "status": "vision",
+      "maturity": "concept",
+      "tags": [
+        "pulse",
+        "telemetry",
+        "observability",
+        "vision"
+      ],
+      "owner": "AION Web Solutions",
+      "last_reviewed": "2026-07-13",
+      "review_after": "2026-10-13",
+      "used_by": [],
+      "relationships": null,
+      "mmi": null
+    },
+    {
+      "id": "vision.readme",
+      "title": "10_VISION — Future State Documents",
+      "path": "10_VISION/README.md",
+      "status": "vision",
+      "maturity": "concept",
+      "tags": [
+        "vision",
+        "future",
+        "strategy"
+      ],
+      "owner": "AION Web Solutions",
+      "last_reviewed": "2026-07-13",
+      "review_after": "2026-10-13",
       "used_by": [],
       "relationships": null,
       "mmi": null
