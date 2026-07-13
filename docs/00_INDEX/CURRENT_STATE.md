@@ -66,7 +66,7 @@
 
 | Issue | Severity | Status |
 |-------|----------|--------|
-| CREDENTIALS.md exposed secrets | 🔴 Critical | Being sanitized |
+| documentation.db.json publicly exposed (now fixed) | 🔴 Resolved | Moved to src/assets/, bundled by Vite |
 | site_settings UNIQUE on key (not per-tenant) | 🟡 Medium | Needs migration |
 | No automated tests | 🟡 Medium | Planned (v0.8) |
 | No lazy loading | 🟢 Low | Acceptable |

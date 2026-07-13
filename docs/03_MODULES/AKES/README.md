@@ -61,6 +61,8 @@ AKES Dashboard (runtime — NO public static asset)
 
 The index JSON is NOT a public static asset. It is imported as a JavaScript module at build time and bundled by Vite. There is no direct URL to access it.
 
+**History:** The file was originally at root path `/documentation.db.json` and was publicly accessible (HTTP 200). On 2026-07-13 it was moved to `src/assets/documentation.db.json` and is now imported via ES module import. The old path now returns the SPA HTML page (Vercel catch-all rewrite), not the JSON data.
+
 ## MMI Calculation
 
 ```
