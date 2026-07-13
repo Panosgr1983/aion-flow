@@ -134,7 +134,8 @@ See Section 8 (Reviews/Testimonials).
 
 **CMS Panel:** Retreat → Experiences
 **DB Table:** `experiences`
-**Missing:** `title_en`, `description_en`, `includes_en`, `detailDescription` columns
+**Missing EN columns:** `title_en`, `description_en`, `includes_en` — need DB migration + CMS form update
+**Missing:** `detailDescription` — longer description for detail page (currently shows short description)
 
 ---
 
@@ -148,7 +149,7 @@ See Section 8 (Reviews/Testimonials).
 
 **CMS Panel:** Retreat → Workshops
 **DB Table:** `workshops`
-**Missing:** `title_en`, `description_en`, `includes_en` columns
+**Missing EN columns:** `title_en`, `description_en`, `includes_en` — need DB migration + CMS form update
 
 ---
 
@@ -173,16 +174,16 @@ See Section 8 (Reviews/Testimonials).
 
 | File | Category | CMS Status |
 |------|----------|-----------|
-| `gallery-1.jpg` | site / gallery | Need upload |
-| `gallery-2.jpg` | site / gallery | Need upload |
-| `gallery-3.jpg` | site / gallery | Need upload |
-| `gallery-4.jpg` | site / gallery | Need upload |
-| `gallery-5.jpg` | site / gallery | Need upload |
-| `gallery-6.jpg` | site / gallery | Need upload |
-| `gallery-7.jpg` | site / gallery | Need upload |
-| `gallery-8.jpg` | site / gallery | Need upload |
-| `gallery-9.jpg` | site / gallery | Need upload |
-| `gallery-10.jpg` | site / gallery | Need upload |
+| `gallery-1.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-2.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-3.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-4.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-5.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-6.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-7.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-8.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-9.jpg` | site / gallery | ✅ Uploaded |
+| `gallery-10.jpg` | site / gallery | ✅ Uploaded |
 
 **CMS Panel:** Gallery (από Portfolio Module)
 **Total:** 10 images, all under `public/images/gallery-*.jpg`
@@ -193,10 +194,10 @@ See Section 8 (Reviews/Testimonials).
 
 | Author | Text (GR) | Text (EN) | CMS Status |
 |--------|-----------|-----------|-----------|
-| Μαρία Κ. | Μοναδική εμπειρία... | — | Need insert |
-| John D. | — | An unforgettable retreat... | Need insert |
-| Ελένη Π. | Το Ταϊλανδέζικο μασάζ ήταν απίστευτο! | — | Need insert |
-| Sophie M. | — | The sound healing experience... | Need insert |
+| Μαρία Κ. | Μοναδική εμπειρία... | — | ✅ Inserted |
+| John D. | — | An unforgettable retreat... | ✅ Inserted |
+| Ελένη Π. | Το Ταϊλανδέζικο μασάζ ήταν απίστευτο! | — | ✅ Inserted |
+| Sophie M. | — | The sound healing experience... | ✅ Inserted |
 | Γιώργος Χ. | Ιδανικό μέρος για να ξεφύγεις... | — | Need insert |
 | Anna W. | — | I came for a weekend... | Need insert |
 
@@ -259,15 +260,15 @@ See Section 8 (Reviews/Testimonials).
 
 | Image | Page(s) | Type | CMS Status |
 |-------|---------|------|-----------|
-| `hero-yoga-BWzdSU7G.jpg` | Home hero | hero | Need upload |
-| `logo-ktima-kareli.jpg` | Header, Footer | logo | Need upload |
-| `ktima-estate.jpg` | Home welcome, Events | estate | Need upload |
-| `exp-yoga-nature.jpg` | Home, Experiences, Events | experience | Need upload |
-| `exp-thai-massage.jpg` | Home, Experiences, Events | experience | Need upload |
-| `exp-forest-yoga.jpg` | Home, Experiences, Workshops | experience | Need upload |
-| `exp-indoor-meditation.jpg` | Home, Experiences, Workshops | experience | Need upload |
-| `community.jpg` | Home, Workshops, Events, Community | community | Need upload |
-| `gallery-1.jpg` through `gallery-10.jpg` | Home gallery | gallery | Need upload |
+| `hero-yoga-BWzdSU7G.jpg` | Home hero | hero | ✅ Uploaded |
+| `logo-ktima-kareli.jpg` | Header, Footer | logo | ✅ Uploaded |
+| `ktima-estate.jpg` | Home welcome, Events | estate | ✅ Uploaded |
+| `exp-yoga-nature.jpg` | Home, Experiences, Events | experience | ✅ Uploaded |
+| `exp-thai-massage.jpg` | Home, Experiences, Events | experience | ✅ Uploaded |
+| `exp-forest-yoga.jpg` | Home, Experiences, Workshops | experience | ✅ Uploaded |
+| `exp-indoor-meditation.jpg` | Home, Experiences, Workshops | experience | ✅ Uploaded |
+| `community.jpg` | Home, Workshops, Events, Community | community | ✅ Uploaded |
+| `gallery-1.jpg` through `gallery-10.jpg` | Home gallery | gallery | ✅ Uploaded |
 | `favicon.svg` | Browser tab | icon | Done |
 
 ---
@@ -277,16 +278,16 @@ See Section 8 (Reviews/Testimonials).
 | Panel | Route | Status | Needs |
 |-------|-------|--------|-------|
 | **Content → All Sections** | `/dashboard/content` | ❌ **Missing** | New panel with GR/EN tabs for all ~60 translation keys |
-| **Retreat → Experiences** | `/dashboard/retreat/experiences` | ✅ | Add EN fields (title_en, description_en, includes_en) |
-| **Retreat → Workshops** | `/dashboard/retreat/workshops` | ✅ | Add EN fields |
-| **Retreat → Events** | `/dashboard/retreat/events` | ✅ | Has GR/EN already |
-| **Retreat → FAQ** | `/dashboard/retreat/faq` | ✅ | GR only |
-| **Retreat → Bookings** | `/dashboard/retreat/bookings` | ✅ | Works |
-| **Gallery** | `/dashboard/portfolio/gallery` | ✅ | Need to upload 10 images |
-| **Πολυμέσα** | `/dashboard/media` | ✅ | Need to upload all images |
-| **Κριτικές** (Testimonials) | `/dashboard/testimonials` | ✅ | Need to insert 6 reviews |
-| **Branding** | `/dashboard/branding` | ✅ | Need logo + colors |
-| **Business Info** | `/dashboard/business-info` | ✅ | Need phone/email/address |
+| **Retreat → Experiences** | `/dashboard/retreat/experiences` | ✅ | 4 entries σε DB. **Missing:** EN fields (title_en, description_en, includes_en) |
+| **Retreat → Workshops** | `/dashboard/retreat/workshops` | ✅ | 3 entries σε DB. **Missing:** EN fields |
+| **Retreat → Events** | `/dashboard/retreat/events` | ✅ | 6 entries, bilingual GR/EN ✅ |
+| **Retreat → FAQ** | `/dashboard/retreat/faq` | ✅ | 5 entries, GR only |
+| **Retreat → Bookings** | `/dashboard/retreat/bookings` | ✅ | Pipeline ready, awaits client bookings |
+| **Gallery** | `/dashboard/portfolio/gallery` | ✅ | 10 images uploaded + linked ✅ |
+| **Πολυμέσα** | `/dashboard/media` | ✅ | 18 images uploaded ✅ |
+| **Κριτικές** (Testimonials) | `/dashboard/testimonials` | ✅ | 6 reviews inserted ✅ |
+| **Branding** | `/dashboard/branding` | ✅ | Panel ready, needs client to set colors/logo |
+| **Business Info** | `/dashboard/business-info` | ✅ | Phone, email, address configured ✅ |
 | **Site Settings** | `/dashboard/site-settings` | ✅ | Need SEO defaults |
 
 ---

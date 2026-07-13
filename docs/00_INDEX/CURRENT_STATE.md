@@ -31,7 +31,7 @@
 | Tenant | ID | Modules | Status |
 |--------|----|---------|--------|
 | Kolokotronis | `00000000-...` | CMS, CRM | ✅ Live |
-| Ktima Kareli | `a6a0e182-...` | CMS, Portfolio (gallery), Retreat, Locale, Booking | ✅ Live |
+| Ktima Kareli | `a6a0e182-...` | CMS, Portfolio (gallery), Retreat, Locale, Booking | ✅ Live — 18 images, 10 gallery, 4 experiences, 3 workshops, 6 events, 5 FAQ, 6 reviews |
 | Dionysis Xanthos | `7ef615ef-...` | Reference only | ✅ Reference |
 
 ## Documentation
