@@ -30,8 +30,11 @@ import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, moc
 import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory } from '../types/supabase';
 import { trackEvent } from './analytics';
 import { withTenant } from './useTenantQuery';
+import { getCurrentTenantContext } from './TenantContext';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const tenantId = () => getCurrentTenantContext() || mockTenantId;
 
 const ENTITY_NAME_FIELDS: Record<string, string> = {
   services: 'title',
@@ -91,7 +94,7 @@ async function saveHistoryEntry(opts: {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     await supabase.from('content_history').insert({
-      tenant_id: mockTenantId,
+      tenant_id: tenantId(),
       table_name: opts.tableName,
       record_id: opts.recordId,
       entity_name: opts.entityName,
@@ -456,7 +459,7 @@ function createMockHelper<T extends { id: string }>(mockData: T[], tableName: st
         (mockData as T[]).push(newItem);
         return newItem;
       }
-      const { data, error } = await supabase.from(tableName).insert({ ...item, tenant_id: mockTenantId }).select().single();
+      const { data, error } = await supabase.from(tableName).insert({ ...item, tenant_id: tenantId() }).select().single();
       if (error) throw error;
       const created = data as T;
       const entityName = getEntityName(tableName, created);
@@ -513,7 +516,7 @@ export const blogPostsHelper = {
   ...createMockHelper<BlogPost>(mockBlogPosts, 'blog_posts'),
   async getAll(): Promise<BlogPost[]> {
     if (!isSupabaseAvailable()) { await delay(300); return [...mockBlogPosts]; }
-    const { data, error } = await supabase.from('blog_posts').select('*').order('published_at', { ascending: false });
+    const { data, error } = await withTenant(supabase.from('blog_posts').select('*') as any).order('published_at', { ascending: false }) as any;
     if (error) throw error;
     return data ?? [];
   },
@@ -699,7 +702,7 @@ export const siteSettingsHelper = {
   ...createMockHelper<SiteSetting>(mockSiteSettings, 'site_settings'),
   async getAll(): Promise<SiteSetting[]> {
     if (!isSupabaseAvailable()) { await delay(300); return [...mockSiteSettings]; }
-    const { data, error } = await supabase.from('site_settings').select('*').order('category').order('key');
+    const { data, error } = await withTenant(supabase.from('site_settings').select('*') as any).order('category').order('key') as any;
     if (error) throw error;
     return data ?? [];
   },
@@ -884,14 +887,14 @@ export const restoreHelper = {
     if (current) {
       await supabase.from(entry.table_name).update({ ...restored, updated_at: new Date().toISOString() }).eq('id', entry.record_id);
     } else {
-      await supabase.from(entry.table_name).insert({ ...restored, id: entry.record_id, tenant_id: mockTenantId });
+      await supabase.from(entry.table_name).insert({ ...restored, id: entry.record_id, tenant_id: tenantId() });
     }
 
     const entityName = entry.entity_name || getEntityName(entry.table_name, entry.snapshot_before);
     const summary = generateSummary(entry.table_name, entityName, 'restore', null);
     const { data: { user } } = await supabase.auth.getUser();
     await supabase.from('content_history').insert({
-      tenant_id: mockTenantId,
+      tenant_id: tenantId(),
       table_name: entry.table_name,
       record_id: entry.record_id,
       entity_name: entityName,
