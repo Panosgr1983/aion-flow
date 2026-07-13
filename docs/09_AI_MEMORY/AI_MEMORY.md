@@ -56,6 +56,20 @@ Validate → Standardize
 | ModuleRegistry registration | Portfolio, Retreat | manifest.ts |
 | feature flag gating | All modules | `access.ts` + `useTenant.ts` |
 
+## AKES Level Map
+
+| Level | Name | Status | Description |
+|-------|------|--------|-------------|
+| L1 | Documentation | ✅ Complete | Architecture, modules, tenants, methods, playbooks, reference |
+| L2 | Validation | ✅ Complete | Tenant isolation, checklists, blockers, known issues, tech debt |
+| L3 | Memory | 🟡 Growing | Session logs, history, lessons learned, decision memory |
+| L4 | Intelligence | 🔄 Future (AKES v2) | Reuse analytics, method confidence, engineering KPIs, AI confidence |
+
+The Intelligence Layer (L4) is NOT implemented yet. It will be enabled when:
+- 10-20 tenants exist with validated methods data
+- AIONCLAW integration is active
+- See `docs/01_PLATFORM/ROADMAP.md` → AKES v2
+
 ## What NOT to Do
 
 1. Don't create new doc if one already exists (Search before Create)
@@ -63,3 +77,4 @@ Validate → Standardize
 3. Don't modify AGENTS.md without approval
 4. Don't push/deploy without explicit approval
 5. Don't skip CURRENT_STATE.md update after completing work
+6. Don't enable tenant-scoped module without passing TENANT_ISOLATION_CHECKLIST

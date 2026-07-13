@@ -179,3 +179,37 @@ code + migration (if needed) + QA + docs update + commit
 - Error boundaries across all panels
 - Accessibility: skip links, aria labels, keyboard nav
 - Documentation consistency audit
+
+---
+
+## 🔄 AKES v2 — Intelligence Layer (Future)
+
+**Precondition:** 10-20 active tenants with validated methods data.
+
+### Components (design only — not yet implemented)
+
+| Component | Description |
+|-----------|-------------|
+| **Reuse Analytics** | Track which modules/components are used by which tenants. Calculate reuse score per module. |
+| **Method Confidence** | Track how many times a method has been used vs regression count. Confidence score = (uses - regressions) / uses. |
+| **Documentation Coverage** | Auto-calculated % of documented vs undocumented modules/methods. |
+| **Platform Health** | Self-assessment dashboard for AKES itself. |
+| **Engineering KPIs** | Reusable %, avg completion time, avg deploy time, regression rate. |
+| **AI Confidence** | Agent can answer: "Have I done this before?" with confidence score and recommended approach. |
+
+### Architecture
+
+```
+AIONCLAW (Engineering Intelligence)
+  └── reads / evaluates
+        AKES (Knowledge & Engineering System)
+              └── documents / organizes
+                    AION FLOW (Business Operating System)
+```
+
+### Prerequisites
+- [ ] 10+ tenants with completed content mapping
+- [ ] 20+ validated methods
+- [ ] 500+ documented decisions/lessons
+- [ ] Reusable components registry populated
+- [ ] All panels pass TENANT_ISOLATION_CHECKLIST
