@@ -44,6 +44,7 @@ import ErrorBoundary from '../components/dashboard/ErrorBoundary';
 import ModuleRegistry from '../lib/ModuleRegistry';
 import '../modules/portfolio/manifest';
 import '../modules/retreat/manifest';
+import '../modules/akes/manifest';
 
 export default function Dashboard() {
   const { isDemoMode } = useAuth();

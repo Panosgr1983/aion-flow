@@ -16,12 +16,12 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal, Building2, Briefcase, Film, Monitor, Theater, Clock, Images, Newspaper, Video, TreePine, Compass, Calendar, CalendarCheck, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, Users, BarChart3, Image, Settings, User, ChevronLeft, ChevronRight, LogOut, Mail, Wifi, WifiOff, FileText, MessageSquare, Award, Heart, Globe, Zap, Eye, History, TrendingUp, Shield, Activity, ChevronDown, Home, Terminal, Building2, Briefcase, Film, Monitor, Theater, Clock, Images, Newspaper, Video, TreePine, Compass, Calendar, CalendarCheck, HelpCircle, BrainCircuit, Search } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 // Icon name → component map for Module Registry sidebar items
 const iconMap: Record<string, LucideIcon> = {
-  Briefcase, User, Film, Monitor, Theater, Clock, Images, Newspaper, Video, Settings, FileText, Heart, Award, Globe, Eye, Building2, Package, Tag, ShoppingCart, Users, BarChart3, Mail, TrendingUp, Shield, Activity, Terminal, Home, History, Zap, LayoutDashboard, MessageSquare, ChevronDown, LogOut, Wifi, WifiOff, TreePine, Compass, Calendar, CalendarCheck, HelpCircle,
+  Briefcase, User, Film, Monitor, Theater, Clock, Images, Newspaper, Video, Settings, FileText, Heart, Award, Globe, Eye, Building2, Package, Tag, ShoppingCart, Users, BarChart3, Mail, TrendingUp, Shield, Activity, Terminal, Home, History, Zap, LayoutDashboard, MessageSquare, ChevronDown, LogOut, Wifi, WifiOff, TreePine, Compass, Calendar, CalendarCheck, HelpCircle, BrainCircuit, Search,
 };
 import { useAuth } from '../../contexts/AuthContext';
 import { conversationsHelper } from '../../lib/dataHelpers';
@@ -34,6 +34,7 @@ import { FEATURE_MODULES } from '../../lib/access';
 import ModuleRegistry from '../../lib/ModuleRegistry';
 import '../../modules/portfolio/manifest';
 import '../../modules/retreat/manifest';
+import '../../modules/akes/manifest';
 
 const shopItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },

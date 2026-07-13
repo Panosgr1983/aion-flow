@@ -75,4 +75,6 @@ export const FEATURE_MODULES: Record<string, TenantFeature> = {  services: 'cms'
   'portfolio': 'portfolio_module',
   // Retreat Module (via Module Registry)
   'retreat': 'retreat_module',
+  // AKES Module (via Module Registry)
+  'akes': 'cms',
 };
