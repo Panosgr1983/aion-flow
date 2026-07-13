@@ -117,3 +117,5 @@
 5. **No undocumented architecture** — any undocumented feature = technical debt
 6. **No deploy without explicit approval**
 7. **Update CURRENT_STATE.md + indexes before marking Done**
+8. **Never enable a tenant-scoped module whose isolation status is not VALIDATED or STANDARD**
+9. **Every new module must pass TENANT_ISOLATION_CHECKLIST.md before feature flag activation**
