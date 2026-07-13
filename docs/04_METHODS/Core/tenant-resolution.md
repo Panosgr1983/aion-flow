@@ -48,6 +48,25 @@ const { effectiveTenantId } = useTenant();
 - [x] Refresh → persists (localStorage)
 - [x] Re-login → clears (SIGNED_IN event)
 - [x] RLS → queries filtered by tenant_id
+- [x] `withTenant()` without 2nd arg → localStorage only (SA)
+- [x] `withTenant()` with explicit tenantId → SAFE for all users
+
+## Tenant Isolation Rules
+
+1. **ALL Supabase queries must filter by tenant_id.** No exceptions.
+2. **Portfolio/Retreat module panels** use `withTenant(..., effectiveTenantId)` — SAFE.
+3. **CMS helpers** (site_settings, services, blog, etc.) use `withTenant()` — SAFE for SA.
+4. **History logging** uses `tenantId()` (dynamic from localStorage or mock fallback).
+5. **CRUD operations** include `.eq('tenant_id', effectiveTenantId)` in updates/deletes.
+6. **Inserts** include `tenant_id: effectiveTenantId` in payload.
+
+## Tenant Isolation Audit (2026-07-12)
+
+A full audit of ALL database queries was performed. Results:
+- **SAFE:** Portfolio module (45+ queries), Retreat module (30+ queries), CMS helpers (6 helpers)
+- **MISSING (low risk):** CRM helpers, e-commerce helpers — not used by active tenants
+- **MISSING (admin):** System panels (PlatformOverview, SystemDebug, etc.) — SA-only tools
+- **FIXED:** `saveHistoryEntry` no longer uses hardcoded `mockTenantId`
 
 ## Reusable
 Yes — platform-wide standard.

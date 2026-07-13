@@ -55,6 +55,9 @@ Component Structure:
 | MediaPicker | Image selection per entry |
 | sort_order | Manual numeric field |
 
+## Tenant Isolation
+All CRUD panels use `withTenant(..., effectiveTenantId)` for reads and `.eq('tenant_id', effectiveTenantId)` for writes. Verified safe for both SA and tenant admin.
+
 ## Reusable
 Yes — standard for any multi-entry CRUD.
 
