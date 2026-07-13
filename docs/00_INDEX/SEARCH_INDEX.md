@@ -69,6 +69,7 @@
 | 03_MODULES.Retreat.reports.week-02-workshops-events | Week 2: Workshops + Events CRUD — Completion  | 03_MODULES/Retreat/reports/week-02-workshops-events.md | — | — |  |
 | 03_MODULES.Retreat.reports.week-03-faq-bookings | Week 3: FAQ CRUD + Bookings Manager — Complet | 03_MODULES/Retreat/reports/week-03-faq-bookings.md | — | — |  |
 | 04_METHODS.Core.MODULE_MATURITY | Module Maturity Model (MMI) | 04_METHODS/Core/MODULE_MATURITY.md | — | — |  |
+| method.relationship-engine | Relationship Engine | 04_METHODS/Core/RELATIONSHIP_ENGINE.md | current | — | relationships, graph, metadata, index |
 | 04_METHODS.Core.TENANT_ISOLATION_CHECKLIST | Tenant Isolation Checklist | 04_METHODS/Core/TENANT_ISOLATION_CHECKLIST.md | — | — |  |
 | method.core.crud-pattern | Multi-Entry CRUD Panel Pattern | 04_METHODS/Core/crud-pattern.md | Standard | — | crud, pattern, react |
 | method.core.module-registration | Module Registry Self-Registration | 04_METHODS/Core/module-registration.md | Standard | — | module-registry, architecture |
@@ -79,6 +80,7 @@
 | 09_AI_MEMORY.AI_MEMORY | AI_MEMORY — How to Think & Work | 09_AI_MEMORY/AI_MEMORY.md | — | — |  |
 | 09_AI_MEMORY.METHOD_TEMPLATE | Method Template | 09_AI_MEMORY/METHOD_TEMPLATE.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-08-to-2026-07-12 | Session Log — 2026-07-08 to 2026-07-12 | 09_AI_MEMORY/SESSION_LOGS/2026-07-08-to-2026-07-12.md | — | — |  |
+| 09_AI_MEMORY.SESSION_LOGS.2026-07-13 | Session Log: 2026-07-13 — AKES v1.5 Relations | 09_AI_MEMORY/SESSION_LOGS/2026-07-13.md | — | — |  |
 | ARCHITECTURE | AION — Platform Architecture Overview | ARCHITECTURE.md | — | — |  |
 | BACKUP | AION CMS — Backup & Disaster Recovery | BACKUP.md | — | — |  |
 | BLUEPRINTS | AION CMS — Blueprint Registry | BLUEPRINTS.md | — | — |  |

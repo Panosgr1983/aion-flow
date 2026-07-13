@@ -35,39 +35,47 @@ review_after: 2026-10-13
 # AKES Module — Dashboard
 
 **Module Name:** akes
-**Version:** 1.0.0
+**Version:** 1.5.0
 **Feature Flag:** `cms` (visible to Super Admin via `platform.akes.view`)
-**Status:** PRODUCTION (v1.0)
+**Status:** PRODUCTION (v1.5 — Relationship Engine)
 
 ---
 
 ## Overview
 
-Το AKES Dashboard είναι το πρώτο GUI του AION Knowledge & Engineering System. Παρέχει οπτικοποίηση του Module Maturity Index, tenant readiness, blockers, documentation search και technical report.
+Το AKES Dashboard είναι το GUI του AION Knowledge & Engineering System. Παρέχει το Module Maturity Index, Relationship Explorer, tenant readiness, blockers, documentation search και Technical Report.
 
 ## Route
 
-`/dashboard/akes` — Super Admin only (`platform.overview`)
+`/dashboard/akes` — Super Admin only (`platform.akes.view`)
 
 ## Panels
 
 | Panel | Content | Data Source |
 |-------|---------|-------------|
-| **Platform Stats** | 5 cards: Platform docs, Module docs, Methods, Blockers, Stale docs | `documentation.db.json` |
-| **Module Maturity Index** | 9 modules with L1-L4 breakdown, click for detail | Hardcoded (from MODULE_MATURITY.md) |
-| **Tenant Readiness** | 2 tenants with area breakdown | Hardcoded (from MODULE_MATURITY.md) |
-| **Active Blockers** | 5 blockers with severity + reference | Hardcoded (from MODULE_MATURITY.md) |
-| **Documentation Search** | Full-text search across all indexed docs | `documentation.db.json` via fetch |
-| **Technical Report** | 7-point transparency report | Self-documented in component |
+| **Platform Stats** | 7 cards: Platform, Modules, Methods, Relationships, Tenants, Blockers, Stale | `documentation.db.json` _meta |
+| **Relationship Explorer** | 3-tab graph: By Module, By Tenant, Reuse Suggestions | `documentation.db.json` _meta.relationships (auto-generated from frontmatter) |
+| **Module Maturity Index** | 8 modules with L1-L4, status, verification, tenant count; click for detail | Auto-generated from `mmi` frontmatter via `docs:index` |
+| **Tenant Readiness** | Per-tenant module stack + average MMI score | Auto-generated from relationships + MMI |
+| **Active Blockers** | 5 blockers with severity + reference | Hardcoded (upstream tech debt tracker) |
+| **Documentation Search** | Full-text search across all indexed docs (162 entries) | `documentation.db.json` entries (bundled at build time) |
+| **Technical Report** | 10-point transparency: SoT, MMI calc, Relationship Engine, security, version | Self-documented in component |
 
 ## Architecture
 
 ```
 AKESDashboard.tsx
-  ├── fetch('/documentation.db.json') → 159 indexed entries
-  ├── MMI_DATA (hardcoded from MODULE_MATURITY.md)
-  ├── TENANT_DATA (hardcoded)
-  ├── BLOCKERS (hardcoded)
+  ├── import docIndex from 'src/assets/documentation.db.json' (build-time)
+  ├── _meta
+  │   ├── mmi_modules (auto-calculated from frontmatter mmi metadata)
+  │   ├── relationships (auto-extracted from frontmatter relationships + used_by)
+  │   ├── platform_mmi (average of all module scores)
+  │   └── version info (generated_at, git_commit, index_version)
+  ├── Relationship Explorer (3-tab: Module / Tenant / Reuse)
+  ├── MMI Table (sorted, clickable, with tenant count)
+  ├── Tenant Readiness (auto-generated from relationship graph)
+  ├── BLOCKERS (hardcoded — TODO: migrate to DB)
+  ├── Documentation Search (full-text across all entries)
   └── Technical Report (self-documenting)
 ```
 
@@ -75,18 +83,19 @@ AKESDashboard.tsx
 
 | Source | Type | Update Method |
 |--------|------|---------------|
-| Markdown docs (160 .md files) | **Source of Truth** | Manual edits, committed |
+| Markdown docs (162 .md files) | **Source of Truth** | Manual edits, committed |
 | `documentation.db.json` | **Generated read-only index** | `npm run docs:index` → commit → deploy |
-| MMI scores | Hardcoded in component (future: auto-generated from metadata) | Manual update when MODULE_MATURITY.md changes |
-| Tenant scores | Hardcoded in component | Manual update |
-| Blockers | Hardcoded in component | Manual update |
+| MMI scores | Auto-generated from `mmi` frontmatter in module docs | Re-index after module update |
+| Relationships | Auto-generated from `relationships` + `used_by` frontmatter | Re-index after frontmatter update |
+| Tenant scores | Auto-calculated from relationship graph + MMI | Re-index after any change |
+| Blockers | Hardcoded (temp — migrating to DB) | Manual update |
 
 ### Pipeline
 
 ```
-Markdown docs with frontmatter (SoT)
+Markdown docs with YAML frontmatter (SoT)
   ↓ npm run docs:index
-documentation.db.json (generated index, read-only)
+documentation.db.json (generated index + relationship graph)
   ↓ Vite build-time import (bundled into JS)
 AKES Dashboard (runtime — NO public static asset)
 ```
@@ -100,27 +109,43 @@ The index JSON is NOT a public static asset. It is imported as a JavaScript modu
 ## MMI Calculation
 
 ```
-MMI = (l1 + l2 + l3 + l4) / 16 × 100
+MMI = (L1 + L2 + L3 + L4) / 16 × 100
 
 Each layer max: 4 criteria
 ≥80% → PRODUCTION  |  ≥60% → STABLE  |  ≥40% → DEVELOPMENT  |  ≥20% → EARLY  |  <20% → PLANNED
 ```
 
+Scores are auto-calculated from the `mmi` field in module doc frontmatter by `docs:index`. No manual duplication.
+
+## Relationship Engine
+
+Το Relationship Engine εξάγει αυτόματα σχέσεις από τα YAML frontmatter των markdown docs:
+
+| Relationship | Field | Example |
+|-------------|-------|---------|
+| Module dependencies | `relationships.uses` | `portfolio → [media, categories, ordering]` |
+| Tenants | `used_by` | `retreat → [ktima-kareli]` |
+| Methods | `relationships.related_methods` | `bookings → [tenant-resolution, bookings-pattern]` |
+| Playbooks | `relationships.related_playbooks` | `bookings → [NEW_TENANT]` |
+| Industry suggestions | `relationships.reusable_for` | `portfolio → [Hotels, Resorts, Airbnb]` |
+
+Generated by `docs:index` — no database, no second source of truth.
+
 ## Security
 
 | Aspect | Detail |
 |--------|--------|
-| Route protection | Super Admin only (`platform.overview`) |
+| Route protection | Super Admin only (`platform.akes.view`) |
 | Tenant admin | BLOCKED — cannot access |
 | Direct URL | Redirects to login → 403 for non-SA |
 | Source data | READ-ONLY — dashboard never modifies indexed JSON |
-| Runtime data | Loaded via fetch, no write operations |
+| Runtime data | Imported at build time, bundled with Vite |
 
 ## Dependencies
 
 - `documentation.db.json` (generated by `docs/scripts/index.mjs`)
 - ModuleRegistry (self-registration via manifest)
-- lucide-react icons (BrainCircuit, Search, etc.)
+- lucide-react icons
 
 ## Files
 
@@ -129,17 +154,8 @@ Each layer max: 4 criteria
 | `src/modules/akes/manifest.ts` | Module self-registration |
 | `src/modules/akes/pages/AKESDashboard.tsx` | Dashboard component (~400 lines) |
 
-## Technical Transparency
-
-Το dashboard περιλαμβάνει ενσωματωμένο Technical Report που εξηγεί:
-1. Από πού διαβάζει τα 159 documents
-2. Runtime vs build-time loading
-3. Πώς υπολογίζεται το MMI (τύπος + status mapping)
-4. Ποια πεδία είναι hardcoded (MMI, Tenant scores, Blockers)
-5. Πώς ανανεώνεται (docs:index → commit → deploy)
-6. Route protection (SA only, tenant admin blocked)
-7. Read-only source data
-
 ---
 
-**See also:** `docs/04_METHODS/Core/MODULE_MATURITY.md` — full MMI methodology
+**See also:**
+- `docs/04_METHODS/Core/RELATIONSHIP_ENGINE.md` — Relationship Engine methodology
+- `docs/04_METHODS/Core/MODULE_MATURITY.md` — full MMI methodology
