@@ -18,6 +18,27 @@
 - Public site locale toggle (GR/EN persisted)
 - locale column σε content tables
 
+## Pilot State (Ktima Kareli)
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Events (EN) | ✅ COMPLETE | GR/EN tabs in CMS, locale-aware public rendering |
+| Experiences (EN) | 🟡 PARTIAL | DB ready (`title_en`, `description_en`, `includes_en`). CMS editor needs EN tabs. |
+| Workshops (EN) | 🟡 PARTIAL | DB ready. CMS editor needs EN tabs. |
+| detail_description | 🟡 PARTIAL | DB ready (`detail_description`, `detail_description_en`). Public page not updated. |
+| UI interface (101 keys) | 🟡 PARTIAL | Hardcoded fallback active. Translations Editor panel not built (v0.7). |
+
+### Activation Conditions for Full Locale Module v0.7
+
+- [ ] EN tabs in ExperiencesCRUD
+- [ ] EN tabs in WorkshopsCRUD
+- [ ] Public site locale rendering verified (GR → EN fallback)
+- [ ] Fallback behavior for missing EN values defined
+- [ ] detail_description integrated in public detail pages
+- [ ] Interface translations panel built (~101 keys)
+
+**See:** `docs/02_TENANTS/ktima-kareli/CONTENT_MAPPING.md` — Section 14: Locale Readiness Matrix
+
 ## What It Does NOT Solve (v0.7)
 
 - 3+ γλώσσες (μόνο GR/EN)

@@ -266,6 +266,17 @@ _Τελευταία ενημέρωση: 2026-06-27
 
 ### #21. E-commerce helpers not tenant-filtered
 
+---
+
+### #22. Static public images not managed through Media Library
+
+**Περιγραφή:**  
+Το public site του Ktima Kareli χρησιμοποιεί static paths `/images/*.jpg` αντί για Media Library URLs. Οι εικόνες υπάρχουν στο `media` table αλλά το public site δεν τις διαβάζει από εκεί. Αυτό σημαίνει ότι ο tenant admin δεν μπορεί να τις αλλάξει από το CMS, δεν συμμετέχουν στο Media Library pipeline, και δεν έχουν tenant ownership metadata.
+
+**Why it exists:** Το public site ήταν αρχικά static SPA. Η μετάβαση σε DB-driven images είναι μερική.  
+**Wanted:** Οι εικόνες να διαβάζονται από το `media` table με fallback στα static paths.  
+**Effort:** Medium (1-2 days)
+
 **Περιγραφή:**  
 `categoriesHelper`, `productsHelper`, `customersHelper`, `ordersHelper` — κανένα query δεν φιλτράρει με βάση το tenant_id.
 

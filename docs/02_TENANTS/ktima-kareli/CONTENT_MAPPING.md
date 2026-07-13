@@ -134,8 +134,11 @@ See Section 8 (Reviews/Testimonials).
 
 **CMS Panel:** Retreat → Experiences
 **DB Table:** `experiences`
-**Missing EN columns:** `title_en`, `description_en`, `includes_en` — need DB migration + CMS form update
-**Missing:** `detailDescription` — longer description for detail page (currently shows short description)
+**EN columns:** `title_en`, `description_en`, `includes_en`, `detail_description`, `detail_description_en` — DB ready ✅
+**CMS Editor:** PENDING — ExperiencesCRUD needs EN tabs (like EventsCRUD)
+**Public rendering:** PENDING — detail page needs detail_description support
+
+**Overall: PARTIAL** — DB ready, editor + public site pending
 
 ---
 
@@ -335,3 +338,26 @@ Related documents:
 ---
 
 *Generated: 2026-07-12. Update whenever site content changes.*
+
+---
+
+## 14. Locale Readiness Matrix
+
+| Feature | Database | CMS Editor | Public Site | Overall |
+|---------|----------|------------|-------------|---------|
+| Experiences (EN) | ✅ Ready (title_en, description_en, includes_en) | ❌ PENDING (needs EN tabs) | ❌ PENDING (detail page uses GR text) | 🟡 PARTIAL |
+| Workshops (EN) | ✅ Ready (title_en, description_en, includes_en) | ❌ PENDING (needs EN tabs) | ❌ PENDING | 🟡 PARTIAL |
+| Events (EN) | ✅ Ready | ✅ Has GR/EN tabs | ✅ Reads by locale | ✅ COMPLETE |
+| FAQ (EN) | ❌ Not planned | ❌ GR only | ❌ GR only | 🟢 ACCEPTABLE (GR only) |
+| detail_description | ✅ Ready (detail_description, detail_description_en) | ❌ PENDING | ❌ PENDING (detail page not updated) | 🟡 PARTIAL |
+| UI interface (101 keys) | ❌ locale_translations not populated | ❌ v0.7 Locale Module | ✅ Fallback to hardcoded translations | 🟡 PARTIAL |
+| Static images (17) | ✅ Uploaded to media table | ✅ In Media Library | ⚠️ Uses public/ paths, not Media URLs | 🟡 PORTABILITY DEBT |
+
+### Activation Condition for Locale Module v0.7
+
+- [ ] EN tabs in ExperiencesCRUD
+- [ ] EN tabs in WorkshopsCRUD
+- [ ] Public site locale rendering verified (GR then EN fallback)
+- [ ] Fallback behavior for missing translations defined
+- [ ] detail_description integrated in detail pages
+- [ ] Static images migration to Media Library (future)

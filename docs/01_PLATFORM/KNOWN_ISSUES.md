@@ -224,3 +224,14 @@ _Τελευταία ενημέρωση: 2026-06-27
 **Priority:** HIGH (blocker for e-commerce rollout)  
 **Planned:** Before e-commerce enabled for any production tenant  
 **Module:** E-commerce
+
+---
+
+### #18. Static site images not managed through Media Library
+
+**Περιγραφή:**  
+Το Ktima Kareli public site χρησιμοποιεί `/images/*.jpg` static paths. Οι εικόνες υπάρχουν στο `media` table αλλά το site δεν τις διαβάζει από εκεί. Ο tenant admin δεν μπορεί να τις αλλάξει από το CMS.
+
+**Priority:** Low (functional, but CMS ownership gap)  
+**Planned:** Post v0.7  
+**Module:** Media — Public site integration
