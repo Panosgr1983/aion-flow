@@ -7,6 +7,7 @@
 | 00_INDEX.CURRENT_STATE | CURRENT STATE — AION Flow | 00_INDEX/CURRENT_STATE.md | — |  |
 | 00_INDEX.MASTER_INDEX | MASTER INDEX — AION Knowledge & Engineering System | 00_INDEX/MASTER_INDEX.md | — |  |
 | 00_INDEX.NEXT_APPROVED_ACTION | NEXT APPROVED ACTION | 00_INDEX/NEXT_APPROVED_ACTION.md | — |  |
+| 00_INDEX.SEARCH_INDEX | SEARCH INDEX — AION Knowledge & Engineering System | 00_INDEX/SEARCH_INDEX.md | — |  |
 | 00_INDEX.START_HERE | START HERE — AION Knowledge & Engineering System | 00_INDEX/START_HERE.md | — |  |
 | 01_PLATFORM.ARCHITECTURE | AION — Platform Architecture Overview | 01_PLATFORM/ARCHITECTURE.md | — |  |
 | 01_PLATFORM.CHANGELOG | AION CMS — Changelog | 01_PLATFORM/CHANGELOG.md | — |  |
@@ -24,14 +25,21 @@
 | 01_PLATFORM.TELEMETRY | AION — Telemetry & Usage Events | 01_PLATFORM/TELEMETRY.md | — |  |
 | 02_TENANTS.VISIBILITY_MATRIX | AION Flow — Tenant Visibility Matrix | 02_TENANTS/VISIBILITY_MATRIX.md | — |  |
 | 02_TENANTS.kolokotronis.CONTENT_MAPPING | Tenant Content Mapping: Νικόλας Κολοκοτρώνης | 02_TENANTS/kolokotronis/CONTENT_MAPPING.md | — |  |
+| 02_TENANTS.kolokotronis.HISTORY | Kolokotronis — Development History | 02_TENANTS/kolokotronis/HISTORY.md | — |  |
 | 02_TENANTS.kolokotronis.README | Tenant: Νικόλας Κολοκοτρώνης | 02_TENANTS/kolokotronis/README.md | — |  |
 | 02_TENANTS.ktima-kareli.CONTENT_MAPPING | Tenant Content Mapping: Κτήμα Καρέλη | 02_TENANTS/ktima-kareli/CONTENT_MAPPING.md | — |  |
 | 02_TENANTS.ktima-kareli.README | Tenant: Κτήμα Καρέλη | 02_TENANTS/ktima-kareli/README.md | — |  |
+| 03_MODULES.Blog.README | Blog Module — AION Flow | 03_MODULES/Blog/README.md | — |  |
+| 03_MODULES.Bookings.README | Bookings Module — AION Flow | 03_MODULES/Bookings/README.md | — |  |
+| 03_MODULES.CRM.README | CRM Module — AION Flow | 03_MODULES/CRM/README.md | — |  |
 | 03_MODULES.Locale.ARCHITECTURE | Locale Module — Architecture | 03_MODULES/Locale/ARCHITECTURE.md | — |  |
 | 03_MODULES.Locale.CMS | Locale Module — CMS Panel | 03_MODULES/Locale/CMS.md | — |  |
 | 03_MODULES.Locale.DATABASE | Locale Module — Database | 03_MODULES/Locale/DATABASE.md | — |  |
 | 03_MODULES.Locale.README | Locale Module — AION Flow | 03_MODULES/Locale/README.md | — |  |
 | 03_MODULES.Locale.WORKFLOW | Locale Module — Bilingual Workflow | 03_MODULES/Locale/WORKFLOW.md | — |  |
+| 03_MODULES.Media.KNOWN_ISSUES | Media Module — Known Issues | 03_MODULES/Media/KNOWN_ISSUES.md | — |  |
+| 03_MODULES.Media.METHODS | Media Module — Methods | 03_MODULES/Media/METHODS.md | — |  |
+| 03_MODULES.Media.README | Media Module — AION Flow | 03_MODULES/Media/README.md | — |  |
 | 03_MODULES.Portfolio.COMPLETION_REPORT_v1 | Portfolio Module v1.0 — Completion Report | 03_MODULES/Portfolio/COMPLETION_REPORT_v1.md | — |  |
 | 03_MODULES.Portfolio.INTEGRATION_PLAN | Artist Module Integration Plan — AION Flow | 03_MODULES/Portfolio/INTEGRATION_PLAN.md | — |  |
 | 03_MODULES.Portfolio.MASTER | Portfolio Module — MASTER Reference | 03_MODULES/Portfolio/MASTER.md | — |  |
@@ -57,9 +65,11 @@
 | 03_MODULES.Retreat.reports.week-01-tenant-setup | Week 1: Tenant Setup + Experiences CRUD — Completi | 03_MODULES/Retreat/reports/week-01-tenant-setup.md | — |  |
 | 03_MODULES.Retreat.reports.week-02-workshops-events | Week 2: Workshops + Events CRUD — Completion Repor | 03_MODULES/Retreat/reports/week-02-workshops-events.md | — |  |
 | 03_MODULES.Retreat.reports.week-03-faq-bookings | Week 3: FAQ CRUD + Bookings Manager — Completion R | 03_MODULES/Retreat/reports/week-03-faq-bookings.md | — |  |
+| 04_METHODS.Core.TENANT_ISOLATION_CHECKLIST | Tenant Isolation Checklist | 04_METHODS/Core/TENANT_ISOLATION_CHECKLIST.md | — |  |
 | method.core.crud-pattern | Multi-Entry CRUD Panel Pattern | 04_METHODS/Core/crud-pattern.md | Standard |  |
 | method.core.module-registration | Module Registry Self-Registration | 04_METHODS/Core/module-registration.md | Standard |  |
 | method.core.tenant-resolution | Effective Tenant ID Resolution | 04_METHODS/Core/tenant-resolution.md | Standard |  |
+| 06_PLAYBOOKS.CREATE_MODULE | Playbook: Create Module | 06_PLAYBOOKS/CREATE_MODULE.md | — |  |
 | 08_REFERENCE.CREDENTIALS_REGISTRY | Credentials Registry | 08_REFERENCE/CREDENTIALS_REGISTRY.md | — |  |
 | 08_REFERENCE.PROJECTS_REGISTRY | Projects Registry | 08_REFERENCE/PROJECTS_REGISTRY.md | — |  |
 | 09_AI_MEMORY.AI_MEMORY | AI_MEMORY — How to Think & Work | 09_AI_MEMORY/AI_MEMORY.md | — |  |

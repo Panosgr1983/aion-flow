@@ -236,8 +236,8 @@ const SITE_FOLDERS = ['general', 'services', 'blog', 'about', 'testimonials', 'c
 
 export const mediaHelper = {
   async getAll(): Promise<Media[]> {
-    if (!isSupabaseAvailable()) { await delay(300); return mockMedia; }
-    const { data, error } = await supabase.from('media').select('*').in('folder', SITE_FOLDERS).order('created_at', { ascending: false });
+    if (!isSupabaseAvailable()) { await delay(300); return [...mockMedia]; }
+    const { data, error } = await withTenant(supabase.from('media').select('*') as any).in('folder', SITE_FOLDERS).order('created_at', { ascending: false }) as any;
     if (error) throw error;
     return data ?? [];
   },
