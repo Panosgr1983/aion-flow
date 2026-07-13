@@ -22,6 +22,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTenantContext } from './TenantContext';
 import { supabase } from './supabase';
 import { resolveTenantContext, TenantContext } from './loadTenantContext';
+import { switchToProject } from './multiProjectClient';
 
 /** Δομή tenant context που επιστρέφει το hook */
 export type TenantState = TenantContext;
@@ -106,7 +107,10 @@ export function useTenant(): TenantState {
         supabase.from('profiles').update({ is_super_admin: true }).eq('id', user.id);
       }
       // SA path: resolve via generation-based branching
-      resolveTenantContext(selectedTenantId || null, true).then(setState);
+      resolveTenantContext(selectedTenantId || null, true).then((ctx) => {
+        switchToProject(ctx.effectiveTenantId);
+        setState(ctx);
+      });
       return;
     }
 
@@ -117,7 +121,10 @@ export function useTenant(): TenantState {
         ? selectedTenantId
         : (tenant_id || jwtTenantId || null);
 
-      resolveTenantContext(effectiveTenantId, isSuperAdmin).then(setState);
+      resolveTenantContext(effectiveTenantId, isSuperAdmin).then((ctx) => {
+        switchToProject(ctx.effectiveTenantId);
+        setState(ctx);
+      });
     });
   }, [user, isDemoMode, selectedTenantId]);
 
