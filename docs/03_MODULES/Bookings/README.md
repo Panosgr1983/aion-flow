@@ -1,3 +1,27 @@
+---
+id: module.bookings
+title: Bookings Module
+domain: modules
+type: module
+status: current
+maturity: standard
+source_of_truth: true
+owner: AION Engineering
+tags:
+  - bookings
+  - retreat
+used_by:
+  - ktima-kareli
+mmi:
+  l1: 4
+  l2: 4
+  l3: 4
+  l4: 3
+  verified: false
+last_reviewed: 2026-07-12
+review_after: 2026-10-12
+---
+
 # Bookings Module — AION Flow
 
 **Module Name:** bookings

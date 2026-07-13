@@ -1,9 +1,34 @@
+---
+id: module.retreat
+title: Retreat Module
+domain: modules
+type: module
+status: current
+maturity: standard
+source_of_truth: true
+owner: AION Engineering
+tags:
+  - retreat
+  - wellness
+  - crud
+used_by:
+  - ktima-kareli
+mmi:
+  l1: 4
+  l2: 4
+  l3: 4
+  l4: 0
+  verified: false
+last_reviewed: 2026-07-12
+review_after: 2026-10-12
+---
+
 # Retreat Module — MASTER Reference
 
 **Module Name:** retreat
 **Version:** 0.1.0 (planned)
 **Feature Flag:** retreat_module
-**Status:** Planned (v0.6)
+**Status:** Active (v0.6)
 
 ---
 

@@ -1,10 +1,36 @@
+---
+id: module.portfolio
+title: Portfolio Module
+domain: modules
+type: module
+status: current
+maturity: standard
+source_of_truth: true
+owner: AION Engineering
+tags:
+  - portfolio
+  - crud
+  - gallery
+used_by:
+  - kolokotronis
+  - ktima-kareli
+mmi:
+  l1: 4
+  l2: 4
+  l3: 4
+  l4: 0
+  verified: true
+last_reviewed: 2026-07-12
+review_after: 2026-10-12
+---
+
 # Portfolio Module — MASTER Reference
 
 **Module Name:** portfolio
 **Version:** 0.1.0
 **Feature Flag:** portfolio_module
 **Professional Types:** actor, musician, painter, writer, photographer, director, dancer, designer, other
-**Status:** Active development (v0.5 CRUD phase)
+**Status:** Frozen (v1.0)
 
 ---
 
@@ -50,8 +76,12 @@ Platform Integration:
 |-------|------|------|--------|
 | Biography CRUD | Single-row upsert | Week 1 | ✅ Live |
 | Filmography CRUD | Multi-entry CRUD | Week 2 | ✅ Live |
-| Television CRUD | Multi-entry CRUD | Week 3 | 🔜 |
-| Theatre CRUD | Multi-entry CRUD | Week 3 | 🔜 |
+| Television CRUD | Multi-entry CRUD | Week 3 | ✅ Live |
+| Theatre CRUD | Multi-entry CRUD | Week 3 | ✅ Live |
+| Timeline CRUD | Category-based CRUD | Week 4 | ✅ Live |
+| Gallery CRUD | Grid + lightbox CRUD | Week 5 | ✅ Live |
+| Press CRUD | Full-text CRUD | Week 6 | ✅ Live |
+| Showreels CRUD | Video CRUD | Week 6 | ✅ Live |
 
 ## Database Tables
 
@@ -59,12 +89,12 @@ Platform Integration:
 |-------|------|--------|
 | biographies | Single-row per tenant | ✅ Live |
 | filmography_entries | Multi-row | ✅ Live |
-| television_entries | Multi-row | 🔜 Needs media migration |
-| theatre_entries | Multi-row | 🔜 Needs media migration |
-| career_timelines | Multi-row | 🔜 |
-| gallery_items | Multi-row | 🔜 |
-| press_items | Multi-row | 🔜 |
-| showreels | Multi-row | 🔜 |
+| television_entries | Multi-row | ✅ Live |
+| theatre_entries | Multi-row | ✅ Live |
+| career_timelines | Multi-row | ✅ Live |
+| gallery_items | Multi-row | ✅ Live |
+| press_items | Multi-row | ✅ Live |
+| showreels | Multi-row | ✅ Live |
 
 ## Key Decisions (ADRs)
 

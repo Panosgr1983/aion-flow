@@ -30,7 +30,8 @@ export type Permission =
   | 'platform.usage'
   | 'platform.observability'
   | 'platform.system'
-  | 'platform.backups';
+   | 'platform.backups'
+   | 'platform.akes.view';
 
 /** Πίνακας δικαιωμάτων ανά ρόλο */
 const PERMISSION_MATRIX: Record<UserRole, Permission[]> = {
@@ -44,6 +45,7 @@ const PERMISSION_MATRIX: Record<UserRole, Permission[]> = {
 const PLATFORM_CAPS: Permission[] = [
   'platform.overview', 'platform.analytics', 'platform.tenants', 'platform.usage',
   'platform.observability', 'platform.system', 'platform.backups',
+  'platform.akes.view',
   'crm.inbox', 'crm.pipeline', 'crm.tasks',
   'history.view', 'history.restore',
 ];

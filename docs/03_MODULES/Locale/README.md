@@ -1,3 +1,27 @@
+---
+id: module.locale
+title: Locale Module
+domain: modules
+type: module
+status: current
+maturity: experimental
+source_of_truth: true
+owner: AION Engineering
+tags:
+  - localization
+  - translation
+used_by:
+  - ktima-kareli
+mmi:
+  l1: 0
+  l2: 0
+  l3: 1
+  l4: 0
+  verified: false
+last_reviewed: 2026-07-12
+review_after: 2026-10-12
+---
+
 # Locale Module — AION Flow
 
 **Module Name:** locale

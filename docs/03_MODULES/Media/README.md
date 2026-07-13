@@ -1,3 +1,29 @@
+---
+id: module.media
+title: Media Module
+domain: modules
+type: module
+status: current
+maturity: standard
+source_of_truth: true
+owner: AION Engineering
+tags:
+  - media
+  - upload
+  - storage
+used_by:
+  - kolokotronis
+  - ktima-kareli
+mmi:
+  l1: 4
+  l2: 4
+  l3: 4
+  l4: 1
+  verified: false
+last_reviewed: 2026-07-12
+review_after: 2026-10-12
+---
+
 # Media Module — AION Flow
 
 **Module Name:** media

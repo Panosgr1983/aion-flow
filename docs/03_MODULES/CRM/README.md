@@ -1,3 +1,28 @@
+---
+id: module.crm
+title: CRM Module
+domain: modules
+type: module
+status: current
+maturity: standard
+source_of_truth: true
+owner: AION Engineering
+tags:
+  - crm
+  - inbox
+  - pipeline
+used_by:
+  - kolokotronis
+mmi:
+  l1: 4
+  l2: 4
+  l3: 0
+  l4: 0
+  verified: false
+last_reviewed: 2026-07-12
+review_after: 2026-10-12
+---
+
 # CRM Module — AION Flow
 
 **Module Name:** crm

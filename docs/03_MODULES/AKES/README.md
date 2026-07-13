@@ -1,8 +1,33 @@
+---
+id: module.akes
+title: AKES Module
+domain: modules
+type: module
+status: current
+maturity: standard
+source_of_truth: true
+owner: AION Engineering
+tags:
+  - akes
+  - knowledge
+  - governance
+used_by:
+  - aion-flow
+mmi:
+  l1: 4
+  l2: 4
+  l3: 4
+  l4: 2
+  verified: true
+last_reviewed: 2026-07-13
+review_after: 2026-10-13
+---
+
 # AKES Module — Dashboard
 
 **Module Name:** akes
 **Version:** 1.0.0
-**Feature Flag:** `cms` (visible to Super Admin via `platform.overview` permission)
+**Feature Flag:** `cms` (visible to Super Admin via `platform.akes.view`)
 **Status:** PRODUCTION (v1.0)
 
 ---
