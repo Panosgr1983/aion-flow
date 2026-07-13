@@ -5,17 +5,24 @@
 
 ---
 
-> **⚠️ ΚΑΘΕ νέο session ξεκινά από αυτό το έγγραφο.**
-> Δεν περιμένω να μου το ζητήσεις. Το κάνω αυτόματα.
-> 
-> 1. Διαβάζω `AGENTS.md` (αυτό το αρχείο)
-> 2. Διαβάζω `00_INDEX/START_HERE.md`
-> 3. Διαβάζω `00_INDEX/CURRENT_STATE.md`
-> 4. Διαβάζω `00_INDEX/NEXT_APPROVED_ACTION.md`
-> 5. Σου παρουσιάζω πού βρισκόμαστε και τι είναι εγκεκριμένο
-> 6. Περιμένω οδηγίες
+> **⚠️ SESSION START PROTOCOL — Mandatory**
+> At the beginning of EVERY active session, the agent MUST read and confirm
+> the AKES entry protocol before performing any work.
 >
-> Αυτή είναι η προεπιλεγμένη συμπεριφορά μου. Δεν χρειάζεται να μου το υπενθυμίζεις.
+> ```
+> 1. Read AGENTS.md (this file)
+> 2. Read 00_INDEX/START_HERE.md
+> 3. Read 00_INDEX/CURRENT_STATE.md
+> 4. Read 00_INDEX/NEXT_APPROVED_ACTION.md
+> 5. Verify referenced files exist and are current
+> 6. Report contradictions, blockers, or stale documentation
+> 7. Present session-start summary (current state + next approved action)
+> 8. Wait for instructions
+> 9. Do NOT modify files, commit, push, or deploy without explicit approval
+> ```
+>
+> This protocol is verified by reading the files in every session.
+> The agent does NOT "remember" between sessions — it reads and confirms.
 
 ## Entry Protocol
 
