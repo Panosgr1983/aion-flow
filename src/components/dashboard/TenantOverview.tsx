@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useTenant } from '../../lib/useTenant';
 import { useTenantContext } from '../../lib/TenantContext';
 import { checkProjectConnection } from '../../lib/multiProjectClient';
+import { FEATURE_MODULES } from '../../lib/access';
 import { RefreshCw, FileText, BookOpen, Eye, Image, CheckCircle, AlertTriangle, Activity, Plus, History, ArrowRight, Building2, Users, ExternalLink, Globe } from 'lucide-react';
 
 interface RecentActivity {
@@ -96,7 +97,7 @@ export default function TenantOverview() {
         <div>
           <h3 className="text-xs text-gray-500 uppercase tracking-wider mb-3 px-1">Περιεχόμενο Website</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
+            {([
               { icon: FileText, label: 'Υπηρεσίες', desc: 'Διαχειριστείτε τις υπηρεσίες που προσφέρετε', path: '/dashboard/services', color: 'text-blue-400', bg: 'bg-blue-500/10' },
               { icon: BookOpen, label: 'Blog', desc: 'Γράψτε και δημοσιεύστε άρθρα', path: '/dashboard/blog', color: 'text-purple-400', bg: 'bg-purple-500/10' },
               { icon: Eye, label: 'Σελίδες', desc: 'Επεξεργαστείτε στατικές σελίδες', path: '/dashboard/pages', color: 'text-cyan-400', bg: 'bg-cyan-500/10' },
@@ -105,7 +106,13 @@ export default function TenantOverview() {
               { icon: FileText, label: 'Αξίες', desc: 'Ορίστε τις αξίες της επιχείρησής σας', path: '/dashboard/core-values', color: 'text-green-400', bg: 'bg-green-500/10' },
               { icon: FileText, label: 'Σχετικά', desc: 'Γράψτε την ιστορία σας', path: '/dashboard/about', color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
               { icon: FileText, label: 'Κουμπιά CTA', desc: 'Διαχειριστείτε τα call-to-action', path: '/dashboard/cta', color: 'text-pink-400', bg: 'bg-pink-500/10' },
-            ].map(m => (
+            ] as const).filter(m => {
+              if (tenant.isSuperAdmin) return true;
+              const segment = m.path.split('/').pop() || '';
+              const feature = FEATURE_MODULES[segment];
+              if (feature && tenant.featureMap) return tenant.featureMap[feature] === true;
+              return true;
+            }).map(m => (
               <Link key={m.path} to={m.path} className="card p-4 hover:bg-gray-800/40 transition-colors group">
                 <div className="flex items-start gap-3">
                   <div className={`size-10 rounded-xl ${m.bg} flex items-center justify-center shrink-0`}>
@@ -126,10 +133,16 @@ export default function TenantOverview() {
         <div>
           <h3 className="text-xs text-gray-500 uppercase tracking-wider mb-3 px-1">Πολυμέσα & e-Shop</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
+            {([
               { icon: Image, label: 'Πολυμέσα', desc: 'Ανεβάστε και οργανώστε αρχεία', path: '/dashboard/media', color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
               { icon: FileText, label: 'Βιβλία / Προϊόντα', desc: 'Διαχειριστείτε το e-shop σας', path: '/dashboard/products', color: 'text-amber-400', bg: 'bg-amber-500/10' },
-            ].map(m => (
+            ] as const).filter(m => {
+              if (tenant.isSuperAdmin) return true;
+              const segment = m.path.split('/').pop() || '';
+              const feature = FEATURE_MODULES[segment];
+              if (feature && tenant.featureMap) return tenant.featureMap[feature] === true;
+              return true;
+            }).map(m => (
               <Link key={m.path} to={m.path} className="card p-4 hover:bg-gray-800/40 transition-colors group">
                 <div className="flex items-start gap-3">
                   <div className={`size-10 rounded-xl ${m.bg} flex items-center justify-center shrink-0`}>
@@ -375,12 +388,17 @@ export default function TenantOverview() {
           <div className="card p-5">
             <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><FileText size={14} className="text-blue-400" /> CMS Περιεχόμενο</h3>
             <div className="space-y-3">
-              {[
-                { label: 'Υπηρεσίες', count: stats?.services || 0, path: '/dashboard/services' },
-                { label: 'Blog Posts', count: stats?.blog || 0, path: '/dashboard/blog' },
-                { label: 'Σελίδες', count: stats?.pages || 0, path: '/dashboard/pages' },
-                { label: 'Media Files', count: stats?.media || 0, path: '/dashboard/media' },
-              ].map(s => (
+              {([
+                { label: 'Υπηρεσίες', count: stats?.services || 0, path: '/dashboard/services', feature: 'services' },
+                { label: 'Blog Posts', count: stats?.blog || 0, path: '/dashboard/blog', feature: 'blog' },
+                { label: 'Σελίδες', count: stats?.pages || 0, path: '/dashboard/pages', feature: 'pages' },
+                { label: 'Media Files', count: stats?.media || 0, path: '/dashboard/media', feature: 'media' },
+              ] as const).filter(s => {
+                if (tenant.isSuperAdmin) return true;
+                const feature = FEATURE_MODULES[s.feature];
+                if (feature && tenant.featureMap) return tenant.featureMap[feature] === true;
+                return true;
+              }).map(s => (
                 <Link key={s.label} to={s.path} className="flex items-center justify-between py-1.5 hover:text-gray-200 transition-colors">
                   <span className="text-sm text-gray-400">{s.label}</span>
                   <span className="text-sm font-medium text-gray-200">{s.count}</span>
@@ -391,18 +409,21 @@ export default function TenantOverview() {
 
           {/* Quick Actions */}
           <div className="flex items-center gap-3 flex-wrap">
-            <Link to="/dashboard/services/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-blue-500/50 hover:text-blue-400 transition-all">
-              <Plus size={14} /> Νέα Υπηρεσία
-            </Link>
-            <Link to="/dashboard/blog/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-purple-500/50 hover:text-purple-500 transition-all">
-              <Plus size={14} /> Νέο Blog Post
-            </Link>
-            <Link to="/dashboard/pages/new" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-cyan-500/50 hover:text-cyan-400 transition-all">
-              <Plus size={14} /> Νέα Σελίδα
-            </Link>
-            <Link to="/dashboard/media" className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-emerald-500/50 hover:text-emerald-400 transition-all">
-              <Plus size={14} /> Upload Media
-            </Link>
+            {([
+              { label: 'Νέα Υπηρεσία', path: '/dashboard/services/new', feature: 'services' },
+              { label: 'Νέο Blog Post', path: '/dashboard/blog/new', feature: 'blog' },
+              { label: 'Νέα Σελίδα', path: '/dashboard/pages/new', feature: 'pages' },
+              { label: 'Upload Media', path: '/dashboard/media', feature: 'media' },
+            ] as const).filter(a => {
+              if (tenant.isSuperAdmin) return true;
+              const feature = FEATURE_MODULES[a.feature];
+              if (feature && tenant.featureMap) return tenant.featureMap[feature] === true;
+              return true;
+            }).map(a => (
+              <Link key={a.label} to={a.path} className="btn-ghost text-sm flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed border-gray-700 hover:border-blue-500/50 hover:text-blue-400 transition-all">
+                <Plus size={14} /> {a.label}
+              </Link>
+            ))}
           </div>
 
           {/* Recent Activity */}
