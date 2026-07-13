@@ -29,6 +29,7 @@
 | 02_TENANTS.kolokotronis.README | Tenant: Νικόλας Κολοκοτρώνης | 02_TENANTS/kolokotronis/README.md | — |  |
 | 02_TENANTS.ktima-kareli.CONTENT_MAPPING | Tenant Content Mapping: Κτήμα Καρέλη | 02_TENANTS/ktima-kareli/CONTENT_MAPPING.md | — |  |
 | 02_TENANTS.ktima-kareli.README | Tenant: Κτήμα Καρέλη | 02_TENANTS/ktima-kareli/README.md | — |  |
+| 03_MODULES.AKES.README | AKES Module — Dashboard | 03_MODULES/AKES/README.md | — |  |
 | 03_MODULES.Blog.README | Blog Module — AION Flow | 03_MODULES/Blog/README.md | — |  |
 | 03_MODULES.Bookings.README | Bookings Module — AION Flow | 03_MODULES/Bookings/README.md | — |  |
 | 03_MODULES.CRM.README | CRM Module — AION Flow | 03_MODULES/CRM/README.md | — |  |

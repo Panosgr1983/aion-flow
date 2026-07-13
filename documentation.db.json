@@ -325,6 +325,19 @@
     "used_by": []
   },
   {
+    "id": "03_MODULES.AKES.README",
+    "title": "AKES Module — Dashboard",
+    "path": "03_MODULES/AKES/README.md",
+    "status": "—",
+    "maturity": "—",
+    "tags": [],
+    "owner": "—",
+    "last_reviewed": null,
+    "review_after": null,
+    "depends": [],
+    "used_by": []
+  },
+  {
     "id": "03_MODULES.Blog.README",
     "title": "Blog Module — AION Flow",
     "path": "03_MODULES/Blog/README.md",
