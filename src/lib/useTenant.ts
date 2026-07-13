@@ -108,7 +108,7 @@ export function useTenant(): TenantState {
       }
       // SA path: resolve via generation-based branching
       resolveTenantContext(selectedTenantId || null, true).then((ctx) =>
-        switchToProject(ctx.effectiveTenantId).then(() => setState(ctx))
+        switchToProject(ctx.effectiveTenantId).catch(() => {}).then(() => setState(ctx))
       );
       return;
     }
@@ -121,7 +121,7 @@ export function useTenant(): TenantState {
         : (tenant_id || jwtTenantId || null);
 
       resolveTenantContext(effectiveTenantId, isSuperAdmin).then((ctx) =>
-        switchToProject(ctx.effectiveTenantId).then(() => setState(ctx))
+        switchToProject(ctx.effectiveTenantId).catch(() => {}).then(() => setState(ctx))
       );
     });
   }, [user, isDemoMode, selectedTenantId]);
