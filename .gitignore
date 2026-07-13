@@ -23,7 +23,7 @@ dist-ssr
 *.sw?
 .env
 .vercel
-scripts/
+/scripts/
 
 # LibreOffice lock files
 .~lock.*
