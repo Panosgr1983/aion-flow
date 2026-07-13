@@ -138,3 +138,4 @@
 7. **Update CURRENT_STATE.md + indexes before marking Done**
 8. **Never enable a tenant-scoped module whose isolation status is not VALIDATED or STANDARD**
 9. **Every new module must pass TENANT_ISOLATION_CHECKLIST.md before feature flag activation**
+10. **A multilingual feature is COMPLETE only when verified in DB, CMS authoring, AND public-site rendering, with documented fallback behavior**
