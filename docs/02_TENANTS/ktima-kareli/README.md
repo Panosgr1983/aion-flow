@@ -13,7 +13,7 @@
 | **Public site** | React 19 + Vite 8 SPA |
 | **Hosting** | Vercel |
 | **CMS** | AION Flow (`aion-flowv2.vercel.app`) |
-| **Database** | Shared Supabase (`qhbgptlklsavezxpksao`) |
+| **Database** | Independent Supabase (`idagkrwpmcnppjpnrbgv`) |
 | **Theme** | OKLCH sage/olive, Cormorant Garamond + Inter |
 
 ## Active Modules
@@ -48,7 +48,7 @@
 | Target | URL | Env Vars |
 |--------|-----|----------|
 | CMS | `https://aion-flowv2.vercel.app` | Supabase keys |
-| Public site | `https://ktima-kareli-site.vercel.app` | `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` |
+| Public site | `https://ktima-kareli-site.vercel.app` | `VITE_SUPABASE_URL=idagkrwpmcnppjpnrbgv`, `VITE_SUPABASE_ANON_KEY=sb_publishable_Bhg4ZXamykEokOHUS2PGTA_MrvZpMeT` |
 
 ## Key Contacts
 
@@ -56,7 +56,7 @@
 - **Phone:** +30 27440 12345
 - **Address:** Λουτράκι, Κορινθία
 
-## Database Tables (5)
+## Database Tables (9)
 
 | Table | Rows | Purpose |
 |-------|------|---------|
@@ -65,7 +65,17 @@
 | `retreat_events` | 6 | Events (bilingual) |
 | `faq_entries` | 5 | FAQ |
 | `booking_submissions` | 0 | Booking requests |
+| `testimonials` | 6 | Guest reviews |
+| `gallery_items` | 10 | Gallery photos |
+| `site_settings` | 8 | Contact, SEO, branding |
+| `locale_translations` | 102 | GR/EN translation keys |
 
 ---
+
+## Storage
+
+| Bucket | Files | Purpose |
+|--------|-------|---------|
+| `kareli-images` | 20 | Hero, experiences, gallery, logos, icons |
 
 *See `CONTENT_MAPPING.md` for complete content inventory.*

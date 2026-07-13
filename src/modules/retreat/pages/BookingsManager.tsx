@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { RefreshCw, Mail, Phone, CalendarDays, Users as UsersIcon, MessageSquare } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
+import { getCurrentContentClient } from '../../../lib/multiProjectClient';
 import { useTenant } from '../../../lib/useTenant';
 import { withTenant } from '../../../lib/useTenantQuery';
 
@@ -13,6 +14,7 @@ const STATUS_OPTIONS = [
 
 export default function BookingsManager() {
   const { effectiveTenantId } = useTenant();
+  const db = getCurrentContentClient();
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<any | null>(null);
@@ -21,7 +23,7 @@ export default function BookingsManager() {
   const load = useCallback(async () => {
     if (!effectiveTenantId) return;
     setLoading(true);
-    const { data } = await withTenant(supabase.from('booking_submissions').select('*').order('created_at', { ascending: false }), effectiveTenantId);
+    const { data } = await withTenant(db.from('booking_submissions').select('*').order('created_at', { ascending: false }), effectiveTenantId);
     setItems(data || []); setLoading(false);
   }, [effectiveTenantId]);
 
@@ -31,13 +33,13 @@ export default function BookingsManager() {
   const unread = items.filter(i => !i.read).length;
 
   const updateStatus = async (id: string, status: string) => {
-    await supabase.from('booking_submissions').update({ status }).eq('id', id).eq('tenant_id', effectiveTenantId);
+    await db.from('booking_submissions').update({ status }).eq('id', id).eq('tenant_id', effectiveTenantId);
     if (selected?.id === id) setSelected({ ...selected, status });
     await load();
   };
 
   const markRead = async (id: string) => {
-    await supabase.from('booking_submissions').update({ read: true }).eq('id', id).eq('tenant_id', effectiveTenantId);
+    await db.from('booking_submissions').update({ read: true }).eq('id', id).eq('tenant_id', effectiveTenantId);
     if (selected?.id === id) setSelected({ ...selected, read: true });
     setItems(prev => prev.map(i => i.id === id ? { ...i, read: true } : i));
   };

@@ -26,6 +26,7 @@
 */
 
 import { supabase, isSupabaseAvailable } from './supabase';
+import { getCurrentContentClient } from './multiProjectClient';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
 import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory } from '../types/supabase';
 import { trackEvent } from './analytics';
@@ -525,7 +526,8 @@ export const testimonialsHelper = {
   ...createMockHelper<Testimonial>(mockTestimonials, 'testimonials'),
   async getAll(): Promise<Testimonial[]> {
     if (!isSupabaseAvailable()) { await delay(300); return [...mockTestimonials]; }
-    const { data, error } = await withTenant(supabase.from('testimonials').select('*') as any).order('sort_order').order('created_at', { ascending: false }) as any;
+    const client = getCurrentContentClient();
+    const { data, error } = await withTenant(client.from('testimonials').select('*') as any).order('sort_order').order('created_at', { ascending: false }) as any;
     if (error) throw error;
     return data ?? [];
   },
@@ -702,7 +704,8 @@ export const siteSettingsHelper = {
   ...createMockHelper<SiteSetting>(mockSiteSettings, 'site_settings'),
   async getAll(): Promise<SiteSetting[]> {
     if (!isSupabaseAvailable()) { await delay(300); return [...mockSiteSettings]; }
-    const { data, error } = await withTenant(supabase.from('site_settings').select('*') as any).order('category').order('key') as any;
+    const client = getCurrentContentClient();
+    const { data, error } = await withTenant(client.from('site_settings').select('*') as any).order('category').order('key') as any;
     if (error) throw error;
     return data ?? [];
   },

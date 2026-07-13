@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Save, Plus, RefreshCw, GripVertical, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
+import { getCurrentContentClient } from '../../../lib/multiProjectClient';
 import { useTenant } from '../../../lib/useTenant';
 import { withTenant } from '../../../lib/useTenantQuery';
 import MediaPicker from '../../../components/dashboard/MediaPicker';
@@ -16,6 +17,7 @@ const EMPTY = { title: '', description: '', duration: '', level: '', includes: [
 
 export default function ExperiencesCRUD() {
   const { effectiveTenantId } = useTenant();
+  const db = getCurrentContentClient();
   const [items, setItems] = useState<Experience[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -29,7 +31,7 @@ export default function ExperiencesCRUD() {
   const load = useCallback(async () => {
     if (!effectiveTenantId) return;
     setLoading(true);
-    const { data } = await withTenant(supabase.from('experiences').select('*').order('sort_order', { ascending: true }), effectiveTenantId);
+    const { data } = await withTenant(db.from('experiences').select('*').order('sort_order', { ascending: true }), effectiveTenantId);
     setItems(data || []); setLoading(false); setEditing(null); setError(null);
   }, [effectiveTenantId]);
 
@@ -58,12 +60,12 @@ export default function ExperiencesCRUD() {
 
     try {
       if (editing === 'new') {
-        const { data: c, error: ie } = await supabase.from('experiences').insert(payload).select().single();
+        const { data: c, error: ie } = await db.from('experiences').insert(payload).select().single();
         if (ie) throw new Error(ie.message);
         await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'experiences', record_id: c.id, entity_name: c.title, operation: 'create', snapshot_before: null, snapshot_after: { title: c.title }, summary: `Δημιουργία εμπειρίας: ${c.title}`, user_id: user?.id || null });
       } else {
         const before = items.find(e => e.id === editing);
-        const { data: u, error: ue } = await supabase.from('experiences').update(payload).eq('id', editing).eq('tenant_id', effectiveTenantId).select().single();
+        const { data: u, error: ue } = await db.from('experiences').update(payload).eq('id', editing).eq('tenant_id', effectiveTenantId).select().single();
         if (ue) throw new Error(ue.message);
         await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'experiences', record_id: editing, entity_name: u.title, operation: 'update', snapshot_before: { title: before?.title }, snapshot_after: { title: u.title }, summary: `Ενημέρωση εμπειρίας: ${u.title}`, user_id: user?.id || null });
       }
@@ -76,7 +78,7 @@ export default function ExperiencesCRUD() {
     setDeleting(id);
     const { data: { user } } = await supabase.auth.getUser();
     const entry = items.find(e => e.id === id);
-    await supabase.from('experiences').delete().eq('id', id).eq('tenant_id', effectiveTenantId);
+    await db.from('experiences').delete().eq('id', id).eq('tenant_id', effectiveTenantId);
     await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'experiences', record_id: id, entity_name: entry?.title, operation: 'delete', snapshot_before: { title: entry?.title }, snapshot_after: null, summary: `Διαγραφή εμπειρίας: ${entry?.title}`, user_id: user?.id || null });
     setDeleting(null); await load();
   };

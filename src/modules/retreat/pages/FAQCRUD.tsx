@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Save, Plus, RefreshCw, GripVertical, HelpCircle } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
+import { getCurrentContentClient } from '../../../lib/multiProjectClient';
 import { useTenant } from '../../../lib/useTenant';
 import { withTenant } from '../../../lib/useTenantQuery';
 
@@ -14,6 +15,7 @@ const EMPTY = { question: '', answer: '', sort_order: 0, status: 'draft' as stri
 
 export default function FAQCRUD() {
   const { effectiveTenantId } = useTenant();
+  const db = getCurrentContentClient();
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ export default function FAQCRUD() {
   const load = useCallback(async () => {
     if (!effectiveTenantId) return;
     setLoading(true);
-    const { data } = await withTenant(supabase.from('faq_entries').select('*').order('sort_order', { ascending: true }), effectiveTenantId);
+    const { data } = await withTenant(db.from('faq_entries').select('*').order('sort_order', { ascending: true }), effectiveTenantId);
     setItems(data || []); setLoading(false); setEditing(null); setError(null);
   }, [effectiveTenantId]);
 
@@ -47,11 +49,11 @@ export default function FAQCRUD() {
 
     try {
       if (editing === 'new') {
-        const { data: c, error: ie } = await supabase.from('faq_entries').insert(payload).select().single();
+        const { data: c, error: ie } = await db.from('faq_entries').insert(payload).select().single();
         if (ie) throw new Error(ie.message);
         await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'faq_entries', record_id: c.id, entity_name: c.question?.slice(0, 50), operation: 'create', snapshot_before: null, snapshot_after: { question: c.question?.slice(0, 50) }, summary: `Δημιουργία FAQ`, user_id: user?.id || null });
       } else {
-        const { data: u, error: ue } = await supabase.from('faq_entries').update(payload).eq('id', editing).eq('tenant_id', effectiveTenantId).select().single();
+        const { data: u, error: ue } = await db.from('faq_entries').update(payload).eq('id', editing).eq('tenant_id', effectiveTenantId).select().single();
         if (ue) throw new Error(ue.message);
         await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'faq_entries', record_id: editing, entity_name: u.question?.slice(0, 50), operation: 'update', snapshot_before: null, snapshot_after: { question: u.question?.slice(0, 50) }, summary: `Ενημέρωση FAQ`, user_id: user?.id || null });
       }
@@ -64,7 +66,7 @@ export default function FAQCRUD() {
     setDeleting(id);
     const { data: { user } } = await supabase.auth.getUser();
     const entry = items.find(e => e.id === id);
-    await supabase.from('faq_entries').delete().eq('id', id).eq('tenant_id', effectiveTenantId);
+    await db.from('faq_entries').delete().eq('id', id).eq('tenant_id', effectiveTenantId);
     await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'faq_entries', record_id: id, operation: 'delete', snapshot_before: { question: entry?.question?.slice(0, 50) }, snapshot_after: null, summary: `Διαγραφή FAQ`, user_id: user?.id || null });
     setDeleting(null); await load();
   };

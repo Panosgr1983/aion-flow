@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Save, Plus, RefreshCw, GripVertical, Image as ImageIcon } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
+import { getCurrentContentClient } from '../../../lib/multiProjectClient';
 import { useTenant } from '../../../lib/useTenant';
 import { withTenant } from '../../../lib/useTenantQuery';
 import MediaPicker from '../../../components/dashboard/MediaPicker';
@@ -15,6 +16,7 @@ const EMPTY = { title: '', title_en: '', date: '', organizer: '', capacity: 0, p
 
 export default function EventsCRUD() {
   const { effectiveTenantId } = useTenant();
+  const db = getCurrentContentClient();
   const [items, setItems] = useState<any[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +32,7 @@ export default function EventsCRUD() {
   const load = useCallback(async () => {
     if (!effectiveTenantId) return;
     setLoading(true);
-    const { data } = await withTenant(supabase.from('retreat_events').select('*').order('sort_order', { ascending: true }).order('date', { ascending: false, nulls: 'last' }), effectiveTenantId);
+    const { data } = await withTenant(db.from('retreat_events').select('*').order('sort_order', { ascending: true }).order('date', { ascending: false, nulls: 'last' }), effectiveTenantId);
     setItems(data || []); setLoading(false); setEditing(null); setError(null);
   }, [effectiveTenantId]);
 
@@ -52,12 +54,12 @@ export default function EventsCRUD() {
 
     try {
       if (editing === 'new') {
-        const { data: c, error: ie } = await supabase.from('retreat_events').insert(payload).select().single();
+        const { data: c, error: ie } = await db.from('retreat_events').insert(payload).select().single();
         if (ie) throw new Error(ie.message);
         await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'retreat_events', record_id: c.id, entity_name: c.title, operation: 'create', snapshot_before: null, snapshot_after: { title: c.title }, summary: `Δημιουργία εκδήλωσης: ${c.title}`, user_id: user?.id || null });
       } else {
         const before = items.find(e => e.id === editing);
-        const { data: u, error: ue } = await supabase.from('retreat_events').update(payload).eq('id', editing).eq('tenant_id', effectiveTenantId).select().single();
+        const { data: u, error: ue } = await db.from('retreat_events').update(payload).eq('id', editing).eq('tenant_id', effectiveTenantId).select().single();
         if (ue) throw new Error(ue.message);
         await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'retreat_events', record_id: editing, entity_name: u.title, operation: 'update', snapshot_before: { title: before?.title }, snapshot_after: { title: u.title }, summary: `Ενημέρωση εκδήλωσης: ${u.title}`, user_id: user?.id || null });
       }
@@ -70,7 +72,7 @@ export default function EventsCRUD() {
     setDeleting(id);
     const { data: { user } } = await supabase.auth.getUser();
     const entry = items.find(e => e.id === id);
-    await supabase.from('retreat_events').delete().eq('id', id).eq('tenant_id', effectiveTenantId);
+    await db.from('retreat_events').delete().eq('id', id).eq('tenant_id', effectiveTenantId);
     await supabase.from('content_history').insert({ tenant_id: effectiveTenantId, table_name: 'retreat_events', record_id: id, entity_name: entry?.title, operation: 'delete', snapshot_before: { title: entry?.title }, snapshot_after: null, summary: `Διαγραφή εκδήλωσης: ${entry?.title}`, user_id: user?.id || null });
     setDeleting(null); await load();
   };

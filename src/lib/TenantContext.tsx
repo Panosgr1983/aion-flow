@@ -17,6 +17,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from './supabase';
+import { switchToProject, clearProjectCache } from './multiProjectClient';
 
 const STORAGE_KEY = 'aion_selected_tenant';
 
@@ -35,12 +36,19 @@ export function TenantProvider({ children }: { children: ReactNode }) {
     try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
   });
 
+  // Switch project client when tenant changes
+  useEffect(() => {
+    switchToProject(selectedTenantId);
+  }, [selectedTenantId]);
+
   // Sync with auth state: on SIGNED_IN, always clear tenant selection
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN') {
         setSelectedTenantId(null);
         try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      } else if (event === 'SIGNED_OUT') {
+        clearProjectCache();
       }
     });
     return () => subscription.unsubscribe();
