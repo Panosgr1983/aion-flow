@@ -112,6 +112,7 @@
 | Portfolio sidebar group | 🟡 Beta | Registry-driven, conditional on feature flag |
 | Architecture Patterns | ✅ Stable | 12 patterns in `docs/patterns/` |
 | Documentation-First Rule | ✅ Stable | ADR-012, pre-commit checklist |
+| AKES Dashboard | ✅ Stable | Platform health MMI, doc search at `/dashboard/akes` |
 | Generic Portfolio Schema | 🔄 Planned | v0.2 — portfolio_profiles, portfolio_entries |
 
 ## Retreat Module (Planned v0.6)

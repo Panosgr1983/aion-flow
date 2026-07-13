@@ -793,6 +793,19 @@
     "used_by": []
   },
   {
+    "id": "04_METHODS.Core.MODULE_MATURITY",
+    "title": "Module Maturity Model (MMI)",
+    "path": "04_METHODS/Core/MODULE_MATURITY.md",
+    "status": "—",
+    "maturity": "—",
+    "tags": [],
+    "owner": "—",
+    "last_reviewed": null,
+    "review_after": null,
+    "depends": [],
+    "used_by": []
+  },
+  {
     "id": "04_METHODS.Core.TENANT_ISOLATION_CHECKLIST",
     "title": "Tenant Isolation Checklist",
     "path": "04_METHODS/Core/TENANT_ISOLATION_CHECKLIST.md",

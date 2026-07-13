@@ -65,6 +65,7 @@
 | 03_MODULES.Retreat.reports.week-01-tenant-setup | Week 1: Tenant Setup + Experiences CRUD — Completi | 03_MODULES/Retreat/reports/week-01-tenant-setup.md | — |  |
 | 03_MODULES.Retreat.reports.week-02-workshops-events | Week 2: Workshops + Events CRUD — Completion Repor | 03_MODULES/Retreat/reports/week-02-workshops-events.md | — |  |
 | 03_MODULES.Retreat.reports.week-03-faq-bookings | Week 3: FAQ CRUD + Bookings Manager — Completion R | 03_MODULES/Retreat/reports/week-03-faq-bookings.md | — |  |
+| 04_METHODS.Core.MODULE_MATURITY | Module Maturity Model (MMI) | 04_METHODS/Core/MODULE_MATURITY.md | — |  |
 | 04_METHODS.Core.TENANT_ISOLATION_CHECKLIST | Tenant Isolation Checklist | 04_METHODS/Core/TENANT_ISOLATION_CHECKLIST.md | — |  |
 | method.core.crud-pattern | Multi-Entry CRUD Panel Pattern | 04_METHODS/Core/crud-pattern.md | Standard |  |
 | method.core.module-registration | Module Registry Self-Registration | 04_METHODS/Core/module-registration.md | Standard |  |

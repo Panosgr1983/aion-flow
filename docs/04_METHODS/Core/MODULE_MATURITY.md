@@ -217,5 +217,5 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 | Bookings | 100% | PRODUCTION | ❌ |
 | CRM | 33% | BLOCKED | ❌ |
 | Locale | 8% | EARLY | ❌ |
-| AKES | 95% | PRODUCTION | ❌ |
+| AKES | 95% | PRODUCTION | ❌ | (Dashboard live at `/dashboard/akes` — MMI, doc search, blockers) |
 | **Platform** | **72%** | **STABLE** | — |
