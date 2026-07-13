@@ -6,6 +6,38 @@
 
 ---
 
+## Phase 0: CMS Connection (June 6, 2026)
+
+### Initial Session — AION Flow ↔ Kolokotronis Connection
+
+The very first session connected the AION Flow CMS (originally an e-commerce platform) to the Kolokotronis site.
+
+| Decision | Detail |
+|----------|--------|
+| **Date** | June 6, 2026 — 7:50 AM |
+| **CMS base** | AION Flow V2 (React 18 + Vite 5 + Supabase) |
+| **Original state** | 100% e-commerce (products, orders, customers) |
+| **Goal** | Transform into business CMS for psychologist site |
+| **Supabase project** | `qhbgptlklsavezxpksao.supabase.co` (still active) |
+
+### 5 Key Architectural Decisions (made in first session)
+
+1. **`core_values` instead of `values`** — `values` is SQL reserved keyword
+2. **Blog content as `jsonb`** — TipTap editor stores JSON document structure
+3. **SEO layer from start** — `meta_title`, `meta_description`, `og_image` on all content tables
+4. **Generic `site_settings` table** — `key` TEXT UNIQUE, `value` JSONB for all site-wide settings
+5. **Storage strategy** — Supabase Storage buckets (`site-images`, `blog-images`) instead of raw URLs
+
+### Multi-Tenant Decision
+
+Before any code was written, the user requested `tenant_id` on ALL new tables. This single decision transformed AION Flow from a single-tenant CMS into a multi-tenant platform.
+
+### Key Quote (from first session)
+
+> "Αν μιλάμε για το template που θα χρησιμοποιήσεις για μελλοντικούς πελάτες του AION, θα έδινα έγκριση αφού γίνουν αυτές οι 5 αλλαγές. Με αυτές αποκτάς ουσιαστικά ένα 'AION Business CMS' που μπορεί να χρησιμοποιηθεί ξανά και ξανά σε κάθε νέο πελάτη."
+
+---
+
 ## Phase 1: Foundation (April — May 2026)
 
 ### Site Launch
