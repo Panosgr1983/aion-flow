@@ -14,6 +14,19 @@ tags:
 used_by:
   - kolokotronis
   - ktima-kareli
+relationships:
+  uses:
+    - media
+    - categories
+    - ordering
+  related_methods:
+    - tenant-resolution
+  reusable_for:
+    - Hotels
+    - Resorts
+    - Consultants
+    - Artists
+    - Airbnb hosts
 mmi:
   l1: 4
   l2: 4

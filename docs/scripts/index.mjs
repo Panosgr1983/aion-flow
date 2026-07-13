@@ -12,33 +12,75 @@ function parseFrontmatter(content) {
   if (!match) return {};
   const meta = {};
   const lines = match[1].split('\n');
-  let currentKey = null;
-  let currentObj = null;
-  let inBlock = false;
+  const stack = []; // [{ meta: parentObj, indent: number }]
+  
   for (const line of lines) {
-    // Detect indented sub-object (2+ spaces before key)
-    const indentMatch = line.match(/^(\s{2,})(\S+):\s*(.*)/);
-    const topMatch = line.match(/^(\S+):\s*(.*)/);
+    if (!line.trim()) continue;
     
-    if (indentMatch && currentObj !== null) {
-      // Sub-key of current object
-      const subKey = indentMatch[2];
-      let subVal = indentMatch[3].trim();
-      try { subVal = JSON.parse(subVal); } catch {}
-      currentObj[subKey] = subVal;
-    } else if (topMatch) {
-      const key = topMatch[1];
-      let val = topMatch[2].trim();
-      // Check if this starts a sub-object (next lines are indented)
-      currentKey = key;
+    const indent = line.search(/\S/);
+    const stripped = line.slice(indent);
+    const isListItem = stripped.startsWith('- ');
+    const isKeyValue = stripped.includes(':');
+    
+    // Pop stack to correct indent level
+    while (stack.length > 0 && stack[stack.length - 1].indent >= indent) {
+      stack.pop();
+    }
+    
+    if (isListItem) {
+      // Add to parent's list
+      const value = stripped.slice(2).trim();
+      const parent = stack[stack.length - 1];
+      if (parent && Array.isArray(parent.meta)) {
+        parent.meta.push(value);
+      }
+      continue;
+    }
+    
+    if (isKeyValue) {
+      const colonIdx = stripped.indexOf(':');
+      const key = stripped.slice(0, colonIdx).trim();
+      let val = stripped.slice(colonIdx + 1).trim();
+      
       if (val === '') {
-        currentObj = {};
-        meta[key] = currentObj;
+        // Peek ahead to see if children are list items or sub-keys
+        const nextLine = lines[lines.indexOf(line) + 1];
+        let isList = false;
+        if (nextLine) {
+          const nextIndent = nextLine.search(/\S/);
+          const nextStripped = nextLine.slice(nextIndent);
+          isList = nextStripped.startsWith('- ');
+        }
+        
+        if (isList) {
+          const list = [];
+          if (stack.length === 0) {
+            meta[key] = list;
+          } else {
+            const parent = stack[stack.length - 1].meta;
+            parent[key] = list;
+          }
+          stack.push({ meta: list, indent });
+        } else {
+          const obj = {};
+          if (stack.length === 0) {
+            meta[key] = obj;
+          } else {
+            const parent = stack[stack.length - 1].meta;
+            parent[key] = obj;
+          }
+          stack.push({ meta: obj, indent });
+        }
       } else {
         try { val = JSON.parse(val); } catch {}
-        meta[key] = val;
-        currentObj = null;
+        if (stack.length === 0) {
+          meta[key] = val;
+        } else {
+          const parent = stack[stack.length - 1].meta;
+          parent[key] = val;
+        }
       }
+      continue;
     }
   }
   return meta;
@@ -104,8 +146,8 @@ for (const file of files.sort()) {
     owner: meta.owner || '—',
     last_reviewed: meta.last_reviewed || null,
     review_after: meta.review_after || null,
-    depends: meta.depends || [],
     used_by: meta.used_by || [],
+    relationships: meta.relationships || null,
     mmi,
   };
   
@@ -122,18 +164,76 @@ for (const file of files.sort()) {
 const staleThreshold = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
 const staleCount = index.filter(d => d.last_reviewed && new Date(d.last_reviewed) < staleThreshold).length;
 
+// Build relationship map (graph)
+const relationshipMap = { by_module: {}, by_tenant: {}, by_method: {}, by_playbook: {}, reusable_for: {} };
+for (const entry of index) {
+  if (!entry.relationships) continue;
+  const r = entry.relationships;
+  const moduleId = entry.id.replace('module.', '');
+  // by_module: what this module uses and what uses it
+  if (r.uses) {
+    const mod = relationshipMap.by_module[moduleId] || {};
+    mod.uses = r.uses;
+    for (const dep of r.uses) {
+      const depMod = relationshipMap.by_module[dep] || {};
+      depMod.used_by = depMod.used_by || [];
+      if (!depMod.used_by.includes(moduleId)) depMod.used_by.push(moduleId);
+      relationshipMap.by_module[dep] = depMod;
+    }
+    relationshipMap.by_module[moduleId] = mod;
+  }
+  // by_tenant: tenants that use this module
+  if (entry.used_by) {
+      const usedBy = entry.used_by || [];
+      for (const tenant of usedBy) {
+      relationshipMap.by_tenant[tenant] = relationshipMap.by_tenant[tenant] || [];
+      if (!relationshipMap.by_tenant[tenant].includes(moduleId)) {
+        relationshipMap.by_tenant[tenant].push(moduleId);
+      }
+    }
+  }
+  // by_method: methods referenced by this module
+  if (r.related_methods) {
+    for (const method of r.related_methods) {
+      relationshipMap.by_method[method] = relationshipMap.by_method[method] || [];
+      if (!relationshipMap.by_method[method].includes(moduleId)) {
+        relationshipMap.by_method[method].push(moduleId);
+      }
+    }
+  }
+  // by_playbook: playbooks referenced by this module
+  if (r.related_playbooks) {
+    for (const playbook of r.related_playbooks) {
+      relationshipMap.by_playbook[playbook] = relationshipMap.by_playbook[playbook] || [];
+      if (!relationshipMap.by_playbook[playbook].includes(moduleId)) {
+        relationshipMap.by_playbook[playbook].push(moduleId);
+      }
+    }
+  }
+  // reusable_for: suggested industries
+  if (r.reusable_for) {
+    for (const industry of r.reusable_for) {
+      relationshipMap.reusable_for[industry] = relationshipMap.reusable_for[industry] || [];
+      if (!relationshipMap.reusable_for[industry].includes(moduleId)) {
+        relationshipMap.reusable_for[industry].push(moduleId);
+      }
+    }
+  }
+}
+
 // Add index metadata
 const indexMeta = {
   _meta: {
     generated_at: generatedAt,
     git_commit: gitCommit,
-    index_version: '1.0',
+    index_version: '1.1',
     docs_count: index.length,
     stale_docs_count: staleCount,
     mmi_modules: mmiModules,
     platform_mmi: mmiModules.length > 0
       ? Math.round(mmiModules.reduce((s, m) => s + m.score, 0) / mmiModules.length)
       : null,
+    relationships: relationshipMap,
   },
   entries: index,
 };

@@ -12,6 +12,21 @@ tags:
   - retreat
 used_by:
   - ktima-kareli
+relationships:
+  uses:
+    - media
+    - retreat
+    - mail
+  related_methods:
+    - tenant-resolution
+    - bookings-pattern
+  related_playbooks:
+    - NEW_TENANT
+  reusable_for:
+    - Hotels
+    - Resorts
+    - Spas
+    - Retreat centers
 mmi:
   l1: 4
   l2: 4

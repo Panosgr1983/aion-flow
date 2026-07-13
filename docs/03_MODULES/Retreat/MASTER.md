@@ -13,6 +13,22 @@ tags:
   - crud
 used_by:
   - ktima-kareli
+relationships:
+  uses:
+    - media
+    - bookings
+    - locale
+  related_methods:
+    - tenant-resolution
+    - bookings-pattern
+  related_playbooks:
+    - NEW_TENANT
+  reusable_for:
+    - Hotels
+    - Resorts
+    - Spas
+    - Retreat centers
+    - Wellness tourism
 mmi:
   l1: 4
   l2: 4

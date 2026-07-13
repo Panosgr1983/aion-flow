@@ -13,6 +13,15 @@ tags:
   - governance
 used_by:
   - aion-flow
+relationships:
+  uses:
+    - platform
+  related_methods:
+    - module-maturity
+    - tenant-isolation
+  reusable_for:
+    - Platform teams
+    - Engineering organizations
 mmi:
   l1: 4
   l2: 4

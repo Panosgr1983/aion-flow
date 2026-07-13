@@ -9,6 +9,7 @@
 | 00_INDEX.NEXT_APPROVED_ACTION | NEXT APPROVED ACTION | 00_INDEX/NEXT_APPROVED_ACTION.md | — | — |  |
 | 00_INDEX.SEARCH_INDEX | SEARCH INDEX — AION Knowledge & Engineering S | 00_INDEX/SEARCH_INDEX.md | — | — |  |
 | 00_INDEX.START_HERE | START HERE — AION Knowledge & Engineering Sys | 00_INDEX/START_HERE.md | — | — |  |
+| platform.aion-dna | AION DNA | 01_PLATFORM/AION_DNA.md | current | — | dna, identity, platform |
 | 01_PLATFORM.ARCHITECTURE | AION — Platform Architecture Overview | 01_PLATFORM/ARCHITECTURE.md | — | — |  |
 | 01_PLATFORM.CHANGELOG | AION CMS — Changelog | 01_PLATFORM/CHANGELOG.md | — | — |  |
 | 01_PLATFORM.CONSTITUTION | AION Flow Development Constitution | 01_PLATFORM/CONSTITUTION.md | — | — |  |
@@ -29,22 +30,22 @@
 | 02_TENANTS.kolokotronis.README | Tenant: Νικόλας Κολοκοτρώνης | 02_TENANTS/kolokotronis/README.md | — | — |  |
 | 02_TENANTS.ktima-kareli.CONTENT_MAPPING | Tenant Content Mapping: Κτήμα Καρέλη | 02_TENANTS/ktima-kareli/CONTENT_MAPPING.md | — | — |  |
 | 02_TENANTS.ktima-kareli.README | Tenant: Κτήμα Καρέλη | 02_TENANTS/ktima-kareli/README.md | — | — |  |
-| module.akes | AKES Module | 03_MODULES/AKES/README.md | current | 88% |  |
-| module.blog | Blog Module | 03_MODULES/Blog/README.md | current | 75% |  |
-| module.bookings | Bookings Module | 03_MODULES/Bookings/README.md | current | 94% |  |
-| module.crm | CRM Module | 03_MODULES/CRM/README.md | current | 50% |  |
+| module.akes | AKES Module | 03_MODULES/AKES/README.md | current | 88% | akes, knowledge, governance |
+| module.blog | Blog Module | 03_MODULES/Blog/README.md | current | 75% | blog, cms |
+| module.bookings | Bookings Module | 03_MODULES/Bookings/README.md | current | 94% | bookings, retreat |
+| module.crm | CRM Module | 03_MODULES/CRM/README.md | current | 50% | crm, inbox, pipeline |
 | 03_MODULES.Locale.ARCHITECTURE | Locale Module — Architecture | 03_MODULES/Locale/ARCHITECTURE.md | — | — |  |
 | 03_MODULES.Locale.CMS | Locale Module — CMS Panel | 03_MODULES/Locale/CMS.md | — | — |  |
 | 03_MODULES.Locale.DATABASE | Locale Module — Database | 03_MODULES/Locale/DATABASE.md | — | — |  |
-| module.locale | Locale Module | 03_MODULES/Locale/README.md | current | 6% |  |
+| module.locale | Locale Module | 03_MODULES/Locale/README.md | current | 6% | localization, translation |
 | 03_MODULES.Locale.WORKFLOW | Locale Module — Bilingual Workflow | 03_MODULES/Locale/WORKFLOW.md | — | — |  |
 | 03_MODULES.Media.KNOWN_ISSUES | Media Module — Known Issues | 03_MODULES/Media/KNOWN_ISSUES.md | — | — |  |
 | 03_MODULES.Media.METHODS | Media Module — Methods | 03_MODULES/Media/METHODS.md | — | — |  |
-| module.media | Media Module | 03_MODULES/Media/README.md | current | 81% |  |
+| module.media | Media Module | 03_MODULES/Media/README.md | current | 81% | media, upload, storage |
 | 03_MODULES.Portfolio.COMPLETION_REPORT_v1 | Portfolio Module v1.0 — Completion Report | 03_MODULES/Portfolio/COMPLETION_REPORT_v1.md | — | — |  |
 | 03_MODULES.Portfolio.INTEGRATION_PLAN | Artist Module Integration Plan — AION Flow | 03_MODULES/Portfolio/INTEGRATION_PLAN.md | — | — |  |
-| module.portfolio | Portfolio Module | 03_MODULES/Portfolio/MASTER.md | current | 75% |  |
-| module.portfolio | Portfolio Module | 03_MODULES/Portfolio/README.md | current | 75% |  |
+| module.portfolio | Portfolio Module | 03_MODULES/Portfolio/MASTER.md | current | 75% | portfolio, crud, gallery |
+| module.portfolio | Portfolio Module | 03_MODULES/Portfolio/README.md | current | 75% | portfolio, crud, gallery |
 | 03_MODULES.Portfolio.reports.week-01-biography | Week 1: Biography CRUD — Completion Report | 03_MODULES/Portfolio/reports/week-01-biography.md | — | — |  |
 | 03_MODULES.Portfolio.reports.week-02-filmography | Week 2: Filmography CRUD — Completion Report | 03_MODULES/Portfolio/reports/week-02-filmography.md | — | — |  |
 | 03_MODULES.Portfolio.reports.week-03-television | Week 3: Television CRUD — Completion Report | 03_MODULES/Portfolio/reports/week-03-television.md | — | — |  |
@@ -58,7 +59,7 @@
 | 03_MODULES.Retreat.DATABASE | Retreat Module — Database | 03_MODULES/Retreat/DATABASE.md | — | — |  |
 | 03_MODULES.Retreat.LABELS | Retreat Module — Label Mapping | 03_MODULES/Retreat/LABELS.md | — | — |  |
 | 03_MODULES.Retreat.LESSONS_LEARNED | Retreat Module — Lessons Learned | 03_MODULES/Retreat/LESSONS_LEARNED.md | — | — |  |
-| module.retreat | Retreat Module | 03_MODULES/Retreat/MASTER.md | current | 75% |  |
+| module.retreat | Retreat Module | 03_MODULES/Retreat/MASTER.md | current | 75% | retreat, wellness, crud |
 | 03_MODULES.Retreat.MEDIA | Retreat Module — Media | 03_MODULES/Retreat/MEDIA.md | — | — |  |
 | 03_MODULES.Retreat.QA | Retreat Module — QA | 03_MODULES/Retreat/QA.md | — | — |  |
 | 03_MODULES.Retreat.README | Retreat Module — AION Flow | 03_MODULES/Retreat/README.md | — | — |  |
@@ -69,9 +70,9 @@
 | 03_MODULES.Retreat.reports.week-03-faq-bookings | Week 3: FAQ CRUD + Bookings Manager — Complet | 03_MODULES/Retreat/reports/week-03-faq-bookings.md | — | — |  |
 | 04_METHODS.Core.MODULE_MATURITY | Module Maturity Model (MMI) | 04_METHODS/Core/MODULE_MATURITY.md | — | — |  |
 | 04_METHODS.Core.TENANT_ISOLATION_CHECKLIST | Tenant Isolation Checklist | 04_METHODS/Core/TENANT_ISOLATION_CHECKLIST.md | — | — |  |
-| method.core.crud-pattern | Multi-Entry CRUD Panel Pattern | 04_METHODS/Core/crud-pattern.md | Standard | — |  |
-| method.core.module-registration | Module Registry Self-Registration | 04_METHODS/Core/module-registration.md | Standard | — |  |
-| method.core.tenant-resolution | Effective Tenant ID Resolution | 04_METHODS/Core/tenant-resolution.md | Standard | — |  |
+| method.core.crud-pattern | Multi-Entry CRUD Panel Pattern | 04_METHODS/Core/crud-pattern.md | Standard | — | crud, pattern, react |
+| method.core.module-registration | Module Registry Self-Registration | 04_METHODS/Core/module-registration.md | Standard | — | module-registry, architecture |
+| method.core.tenant-resolution | Effective Tenant ID Resolution | 04_METHODS/Core/tenant-resolution.md | Standard | — | multi-tenant, tenant-isolation, rls, pla |
 | 06_PLAYBOOKS.CREATE_MODULE | Playbook: Create Module | 06_PLAYBOOKS/CREATE_MODULE.md | — | — |  |
 | 08_REFERENCE.CREDENTIALS_REGISTRY | Credentials Registry | 08_REFERENCE/CREDENTIALS_REGISTRY.md | — | — |  |
 | 08_REFERENCE.PROJECTS_REGISTRY | Projects Registry | 08_REFERENCE/PROJECTS_REGISTRY.md | — | — |  |

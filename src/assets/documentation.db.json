@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-07-13T12:25:04.132Z",
-    "git_commit": "d944088",
-    "index_version": "1.0",
-    "docs_count": 161,
+    "generated_at": "2026-07-13T12:37:47.556Z",
+    "git_commit": "d7f5f4c",
+    "index_version": "1.1",
+    "docs_count": 162,
     "stale_docs_count": 0,
     "mmi_modules": [
       {
@@ -87,7 +87,203 @@
         "verified": false
       }
     ],
-    "platform_mmi": 68
+    "platform_mmi": 68,
+    "relationships": {
+      "by_module": {
+        "platform": {
+          "used_by": [
+            "akes"
+          ]
+        },
+        "akes": {
+          "uses": [
+            "platform"
+          ]
+        },
+        "media": {
+          "used_by": [
+            "blog",
+            "bookings",
+            "portfolio",
+            "retreat"
+          ]
+        },
+        "categories": {
+          "used_by": [
+            "blog",
+            "portfolio"
+          ]
+        },
+        "blog": {
+          "uses": [
+            "media",
+            "categories"
+          ]
+        },
+        "retreat": {
+          "used_by": [
+            "bookings"
+          ],
+          "uses": [
+            "media",
+            "bookings",
+            "locale"
+          ]
+        },
+        "mail": {
+          "used_by": [
+            "bookings",
+            "crm"
+          ]
+        },
+        "bookings": {
+          "uses": [
+            "media",
+            "retreat",
+            "mail"
+          ],
+          "used_by": [
+            "retreat"
+          ]
+        },
+        "crm": {
+          "uses": [
+            "mail"
+          ]
+        },
+        "ordering": {
+          "used_by": [
+            "portfolio"
+          ]
+        },
+        "portfolio": {
+          "uses": [
+            "media",
+            "categories",
+            "ordering"
+          ]
+        },
+        "locale": {
+          "used_by": [
+            "retreat"
+          ]
+        }
+      },
+      "by_tenant": {
+        "aion-flow": [
+          "akes"
+        ],
+        "kolokotronis": [
+          "blog",
+          "crm",
+          "media",
+          "portfolio"
+        ],
+        "ktima-kareli": [
+          "bookings",
+          "locale",
+          "media",
+          "portfolio",
+          "retreat"
+        ]
+      },
+      "by_method": {
+        "module-maturity": [
+          "akes"
+        ],
+        "tenant-isolation": [
+          "akes"
+        ],
+        "tenant-resolution": [
+          "blog",
+          "bookings",
+          "crm",
+          "locale",
+          "media",
+          "portfolio",
+          "retreat"
+        ],
+        "bookings-pattern": [
+          "bookings",
+          "retreat"
+        ],
+        "locale-pattern": [
+          "locale"
+        ],
+        "media-upload": [
+          "media"
+        ]
+      },
+      "by_playbook": {
+        "NEW_TENANT": [
+          "bookings",
+          "retreat"
+        ]
+      },
+      "reusable_for": {
+        "Platform teams": [
+          "akes"
+        ],
+        "Engineering organizations": [
+          "akes"
+        ],
+        "Hotels": [
+          "blog",
+          "bookings",
+          "portfolio",
+          "retreat"
+        ],
+        "Coaches": [
+          "blog",
+          "crm"
+        ],
+        "Consultants": [
+          "blog",
+          "crm",
+          "portfolio"
+        ],
+        "Bloggers": [
+          "blog"
+        ],
+        "Resorts": [
+          "bookings",
+          "portfolio",
+          "retreat"
+        ],
+        "Spas": [
+          "bookings",
+          "retreat"
+        ],
+        "Retreat centers": [
+          "bookings",
+          "retreat"
+        ],
+        "Service businesses": [
+          "crm"
+        ],
+        "All multi-lingual tenants": [
+          "locale"
+        ],
+        "International businesses": [
+          "locale"
+        ],
+        "All tenants": [
+          "media"
+        ],
+        "Any website with images": [
+          "media"
+        ],
+        "Artists": [
+          "portfolio"
+        ],
+        "Airbnb hosts": [
+          "portfolio"
+        ],
+        "Wellness tourism": [
+          "retreat"
+        ]
+      }
+    }
   },
   "entries": [
     {
@@ -100,8 +296,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -114,8 +310,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -128,8 +324,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -142,8 +338,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -156,8 +352,26 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
+      "mmi": null
+    },
+    {
+      "id": "platform.aion-dna",
+      "title": "AION DNA",
+      "path": "01_PLATFORM/AION_DNA.md",
+      "status": "current",
+      "maturity": "core",
+      "tags": [
+        "dna",
+        "identity",
+        "platform"
+      ],
+      "owner": "AION Engineering",
+      "last_reviewed": "2026-07-13",
+      "review_after": "2026-10-13",
+      "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -170,8 +384,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -184,8 +398,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -198,8 +412,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -212,8 +426,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -226,8 +440,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -240,8 +454,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -254,8 +468,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -268,8 +482,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -282,8 +496,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -296,8 +510,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -310,8 +524,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -324,8 +538,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -338,8 +552,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -352,8 +566,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -366,8 +580,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -380,8 +594,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -394,8 +608,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -408,8 +622,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -422,8 +636,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -436,8 +650,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -446,12 +660,30 @@
       "path": "03_MODULES/AKES/README.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "akes",
+        "knowledge",
+        "governance"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-13",
       "review_after": "2026-10-13",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "aion-flow"
+      ],
+      "relationships": {
+        "uses": [
+          "platform"
+        ],
+        "related_methods": [
+          "module-maturity",
+          "tenant-isolation"
+        ],
+        "reusable_for": [
+          "Platform teams",
+          "Engineering organizations"
+        ]
+      },
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -468,12 +700,31 @@
       "path": "03_MODULES/Blog/README.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "blog",
+        "cms"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "kolokotronis"
+      ],
+      "relationships": {
+        "uses": [
+          "media",
+          "categories"
+        ],
+        "related_methods": [
+          "tenant-resolution"
+        ],
+        "reusable_for": [
+          "Hotels",
+          "Coaches",
+          "Consultants",
+          "Bloggers"
+        ]
+      },
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -490,12 +741,36 @@
       "path": "03_MODULES/Bookings/README.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "bookings",
+        "retreat"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "ktima-kareli"
+      ],
+      "relationships": {
+        "uses": [
+          "media",
+          "retreat",
+          "mail"
+        ],
+        "related_methods": [
+          "tenant-resolution",
+          "bookings-pattern"
+        ],
+        "related_playbooks": [
+          "NEW_TENANT"
+        ],
+        "reusable_for": [
+          "Hotels",
+          "Resorts",
+          "Spas",
+          "Retreat centers"
+        ]
+      },
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -512,12 +787,30 @@
       "path": "03_MODULES/CRM/README.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "crm",
+        "inbox",
+        "pipeline"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "kolokotronis"
+      ],
+      "relationships": {
+        "uses": [
+          "mail"
+        ],
+        "related_methods": [
+          "tenant-resolution"
+        ],
+        "reusable_for": [
+          "Consultants",
+          "Coaches",
+          "Service businesses"
+        ]
+      },
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -538,8 +831,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -552,8 +845,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -566,8 +859,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -576,12 +869,26 @@
       "path": "03_MODULES/Locale/README.md",
       "status": "current",
       "maturity": "experimental",
-      "tags": {},
+      "tags": [
+        "localization",
+        "translation"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "ktima-kareli"
+      ],
+      "relationships": {
+        "related_methods": [
+          "tenant-resolution",
+          "locale-pattern"
+        ],
+        "reusable_for": [
+          "All multi-lingual tenants",
+          "International businesses"
+        ]
+      },
       "mmi": {
         "l1": 0,
         "l2": 0,
@@ -602,8 +909,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -616,8 +923,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -630,8 +937,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -640,12 +947,28 @@
       "path": "03_MODULES/Media/README.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "media",
+        "upload",
+        "storage"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "kolokotronis",
+        "ktima-kareli"
+      ],
+      "relationships": {
+        "related_methods": [
+          "media-upload",
+          "tenant-resolution"
+        ],
+        "reusable_for": [
+          "All tenants",
+          "Any website with images"
+        ]
+      },
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -666,8 +989,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -680,8 +1003,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -690,12 +1013,35 @@
       "path": "03_MODULES/Portfolio/MASTER.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "portfolio",
+        "crud",
+        "gallery"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "kolokotronis",
+        "ktima-kareli"
+      ],
+      "relationships": {
+        "uses": [
+          "media",
+          "categories",
+          "ordering"
+        ],
+        "related_methods": [
+          "tenant-resolution"
+        ],
+        "reusable_for": [
+          "Hotels",
+          "Resorts",
+          "Consultants",
+          "Artists",
+          "Airbnb hosts"
+        ]
+      },
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -712,12 +1058,19 @@
       "path": "03_MODULES/Portfolio/README.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "portfolio",
+        "crud",
+        "gallery"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "kolokotronis",
+        "ktima-kareli"
+      ],
+      "relationships": null,
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -738,8 +1091,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -752,8 +1105,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -766,8 +1119,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -780,8 +1133,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -794,8 +1147,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -808,8 +1161,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -822,8 +1175,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -836,8 +1189,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -850,8 +1203,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -864,8 +1217,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -878,8 +1231,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -892,8 +1245,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -906,8 +1259,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -916,12 +1269,38 @@
       "path": "03_MODULES/Retreat/MASTER.md",
       "status": "current",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "retreat",
+        "wellness",
+        "crud"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "ktima-kareli"
+      ],
+      "relationships": {
+        "uses": [
+          "media",
+          "bookings",
+          "locale"
+        ],
+        "related_methods": [
+          "tenant-resolution",
+          "bookings-pattern"
+        ],
+        "related_playbooks": [
+          "NEW_TENANT"
+        ],
+        "reusable_for": [
+          "Hotels",
+          "Resorts",
+          "Spas",
+          "Retreat centers",
+          "Wellness tourism"
+        ]
+      },
       "mmi": {
         "l1": 4,
         "l2": 4,
@@ -942,8 +1321,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -956,8 +1335,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -970,8 +1349,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -984,8 +1363,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -998,8 +1377,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1012,8 +1391,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1026,8 +1405,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1040,8 +1419,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1054,8 +1433,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1068,8 +1447,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1078,12 +1457,19 @@
       "path": "04_METHODS/Core/crud-pattern.md",
       "status": "Standard",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "crud",
+        "pattern",
+        "react"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "portfolio (Filmography, Television, Theatre, Press, Showreels)",
+        "retreat (Experiences, Workshops, Events, FAQ)"
+      ],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1092,12 +1478,18 @@
       "path": "04_METHODS/Core/module-registration.md",
       "status": "Standard",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "module-registry",
+        "architecture"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "portfolio",
+        "retreat"
+      ],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1106,12 +1498,22 @@
       "path": "04_METHODS/Core/tenant-resolution.md",
       "status": "Standard",
       "maturity": "standard",
-      "tags": {},
+      "tags": [
+        "multi-tenant",
+        "tenant-isolation",
+        "rls",
+        "platform-rule"
+      ],
       "owner": "AION Engineering",
       "last_reviewed": "2026-07-12",
       "review_after": "2026-10-12",
-      "depends": [],
-      "used_by": {},
+      "used_by": [
+        "kolokotronis",
+        "ktima-kareli",
+        "portfolio",
+        "retreat"
+      ],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1124,8 +1526,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1138,8 +1540,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1152,8 +1554,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1166,8 +1568,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1180,8 +1582,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1194,8 +1596,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1208,8 +1610,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1222,8 +1624,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1236,8 +1638,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1250,8 +1652,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1264,8 +1666,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1278,8 +1680,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1292,8 +1694,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1306,8 +1708,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1320,8 +1722,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1334,8 +1736,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1348,8 +1750,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1362,8 +1764,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1376,8 +1778,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1390,8 +1792,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1404,8 +1806,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1418,8 +1820,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1432,8 +1834,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1446,8 +1848,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1460,8 +1862,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1474,8 +1876,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1488,8 +1890,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1502,8 +1904,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1516,8 +1918,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1530,8 +1932,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1544,8 +1946,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1558,8 +1960,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1572,8 +1974,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1586,8 +1988,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1600,8 +2002,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1614,8 +2016,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1628,8 +2030,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1642,8 +2044,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1656,8 +2058,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1670,8 +2072,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1684,8 +2086,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1698,8 +2100,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1712,8 +2114,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1726,8 +2128,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1740,8 +2142,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1754,8 +2156,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1768,8 +2170,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1782,8 +2184,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1796,8 +2198,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1810,8 +2212,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1824,8 +2226,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1838,8 +2240,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1852,8 +2254,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1866,8 +2268,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1880,8 +2282,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1894,8 +2296,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1908,8 +2310,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1922,8 +2324,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1936,8 +2338,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1950,8 +2352,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1964,8 +2366,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1978,8 +2380,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -1992,8 +2394,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2006,8 +2408,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2020,8 +2422,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2034,8 +2436,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2048,8 +2450,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2062,8 +2464,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2076,8 +2478,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2090,8 +2492,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2104,8 +2506,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2118,8 +2520,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2132,8 +2534,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2146,8 +2548,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2160,8 +2562,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2174,8 +2576,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2188,8 +2590,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2202,8 +2604,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2216,8 +2618,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2230,8 +2632,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2244,8 +2646,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2258,8 +2660,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2272,8 +2674,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2286,8 +2688,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2300,8 +2702,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2314,8 +2716,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2328,8 +2730,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2342,8 +2744,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2356,8 +2758,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2370,8 +2772,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2384,8 +2786,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2398,8 +2800,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     },
     {
@@ -2412,8 +2814,8 @@
       "owner": "—",
       "last_reviewed": null,
       "review_after": null,
-      "depends": [],
       "used_by": [],
+      "relationships": null,
       "mmi": null
     }
   ]

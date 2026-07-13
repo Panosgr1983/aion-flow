@@ -12,6 +12,13 @@ tags:
   - translation
 used_by:
   - ktima-kareli
+relationships:
+  related_methods:
+    - tenant-resolution
+    - locale-pattern
+  reusable_for:
+    - All multi-lingual tenants
+    - International businesses
 mmi:
   l1: 0
   l2: 0

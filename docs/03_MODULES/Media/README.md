@@ -14,6 +14,13 @@ tags:
 used_by:
   - kolokotronis
   - ktima-kareli
+relationships:
+  related_methods:
+    - media-upload
+    - tenant-resolution
+  reusable_for:
+    - All tenants
+    - Any website with images
 mmi:
   l1: 4
   l2: 4

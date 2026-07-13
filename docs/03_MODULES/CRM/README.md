@@ -13,6 +13,15 @@ tags:
   - pipeline
 used_by:
   - kolokotronis
+relationships:
+  uses:
+    - mail
+  related_methods:
+    - tenant-resolution
+  reusable_for:
+    - Consultants
+    - Coaches
+    - Service businesses
 mmi:
   l1: 4
   l2: 4

@@ -1,11 +1,21 @@
-import { useEffect, useState, useMemo } from 'react';
-import { BrainCircuit, BookOpen, Shield, BarChart3, AlertTriangle, CheckCircle, Search, Clock, FileText, GitCommit } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { BrainCircuit, BookOpen, Shield, BarChart3, AlertTriangle, CheckCircle, Search, Clock, FileText, GitCommit, Share2, Layers, Building2, Lightbulb } from 'lucide-react';
 import docIndex from '../../../assets/documentation.db.json';
 
 interface DocEntry {
   id: string; title: string; path: string; status: string; maturity: string;
   tags: string[]; owner?: string; last_reviewed?: string; source_of_truth?: boolean;
+  used_by?: string[];
+  relationships?: { uses?: string[]; related_methods?: string[]; related_playbooks?: string[]; reusable_for?: string[] };
   mmi?: { l1: number; l2: number; l3: number; l4: number; score: number; status: string; verified: boolean };
+}
+
+interface RelationshipMap {
+  by_module: Record<string, { uses?: string[]; used_by?: string[] }>;
+  by_tenant: Record<string, string[]>;
+  by_method: Record<string, string[]>;
+  by_playbook: Record<string, string[]>;
+  reusable_for: Record<string, string[]>;
 }
 
 interface IndexMeta {
@@ -13,14 +23,10 @@ interface IndexMeta {
   docs_count: number; stale_docs_count: number;
   mmi_modules: { id: string; l1: number; l2: number; l3: number; l4: number; score: number; status: string; verified: boolean }[];
   platform_mmi: number;
+  relationships: RelationshipMap;
 }
 
 const SEARCH_FILTERS = ['All', 'Platform', 'Tenants', 'Modules', 'Methods', 'Playbooks', 'Decisions', 'Archive'] as const;
-
-const TENANT_DATA = [
-  { tenant: 'Κολοκοτρώνης', score: 100, modules: 'CMS, CRM, Blog', status: '✅ Live', breakdown: 'Website 100% | CMS 100% | Blog 100% | Analytics 100%' },
-  { tenant: 'Κτήμα Καρέλη', score: 87, modules: 'CMS, Retreat, Locale, Bookings, Gallery', status: '✅ Live', breakdown: 'Website 98% | Locale 42% | Experiences 78% | Bookings 100%' },
-];
 
 const BLOCKERS = [
   { module: 'CRM', issue: 'Tenant isolation not implemented', severity: 'HIGH', ref: 'TECH_DEBT #20' },
@@ -30,15 +36,26 @@ const BLOCKERS = [
   { module: 'Media', issue: 'Static images not managed via Media Library', severity: 'LOW', ref: 'TECH_DEBT #22' },
 ];
 
+const TENANT_LABELS: Record<string, string> = {
+  'kolokotronis': 'Κολοκοτρώνης',
+  'ktima-kareli': 'Κτήμα Καρέλη',
+  'aion-flow': 'AION Flow',
+};
+
 export default function AKESDashboard() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<string>('All');
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const [relTab, setRelTab] = useState<'module' | 'tenant' | 'reuse'>('module');
+  const [relModule, setRelModule] = useState<string>('media');
+  const [relTenant, setRelTenant] = useState<string>('ktima-kareli');
+  const [relIndustry, setRelIndustry] = useState<string>('Hotels');
 
   const meta = docIndex._meta as IndexMeta;
   const docs = (docIndex.entries || docIndex) as DocEntry[];
   const mmiModules = meta.mmi_modules || [];
   const platformMmi = meta.platform_mmi || 0;
+  const relationships = meta.relationships;
 
   // Stats
   const stats = useMemo(() => ({
@@ -48,7 +65,22 @@ export default function AKESDashboard() {
     methods: docs.filter(d => d.path?.startsWith('04_METHODS')).length,
     stale: meta.stale_docs_count || 0,
     blockers: BLOCKERS.length,
-  }), [docs, meta]);
+    modulesWithRel: Object.keys(relationships?.by_module || {}).length,
+    tenantsWithRel: Object.keys(relationships?.by_tenant || {}).length,
+  }), [docs, meta, relationships]);
+
+  // Tenant readiness from relationships
+  const tenantReadiness = useMemo(() => {
+    if (!relationships) return [];
+    return Object.entries(relationships.by_tenant).map(([id, modules]) => {
+      const scored = modules.map(m => {
+        const mmi = mmiModules.find(x => x.id === m);
+        return { id: m, score: mmi?.score || 0 };
+      });
+      const avg = scored.length > 0 ? Math.round(scored.reduce((s, x) => s + x.score, 0) / scored.length) : 0;
+      return { id, label: TENANT_LABELS[id] || id, modules, score: avg, status: avg >= 80 ? '✅ Live' : avg >= 50 ? '⚠️ Partial' : '🟡 Setup' };
+    }).sort((a, b) => b.score - a.score);
+  }, [relationships, mmiModules]);
 
   // Search
   const filteredByCategory = filter === 'All' ? docs : docs.filter(d => {
@@ -71,8 +103,8 @@ export default function AKESDashboard() {
     : [];
 
   const selected = mmiModules.find(m => m.id === selectedModule);
-  const color = (s: number) => s >= 80 ? 'text-green-400' : s >= 60 ? 'text-yellow-400' : 'text-red-400';
-  const bg = (s: number) => s >= 80 ? 'bg-green-900/20 border-green-800/30' : s >= 60 ? 'bg-yellow-900/20 border-yellow-800/30' : 'bg-red-900/20 border-red-800/30';
+  const color = (s: number) => s >= 80 ? 'text-green-400' : s >= 60 ? 'text-yellow-400' : s >= 40 ? 'text-orange-400' : 'text-red-400';
+  const bg = (s: number) => s >= 80 ? 'bg-green-900/20 border-green-800/30' : s >= 60 ? 'bg-yellow-900/20 border-yellow-800/30' : s >= 40 ? 'bg-orange-900/20 border-orange-800/30' : 'bg-red-900/20 border-red-800/30';
 
   return (
     <div className="p-6 space-y-6">
@@ -82,7 +114,7 @@ export default function AKESDashboard() {
           <BrainCircuit className="h-8 w-8 text-blue-400" />
           <div>
             <h1 className="text-xl font-semibold text-white">AKES Dashboard</h1>
-            <p className="text-sm text-gray-500">AION Knowledge & Engineering System — Platform Health</p>
+            <p className="text-sm text-gray-500">AION Knowledge & Engineering System — Relationship Engine v{meta.index_version}</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -102,19 +134,216 @@ export default function AKESDashboard() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-7 gap-4">
         {[
           { label: 'Platform', value: stats.platform, icon: Shield, color: 'text-green-400' },
           { label: 'Modules', value: stats.modules, icon: BookOpen, color: 'text-blue-400' },
           { label: 'Methods', value: stats.methods, icon: BarChart3, color: 'text-purple-400' },
+          { label: 'Relationships', value: stats.modulesWithRel, icon: Share2, color: 'text-cyan-400' },
+          { label: 'Tenants', value: stats.tenantsWithRel, icon: Building2, color: 'text-emerald-400' },
           { label: 'Blockers', value: stats.blockers, icon: AlertTriangle, color: 'text-amber-400' },
-          { label: 'Stale Docs', value: stats.stale, icon: Clock, color: 'text-cyan-400' },
+          { label: 'Stale Docs', value: stats.stale, icon: Clock, color: 'text-rose-400' },
         ].map(s => (
           <div key={s.label} className="rounded-lg border border-gray-800 bg-gray-900/30 p-4">
             <div className="flex items-center gap-2"><s.icon className={`h-4 w-4 ${s.color}`} /><span className="text-xs uppercase tracking-wider text-gray-500">{s.label}</span></div>
             <div className="mt-1 text-lg font-semibold text-white">{s.value}</div>
           </div>
         ))}
+      </div>
+
+      {/* Relationship Explorer */}
+      <div className="rounded-lg border border-gray-800 bg-gray-900/30">
+        <div className="px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+          <h2 className="text-sm font-medium text-white flex items-center gap-2"><Share2 className="h-4 w-4 text-cyan-400" /> Relationship Explorer</h2>
+          <span className="text-[10px] text-gray-600">Metadata-first — no database</span>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-1 px-4 pt-3">
+          {[
+            { id: 'module' as const, label: 'By Module', icon: Layers },
+            { id: 'tenant' as const, label: 'By Tenant', icon: Building2 },
+            { id: 'reuse' as const, label: 'Reuse Suggestions', icon: Lightbulb },
+          ].map(t => (
+            <button key={t.id} onClick={() => setRelTab(t.id)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-t-lg text-xs transition-colors ${relTab === t.id ? 'bg-gray-800/50 text-cyan-400 border-b border-cyan-500/50' : 'text-gray-500 hover:text-gray-300'}`}>
+              <t.icon className="h-3.5 w-3.5" /> {t.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="p-4">
+          {/* Tab: By Module */}
+          {relTab === 'module' && (
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 block mb-2">Select Module</label>
+                <div className="space-y-1">
+                  {Object.keys(relationships?.by_module || {}).sort().map(m => (
+                    <button key={m} onClick={() => setRelModule(m)}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${relModule === m ? 'bg-cyan-900/20 text-cyan-400 border border-cyan-800/30' : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/30'}`}>
+                      {m}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="col-span-2 space-y-4">
+                {relModule && relationships?.by_module[relModule] && (
+                  <>
+                    {/* Uses */}
+                    {relationships.by_module[relModule].uses && relationships.by_module[relModule].uses.length > 0 && (
+                      <div>
+                        <h3 className="text-[10px] uppercase tracking-wider text-gray-500 mb-2">Depends On</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {relationships.by_module[relModule].uses.map(d => (
+                            <span key={d} className="px-2.5 py-1 rounded-lg bg-blue-900/20 border border-blue-800/30 text-xs text-blue-400">{d}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Used By */}
+                    <div>
+                      <h3 className="text-[10px] uppercase tracking-wider text-gray-500 mb-2">Used By</h3>
+                      {relationships.by_module[relModule].used_by && relationships.by_module[relModule].used_by.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                          {relationships.by_module[relModule].used_by.map(t => (
+                            <span key={t} className="px-2.5 py-1 rounded-lg bg-emerald-900/20 border border-emerald-800/30 text-xs text-emerald-400">{t}</span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-gray-600 italic">No modules depend on this</p>
+                      )}
+                    </div>
+
+                    {/* MMI score badge */}
+                    {(() => {
+                      const mmi = mmiModules.find(m => m.id === relModule);
+                      return mmi ? (
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] text-gray-500">MMI:</span>
+                          <span className={`text-sm font-mono ${color(mmi.score)}`}>{mmi.score}%</span>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full ${bg(mmi.score)} ${color(mmi.score)}`}>{mmi.status}</span>
+                          {mmi.verified && <CheckCircle className="h-3 w-3 text-green-400" />}
+                        </div>
+                      ) : null;
+                    })()}
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Tab: By Tenant */}
+          {relTab === 'tenant' && (
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 block mb-2">Select Tenant</label>
+                <div className="space-y-1">
+                  {Object.keys(relationships?.by_tenant || {}).sort().map(t => (
+                    <button key={t} onClick={() => setRelTenant(t)}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${relTenant === t ? 'bg-cyan-900/20 text-cyan-400 border border-cyan-800/30' : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/30'}`}>
+                      {TENANT_LABELS[t] || t} <span className="text-gray-600">({relationships?.by_tenant[t]?.length || 0})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="col-span-2 space-y-3">
+                {relTenant && relationships?.by_tenant[relTenant] && (
+                  <>
+                    <h3 className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Module Stack</h3>
+                    <div className="space-y-2">
+                      {relationships.by_tenant[relTenant].map(m => {
+                        const mmi = mmiModules.find(x => x.id === m);
+                        return (
+                          <div key={m} className="flex items-center justify-between px-3 py-2 rounded-lg bg-gray-800/30 border border-gray-800/50">
+                            <div className="flex items-center gap-2">
+                              <Layers className="h-3.5 w-3.5 text-gray-500" />
+                              <span className="text-xs text-gray-300 capitalize">{m}</span>
+                              {mmi && <span className={`text-[10px] px-1.5 py-0.5 rounded ${bg(mmi.score)} ${color(mmi.score)}`}>{mmi.status}</span>}
+                            </div>
+                            {mmi && <span className={`text-xs font-mono ${color(mmi.score)}`}>{mmi.score}%</span>}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {(() => {
+                      const tr = tenantReadiness.find(t => t.id === relTenant);
+                      return tr ? (
+                        <div className="flex items-center gap-3 mt-2 pt-2 border-t border-gray-800/50">
+                          <span className="text-[10px] text-gray-500">Tenant Score:</span>
+                          <div className="w-24 h-2 rounded-full bg-gray-800 overflow-hidden">
+                            <div className={`h-full rounded-full ${tr.score >= 80 ? 'bg-green-500' : 'bg-yellow-500'}`} style={{ width: `${tr.score}%` }} />
+                          </div>
+                          <span className={`text-xs font-mono ${color(tr.score)}`}>{tr.score}%</span>
+                          <span className="text-[10px] text-gray-500">{tr.status}</span>
+                        </div>
+                      ) : null;
+                    })()}
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Tab: Reuse Suggestions */}
+          {relTab === 'reuse' && (
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-gray-500 block mb-2">Industry / Vertical</label>
+                <div className="space-y-1 max-h-64 overflow-y-auto">
+                  {Object.keys(relationships?.reusable_for || {}).sort().map(ind => (
+                    <button key={ind} onClick={() => setRelIndustry(ind)}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${relIndustry === ind ? 'bg-cyan-900/20 text-cyan-400 border border-cyan-800/30' : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/30'}`}>
+                      {ind} <span className="text-gray-600">({relationships?.reusable_for[ind]?.length || 0})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="col-span-2 space-y-3">
+                {relIndustry && relationships?.reusable_for[relIndustry] && (
+                  <>
+                    <h3 className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Recommended Modules for <span className="text-cyan-400">{relIndustry}</span></h3>
+                    <div className="space-y-2">
+                      {relationships.reusable_for[relIndustry].map(m => {
+                        const mmi = mmiModules.find(x => x.id === m);
+                        const modRel = relationships.by_module[m];
+                        const tenantCount = modRel?.used_by?.length || 0;
+                        return (
+                          <div key={m} className="px-3 py-2 rounded-lg bg-gray-800/30 border border-gray-800/50">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Layers className="h-3.5 w-3.5 text-cyan-500" />
+                                <span className="text-sm text-gray-200 capitalize font-medium">{m}</span>
+                                {mmi && <span className={`text-[10px] px-1.5 py-0.5 rounded ${bg(mmi.score)} ${color(mmi.score)}`}>{mmi.status}</span>}
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span className="text-[10px] text-gray-600">{tenantCount} tenant{tenantCount !== 1 ? 's' : ''}</span>
+                                {mmi && <span className={`text-xs font-mono ${color(mmi.score)}`}>{mmi.score}%</span>}
+                              </div>
+                            </div>
+                            {modRel?.uses && modRel.uses.length > 0 && (
+                              <div className="mt-1 flex items-center gap-1.5">
+                                <span className="text-[10px] text-gray-600">Requires:</span>
+                                {modRel.uses.map(d => (
+                                  <span key={d} className="text-[10px] px-1.5 py-0.5 rounded bg-blue-900/20 text-blue-400">{d}</span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <p className="text-[10px] text-gray-600 pt-1">
+                      {relationships.reusable_for[relIndustry].length} module{relationships.reusable_for[relIndustry].length !== 1 ? 's' : ''} suggested for {relIndustry}.
+                      Confidence depends on tenant count and MMI maturity.
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* MMI Table */}
@@ -135,32 +364,37 @@ export default function AKESDashboard() {
                   <th className="text-center pb-2">L4</th>
                   <th className="text-center pb-2">Status</th>
                   <th className="text-center pb-2">V</th>
+                  <th className="text-center pb-2">Tenants</th>
                 </tr>
               </thead>
               <tbody>
-                {mmiModules.map(m => (
-                  <tr key={m.id}
-                    onClick={() => setSelectedModule(selectedModule === m.id ? null : m.id)}
-                    className={`border-t border-gray-800/50 cursor-pointer transition-colors hover:bg-gray-800/30 ${selectedModule === m.id ? 'bg-blue-900/10' : ''}`}>
-                    <td className="py-2 text-gray-300 text-xs capitalize">{m.id}</td>
-                    <td className={`py-2 text-right font-mono ${color(m.score)}`}>{m.score}%</td>
-                    <td className="py-2 text-center text-[11px] text-gray-500">{m.l1}/4</td>
-                    <td className="py-2 text-center text-[11px] text-gray-500">{m.l2}/4</td>
-                    <td className="py-2 text-center text-[11px] text-gray-500">{m.l3}/4</td>
-                    <td className="py-2 text-center text-[11px] text-gray-500">{m.l4}/4</td>
-                    <td className="py-2 text-center">
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full ${bg(m.score)} ${color(m.score)}`}>{m.status}</span>
-                    </td>
-                    <td className="py-2 text-center">
-                      {m.verified ? <CheckCircle className="h-3.5 w-3.5 text-green-400 mx-auto" title="Verified" /> : <span className="text-[10px] text-gray-600">—</span>}
-                    </td>
-                  </tr>
-                ))}
+                {mmiModules.map(m => {
+                  const tenantCount = relationships?.by_module[m.id]?.used_by?.length || 0;
+                  return (
+                    <tr key={m.id}
+                      onClick={() => setSelectedModule(selectedModule === m.id ? null : m.id)}
+                      className={`border-t border-gray-800/50 cursor-pointer transition-colors hover:bg-gray-800/30 ${selectedModule === m.id ? 'bg-blue-900/10' : ''}`}>
+                      <td className="py-2 text-gray-300 text-xs capitalize">{m.id}</td>
+                      <td className={`py-2 text-right font-mono ${color(m.score)}`}>{m.score}%</td>
+                      <td className="py-2 text-center text-[11px] text-gray-500">{m.l1}/4</td>
+                      <td className="py-2 text-center text-[11px] text-gray-500">{m.l2}/4</td>
+                      <td className="py-2 text-center text-[11px] text-gray-500">{m.l3}/4</td>
+                      <td className="py-2 text-center text-[11px] text-gray-500">{m.l4}/4</td>
+                      <td className="py-2 text-center">
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${bg(m.score)} ${color(m.score)}`}>{m.status}</span>
+                      </td>
+                      <td className="py-2 text-center">
+                        {m.verified ? <CheckCircle className="h-3.5 w-3.5 text-green-400 mx-auto" /> : <span className="text-[10px] text-gray-600">—</span>}
+                      </td>
+                      <td className={`py-2 text-center text-[10px] font-mono ${tenantCount > 0 ? 'text-emerald-400' : 'text-gray-600'}`}>{tenantCount}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
             <div className="mt-3 text-[10px] text-gray-600 flex gap-4">
               <span>L1: Data</span><span>L2: Authoring</span><span>L3: Delivery</span><span>L4: Intelligence</span>
-              <span className="ml-auto auto">MMI = (L1+L2+L3+L4) / 16 × 100 — from module frontmatter</span>
+              <span className="ml-auto">Tenants = modules referencing via used_by; MMI = (L1+L2+L3+L4) / 16 × 100</span>
             </div>
           </div>
         </div>
@@ -192,30 +426,30 @@ export default function AKESDashboard() {
                 <span>Status: <span className={color(selected.score)}>{selected.status}</span></span>
                 <span>Verified: {selected.verified ? <CheckCircle className="h-3 w-3 text-green-400 inline" /> : '—'}</span>
                 <span>Score: <span className="font-mono">{selected.score}%</span></span>
+                <span>Tenants: <span className="text-emerald-400 font-mono">{relationships?.by_module[selected.id]?.used_by?.length || 0}</span></span>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Tenants + Blockers */}
+      {/* Tenant Readiness + Blockers */}
       <div className="grid grid-cols-2 gap-6">
         <div className="rounded-lg border border-gray-800 bg-gray-900/30">
-          <div className="px-4 py-3 border-b border-gray-800"><h2 className="text-sm font-medium text-white">Tenant Readiness</h2></div>
+          <div className="px-4 py-3 border-b border-gray-800"><h2 className="text-sm font-medium text-white">Tenant Readiness <span className="text-[10px] text-gray-600 font-normal">(from relationship data)</span></h2></div>
           <div className="p-4 space-y-3">
-            {TENANT_DATA.map(t => (
-              <div key={t.tenant}>
+            {tenantReadiness.map(t => (
+              <div key={t.id}>
                 <div className="flex items-center justify-between">
-                  <div><div className="text-sm text-gray-300">{t.tenant}</div><div className="text-[10px] text-gray-600">{t.modules}</div></div>
+                  <div><div className="text-sm text-gray-300">{t.label}</div><div className="text-[10px] text-gray-600">{t.modules.join(', ')}</div></div>
                   <div className="flex items-center gap-3">
                     <div className="w-20 h-2 rounded-full bg-gray-800 overflow-hidden">
-                      <div className={`h-full rounded-full ${t.score >= 90 ? 'bg-green-500' : 'bg-yellow-500'}`} style={{ width: `${t.score}%` }} />
+                      <div className={`h-full rounded-full ${t.score >= 80 ? 'bg-green-500' : 'bg-yellow-500'}`} style={{ width: `${t.score}%` }} />
                     </div>
-                    <span className={`text-xs font-mono ${t.score >= 90 ? 'text-green-400' : 'text-yellow-400'}`}>{t.score}%</span>
-                    <span className="text-[10px] text-green-400">{t.status}</span>
+                    <span className={`text-xs font-mono ${t.score >= 80 ? 'text-green-400' : 'text-yellow-400'}`}>{t.score}%</span>
+                    <span className="text-[10px]" style={{ color: t.score >= 80 ? '#4ade80' : '#eab308' }}>{t.status}</span>
                   </div>
                 </div>
-                <div className="text-[10px] text-gray-600 pl-1">{t.breakdown}</div>
               </div>
             ))}
           </div>
@@ -299,17 +533,17 @@ export default function AKESDashboard() {
               <p><span className="text-gray-500">Platform MMI:</span> {platformMmi}%</p>
             </div>
             <div className="space-y-2">
-              <h3 className="text-xs font-medium text-gray-300 uppercase tracking-wider">Security & Access</h3>
-              <p><span className="text-gray-500">Permission:</span> <code>platform.akes.view</code> (Super Admin only)</p>
-              <p><span className="text-gray-500">Sidebar:</span> Gated by manifest permission</p>
-              <p><span className="text-gray-500">Route:</span> Protected — tenant admin blocked</p>
-              <p><span className="text-gray-500">Source:</span> READ-ONLY — never modifies the index</p>
+              <h3 className="text-xs font-medium text-gray-300 uppercase tracking-wider">Relationship Engine</h3>
+              <p><span className="text-gray-500">Model:</span> Metadata-first — frontmatter relationships extracted at index time</p>
+              <p><span className="text-gray-500">Entities:</span> {stats.modulesWithRel} modules, {stats.tenantsWithRel} tenants, {Object.keys(relationships?.by_method || {}).length} methods, {Object.keys(relationships?.by_playbook || {}).length} playbooks</p>
+              <p><span className="text-gray-500">Industries:</span> {Object.keys(relationships?.reusable_for || {}).length} verticals mapped</p>
+              <p><span className="text-gray-500">No database:</span> Zero new tables — relationships live in frontmatter</p>
             </div>
             <div className="space-y-2">
               <h3 className="text-xs font-medium text-gray-300 uppercase tracking-wider">Version</h3>
+              <p><span className="text-gray-500">Index version:</span> {meta.index_version}</p>
               <p><span className="text-gray-500">Generated:</span> {meta.generated_at?.slice(0, 10)}</p>
               <p><span className="text-gray-500">Git commit:</span> <code>{meta.git_commit?.slice(0, 7)}</code></p>
-              <p><span className="text-gray-500">Index version:</span> {meta.index_version}</p>
               <p><span className="text-gray-500">Docs:</span> {stats.total} ({stats.stale} stale)</p>
               <p><span className="text-gray-500">Refresh:</span> <code>npm run docs:index</code> → commit → deploy</p>
             </div>

@@ -12,6 +12,17 @@ tags:
   - cms
 used_by:
   - kolokotronis
+relationships:
+  uses:
+    - media
+    - categories
+  related_methods:
+    - tenant-resolution
+  reusable_for:
+    - Hotels
+    - Coaches
+    - Consultants
+    - Bloggers
 mmi:
   l1: 4
   l2: 4
