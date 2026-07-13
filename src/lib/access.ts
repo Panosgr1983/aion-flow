@@ -64,8 +64,6 @@ export const FEATURE_MODULES: Record<string, TenantFeature> = {  services: 'cms'
   pages: 'cms',
   media: 'cms',
   siteSettings: 'site_settings',
-  'business-info': 'site_settings',
-  branding: 'site_settings',
   inbox: 'inbox',
   pipeline: 'pipeline',
   emailWorkspace: 'email_workspace',
