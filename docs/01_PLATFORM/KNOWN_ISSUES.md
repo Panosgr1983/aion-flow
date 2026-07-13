@@ -202,3 +202,25 @@ _Τελευταία ενημέρωση: 2026-06-27
 **Priority:** Medium  
 **Planned:** v0.6 (Retreat Module)  
 **Module:** Platform — Labels
+
+---
+
+### #16. CRM helpers not tenant-filtered
+
+**Περιγραφή:**  
+Οι CRM helpers (`conversationsHelper`, `contactMessagesHelper`, `emailAccountsHelper`, κλπ.) δεν έχουν tenant isolation. Αν ενεργοποιηθεί το CRM για πολλούς tenants, υπάρχει κίνδυνος διαρροής δεδομένων.
+
+**Priority:** HIGH (blocker for CRM rollout)  
+**Planned:** Before CRM enabled for 2nd tenant  
+**Module:** CRM
+
+---
+
+### #17. E-commerce helpers not tenant-filtered
+
+**Περιγραφή:**  
+Οι e-commerce helpers (`categoriesHelper`, `productsHelper`, `customersHelper`, `ordersHelper`) δεν έχουν tenant isolation. Προς το παρόν είναι demo-only.
+
+**Priority:** HIGH (blocker for e-commerce rollout)  
+**Planned:** Before e-commerce enabled for any production tenant  
+**Module:** E-commerce

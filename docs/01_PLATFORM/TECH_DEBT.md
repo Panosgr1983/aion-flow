@@ -249,3 +249,27 @@ _Τελευταία ενημέρωση: 2026-06-27
 **Why it exists:** Δεν υπήρχε ανάγκη per-tenant labels μέχρι τώρα.  
 **Wanted:** Label mapping config ανά tenant manifest.  
 **Effort:** Low (0.5 day).
+
+---
+
+### #20. CRM helpers not tenant-filtered
+
+**Περιγραφή:**  
+`contactSubmissionsHelper`, `conversationsHelper`, `contactMessagesHelper`, `emailAccountsHelper`, `draftsHelper`, `crmHealthHelper`, `monitoringHelper`, `crmMetricsHelper` — κανένα query σε αυτά τα helpers ΔΕΝ φιλτράρει με βάση το tenant_id.
+
+**Risk:** HIGH (cross-tenant data leak if activated)  
+**Blocked from tenant rollout:** ΝΑΙ  
+**Activation condition:** Πλήρες tenant isolation audit + fix όλων των queries  
+**Effort:** Medium (1-2 days)
+
+---
+
+### #21. E-commerce helpers not tenant-filtered
+
+**Περιγραφή:**  
+`categoriesHelper`, `productsHelper`, `customersHelper`, `ordersHelper` — κανένα query δεν φιλτράρει με βάση το tenant_id.
+
+**Risk:** HIGH (cross-tenant data leak if activated)  
+**Blocked from tenant rollout:** ΝΑΙ (demo only)  
+**Activation condition:** Πλήρες tenant isolation audit + fix  
+**Effort:** Medium (1-2 days)

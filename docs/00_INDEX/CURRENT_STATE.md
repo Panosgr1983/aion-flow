@@ -56,6 +56,8 @@
 | No automated tests | 🟡 Medium | Planned (v0.8) |
 | No lazy loading | 🟢 Low | Acceptable |
 | No multi-language support | 🟡 Medium | Locale Module v0.7 |
+| CRM helpers not tenant-filtered | 🔴 Blocked | Blocks CRM tenant rollout |
+| E-commerce helpers not tenant-filtered | 🔴 Blocked | Demo only |
 | No testing infrastructure | 🟡 Medium | Planned (v0.8) |
 
 ## Next Approved Action
