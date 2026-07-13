@@ -47,6 +47,21 @@
 | AKES Structure | 00-09 folders | 🟡 Building |
 | Methods Registry | 0/— | 🔴 Not started |
 
+## Module Maturity Index
+
+| Module | L1 Data | L2 Authoring | L3 Delivery | L4 Intelligence | MMI | Status | Verified |
+|--------|---------|-------------|-------------|-----------------|-----|--------|----------|
+| CMS Core | ✅ | ✅ | ✅ | — | 100% | PRODUCTION | ✅ |
+| Portfolio | ✅ | ✅ | ✅ | ❌ | 75% | STABLE | ✅ |
+| Retreat | ✅ | ✅ | ✅ | ❌ | 79% | STABLE | ❌ |
+| Media | ✅ | ✅ | ✅ | 🟡 | 83% | PRODUCTION | ❌ |
+| Blog | ✅ | ✅ | ✅ | ❌ | 78% | STABLE | ❌ |
+| Bookings | ✅ | ✅ | ✅ | ❌ | 100% | PRODUCTION | ❌ |
+| CRM | ✅ | ✅ | ❌ BLOCKED | ❌ | 33% | BLOCKED | ❌ |
+| Locale | ❌ | ❌ | 🟡 | ❌ | 8% | EARLY | ❌ |
+| AKES | ✅ | ✅ | ✅ | 🟡 | 95% | PRODUCTION | ❌ |
+| **Platform** | | | | | **72%** | **STABLE** | |
+
 ## Known Issues & Tech Debt
 
 | Issue | Severity | Status |

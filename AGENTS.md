@@ -139,3 +139,5 @@
 8. **Never enable a tenant-scoped module whose isolation status is not VALIDATED or STANDARD**
 9. **Every new module must pass TENANT_ISOLATION_CHECKLIST.md before feature flag activation**
 10. **A multilingual feature is COMPLETE only when verified in DB, CMS authoring, AND public-site rendering, with documented fallback behavior**
+11. **Every module has a Module Maturity Index (MMI) score tracked in CURRENT_STATE.md**
+12. **COMPLETE ≠ VERIFIED** — a feature is not owner-approved until marked VERIFIED by product owner

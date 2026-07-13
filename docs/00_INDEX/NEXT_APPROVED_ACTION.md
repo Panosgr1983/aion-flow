@@ -39,13 +39,13 @@ Build the AION Knowledge & Engineering System — structured memory, documentati
 
 ## Session Memory (Current Session)
 
-This session started with Ktima Kareli public site migration, expanded into:
-1. Retreat Module panels completion (5/5)
-2. Tenant setup + data seeding
-3. Content mapping for both tenants
-4. AKES v1 — Knowledge & Engineering System design
-5. Phase -1: Knowledge Audit (87 docs inventoried)
-6. Phase 0: Structure + AGENTS.md + security cleanup
+This session covered:
+1. Ktima Kareli public site migration + data seeding
+2. Retreat Module panels completion (5/5)
+3. Tenant isolation audit + fixes
+4. AKES v1 — full Knowledge System (158 files, 21K lines)
+5. Module Maturity Index (MMI) — standard model for all modules
+6. VERIFIED status — separating COMPLETE from owner-approved
 
-**Next commit:** Platform docs migration to 01_PLATFORM/
-**Deploy allowed:** ❌ Wait for explicit approval
+**Next priority:** AKES v1.1 — Governance Hardening  
+**Deploy allowed:** ✅ Allowed for documentation commits
