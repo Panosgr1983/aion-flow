@@ -91,15 +91,23 @@ AKES v2 (Future)
 | L4 | Governance | Governance | 🔄 Planned (v1.1) | Rules, gates, scorecards, Definition of Excellence, coach mode |
 | L5 | Intelligence | Intelligence | 🔄 Future (v2.0) | Reuse analytics, method confidence, engineering KPIs, AI confidence |
 
-### AKES v1.1 — Governance Engine (Planned)
+### AKES Evolution Path
 
-The AKES becomes a TEACHER, not just memory. Before any action, it coaches:
-- "Did you read CREATE_MODULE.md?"
-- "Did you run Reuse Audit?"
-- "Did you pass Tenant Isolation?"
+```
+v1.0 Knowledge    ✅ Jul 2026 — documentation, memory, methods, tenants
+v1.1 Governance   🔜 Q3 2026 — hardening, checks, blockers, validation
+v1.5 Automation   🔄 Future — CLI, CI integration, pre-commit
+v2.0 Intelligence 🔄 Far future — AI confidence, analytics, KPIs
+```
 
-Pre-deployment, it enforces:
-- Build ❌ Typecheck ❌ Isolation ❌ Telemetry ❌ Docs Updated → BLOCKED
+### AKES v1.1 — Governance Hardening (Planned)
+
+No more documentation expansion. Focus:
+- `docs:check` stable across the codebase
+- Link validation, secret scanning, duplicate SoT detection
+- Checklists in PR workflow
+- Blockers enforcement (CRM + E-commerce remain locked)
+- Session close discipline (update CURRENT_STATE + NEXT_ACTION)
 
 **NOT yet implemented.** See `docs/01_PLATFORM/ROADMAP.md` → AKES v1.1.
 

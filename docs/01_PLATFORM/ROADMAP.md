@@ -182,27 +182,30 @@ code + migration (if needed) + QA + docs update + commit
 
 ---
 
-## 🔜 AKES v1.1 — Governance Layer (Next)
+## 🔜 AKES v1.1 — Governance Hardening (Next — Q3 2026)
 
-### Vision
-Το AKES αποκτά δύο engines:
-1. **Knowledge Engine** — documentation, memory, decisions, methods, reuse, playbooks (υπάρχον)
-2. **Governance Engine** — rules, checklists, validation, scorecards, Definition of Excellence, release gates (νέο)
+### Scope
+Όχι documentation expansion. Μόνο hardening και automation.
 
-### Components
+### Checklist
+- [ ] `docs:check` stable (runs on every PR)
+- [ ] Link validation (all cross-references verified)
+- [ ] Source-of-truth validation (no duplicate SoTs)
+- [ ] Secret scanning (pre-commit hook)
+- [ ] TENANT_ISOLATION_CHECKLIST in PR workflow
+- [ ] Session close discipline (update CURRENT_STATE + NEXT_ACTION on every close)
+- [ ] Blockers enforcement (CRM + E-commerce remain locked)
+- [ ] Documentation health report (coverage %, orphaned docs, stale reviews)
 
-| Component | Description |
-|-----------|-------------|
-| **Definition of Excellence** | Module scorecard: docs + telemetry + permissions + flags + isolation + tests + playbook + reuse + migration + rollback + changelog + zero hardcoded + zero TODOs + AI memory updated |
-| **Engineering Maturity Score** | Per-release KPI: Architecture, Documentation, Security, Automation, Localization, AI |
-| **Executable Playbooks** | Playbooks become stateful workflows. Each step has a check/status. Blocked if prerequisite fails. |
-| **Release Gates** | Pre-deploy checklist: Build ✅ Typecheck ✅ Isolation ✅ Telemetry ✅ Docs updated → BLOCKED if any fails |
-| **Coach Mode** | Before creating anything, AKES coaches: "Did you check CREATE_MODULE.md? Did you run Reuse Audit? Is there an existing module?" |
+---
 
-### Prerequisites
-- AKES v1.0 stable (documentation + memory complete)
-- Playbooks directory populated with key workflows
-- TENANT_ISOLATION_CHECKLIST integrated
+## 🔜 AKES v1.5 — CLI & Automation (Future)
+
+- `akes validate` — run all checks in one command
+- `akes check <module>` — tenant isolation report per module
+- `akes score` — engineering maturity score
+- CI integration for pre-merge validation
+- Pre-commit hooks for documentation integrity
 
 ---
 
