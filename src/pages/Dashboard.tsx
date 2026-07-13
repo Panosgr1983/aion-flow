@@ -35,6 +35,7 @@ import UsageDashboard from '../components/settings/UsageDashboard';
 import SystemDebug from '../components/settings/SystemDebug';
 import PlatformOverview from '../components/settings/PlatformOverview';
 import PlatformGuard from '../components/settings/PlatformGuard';
+import PlatformEvolution from './PlatformEvolution';
 import TenantOverview from '../components/dashboard/TenantOverview';
 import TenantSiteManagement from '../components/dashboard/TenantSiteManagement';
 import ErrorBoundary from '../components/dashboard/ErrorBoundary';
@@ -63,6 +64,7 @@ export default function Dashboard() {
           <Routes>
             <Route index element={<TenantOverview />} />
             <Route path="platform" element={<PlatformGuard><PlatformOverview /></PlatformGuard>} />
+            <Route path="evolution" element={<PlatformGuard><PlatformEvolution /></PlatformGuard>} />
             {isDemoMode && (
               <>
                 <Route path="categories" element={<Categories />} />

@@ -67,6 +67,7 @@ const contentItems: NavItem[] = [
 // Platform — μόνο για super admin (operator)
 const platformItems: NavItem[] = [
   { path: '/dashboard/platform', icon: Activity, label: 'Overview', permission: 'platform.overview' },
+  { path: '/dashboard/evolution', icon: TrendingUp, label: 'Evolution', permission: 'platform.akes.view' },
   { path: '/dashboard/analytics', icon: BarChart3, label: 'Αναφορές', permission: 'platform.analytics' },
   { path: '/dashboard/tenant', icon: Building2, label: 'Tenants', permission: 'platform.tenants' },
   { path: '/dashboard/inbox', icon: Mail, label: 'Inbox', permission: 'crm.inbox' },
