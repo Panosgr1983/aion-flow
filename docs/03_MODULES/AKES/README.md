@@ -41,10 +41,25 @@ AKESDashboard.tsx
 
 | Source | Type | Update Method |
 |--------|------|---------------|
-| `documentation.db.json` | Generated (159 entries) | `npm run docs:index` → commit → deploy |
-| MMI scores | Hardcoded in component | Manual update when MODULE_MATURITY.md changes |
+| Markdown docs (160 .md files) | **Source of Truth** | Manual edits, committed |
+| `documentation.db.json` | **Generated read-only index** | `npm run docs:index` → commit → deploy |
+| MMI scores | Hardcoded in component (future: auto-generated from metadata) | Manual update when MODULE_MATURITY.md changes |
 | Tenant scores | Hardcoded in component | Manual update |
 | Blockers | Hardcoded in component | Manual update |
+
+### Pipeline
+
+```
+Markdown docs with frontmatter (SoT)
+  ↓ npm run docs:index
+documentation.db.json (generated index, read-only)
+  ↓ Vite build-time import (bundled into JS)
+AKES Dashboard (runtime — NO public static asset)
+```
+
+### Security
+
+The index JSON is NOT a public static asset. It is imported as a JavaScript module at build time and bundled by Vite. There is no direct URL to access it.
 
 ## MMI Calculation
 

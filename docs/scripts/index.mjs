@@ -73,5 +73,5 @@ for (const file of files.sort()) {
 
 // Write JSON index
 writeFileSync(join(ROOT, '00_INDEX', 'SEARCH_INDEX.md'), mdIndex);
-writeFileSync(join(__dirname, '..', '..', 'documentation.db.json'), JSON.stringify(index, null, 2));
+writeFileSync(join(__dirname, '..', '..', 'src', 'assets', 'documentation.db.json'), JSON.stringify(index, null, 2));
 console.log(`Indexed ${index.length} files → documentation.db.json + SEARCH_INDEX.md`);
