@@ -107,10 +107,9 @@ export function useTenant(): TenantState {
         supabase.from('profiles').update({ is_super_admin: true }).eq('id', user.id);
       }
       // SA path: resolve via generation-based branching
-      resolveTenantContext(selectedTenantId || null, true).then((ctx) => {
-        switchToProject(ctx.effectiveTenantId);
-        setState(ctx);
-      });
+      resolveTenantContext(selectedTenantId || null, true).then((ctx) =>
+        switchToProject(ctx.effectiveTenantId).then(() => setState(ctx))
+      );
       return;
     }
 
@@ -121,10 +120,9 @@ export function useTenant(): TenantState {
         ? selectedTenantId
         : (tenant_id || jwtTenantId || null);
 
-      resolveTenantContext(effectiveTenantId, isSuperAdmin).then((ctx) => {
-        switchToProject(ctx.effectiveTenantId);
-        setState(ctx);
-      });
+      resolveTenantContext(effectiveTenantId, isSuperAdmin).then((ctx) =>
+        switchToProject(ctx.effectiveTenantId).then(() => setState(ctx))
+      );
     });
   }, [user, isDemoMode, selectedTenantId]);
 
