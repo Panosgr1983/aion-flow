@@ -82,12 +82,20 @@
 
 ---
 
+## Project Identity
+
+- **Product ID:** KOL-001
+- **Client:** Νικόλας Κολοκοτρώνης
+- **CMS URL:** https://aion-flowv2.vercel.app
+- **Supabase:** `qhbgptlklsavezxpksao`
+- **Forbidden Supabase:** `idagkrwpmcnppjpnrbgv` (Kareli — NEVER use)
+
 ## Architecture Pillars
 
 1. **Multi-Tenant** — JWT hook + RLS + three-tier tenant IDs
 2. **Module Registry** — self-registering modules via manifest
 3. **Feature Flags** — per-tenant gating via `tenant_features` table
-4. **Shared Supabase** — `qhbgptlklsavezxpksao.supabase.co`
+4. **Supabase** — `qhbgptlklsavezxpksao.supabase.co`
 5. **Documentation-First** — ADR-012, AKES v1
 
 ---
@@ -141,3 +149,4 @@
 10. **A multilingual feature is COMPLETE only when verified in DB, CMS authoring, AND public-site rendering, with documented fallback behavior**
 11. **Every module has a Module Maturity Index (MMI) score tracked in CURRENT_STATE.md**
 12. **COMPLETE ≠ VERIFIED** — a feature is not owner-approved until marked VERIFIED by product owner
+13. **PROJECT IDENTITY PREFLIGHT — MANDATORY** — Before any migration, deploy, env change, or schema edit: read `aion-core/products/PRODUCT_REGISTRY.md` + `aion-core/products/KOL-001.md`, verify this is `aion-flow-v2` (NOT kareli), confirm target DB is `qhbgptlklsavezxpksao`, and state the resolved target with evidence. Never assume project identity from folder name alone.
