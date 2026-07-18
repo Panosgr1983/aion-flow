@@ -543,3 +543,131 @@ Platform-wide locale module, πίσω από feature flag `locale_module` (defau
 - ✅ Shared components (Gallery, MediaPicker, κλπ.) επαναχρησιμοποιούνται
 - ⚠️ Νέος κώδικας για retreat-specific panels
 - ⚠️ Απαιτεί label mapping για client-facing names
+
+---
+
+## ADR-016: AI Review Gate
+
+**Ημερομηνία:** 2026-07-18
+**Κατάσταση:** Εφαρμοσμένη
+
+### Πλαίσιο
+Το AION έχει εξελιχθεί σε multi-tenant SaaS πλατφόρμα με πολλαπλά modules και deployments.
+Χωρίς υποχρεωτικό προ-merge review, εισάγονται εύκολα:
+- Λάθη σε permissions/RLS
+- Λανθασμένα deployments (π.χ. Kareli σε Kolokotronis DB)
+- Secrets σε git history
+- Παράκαμψη documentation και standards
+
+### Απόφαση
+Υποχρεωτικό **AKES Review Gate** πριν από κάθε merge ή production deploy.
+Το review είναι μη-παρακάμψιμος κόμβος στο SDLC pipeline:
+
+```
+Developer
+  │
+  ▼
+Project Identity Preflight
+  │
+  ▼
+Session Objective
+  │
+  ▼
+Implementation
+  │
+  ▼
+Local Validation (typecheck + lint)
+  │
+  ▼
+AKES Review Gate
+  │
+  ▼
+Browser Regression
+  │
+  ▼
+Git Commit
+  │
+  ▼
+GitHub Push
+  │
+  ▼
+Automatic Preview (Vercel)
+  │
+  ▼
+Production Deploy
+  │
+  ▼
+Production Verification
+```
+
+### Πεδίο ελέγχου
+- Architecture consistency (ADR compliance)
+- SQL migrations (idempotent, reversible, no secrets)
+- RLS / permissions correctness
+- Security (secrets in git, exposed env vars)
+- Multi-project safety (forbidden DB references)
+- Documentation updated (CHANGELOG, FEATURES, DATABASE)
+- RELEASE_CHECKLIST completed
+
+### Επιπτώσεις
+- ✅ Κανένα production deploy χωρίς review
+- ✅ Οι agents ακολουθούν το ίδιο pipeline
+- ✅ Το review είναι auditable (commit message, PR thread)
+- ⚠️ Απαιτεί πειθαρχία — δεν γίνεται skip
+- ⚠️ Ο developer περιμένει review πριν το merge
+
+---
+
+## ADR-017: Release Checklist Standard
+
+**Ημερομηνία:** 2026-07-18
+**Κατάσταση:** Εφαρμοσμένη
+
+### Πλαίσιο
+Κάθε release γινόταν ad-hoc, χωρίς τυποποιημένη διαδικασία.
+Αυτό οδηγούσε σε:
+- Ξεχασμένα un-pushed commits
+- Deploy χωρίς documentation updates
+- Missing verification steps
+- Secrets σε history
+
+### Απόφαση
+Κάθε production deploy ακολουθεί το `RELEASE_CHECKLIST.md`.
+Η checklist είναι υποχρεωτική και verifiable:
+- Κάθε item πρέπει να είναι checked πριν το deploy
+- Η checklist επισυνάπτεται στο commit message ή PR description
+- Ο agent δεν επιτρέπεται να κάνει deploy χωρίς confirmation
+
+### Επιπτώσεις
+- ✅ Ίδια διαδικασία για κάθε release
+- ✅ Δεν βασίζεται στη μνήμη του developer ή agent
+- ✅ Verifiable από AKES Review Gate
+- ⚠️ Προσθέτει βήμα πριν το deploy — αλλά αποτρέπει λάθη
+
+---
+
+## ADR-018: Credential Abstraction Layer (CAL)
+
+**Ημερομηνία:** 2026-07-18
+**Κατάσταση:** Πρόταση
+
+### Πλαίσιο
+Secrets και API keys εμφανίζονταν σε:
+- Git history (ακόμα και σε commits που μετά διαγράφηκαν)
+- AGENTS.md και session contexts
+- Migration SQL files
+- Documentation
+
+### Απόφαση
+Εισαγωγή Credential Abstraction Layer (CAL):
+- Τα raw secrets αποθηκεύονται ΜΟΝΟ σε environment variables (Vercel, .env local)
+- Σε κάθε άλλο context χρησιμοποιούνται aliases (credential_id, project_ref)
+- Κανένας agent ή documentation δεν περιέχει raw secrets
+- Rotation σε κάθε suspected exposure
+
+### Επιπτώσεις
+- ✅ Agents δεν βλέπουν ποτέ raw secrets
+- ✅ Git history παραμένει clean
+- ✅ Rotation χωρίς αλλαγή documentation
+- ⚠️ Απαιτεί πειθαρχία στα credentials references
+- ⚠️ Πρέπει να ελεγχθούν retroactively υπάρχοντες agents και docs

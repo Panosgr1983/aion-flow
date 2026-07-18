@@ -153,3 +153,6 @@
 12. **COMPLETE ≠ VERIFIED** — a feature is not owner-approved until marked VERIFIED by product owner
 13. **PROJECT IDENTITY PREFLIGHT — MANDATORY** — Before any migration, deploy, env change, or schema edit: read `aion-core/products/PRODUCT_REGISTRY.md` + `aion-core/products/KOL-001.md`, verify this is `aion-flow-v2` (NOT kareli), confirm target DB is `qhbgptlklsavezxpksao`, and state the resolved target with evidence. Never assume project identity from folder name alone.
 14. **SESSION OBJECTIVE — MANDATORY** — At session start, create/read `00_SESSION/SESSION_OBJECTIVE.md`. Present Business Goal + Acceptance Criteria to owner before any code. Do not skip this step even when resuming a session.
+15. **RELEASE CHECKLIST — MANDATORY** — Every production deploy must follow `docs/RELEASE_CHECKLIST.md`. All items must be checked before deploy. The checklist must be referenced in the commit message or deploy log.
+16. **AKES REVIEW GATE** — No merge or production deploy without architecture review. The review covers: DB migrations, RLS/permissions, secrets, multi-project safety, documentation updates, and ADR compliance. See ADR-016.
+17. **CREDENTIAL ABSTRACTION (CAL)** — No raw secrets in any context visible to agents (AGENTS.md, SESSION_OBJECTIVE, docs, git history). Use aliases only. See `docs/01_PLATFORM/CREDENTIAL_ABSTRACTION_LAYER.md`.
