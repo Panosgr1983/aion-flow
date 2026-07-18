@@ -62,7 +62,20 @@ WHERE s.slug = 'omilies-seminaria'
 ON CONFLICT (service_id, blog_post_id) DO NOTHING;
 
 -- ============================================================
--- PART 3: Verify counts
+-- PART 3: Fix — Ομιλίες & Σεμινάρια uses slug 'seminar-omilies' (not 'omilies-seminaria')
+-- ============================================================
+-- If the previous query didn't match because the slug is 'seminar-omilies',
+-- run this instead:
+-- UPDATE services SET show_related_articles = true, related_articles_mode = 'manual' WHERE slug = 'seminar-omilies';
+-- INSERT INTO service_related_articles (service_id, blog_post_id, sort_order)
+-- SELECT s.id, bp.id, ROW_NUMBER() OVER (ORDER BY bp.published_at DESC) - 1
+-- FROM services s CROSS JOIN blog_posts bp
+-- WHERE s.slug = 'seminar-omilies' AND bp.category = 'ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ' AND bp.is_published = true
+-- AND NOT EXISTS (SELECT 1 FROM service_related_articles sra WHERE sra.service_id = s.id AND sra.blog_post_id = bp.id)
+-- ON CONFLICT (service_id, blog_post_id) DO NOTHING;
+
+-- ============================================================
+-- PART 4: Verify counts
 -- ============================================================
 -- Run after migration:
 -- SELECT s.title, COUNT(sra.id) AS related_articles

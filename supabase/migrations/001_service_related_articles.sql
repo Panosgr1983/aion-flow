@@ -32,22 +32,28 @@ CREATE INDEX IF NOT EXISTS idx_service_related_articles_blog_post_id ON service_
 -- ============================================================
 ALTER TABLE service_related_articles ENABLE ROW LEVEL SECURITY;
 
--- Allow tenant-scoped access (same pattern as other tables)
-CREATE POLICY "tenant_access_service_related_articles" ON service_related_articles
-  FOR ALL
-  USING (
-    service_id IN (
-      SELECT id FROM services WHERE tenant_id = get_current_tenant_id()
-    )
-  )
-  WITH CHECK (
-    service_id IN (
-      SELECT id FROM services WHERE tenant_id = get_current_tenant_id()
-    )
-  );
+-- Authenticated users can insert
+CREATE POLICY "Authenticated users can insert service_related_articles" ON service_related_articles
+  FOR INSERT
+  WITH CHECK (auth.uid() IS NOT NULL);
 
--- Allow public read for authenticated/anonymous (used by public site)
-CREATE POLICY "public_read_service_related_articles" ON service_related_articles
+-- Authenticated users can select
+CREATE POLICY "Authenticated users can select service_related_articles" ON service_related_articles
+  FOR SELECT
+  USING (auth.uid() IS NOT NULL);
+
+-- Authenticated users can update
+CREATE POLICY "Authenticated users can update service_related_articles" ON service_related_articles
+  FOR UPDATE
+  USING (auth.uid() IS NOT NULL);
+
+-- Authenticated users can delete
+CREATE POLICY "Authenticated users can delete service_related_articles" ON service_related_articles
+  FOR DELETE
+  USING (auth.uid() IS NOT NULL);
+
+-- Public can view (used by public site)
+CREATE POLICY "Public can view service_related_articles" ON service_related_articles
   FOR SELECT
   USING (true);
 
