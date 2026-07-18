@@ -137,6 +137,13 @@
 | locale columns on content | 🔄 Planned | Only for tables that need it |
 | locale_module flag | 🔄 Planned | Default false, gated per tenant |
 
+## Content Relationships
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Service-Related Articles | ✅ Stable | Κάθε υπηρεσία ελέγχει αν εμφανίζει σχετικά άρθρα, με τρεις τρόπους επιλογής: manual (junction table), category, latest. Blog editor multi-select. |
+| Legacy `show_on_service_page` | 🟡 Beta | Προσωρινό, θα καταργηθεί μετά τη μετάβαση στο service-level σύστημα |
+
 ## Multi-Project Support
 
 | Feature | Status | Notes |

@@ -5,6 +5,30 @@
 Το AION χρησιμοποιεί PostgreSQL 17 μέσω Supabase. Η βάση είναι
 multi-tenant με RLS policies σε κάθε πίνακα.
 
+## Service-Level Related Articles (v0.6)
+
+### service_related_articles
+```sql
+id              uuid PRIMARY KEY DEFAULT gen_random_uuid()
+service_id      uuid NOT NULL → services(id) ON DELETE CASCADE
+blog_post_id    uuid NOT NULL → blog_posts(id) ON DELETE CASCADE
+sort_order      integer NOT NULL DEFAULT 0
+created_at      timestamptz NOT NULL DEFAULT now()
+updated_at      timestamptz NOT NULL DEFAULT now()
+UNIQUE(service_id, blog_post_id)
+```
+
+### services — New Columns
+```sql
+show_related_articles    boolean NOT NULL DEFAULT false
+related_articles_mode    text NOT NULL DEFAULT 'manual'  -- manual | category | latest
+related_articles_limit   integer NOT NULL DEFAULT 6
+related_articles_title   text NOT NULL DEFAULT 'Σχετικά άρθρα'
+related_articles_title_en text NOT NULL DEFAULT 'Related Articles'
+```
+
+---
+
 ## Core Tables
 
 ### Authentication (Supabase Auth)

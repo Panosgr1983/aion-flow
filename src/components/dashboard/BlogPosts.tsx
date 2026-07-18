@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
-import { blogPostsHelper } from '../../lib/dataHelpers';
+import { blogPostsHelper, servicesHelper, serviceRelatedArticlesHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
-import { BlogPost } from '../../types/supabase';
+import { BlogPost, Service } from '../../types/supabase';
 import RichEditor from './RichEditor';
 import MediaPicker from './MediaPicker';
 
@@ -28,6 +28,8 @@ export default function BlogPosts() {
   const [heroUploading, setHeroUploading] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const heroInputRef = useRef<HTMLInputElement>(null);
+  const [allServices, setAllServices] = useState<Service[]>([]);
+  const [selectedServiceIds, setSelectedServiceIds] = useState<string[]>([]);
 
   useEffect(() => { blogPostsHelper.getAll().then(d => { setItems(d); setLoading(false); }); }, []);
 
@@ -39,8 +41,19 @@ export default function BlogPosts() {
     return true;
   });
 
-  const openAdd = () => { setEditing(null); setForm(emptyForm); setShowModal(true); };
-  const openEdit = (item: BlogPost) => {
+  const openAdd = async () => {
+    setEditing(null);
+    setForm(emptyForm);
+    setSelectedServiceIds([]);
+    setShowModal(true);
+    try {
+      if (allServices.length === 0) {
+        const svcs = await servicesHelper.getAll();
+        setAllServices(svcs);
+      }
+    } catch {}
+  };
+  const openEdit = async (item: BlogPost) => {
     const c = item.content;
     let content = c || {};
     if (c && typeof c === 'object' && !c.type && (c as any).html) {
@@ -49,22 +62,38 @@ export default function BlogPosts() {
     setEditing(item);
     setForm({ ...item, content });
     setShowModal(true);
+    try {
+      if (allServices.length === 0) {
+        const svcs = await servicesHelper.getAll();
+        setAllServices(svcs);
+      }
+      const relations = await serviceRelatedArticlesHelper.getByBlogPost(item.id);
+      setSelectedServiceIds(relations.map(r => r.service_id));
+    } catch {}
   };
 
   const handleSave = async () => {
     setSaving(true);
     const payload = { ...form, slug: form.slug || slugify(form.title || ''), published_at: form.is_published ? (form.published_at || new Date().toISOString()) : null };
+    let savedId: string | null = null;
     if (editing) {
       const updated = await blogPostsHelper.update(editing.id, payload);
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
       trackEvent('cms.blog_updated', { title: payload.title || '' }).catch(() => {});
+      savedId = editing.id;
     } else {
       const created = await blogPostsHelper.create(payload);
       setItems(prev => [...prev, created]);
       trackEvent('cms.blog_created', { title: payload.title || '' }).catch(() => {});
+      savedId = created.id;
     }
     if (payload.is_published) {
       trackEvent('cms.blog_published', { title: payload.title || '', word_count: payload.content ? String(payload.content).length : 0 }).catch(() => {});
+    }
+    if (savedId) {
+      try {
+        await serviceRelatedArticlesHelper.setServicesForPost(savedId, selectedServiceIds);
+      } catch {}
     }
     setSaving(false); setShowModal(false);
   };
@@ -145,6 +174,7 @@ export default function BlogPosts() {
               </div>
               <div><label className="text-xs text-gray-500 block mb-1">Απόσπασμα</label><textarea value={form.excerpt} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} className="input h-16 resize-none" /></div>
               <div><label className="text-xs text-gray-500 block mb-1">Περιεχόμενο</label><RichEditor content={form.content} onChange={json => setForm(f => ({ ...f, content: json }))} /></div>
+              <div className="border-t border-gray-800 pt-4"><p className="text-xs text-gray-500 mb-2">Σχετίζεται με υπηρεσίες</p><div className="grid grid-cols-2 sm:grid-cols-3 gap-2">{allServices.map(svc => <label key={svc.id} className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-colors"><input type="checkbox" checked={selectedServiceIds.includes(svc.id)} onChange={() => setSelectedServiceIds(prev => prev.includes(svc.id) ? prev.filter(id => id !== svc.id) : [...prev, svc.id])} className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500/30" /><span className="text-sm">{svc.title}</span></label>)}</div></div>
               <div className="border-t border-gray-800 pt-4"><p className="text-xs text-gray-500 mb-2">SEO</p><div className="grid grid-cols-3 gap-3"><div><label className="text-xs text-gray-500 block mb-1">Meta Title</label><input value={form.meta_title || ''} onChange={e => setForm(f => ({ ...f, meta_title: e.target.value }))} className="input" /></div><div><label className="text-xs text-gray-500 block mb-1">Meta Description</label><textarea value={form.meta_description || ''} onChange={e => setForm(f => ({ ...f, meta_description: e.target.value }))} className="input h-16 resize-none" /></div><div><label className="text-xs text-gray-500 block mb-1">OG Image</label><input value={form.og_image || ''} onChange={e => setForm(f => ({ ...f, og_image: e.target.value }))} className="input" /></div></div></div>
               <div className="flex justify-end gap-3 pt-2"><button onClick={() => setShowModal(false)} className="btn-secondary">Ακύρωση</button><button onClick={handleSave} disabled={saving} className="btn-primary">{saving ? 'Αποθήκευση...' : 'Αποθήκευση'}</button></div>
             </div>

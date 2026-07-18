@@ -29,16 +29,18 @@
 Πριν από κάθε ενέργεια, ακολούθησε αυτή τη σειρά:
 
 ```
-1. Διάβασε 00_INDEX/START_HERE.md
-2. Διάβασε 00_INDEX/CURRENT_STATE.md
-3. Διάβασε 00_INDEX/NEXT_APPROVED_ACTION.md
-4. Αναζήτησε existing module/method/pattern στο 00_INDEX/MASTER_INDEX.md
-5. Κάνε reuse audit (υπάρχει ήδη λύση;)
-6. Παρουσίασε plan + affected files
-7. Περίμενε έγκριση
-8. Build + validation
-9. ΜΗΝ κάνεις push/deploy χωρίς ρητή έγκριση
-10. Ενημέρωσε CURRENT_STATE.md + indexes πριν δηλώσεις Done
+ 1. Διάβασε ή δημιούργησε 00_SESSION/SESSION_OBJECTIVE.md
+ 2. Παρουσίασε Business Goal + Acceptance Criteria στον owner
+ 3. Περίμενε επιβεβαίωση πριν συνεχίσεις
+ 4. Εκτέλεσε Project Identity Preflight (aion-core/AGENTS.md)
+ 5. Διάβασε 00_INDEX/START_HERE.md (αν υπάρχει)
+ 6. Διάβασε 00_INDEX/CURRENT_STATE.md (αν υπάρχει)
+ 7. Διάβασε 00_INDEX/NEXT_APPROVED_ACTION.md (αν υπάρχει)
+ 8. Παρουσίασε Implementation Plan + affected files
+ 9. Περίμενε έγκριση
+10. Build + validation
+11. ΜΗΝ κάνεις push/deploy χωρίς ρητή έγκριση
+12. Ενημέρωσε SESSION_OBJECTIVE.md + CURRENT_STATE.md πριν δηλώσεις Done
 ```
 
 ---
@@ -150,3 +152,4 @@
 11. **Every module has a Module Maturity Index (MMI) score tracked in CURRENT_STATE.md**
 12. **COMPLETE ≠ VERIFIED** — a feature is not owner-approved until marked VERIFIED by product owner
 13. **PROJECT IDENTITY PREFLIGHT — MANDATORY** — Before any migration, deploy, env change, or schema edit: read `aion-core/products/PRODUCT_REGISTRY.md` + `aion-core/products/KOL-001.md`, verify this is `aion-flow-v2` (NOT kareli), confirm target DB is `qhbgptlklsavezxpksao`, and state the resolved target with evidence. Never assume project identity from folder name alone.
+14. **SESSION OBJECTIVE — MANDATORY** — At session start, create/read `00_SESSION/SESSION_OBJECTIVE.md`. Present Business Goal + Acceptance Criteria to owner before any code. Do not skip this step even when resuming a session.

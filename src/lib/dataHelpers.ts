@@ -27,7 +27,7 @@
 
 import { supabase, isSupabaseAvailable } from './supabase';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory } from '../types/supabase';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory, ServiceRelatedArticle } from '../types/supabase';
 import { trackEvent } from './analytics';
 import { withTenant } from './useTenantQuery';
 import { getCurrentTenantContext } from './TenantContext';
@@ -510,6 +510,45 @@ export const servicesHelper = {
     const { data, error } = await withTenant(supabase.from('services').select('*') as any).order('sort_order').order('created_at', { ascending: false }) as any;
     if (error) throw error;
     return data ?? [];
+  },
+};
+export const serviceRelatedArticlesHelper = {
+  ...createMockHelper<ServiceRelatedArticle>([] as ServiceRelatedArticle[], 'service_related_articles'),
+  async getByService(serviceId: string): Promise<ServiceRelatedArticle[]> {
+    if (!isSupabaseAvailable()) { await delay(200); return []; }
+    const { data, error } = await supabase.from('service_related_articles').select('*').eq('service_id', serviceId).order('sort_order');
+    if (error) throw error;
+    return data ?? [];
+  },
+  async getByBlogPost(blogPostId: string): Promise<ServiceRelatedArticle[]> {
+    if (!isSupabaseAvailable()) { await delay(200); return []; }
+    const { data, error } = await supabase.from('service_related_articles').select('*').eq('blog_post_id', blogPostId).order('sort_order');
+    if (error) throw error;
+    return data ?? [];
+  },
+  async setRelations(serviceId: string, blogPostIds: string[]): Promise<void> {
+    if (!isSupabaseAvailable()) return;
+    await supabase.from('service_related_articles').delete().eq('service_id', serviceId);
+    if (blogPostIds.length === 0) return;
+    const rows = blogPostIds.map((blogPostId, i) => ({
+      service_id: serviceId,
+      blog_post_id: blogPostId,
+      sort_order: i,
+    }));
+    const { error } = await supabase.from('service_related_articles').insert(rows);
+    if (error) throw error;
+  },
+  async setServicesForPost(blogPostId: string, serviceIds: string[]): Promise<void> {
+    if (!isSupabaseAvailable()) return;
+    await supabase.from('service_related_articles').delete().eq('blog_post_id', blogPostId);
+    if (serviceIds.length === 0) return;
+    const rows = serviceIds.map((serviceId, i) => ({
+      service_id: serviceId,
+      blog_post_id: blogPostId,
+      sort_order: i,
+    }));
+    const { error } = await supabase.from('service_related_articles').insert(rows);
+    if (error) throw error;
   },
 };
 export const blogPostsHelper = {

@@ -249,7 +249,21 @@ export interface Service {
   meta_title: string;
   meta_description: string;
   og_image: string;
+  show_related_articles?: boolean;
+  related_articles_mode?: 'manual' | 'category' | 'latest';
+  related_articles_limit?: number;
+  related_articles_title?: string;
+  related_articles_title_en?: string;
   created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ServiceRelatedArticle {
+  id: string;
+  service_id: string;
+  blog_post_id: string;
+  sort_order: number;
   created_at: string;
   updated_at: string;
 }

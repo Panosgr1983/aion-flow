@@ -1,5 +1,41 @@
 # AION CMS — Changelog
 
+## v0.6.0 (2026-07-18) — Service-Level Related Articles
+
+### Added
+- **Service-Level Related Articles**: Πλήρες σύστημα διαχείρισης σχετικών άρθρων ανά υπηρεσία.
+  - `service_related_articles` junction table (service_id, blog_post_id, sort_order, UNIQUE constraint)
+  - 5 νέα πεδία στο `services`: `show_related_articles`, `related_articles_mode`, `related_articles_limit`, `related_articles_title`, `related_articles_title_en`
+- **Service Editor — Tab "Σχετικά Άρθρα"**: Toggle ON/OFF, mode selector (manual/category/latest), limit, title EL/EN, article search + multi-select + up/down sorting
+- **Blog Editor — "Σχετίζεται με υπηρεσίες"**: Multi-select of all services
+- **Junction helper**: `serviceRelatedArticlesHelper` with `getByService`, `getByBlogPost`, `setRelations`, `setServicesForPost`
+- **Public site consumer**: `useRelatedArticles(slug)` hook — reads service config + junction table, supports all 3 modes
+- **Default data migration**: Ομάδες + Ομιλίες & Σεμινάρια → `show_related_articles=true`, `mode=manual`, existing articles connected via `service_related_articles`
+- **AKES v1.1 — Session Objective**: `SESSION_OBJECTIVE.md` protocol (standard, template, AGENTS.md update)
+- **Session Objective**: `00_SESSION/SESSION_OBJECTIVE.md` with Business Goal, Acceptance Criteria, Implementation Plan, Verification
+
+### Changed
+- **Services.tsx**: Modal restructured with 3 tabs (Γενικά / Σχετικά Άρθρα / SEO), widened from `max-w-lg` to `max-w-3xl`
+- **Services interface**: New optional fields for related articles
+- **Public site `services.$slug.tsx`**: Replaced hardcoded `CATEGORY_MAP` + `useBlogPostsByCategory` with DB-driven `useRelatedArticles` hook
+- **AGENTS.md (aion-core + aion-flow-v2)**: Entry protocol updated — Session Objective is now step 1 before any code
+
+### Migration
+- `001_service_related_articles.sql` — Creates junction table, adds columns to services, enables RLS
+- `002_default_data_related_articles.sql` — Enables & maps Ομάδες + Ομιλίες & Σεμινάρια
+
+### Documentation Updated
+- `docs/DATABASE.md` — service_related_articles table + services columns
+- `docs/FEATURES.md` — Content Relationships section
+- `docs/CHANGELOG.md` — v0.6.0 entry
+- `aion-core/products/KOL-001.md` — Updated allowed tables + version history
+- `aion-core/products/PRODUCT_REGISTRY.md` — Added forbidden table refs
+- `aion-core/standards/SESSION_OBJECTIVE_STANDARD.md` — New standard
+- `aion-core/architecture/AD-004.md` — Service-Centric Related Content Architecture
+
+### Build
+- ✅ Vite build (zero errors)
+
 ## v0.3.3 (2026-07-08)
 
 ### Added
