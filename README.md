@@ -54,3 +54,4 @@ npm run dev
 - **Frontend:** React 18.3 + Vite + TypeScript + Tailwind CSS
 - **Multi-Tenant:** JWT Hook + RLS + `withTenant()` helper
 - **Deploy:** Vercel (CMS) + Cloudflare Workers (public sites)
+
