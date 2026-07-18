@@ -88,6 +88,9 @@
 
 - **Product ID:** KOL-001
 - **Client:** Νικόλας Κολοκοτρώνης
+- **Canonical repository:** `Panosgr1983/aion-flow` — **only this repo is writable**
+- **Deprecated duplicate:** ~~`Panosgr1983/aion-flowv2`~~ (archive — do not use)
+- **Legacy snapshot:** `Panosgr1983/aion-flow-public` (release/v0.2 only, stale)
 - **CMS URL:** https://aion-flowv2.vercel.app
 - **Supabase:** `qhbgptlklsavezxpksao`
 - **Forbidden Supabase:** `idagkrwpmcnppjpnrbgv` (Kareli — NEVER use)

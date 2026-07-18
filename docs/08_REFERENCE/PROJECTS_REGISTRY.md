@@ -8,9 +8,10 @@
 
 | Property | Value |
 |----------|-------|
-| **Repository** | `~/aion-flow-v2` |
-| **Git remote** | `origin → https://github.com/Panosgr1983/aion-flow.git` (private) |
-| | `public → https://github.com/Panosgr1983/aion-flow-public.git` (release) |
+| **Repository (local)** | `~/aion-flow-v2` |
+| **Canonical remote** | `origin → https://github.com/Panosgr1983/aion-flow.git` |
+| **Deprecated duplicate** | ~~`https://github.com/Panosgr1983/aion-flowv2.git`~~ (archive only — do not use) |
+| **Legacy snapshot** | `public → https://github.com/Panosgr1983/aion-flow-public.git` (release/v0.2 only, stale) |
 | **Stack** | React 18.3 + Vite 5.4.8 + TypeScript 5.5 |
 | **Backend** | Supabase (PostgreSQL + Auth + Storage + Edge Functions) |
 | **Styling** | Tailwind CSS 3.4 + lucide-react |
