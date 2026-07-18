@@ -33,8 +33,22 @@
 - `aion-core/standards/SESSION_OBJECTIVE_STANDARD.md` — New standard
 - `aion-core/architecture/AD-004.md` — Service-Centric Related Content Architecture
 
+### Infrastructure
+- **index.html**: Updated title from "AION FLOW Project Merge" → "AION FLOW CMS — Kolokotronis", removed `bolt.new` meta tags
+- **Vercel env vars**: Added `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to project settings (were empty strings)
+- **Git history cleaned**: CREDENTIALS.private.md removed from all commits before push
+- **GitHub synced**: All 6 commits pushed to `origin/main` — production now matches git HEAD
+
+### New Standards (AKES v1.5)
+- **ADR-016**: AI Review Gate — υποχρεωτικό pre-merge review pipeline
+- **ADR-017**: Release Checklist Standard — `RELEASE_CHECKLIST.md` για κάθε production deploy
+- **ADR-018**: Credential Abstraction Layer (CAL) — κανένα raw secret σε agent contexts
+- **`CREDENTIAL_ABSTRACTION_LAYER.md`**: Πλήρες standard με aliases και κανόνες
+- **AGENTS.md rules 15-17**: Υποχρεωτική RELEASE_CHECKLIST, AKES Review Gate, CAL
+
 ### Build
 - ✅ Vite build (zero errors)
+- ✅ CMS production URL: `https://aion-flow-v2.vercel.app` — serving correct title + features
 
 ## v0.3.3 (2026-07-08)
 
