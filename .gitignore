@@ -39,3 +39,4 @@ docs/AION-Users-Access-Report.csv
 
 # Supabase CLI local config
 supabase/.temp/
+CREDENTIALS.private.md
