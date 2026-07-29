@@ -4,6 +4,7 @@ import { siteSettingsHelper, productsHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenant } from '../../lib/useTenant';
 import MediaPicker from './MediaPicker';
+import RichEditor from './RichEditor';
 
 const ICON_OPTIONS = ['clock', 'book', 'heart', 'sparkles', 'award', 'graduation'];
 
@@ -14,6 +15,7 @@ export default function AboutPanel() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [bioParagraphs, setBioParagraphs] = useState<string[]>([]);
+  const [bioContent, setBioContent] = useState<any>(null);
   const [achievements, setAchievements] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [pickerTarget, setPickerTarget] = useState<string | null>(null);
@@ -58,7 +60,7 @@ export default function AboutPanel() {
   const ALL_KEYS = [
     'about_hero_eyebrow', 'about_hero_title', 'about_hero_subtitle',
     'about_hero_image', 'about_hero_positioning',
-    'about_bio_eyebrow', 'about_bio_title', 'about_bio_paragraphs',
+    'about_bio_eyebrow', 'about_bio_title', 'about_bio_paragraphs', 'about_bio_content',
     'about_portrait',
     'about_achievements',
     'about_books', 'about_books_cta_text', 'about_books_cta_url',
@@ -72,6 +74,7 @@ export default function AboutPanel() {
     for (const s of all) map[s.key] = s.value;
     setSettings(map);
     if (Array.isArray(map.about_bio_paragraphs)) setBioParagraphs(map.about_bio_paragraphs as string[]);
+    if (map.about_bio_content) setBioContent(map.about_bio_content);
     if (Array.isArray(map.about_achievements)) setAchievements(map.about_achievements as any[]);
     if (Array.isArray(map.about_books)) setBooks(map.about_books as any[]);
     setLoading(false);
@@ -220,15 +223,15 @@ export default function AboutPanel() {
           {textField('about_bio_eyebrow', 'Bio Eyebrow')}
           {textField('about_bio_title', 'Bio Title')}
         </div>
-        <div className="p-3 bg-gray-900/50 rounded-xl space-y-3">
-          <p className="text-xs text-gray-500">Παράγραφοι βιογραφικού</p>
-          {bioParagraphs.map((p, i) => (
-            <div key={i} className="flex gap-2 items-start">
-              <textarea value={p} onChange={e => updateBio(i, e.target.value)} className="input flex-1 resize-none text-xs" style={{ minHeight: '4rem' }} />
-              <button onClick={() => removeBio(i)} className="p-1.5 text-gray-500 hover:text-red-400 mt-1"><Trash2 size={13} /></button>
-            </div>
-          ))}
-          <button onClick={addBio} className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"><Plus size={12} /> Προσθήκη παραγράφου</button>
+        <div className="p-3 bg-gray-900/50 rounded-xl">
+          <p className="text-xs text-gray-500 mb-2">Περιεχόμενο βιογραφικού (πλούσιο κείμενο)</p>
+          <RichEditor
+            content={bioContent}
+            onChange={(json: any) => {
+              setBioContent(json);
+              setVal('about_bio_content', json);
+            }}
+          />
         </div>
         {imageField('about_portrait', 'Portrait Image')}
 
