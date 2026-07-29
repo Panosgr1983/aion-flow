@@ -45,6 +45,7 @@ export default function Services() {
   const [faqEntries, setFaqEntries] = useState<{ question: string; answer: string }[]>([]);
   const [faqDirty, setFaqDirty] = useState(false);
   const [richLongDesc, setRichLongDesc] = useState<any>(null);
+  const [richShortDesc, setRichShortDesc] = useState<any>(null);
 
   useEffect(() => { servicesHelper.getAll().then(d => { setItems(d); setLoading(false); }); }, []);
 
@@ -59,25 +60,27 @@ export default function Services() {
     setFaqEntries([]);
     setFaqDirty(false);
     setRichLongDesc(null);
+    setRichShortDesc(null);
     setShowModal(true);
   };
+
+  function parseRichDesc(val: string | null | undefined): any {
+    const raw = val || '';
+    if (!raw.trim()) return null;
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object' && parsed.type === 'doc') return parsed;
+      return { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: raw }] }] };
+    } catch {
+      return { type: 'doc', content: raw.split('\n').filter(Boolean).map((p: string) => ({ type: 'paragraph', content: [{ type: 'text', text: p }] })) };
+    }
+  }
 
   const openEdit = async (item: Service) => {
     setEditing(item);
     setForm(item);
-    const raw = item.long_description || '';
-    try {
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === 'object' && parsed.type === 'doc') {
-        setRichLongDesc(parsed);
-      } else {
-        setRichLongDesc({ type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: raw }] }] });
-      }
-    } catch {
-      setRichLongDesc(raw.trim()
-        ? { type: 'doc', content: raw.split('\n').filter(Boolean).map((p: string) => ({ type: 'paragraph', content: [{ type: 'text', text: p }] })) }
-        : null);
-    }
+    setRichLongDesc(parseRichDesc(item.long_description));
+    setRichShortDesc(parseRichDesc(item.short_description));
     setActiveTab('general');
     setSelectedPostIds([]);
     setPostSearch('');
@@ -99,7 +102,7 @@ export default function Services() {
   const handleSave = async () => {
     setSaving(true);
     const slug = form.slug || slugify(form.title || '');
-    const payload = { ...form, slug, long_description: richLongDesc ? JSON.stringify(richLongDesc) : (form.long_description || '') };
+    const payload = { ...form, slug, long_description: richLongDesc ? JSON.stringify(richLongDesc) : (form.long_description || ''), short_description: richShortDesc ? JSON.stringify(richShortDesc) : (form.short_description || '') };
 
     if (editing) {
       const updated = await servicesHelper.update(editing.id, payload);
@@ -248,7 +251,16 @@ export default function Services() {
                     <div><label className="text-xs text-gray-500 block mb-1">Slug</label><input value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} className="input" /></div>
                     <div><label className="text-xs text-gray-500 block mb-1">Εικονίδιο</label><select value={form.icon} onChange={e => setForm(f => ({ ...f, icon: e.target.value }))} className="input">{iconOptions.map(o => <option key={o} value={o}>{o}</option>)}</select></div>
                   </div>
-                  <div><label className="text-xs text-gray-500 block mb-1">Σύντομη περιγραφή</label><textarea value={form.short_description} onChange={e => setForm(f => ({ ...f, short_description: e.target.value }))} className="input h-20 resize-none" /></div>
+                  <div>
+                    <label className="text-xs text-gray-500 block mb-1">Σύντομη περιγραφή</label>
+                    <RichEditor
+                      content={richShortDesc}
+                      onChange={(json: any) => {
+                        setRichShortDesc(json);
+                        setForm(f => ({ ...f, short_description: JSON.stringify(json) }));
+                      }}
+                    />
+                  </div>
                   <div>
                     <label className="text-xs text-gray-500 block mb-1">Αναλυτική περιγραφή</label>
                     <RichEditor
