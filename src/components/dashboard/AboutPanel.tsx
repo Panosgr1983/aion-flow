@@ -74,7 +74,19 @@ export default function AboutPanel() {
     for (const s of all) map[s.key] = s.value;
     setSettings(map);
     if (Array.isArray(map.about_bio_paragraphs)) setBioParagraphs(map.about_bio_paragraphs as string[]);
-    if (map.about_bio_content) setBioContent(map.about_bio_content);
+    if (map.about_bio_content) {
+      setBioContent(map.about_bio_content);
+    } else if (Array.isArray(map.about_bio_paragraphs) && map.about_bio_paragraphs.length > 0) {
+      const converted = {
+        type: 'doc',
+        content: (map.about_bio_paragraphs as string[]).map((p: string) => ({
+          type: 'paragraph',
+          content: p ? [{ type: 'text', text: p }] : [],
+        })),
+      };
+      setBioContent(converted);
+      setVal('about_bio_content', converted);
+    }
     if (Array.isArray(map.about_achievements)) setAchievements(map.about_achievements as any[]);
     if (Array.isArray(map.about_books)) setBooks(map.about_books as any[]);
     setLoading(false);
