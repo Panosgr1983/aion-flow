@@ -67,6 +67,7 @@
 | Doc | Status |
 |-----|--------|
 | ADR Index | ❌ Not created |
+| Content Engine ADR | 🔷 Planned — see AGENTS.md |
 
 ## 06_PLAYBOOKS — Complete Procedures
 
@@ -98,4 +99,5 @@
 | `AI_MEMORY.md` | ❌ Not created |
 | `MEMORY_KEEPER.md` | ❌ Not created |
 | `METHOD_TEMPLATE.md` | ❌ Not created |
-| `SESSION_LOGS/` | 🔄 Has current session |
+| `SESSION_LOGS/` | 🔄 2026-07-29 (Process Baseline), 2026-07-29b (PB#1), 2026-07-29c (Content Engine) |
+| `METRICS/` | 📊 Release metrics (2026-07-29b.json) |

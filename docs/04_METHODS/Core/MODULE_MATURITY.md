@@ -174,7 +174,7 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 **Status:** PRODUCTION  
 **Verified:** ❌
 
-**Last evidence update:** 2026-07-29b (Phase 5 continued — FAQ JSON-LD added, Service FAQ baseline).
+**Last evidence update:** 2026-07-29d (RichEditor unified across Blog/About/Services. `renderTipContent` extracted to shared lib. Blog eyebrow dynamic. Category normalization fixed.)
 
 ---
 
@@ -199,7 +199,7 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 **Status:** PRODUCTION  
 **Verified:** ❌
 
-**Last evidence update:** 2026-07-29b (AKR-KOL-PB-001 — Service FAQ feature, 8/8 Playwright tests, data-testid pattern).
+**Last evidence update:** 2026-07-29d (RichEditor for short_description + long_description, backward compatible plain-text rendering, `extractPlainText` helper for list view, `service_faq_visible` toggle).
 
 ---
 
@@ -211,8 +211,8 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 |------|-------|-------|
 | Website (public) | 100% | Live, SSR, Cloudflare |
 | CMS panels | 100% | 16 panels operational |
-| Services | 100% | 5 services CRUD + FAQ tab (add/edit/delete/reorder, 10 seed entries) |
-| Blog | 100% | 3 categories, canonical filters, rich-text hardened, FAQ JSON-LD |
+| Services | 100% | 5 services CRUD + RichEditor (short + long description) + FAQ tab + FAQ visibility toggle |
+| Blog | 100% | 3 categories, canonical filters, rich-text hardened, dynamic eyebrow (Ανακοινώσεις), no date on seminars |
 | Testimonials | 100% | CRUD with ratings |
 | Bookings | — | Not applicable |
 | Locale | — | GR only, not needed |
@@ -220,11 +220,11 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 | **Overall** | **100%** | Production |
 
 **Verified evidence:**
-- **Last verified:** 2026-07-29b
-- **Release:** `docs/releases/2026-07-29b/RELEASE.md`
-- **Commit (kolokotronis):** `48fcdba` + uncommitted FAQ changes
-- **Commit (aion-flow-v2):** `0177fd3` + uncommitted FAQ + AKES v1.6 docs
-- **Automated QA:** 47/47 (Process Baseline) + 8/8 (Performance Baseline #1 — Service FAQ)
+- **Last verified:** 2026-07-29d
+- **Release:** `docs/releases/2026-07-29d/RELEASE.md`
+- **Commit (kolokotronis):** `c5a9377`
+- **Commit (aion-flow-v2):** `93980ec`
+- **Automated QA:** 47/47 (Process Baseline) + 8/8 (PB#1 Service FAQ) + 12/12 (Manual QA) = **67 total**
 - **Manual deferred:** 2 (CMS auth save/persist, Word/Google Docs paste)
 - **Selector strategy:** `data-testid` for dynamic/repeated/translated elements
 - **Next review:** 2026-10-29 (3-month cycle)
@@ -259,4 +259,5 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 | CRM | 33% | BLOCKED | ❌ |
 | Locale | 8% | EARLY | ❌ |
 | AKES | 88% | PRODUCTION | ❌ | (Dashboard live at `/dashboard/akes` — MMI, doc search, blockers) |
-| **Platform** | **73%** | **STABLE** | — |
+| Content Engine | 5% | PLANNED | — | RichEditor + renderTipContent unified across modules. Registry + normalizer pending Phases 1-6. |
+| **Platform** | **71%** | **STABLE** | — |

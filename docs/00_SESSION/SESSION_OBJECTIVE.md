@@ -92,23 +92,23 @@ No scope changes without explicit user approval.
 
 ---
 
-## Current Objective
+## Current Objective (Session 2026-07-29c)
 
-**Status:** <PENDING / APPROVED / COMPLETED>
+**Status:** COMPLETED
 
 | Field | Value |
 |-------|-------|
-| **Business Goal** | |
-| **User Request** | |
-| **In Scope** | |
-| **Out of Scope** | |
-| **Acceptance Criteria** | |
-| **Affected Tenants** | |
-| **Affected Projects** | |
-| **Affected Modules** | |
-| **Planned Files** | |
-| **Database Impact** | |
-| **Deployment Impact** | |
-| **Rollback Plan** | |
-| **Documentation Impact** | |
-| **Approval Status** | |
+| **Business Goal** | Unify rich content editing across Blog/About/Services with TipTap, resolve all client-reported refinements (category normalization, editor UX, dynamic labels, FAQ visibility) |
+| **User Request** | Multiple iterative requests: fix seminar dates, add biography editor, add service editors, fix editor spacing/list markers, change blog eyebrow, fix slugs, remove title constraint, add FAQ toggle |
+| **In Scope** | All 10+ client-driven refinements documented in session log |
+| **Out of Scope** | FAQ ownership architecture, Content Engine consolidation (Phases 1-6), Kareli upgrade, Vercel secondary |
+| **Acceptance Criteria** | 20/20 tests pass, both deployments live, no regression in existing content |
+| **Affected Tenants** | KOL-001 |
+| **Affected Projects** | aion-flow-v2, kolokotronis-pshychologist-main |
+| **Affected Modules** | Blog, Services, About, SiteSettings |
+| **Planned Files** | ~18 files across both projects |
+| **Database Impact** | 3 new site_settings keys, 3 slug fixes via API |
+| **Deployment Impact** | aion-flow-v2 (Vercel), kolokotronis (Cloudflare) |
+| **Rollback Plan** | Vercel rollback to `059eda9`, CF rollback to `0e5eda74` |
+| **Documentation Impact** | Session log, release record, CURRENT_STATE, AGENT_PERFORMANCE, MODULE_MATURITY, indexes |
+| **Approval Status** | ✅ COMPLETED — all docs updated |

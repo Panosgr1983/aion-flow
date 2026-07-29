@@ -1,7 +1,8 @@
 # CURRENT STATE — AION Flow
 
-**Updated:** 2026-07-29
+**Updated:** 2026-07-29c
 **AKES v1.6**
+**Content Engine:** Approved architectural direction (Phases 1-6, not yet implemented)
 
 ---
 
@@ -27,6 +28,7 @@
 | Retreat | 0.6 | 🟡 Active | `retreat_module` |
 | Locale | 0.7 | 🔄 Planned | `locale_module` |
 | Services (FAQ) | 1.0 | ✅ Stable (83% MMI) | `cms` (monolithic) |
+| Content Engine | 0.9 | 🟡 Approved direction (Phases 1-6) | Core primitive |
 
 ## Tenants
 
@@ -75,7 +77,7 @@
 |-------|----------|--------|
 | documentation.db.json publicly exposed (now fixed) | 🔴 Resolved | Moved to src/assets/, bundled by Vite |
 | site_settings UNIQUE on key (not per-tenant) | 🟡 Medium | Needs migration |
-| Automated Playwright QA | ✅ Established | 47/47 (Process Baseline) + 8/8 (PB#1 Service FAQ); 2 non-blocking manual checks deferred |
+| Automated Playwright QA | ✅ Established | 47/47 (Process Baseline) + 8/8 (PB#1 Service FAQ) + 12/12 (Manual QA); 2 non-blocking manual checks deferred |
 | Agent performance telemetry (runtime capture) | 🟡 Medium | Schema defined (AGENT_PERFORMANCE.md) but runtime wall-clock + tool-level capture not implemented |
 | No lazy loading | 🟢 Low | Acceptable |
 | No multi-language support | 🟡 Medium | Locale Module v0.7 |
@@ -84,6 +86,9 @@
 | Kolokotronis Vercel secondary HTTP 404 | 🟡 Medium | Pre-existing, needs separate Nitro preset build |
 | CMS save/persist manual check | 🔷 Deferred | Needs Supabase Auth credentials |
 | Word/Google Docs paste manual check | 🔷 Deferred | Not automatable in headless Playwright |
+| Empty article `slug: omada-monopati-eytyxias` (content `{}`) | 🟡 Medium | Pending data decision |
+| FAQ ownership: Gen1 vs Gen2 architecture | 🟡 Medium | Pending investigation |
+| CMS authenticated Playwright tests | 🔷 Blocked | TenantSelector overlay intercepts clicks |
 
 ## Next Approved Action
 
@@ -92,3 +97,10 @@ See `NEXT_APPROVED_ACTION.md` for the current priority.
 **Release 2026-07-29 (a):** Process Baseline established. 47/47 QA tests. See `docs/releases/2026-07-29/RELEASE.md`.
 
 **Release 2026-07-29 (b):** Performance Baseline #1 (AKR-KOL-PB-001). Service FAQ + AKES v1.6. 8/8 QA tests in 29.3s. See `docs/releases/2026-07-29b/RELEASE.md`.
+
+**Release 2026-07-29 (d):** Rich Content Engine Expansion + Client-Driven Refinements. TipTap RichEditor unified across Blog/About/Services. Category normalization, editor CSS, blog eyebrow, FAQ visibility toggle. 20/20 QA tests. See `docs/releases/2026-07-29d/RELEASE.md`.
+
+**Current Production Baseline:**
+- **AION Flow:** `93980ec`
+- **Kolokotronis:** `c5a9377`
+- **Tests:** 20/20 passed
