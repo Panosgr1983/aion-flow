@@ -412,6 +412,28 @@ export default function SiteSettingsPanel() {
                 </div>
               </div>
 
+              <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Announcements & Blog Settings</h3>
+              <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-xl">
+                <label className="text-sm text-gray-300">Εμφάνιση ημερομηνιών σε ανακοινώσεις</label>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={getValue('announcement_show_dates') === 'true'}
+                  onClick={() => setValue('announcement_show_dates', getValue('announcement_show_dates') === 'true' ? 'false' : 'true')}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${getValue('announcement_show_dates') === 'true' ? 'bg-blue-600' : 'bg-gray-700'}`}
+                >
+                  <span className={`inline-block size-4 rounded-full bg-white transition-transform ${getValue('announcement_show_dates') === 'true' ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('blog_back_button_text', 'Κουμπί πίσω (άρθρα)')}
+                {renderField('announcement_back_button_text', 'Κουμπί πίσω (ανακοινώσεις)')}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {renderField('blog_empty_message', 'Μήνυμα κενής λίστας (άρθρα)')}
+                {renderField('announcement_empty_message', 'Μήνυμα κενής λίστας (ανακοινώσεις)')}
+              </div>
+
               <h3 className="text-sm font-semibold text-blue-400 border-b border-gray-800 pb-2 mt-8">Other Sections</h3>
               {renderField('testimonials_section_title', 'Testimonials Section Title')}
               {renderField('blog_section_title', 'Blog Section Title')}

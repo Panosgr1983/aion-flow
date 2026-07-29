@@ -2,7 +2,8 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
-import { Bold, Italic, List, ListOrdered, Quote, Heading2, Undo, Redo, Image as ImageIcon, Link as LinkIcon } from 'lucide-react';
+import Underline from '@tiptap/extension-underline';
+import { Bold, Italic, Underline as UnderlineIcon, Strikethrough, List, ListOrdered, Quote, Heading2, Heading3, Undo, Redo, Image as ImageIcon, Link as LinkIcon, RemoveFormatting } from 'lucide-react';
 import { useState } from 'react';
 import { uploadImage } from '../../lib/storage';
 
@@ -34,9 +35,12 @@ export default function RichEditor({ content, onChange, bucket = 'blog-images', 
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: { levels: [2, 3] },
+      }),
       Image,
       Link.configure({ openOnClick: false }),
+      Underline,
     ],
     content: normalizeContent(content),
     onUpdate: ({ editor }) => onChange(editor.getJSON()),
@@ -94,13 +98,18 @@ export default function RichEditor({ content, onChange, bucket = 'blog-images', 
       <div className="flex items-center gap-1 p-2 border-b border-gray-800 bg-gray-900/50 flex-wrap">
         <ToolBtn onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive('bold')}><Bold size={16} /></ToolBtn>
         <ToolBtn onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive('italic')}><Italic size={16} /></ToolBtn>
+        <ToolBtn onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive('underline')}><UnderlineIcon size={16} /></ToolBtn>
+        <ToolBtn onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive('strike')}><Strikethrough size={16} /></ToolBtn>
         <span className="w-px h-5 bg-gray-800 mx-1" />
         <ToolBtn onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive('heading', { level: 2 })}><Heading2 size={16} /></ToolBtn>
+        <ToolBtn onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} active={editor.isActive('heading', { level: 3 })}><Heading3 size={16} /></ToolBtn>
+        <span className="w-px h-5 bg-gray-800 mx-1" />
         <ToolBtn onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive('bulletList')}><List size={16} /></ToolBtn>
         <ToolBtn onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive('orderedList')}><ListOrdered size={16} /></ToolBtn>
         <ToolBtn onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive('blockquote')}><Quote size={16} /></ToolBtn>
+        <ToolBtn onClick={addLink} active={editor.isActive('link')}><LinkIcon size={16} /></ToolBtn>
         <span className="w-px h-5 bg-gray-800 mx-1" />
-        <div className="relative">
+        <div className="relative group">
           <ToolBtn onClick={addImage}>
             {uploading ? <span className="size-4 inline-block border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin" /> : <ImageIcon size={16} />}
           </ToolBtn>
@@ -108,10 +117,10 @@ export default function RichEditor({ content, onChange, bucket = 'blog-images', 
             <button onClick={addImageUrl} className="px-3 py-1.5 bg-gray-800 rounded-lg text-xs text-gray-300 hover:text-white whitespace-nowrap">Από URL</button>
           </div>
         </div>
-        <ToolBtn onClick={addLink} active={editor.isActive('link')}><LinkIcon size={16} /></ToolBtn>
         <span className="w-px h-5 bg-gray-800 mx-1" />
         <ToolBtn onClick={() => editor.chain().focus().undo().run()}><Undo size={16} /></ToolBtn>
         <ToolBtn onClick={() => editor.chain().focus().redo().run()}><Redo size={16} /></ToolBtn>
+        <ToolBtn onClick={() => editor.chain().focus().clearNodes().unsetAllMarks().run()}><RemoveFormatting size={16} /></ToolBtn>
       </div>
       <EditorContent editor={editor} />
     </div>
