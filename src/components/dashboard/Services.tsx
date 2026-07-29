@@ -65,8 +65,8 @@ export default function Services() {
   const openEdit = async (item: Service) => {
     setEditing(item);
     setForm(item);
+    const raw = item.long_description || '';
     try {
-      const raw = item.long_description || '';
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed === 'object' && parsed.type === 'doc') {
         setRichLongDesc(parsed);
