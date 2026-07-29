@@ -425,6 +425,18 @@ export default function SiteSettingsPanel() {
                   <span className={`inline-block size-4 rounded-full bg-white transition-transform ${getValue('announcement_show_dates') === 'true' ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>
               </div>
+              <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-xl">
+                <label className="text-sm text-gray-300">Εμφάνιση FAQ στις υπηρεσίες</label>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={getValue('service_faq_visible') === 'true'}
+                  onClick={() => setValue('service_faq_visible', getValue('service_faq_visible') === 'true' ? 'false' : 'true')}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${getValue('service_faq_visible') === 'true' ? 'bg-blue-600' : 'bg-gray-700'}`}
+                >
+                  <span className={`inline-block size-4 rounded-full bg-white transition-transform ${getValue('service_faq_visible') === 'true' ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 {renderField('blog_hero_eyebrow', 'Eyebrow επικεφαλίδας blog')}
               </div>
