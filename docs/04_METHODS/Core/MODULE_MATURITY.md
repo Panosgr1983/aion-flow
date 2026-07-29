@@ -174,7 +174,32 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 **Status:** PRODUCTION  
 **Verified:** ❌
 
-**Last evidence update:** 2026-07-29 (Phase 5 — canonical categories, rich-text hardening, XSS, editor enhancements).
+**Last evidence update:** 2026-07-29b (Phase 5 continued — FAQ JSON-LD added, Service FAQ baseline).
+
+---
+
+### Services Module (FAQ)
+
+| Layer | Sub-criteria | Status |
+|-------|-------------|--------|
+| L1 Data | services table with slug, title, description, content | ✅ |
+| L1 Data | service_faq_entries table (question, answer, sort_order, is_active) | ✅ |
+| L1 Data | Both tables have tenant_id + FK + CHECK constraints | ✅ |
+| L2 Authoring | Services CRUD panel (5 services) | ✅ |
+| L2 Authoring | FAQ tab (inline add/edit/delete/reorder, empty state, sort_order) | ✅ |
+| L2 Authoring | Permissions (cms.edit) | ✅ |
+| L3 Delivery | Service detail page renders bio + FAQ + related articles | ✅ |
+| L3 Delivery | FAQ accordion expand/collapse | ✅ |
+| L3 Delivery | JSON-LD FAQPage structured data | ✅ |
+| L3 Delivery | Tenant isolation verified (tenant_id FK on service_faq_entries) | ✅ |
+| L4 Intelligence | Telemetry | ❌ |
+| L4 Intelligence | Tests (Playwright) | ✅ 8 tests in kolokotronis repo |
+
+**Score:** 10/12 = 83%  
+**Status:** PRODUCTION  
+**Verified:** ❌
+
+**Last evidence update:** 2026-07-29b (AKR-KOL-PB-001 — Service FAQ feature, 8/8 Playwright tests, data-testid pattern).
 
 ---
 
@@ -186,8 +211,8 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 |------|-------|-------|
 | Website (public) | 100% | Live, SSR, Cloudflare |
 | CMS panels | 100% | 16 panels operational |
-| Services | 100% | 5 services CRUD |
-| Blog | 100% | 3 categories, canonical filters, rich-text hardened |
+| Services | 100% | 5 services CRUD + FAQ tab (add/edit/delete/reorder, 10 seed entries) |
+| Blog | 100% | 3 categories, canonical filters, rich-text hardened, FAQ JSON-LD |
 | Testimonials | 100% | CRUD with ratings |
 | Bookings | — | Not applicable |
 | Locale | — | GR only, not needed |
@@ -195,12 +220,13 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 | **Overall** | **100%** | Production |
 
 **Verified evidence:**
-- **Last verified:** 2026-07-29
-- **Release:** `docs/releases/2026-07-29/RELEASE.md`
-- **Commit (kolokotronis):** `48fcdba`
-- **Commit (aion-flow-v2):** `0177fd3`
-- **Automated QA:** 47/47 Playwright tests
+- **Last verified:** 2026-07-29b
+- **Release:** `docs/releases/2026-07-29b/RELEASE.md`
+- **Commit (kolokotronis):** `48fcdba` + uncommitted FAQ changes
+- **Commit (aion-flow-v2):** `0177fd3` + uncommitted FAQ + AKES v1.6 docs
+- **Automated QA:** 47/47 (Process Baseline) + 8/8 (Performance Baseline #1 — Service FAQ)
 - **Manual deferred:** 2 (CMS auth save/persist, Word/Google Docs paste)
+- **Selector strategy:** `data-testid` for dynamic/repeated/translated elements
 - **Next review:** 2026-10-29 (3-month cycle)
 
 ### Ktima Kareli
@@ -227,9 +253,10 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 | Portfolio | 75% | STABLE | ✅ (frozen) |
 | Retreat | 79% | STABLE | ❌ |
 | Media | 83% | PRODUCTION | ❌ |
-| Blog | 78% | STABLE | ❌ |
+| Blog | 83% | PRODUCTION | ❌ |
+| Services (FAQ) | 83% | PRODUCTION | ❌ |
 | Bookings | 100% | PRODUCTION | ❌ |
 | CRM | 33% | BLOCKED | ❌ |
 | Locale | 8% | EARLY | ❌ |
-| AKES | 95% | PRODUCTION | ❌ | (Dashboard live at `/dashboard/akes` — MMI, doc search, blockers) |
-| **Platform** | **72%** | **STABLE** | — |
+| AKES | 88% | PRODUCTION | ❌ | (Dashboard live at `/dashboard/akes` — MMI, doc search, blockers) |
+| **Platform** | **73%** | **STABLE** | — |

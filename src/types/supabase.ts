@@ -268,6 +268,18 @@ export interface ServiceRelatedArticle {
   updated_at: string;
 }
 
+export interface ServiceFaqEntry {
+  id: string;
+  tenant_id: string;
+  service_id: string;
+  question: string;
+  answer: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface BlogPost {
   id: string;
   tenant_id: string | null;

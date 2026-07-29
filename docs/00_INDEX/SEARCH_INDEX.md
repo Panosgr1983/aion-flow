@@ -86,6 +86,7 @@
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-08-to-2026-07-12 | Session Log — 2026-07-08 to 2026-07-12 | 09_AI_MEMORY/SESSION_LOGS/2026-07-08-to-2026-07-12.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-13 | Session Log: 2026-07-13 — AKES v1.5 Relations | 09_AI_MEMORY/SESSION_LOGS/2026-07-13.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-29 | Session Log: 2026-07-29 — Announcement Taxono | 09_AI_MEMORY/SESSION_LOGS/2026-07-29.md | — | — |  |
+| 09_AI_MEMORY.SESSION_LOGS.2026-07-29b | Session Log: 2026-07-29b — Service FAQ (Perfo | 09_AI_MEMORY/SESSION_LOGS/2026-07-29b.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOG_TEMPLATE | Session Log Template | 09_AI_MEMORY/SESSION_LOG_TEMPLATE.md | — | — |  |
 | vision.aion-ecosystem | AION Ecosystem Vision | 10_VISION/AION_ECOSYSTEM.md | vision | — | ecosystem, vision, flŐW, akes, nexus, cl |
 | vision.nexus | AION NEXUS Vision | 10_VISION/NEXUS_VISION.md | vision | — | nexus, ai, orchestrator, vision |
@@ -183,3 +184,4 @@
 | patterns.tenant-isolation | Tenant Isolation — AION Flow | patterns/tenant-isolation.md | — | — |  |
 | patterns.timeline-pattern | Timeline Pattern — AION Flow | patterns/timeline-pattern.md | — | — |  |
 | releases.2026-07-29.RELEASE | Release — 2026-07-29 | releases/2026-07-29/RELEASE.md | — | — |  |
+| releases.2026-07-29b.RELEASE | Release — 2026-07-29b | releases/2026-07-29b/RELEASE.md | — | — |  |

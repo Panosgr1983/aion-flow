@@ -5,9 +5,9 @@
 
 ---
 
-## Current Priority: AKES v1.5 Completion
+## Current Priority: AKES v1.6 Discipline Protocols
 
-Complete the AKES documentation architecture: templates, protocols, metrics, and indexes. Then resume Kareli (AKR-KAR-001) content model upgrade.
+Complete the AKES documentation discipline: Knowledge Hydration, Decision History, Memory Persistence, Secure Credential Access. Then resume Kareli (AKR-KAR-001) content model upgrade.
 
 ### Sequence
 
@@ -27,8 +27,9 @@ Complete the AKES documentation architecture: templates, protocols, metrics, and
 | 12 | ✅ SESSION_OBJECTIVE.md | Done (Jul 2026) |
 | 13 | ✅ AGENT_PERFORMANCE.md + metrics schema | Done (Jul 2026) |
 | 14 | ✅ Release 2026-07-29 (Process Baseline) | Done (47/47 QA) |
-| 15 | 🔄 docs:index + docs:validate scripts | Next |
-| 16 | ❌ Kareli (AKR-KAR-001) content model migration | Paused |
+| 15 | ✅ AKES v1.6 discipline protocols | Done (Jul 2026) |
+| 16 | 🔄 docs:index + docs:validate scripts | Next |
+| 17 | ❌ Kareli (AKR-KAR-001) content model migration | Paused |
 
 ---
 
@@ -46,16 +47,19 @@ Complete the AKES documentation architecture: templates, protocols, metrics, and
 ## Session Memory (Current Session)
 
 ### Last Completed Session (2026-07-29)
-1. Kolokotronis announcement taxonomy fix (canonical categories)
-2. Rich-text rendering hardening (all TipTap node types + XSS)
-3. 5 new CMS site_settings keys (announcement show_dates, back buttons, empty messages)
-4. TipTap editor toolbar: Underline, Strike, H3, Clear Formatting
-5. react-router-dom upgrade (7.14.1→7.18.2, 8 CVEs)
-6. Deploy: Cloudflare Workers + AION Flow Vercel
-7. Full QA: 47/47 Playwright tests
-8. Release documentation: QA_CHECKLIST, RELEASE_PROCESS, AGENT_PERFORMANCE
-9. AKES protocols: SESSION_LOG_TEMPLATE, MEMORY_UPDATE_PROTOCOL, SESSION_OBJECTIVE
-10. Machine-readable metrics structure
+1. Service FAQ (Performance Baseline #1): migration, CMS UI, public rendering, JSON-LD, seed data
+2. 8/8 Playwright tests for Service FAQ with data-testid pattern
+3. AKES v1.6 discipline protocols formalized:
+   - Mandatory Knowledge Hydration (read before act)
+   - Decision History Preservation (not every sentence)
+   - Source/Confidence Classification (✅🟡🔷❓ provenance)
+   - Existing Memory & History Update Rule (append before duplicate)
+   - Mandatory Memory Persistence (DoD = impl + test + doc + mem + index)
+   - Secure Credential Access (three-tier: docs / vault / runtime)
+   - AKES Core Principle (Read → Search → Reuse → Verify → Append → Persist)
+4. CREDENTIAL_ABSTRACTION_LAYER.md promoted from Πρόταση → Ενεργό Standard
+5. CREDENTIALS_REGISTRY.md updated with three-tier architecture
+6. START_HERE.md, SESSION_OBJECTIVE.md, CURRENT_STATE.md updated to v1.6
 
 **Next priority:** docs:index + docs:validate scripts → Kareli content model migration  
 **Deploy allowed:** ✅ Allowed for documentation commits

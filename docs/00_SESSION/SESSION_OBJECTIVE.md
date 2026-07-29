@@ -39,16 +39,33 @@ The protocol ensures:
 
 ---
 
+## Prerequisites (Step 0 — Knowledge Hydration)
+
+Before formulating the objective, the agent MUST complete the AKES Knowledge Hydration protocol:
+
+1. Read `00_INDEX/START_HERE.md`, `00_INDEX/CURRENT_STATE.md`, `00_INDEX/NEXT_APPROVED_ACTION.md`
+2. Search `00_INDEX/MASTER_INDEX.md` and `00_INDEX/SEARCH_INDEX.md`
+3. Read all docs relevant to: active project, affected tenant, affected modules, prior ADRs, known issues/tech debt, previous releases and session logs
+4. Confirm the active plan does not contradict existing documentation, decisions, or tenant constraints
+
+> See AGENTS.md → **Mandatory Knowledge Hydration** for full protocol.
+
 ## Standard Workflow
 
 ```
+0. Hydrate knowledge from AKES (see Prerequisites above)
 1. Agent reads SESSION_OBJECTIVE.md (this file)
 2. Agent formulates objective based on user request
 3. User reviews and approves
 4. Agent works within IN scope
 5. Agent does NOT work on OUT scope
-6. Agent updates SESSION_OBJECTIVE.md status when complete
+6. Agent updates documentation: CURRENT_STATE.md, NEXT_APPROVED_ACTION.md,
+   session log, project/tenant history, content mapping, ADRs, module docs,
+   known issues, release record, agent performance, indexes
+7. Agent updates SESSION_OBJECTIVE.md status when complete
 ```
+
+> **Session close rule:** A session is not complete until documentation persistence is verified (see AGENTS.md → **Mandatory Memory Persistence**).
 
 ---
 

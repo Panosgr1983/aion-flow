@@ -27,7 +27,7 @@
 
 import { supabase, isSupabaseAvailable } from './supabase';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
-import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory, ServiceRelatedArticle } from '../types/supabase';
+import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory, ServiceRelatedArticle, ServiceFaqEntry } from '../types/supabase';
 import { trackEvent } from './analytics';
 import { withTenant } from './useTenantQuery';
 import { getCurrentTenantContext } from './TenantContext';
@@ -549,6 +549,37 @@ export const serviceRelatedArticlesHelper = {
     }));
     const { error } = await supabase.from('service_related_articles').insert(rows);
     if (error) throw error;
+  },
+};
+export const serviceFaqHelper = {
+  ...createMockHelper<ServiceFaqEntry>([] as ServiceFaqEntry[], 'service_faq_entries'),
+  async getByService(serviceId: string): Promise<ServiceFaqEntry[]> {
+    if (!isSupabaseAvailable()) { await delay(200); return []; }
+    const { data, error } = await supabase.from('service_faq_entries').select('*').eq('service_id', serviceId).order('sort_order');
+    if (error) throw error;
+    return data ?? [];
+  },
+  async setFaq(serviceId: string, entries: { question: string; answer: string }[]): Promise<ServiceFaqEntry[]> {
+    if (!isSupabaseAvailable()) return [];
+    const { data: existing } = await supabase.from('service_faq_entries').select('id').eq('service_id', serviceId);
+    const existingIds = (existing ?? []).map(e => e.id);
+    const insertCount = Math.min(entries.length, existingIds.length);
+    for (let i = 0; i < entries.length; i++) {
+      if (i < insertCount) {
+        const { error } = await supabase.from('service_faq_entries').update({ question: entries[i].question, answer: entries[i].answer, sort_order: i }).eq('id', existingIds[i]);
+        if (error) throw error;
+      } else {
+        const { data: svc } = await supabase.from('services').select('tenant_id').eq('id', serviceId).single();
+        const { error } = await supabase.from('service_faq_entries').insert({ service_id: serviceId, question: entries[i].question, answer: entries[i].answer, sort_order: i, tenant_id: svc?.tenant_id ?? '' });
+        if (error) throw error;
+      }
+    }
+    if (entries.length < existingIds.length) {
+      const idsToDelete = existingIds.slice(entries.length);
+      const { error } = await supabase.from('service_faq_entries').delete().in('id', idsToDelete);
+      if (error) throw error;
+    }
+    return serviceFaqHelper.getByService(serviceId);
   },
 };
 export const blogPostsHelper = {

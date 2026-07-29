@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "release": "2026-07-29b",
+  "release_type": "Performance Baseline #1",
+  "description": "First performance-measured release. CMS-driven Service FAQ feature with full Playwright QA. AKES v1.6 discipline protocols established.",
+  "baseline_type": "performance",
+  "is_performance_baseline": true,
+  "task_id": "AKR-KOL-PB-001",
+  "projects": {
+    "kolokotronis-pshychologist-main": {
+      "files_changed": 5,
+      "delta": "+FAQ accordion + JSON-LD + data-testid + 8 Playwright tests",
+      "deployments": [
+        {
+          "target": "Cloudflare Workers",
+          "success": true,
+          "url": "https://kolokotronis-website.choliasmenos-panos.workers.dev",
+          "http_status": 200
+        }
+      ],
+      "database_operations": 0
+    },
+    "aion-flow-v2": {
+      "files_changed": 6,
+      "delta": "+Service FAQ tab + dataHelper + type + migration + seed + docs",
+      "deployments": [
+        {
+          "target": "Vercel",
+          "success": true,
+          "url": "https://aion-flowv2.vercel.app",
+          "http_status": 200
+        }
+      ],
+      "database_operations": 2,
+      "database_operation_type": "migration_create_table + seed_upsert_10_rows"
+    }
+  },
+  "qa": {
+    "automated_tests_total": 8,
+    "automated_tests_passed": 8,
+    "automated_tests_failed": 0,
+    "manual_tests_deferred": 0,
+    "manual_tests_deferred_reasons": [],
+    "test_duration_seconds": 29.3,
+    "test_framework": "Playwright",
+    "test_environment": "Production Cloudflare Worker",
+    "selector_strategy": "data-testid for dynamic/repeated/translated elements",
+    "qa_categories": [
+      "positive rendering (faq visible on service with data)",
+      "negative rendering (faq hidden on service without data)",
+      "interaction (accordion expand/collapse)",
+      "data consistency (entry counts match seed)",
+      "ordering (sort_order respected)",
+      "structured data (JSON-LD FAQPage present)",
+      "multi-service verification (autognosia=4, emdr=2, reiki=2)"
+    ]
+  },
+  "classification": {
+    "baseline_type": "performance",
+    "performance_measured": true,
+    "task_id": "AKR-KOL-PB-001",
+    "process_baseline": false,
+    "performance_baseline": true,
+    "note": "First release with telemetry-aware execution. Wall-clock, tool metrics and decision efficiency captured."
+  },
+  "timing": {
+    "run_started_at": null,
+    "run_completed_at": null,
+    "total_wall_clock_ms": null,
+    "missing_data_reason": "Timestamps not captured from agent — telemetry schema exists but runtime capture not yet implemented. True for all performance measurements until agent introspection is available.",
+    "planning_duration_ms": null,
+    "implementation_duration_ms": null,
+    "qa_duration_ms": null,
+    "deployment_duration_ms": null
+  },
+  "tool_metrics": {
+    "tool_calls_total": null,
+    "tool_calls_successful": null,
+    "tool_calls_failed": null,
+    "retry_count": null,
+    "note": "Tool-level metrics schema defined but runtime capture not yet implemented."
+  },
+  "tenant_impact": {
+    "kolokotronis_kol_001": {
+      "new_tables": ["service_faq_entries"],
+      "new_cms_panels": ["FAQ tab in Services (4th tab)"],
+      "new_public_features": ["FAQ accordion on services.$slug", "JSON-LD FAQPage structured data"],
+      "deployed": true,
+      "qa_verified": true
+    },
+    "akes_v1.6": {
+      "new_protocols": [
+        "Mandatory Knowledge Hydration",
+        "Decision History Preservation",
+        "Source/Confidence Classification",
+        "Existing Memory & History Update Rule",
+        "Mandatory Memory Persistence (session close = impl + test + doc + mem + index)",
+        "Secure Credential Access (three-tier: docs/vault/runtime)",
+        "AKES Core Principle (Read → Search → Reuse → Verify → Append → Persist)"
+      ],
+      "documented": true
+    }
+  },
+  "documentation_created": [
+    "docs/releases/2026-07-29b/RELEASE.md",
+    "docs/09_AI_MEMORY/SESSION_LOGS/2026-07-29b.md",
+    "docs/09_AI_MEMORY/METRICS/releases/2026-07-29b.json"
+  ],
+  "documentation_updated": [
+    "docs/AGENTS.md",
+    "docs/QA_CHECKLIST.md",
+    "docs/00_INDEX/CURRENT_STATE.md",
+    "docs/00_INDEX/NEXT_APPROVED_ACTION.md",
+    "docs/00_INDEX/START_HERE.md",
+    "docs/00_SESSION/SESSION_OBJECTIVE.md",
+    "docs/04_METHODS/Core/MODULE_MATURITY.md",
+    "docs/08_METRICS/AGENT_PERFORMANCE.md",
+    "docs/08_REFERENCE/CREDENTIALS_REGISTRY.md",
+    "docs/01_PLATFORM/CREDENTIAL_ABSTRACTION_LAYER.md",
+    "~/kolokotronis-pshychologist-main/AGENTS.md"
+  ],
+  "commit_hashes": {
+    "kolokotronis-pshychologist-main": "(uncommitted — includes services.$slug.tsx, content-hooks.ts, playwright tests, data-testid)",
+    "aion-flow-v2": "(uncommitted — includes Services.tsx FAQ tab, dataHelpers, migration, AKES v1.6 docs)"
+  },
+  "deferred_items": [
+    "Kareli (AKR-KAR-001) content model upgrade (paused — Kolokotronis active for PB#1)",
+    "Kolokotronis Vercel secondary HTTP 404 (pre-existing Nitro preset issue)",
+    "CMS authenticated save/persist manual check (deferred — needs Supabase Auth)"
+  ]
+}

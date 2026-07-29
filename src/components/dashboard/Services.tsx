@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, Image as ImageIcon, Check, X } from 'lucide-react';
-import { servicesHelper, serviceRelatedArticlesHelper, blogPostsHelper } from '../../lib/dataHelpers';
+import { servicesHelper, serviceRelatedArticlesHelper, blogPostsHelper, serviceFaqHelper } from '../../lib/dataHelpers';
 import { uploadCmsAsset } from '../../lib/media';
 import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
-import { Service, BlogPost } from '../../types/supabase';
+import { Service, BlogPost, ServiceFaqEntry } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
 
-type Tab = 'general' | 'related-articles' | 'seo';
+type Tab = 'general' | 'related-articles' | 'faq' | 'seo';
 
 const iconOptions = ['user', 'sparkles', 'brain', 'heart', 'users', 'book-open', 'lock', 'shield', 'star', 'globe', 'sun', 'moon', 'leaf', 'feather', 'compass'];
 const modeOptions = [
@@ -41,6 +41,9 @@ export default function Services() {
   const [postSearch, setPostSearch] = useState('');
   const [loadingPosts, setLoadingPosts] = useState(false);
 
+  const [faqEntries, setFaqEntries] = useState<{ question: string; answer: string }[]>([]);
+  const [faqDirty, setFaqDirty] = useState(false);
+
   useEffect(() => { servicesHelper.getAll().then(d => { setItems(d); setLoading(false); }); }, []);
 
   const filtered = items.filter(i => i.title.toLowerCase().includes(search.toLowerCase()));
@@ -51,6 +54,8 @@ export default function Services() {
     setActiveTab('general');
     setSelectedPostIds([]);
     setPostSearch('');
+    setFaqEntries([]);
+    setFaqDirty(false);
     setShowModal(true);
   };
 
@@ -60,6 +65,8 @@ export default function Services() {
     setActiveTab('general');
     setSelectedPostIds([]);
     setPostSearch('');
+    setFaqEntries([]);
+    setFaqDirty(false);
     setShowModal(true);
     setLoadingPosts(true);
     try {
@@ -67,6 +74,10 @@ export default function Services() {
       setSelectedPostIds(relations.map(r => r.blog_post_id));
     } catch {}
     setLoadingPosts(false);
+    try {
+      const faqs = await serviceFaqHelper.getByService(item.id);
+      setFaqEntries(faqs.map(f => ({ question: f.question, answer: f.answer })));
+    } catch {}
   };
 
   const handleSave = async () => {
@@ -79,11 +90,13 @@ export default function Services() {
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
       trackEvent('cms.service_updated', { service_title: form.title || '', fields_changed: Object.keys(payload) }).catch(() => {});
       await serviceRelatedArticlesHelper.setRelations(editing.id, selectedPostIds);
+      await serviceFaqHelper.setFaq(editing.id, faqEntries);
     } else {
       const created = await servicesHelper.create(payload);
       setItems(prev => [...prev, created]);
       trackEvent('cms.service_created', { service_title: form.title || '' }).catch(() => {});
       await serviceRelatedArticlesHelper.setRelations(created.id, selectedPostIds);
+      await serviceFaqHelper.setFaq(created.id, faqEntries);
     }
 
     if (form.image_url) {
@@ -156,6 +169,7 @@ export default function Services() {
   const tabs: { key: Tab; label: string }[] = [
     { key: 'general', label: 'Γενικά' },
     { key: 'related-articles', label: 'Σχετικά Άρθρα' },
+    { key: 'faq', label: 'Συχνές Ερωτήσεις' },
     { key: 'seo', label: 'SEO' },
   ];
 
@@ -301,6 +315,74 @@ export default function Services() {
                       )}
                     </div>
                   )}
+                </div>
+              )}
+
+              {activeTab === 'faq' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs text-gray-500">{faqEntries.length} ερωτήσεις</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFaqEntries(prev => [...prev, { question: '', answer: '' }]);
+                        setFaqDirty(true);
+                      }}
+                      className="text-xs px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 transition-colors"
+                    >
+                      + Προσθήκη ερώτησης
+                    </button>
+                  </div>
+
+                  {faqEntries.length === 0 && (
+                    <div className="text-center py-8 text-gray-500 text-sm">Δεν υπάρχουν ερωτήσεις. Πατήστε "Προσθήκη ερώτησης" για να ξεκινήσετε.</div>
+                  )}
+
+                  <div className="space-y-3">
+                    {faqEntries.map((entry, idx) => (
+                      <div key={idx} className="border border-gray-800 rounded-xl p-4 space-y-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs text-gray-500 shrink-0">#{idx + 1}</span>
+                          <div className="flex gap-1">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (idx === 0) return;
+                                const next = [...faqEntries];
+                                [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+                                setFaqEntries(next);
+                                setFaqDirty(true);
+                              }}
+                              disabled={idx === 0}
+                              className="p-1 rounded text-gray-500 hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed text-xs"
+                            >▲</button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (idx === faqEntries.length - 1) return;
+                                const next = [...faqEntries];
+                                [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+                                setFaqEntries(next);
+                                setFaqDirty(true);
+                              }}
+                              disabled={idx === faqEntries.length - 1}
+                              className="p-1 rounded text-gray-500 hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed text-xs"
+                            >▼</button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setFaqEntries(prev => prev.filter((_, i) => i !== idx));
+                                setFaqDirty(true);
+                              }}
+                              className="p-1 rounded text-red-500 hover:text-red-400 text-xs"
+                            >✕</button>
+                          </div>
+                        </div>
+                        <div><label className="text-xs text-gray-500 block mb-1">Ερώτηση</label><textarea value={entry.question} onChange={e => { const next = [...faqEntries]; next[idx] = { ...next[idx], question: e.target.value }; setFaqEntries(next); setFaqDirty(true); }} className="input h-16 resize-none" placeholder="Π.χ. Πόσο διαρκεί μια συνεδρία;" /></div>
+                        <div><label className="text-xs text-gray-500 block mb-1">Απάντηση</label><textarea value={entry.answer} onChange={e => { const next = [...faqEntries]; next[idx] = { ...next[idx], answer: e.target.value }; setFaqEntries(next); setFaqDirty(true); }} className="input h-20 resize-none" placeholder="Π.χ. Κάθε συνεδρία διαρκεί περίπου 50 λεπτά." /></div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

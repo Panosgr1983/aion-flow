@@ -49,6 +49,13 @@
   - [ ] prose-content wrapper
 - [ ] **Toggle behavior** — false → true → false, verify each state
 - [ ] **Category filters** — URL parameter, navigation
+- [ ] **FAQ — renders for services with data**
+- [ ] **FAQ — absent for services without data**
+- [ ] **FAQ — accordion expand/collapse**
+- [ ] **FAQ — entry count matches seed**
+- [ ] **FAQ — ordering matches DB sort_order**
+- [ ] **FAQ — JSON-LD FAQPage structured data present**
+- [ ] **FAQ — multi-service verification**
 
 ## 5. Manual Browser QA (requires authenticated session)
 

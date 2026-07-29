@@ -43,7 +43,11 @@ scripts/docs/      → Automation: index, validate, check-links, scan-secrets
 - **No Docs, No Done** — documentation is part of the deliverable
 - **Generalize When Proven** — standard methods require 2+ tenants or platform-wide validation
 
-## 5. Working Protocol
+## 5. AKES Core Principle
+
+> Read before acting. Search before creating. Reuse before rebuilding. Verify before recording. Append before duplicating. Persist before closing.
+
+## 6. Working Protocol
 
 ```
 AI/Developer enters
@@ -52,6 +56,13 @@ Reads AGENTS.md → START_HERE.md → CURRENT_STATE.md → NEXT_APPROVED_ACTION.
   ↓
 Searches MASTER_INDEX.md + SEARCH_INDEX.md for existing solutions
   ↓
+Reads SESSION_OBJECTIVE.md for current session context
+  ↓
+Reads all docs relevant to: active project, affected tenant, affected modules,
+prior ADRs, known issues/tech debt, previous releases and session logs
+  ↓
+Confirms plan does not contradict existing docs, decisions or tenant constraints
+  ↓
 If solution exists: use it. If not: propose experimental method.
   ↓
 Wait for approval before implementation.
@@ -59,4 +70,8 @@ Wait for approval before implementation.
 Build → Test → Update memory → Commit → Report
   ↓
 No deploy without explicit approval.
+  ↓
+Session close: update CURRENT_STATE.md, NEXT_APPROVED_ACTION.md, session log,
+project/tenant history, content mapping, ADRs, module docs, known issues,
+release record, agent performance, master + search indexes.
 ```

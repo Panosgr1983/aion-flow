@@ -127,4 +127,5 @@ How many deliverables pass per review cycle. Target: >2.
 | Release | Type | Wall-Clock | Tests | Files Changed | Tool Success | Notes |
 |---------|------|------------|-------|---------------|--------------|-------|
 | 2026-07-29 | `process_baseline` | ~11.5h (est.) | 47/47 | 45+ (combined) | Not measured | First documented lifecycle |
+| 2026-07-29b | `performance_baseline` | Schema-ready | 8/8 (29.3s) | ~25 (combined) | Schema-ready | AKR-KOL-PB-001 — Service FAQ + AKES v1.6 discipline. Metrics schema defined but runtime capture not yet implemented. |
 | — | — | — | — | — | — | — |

@@ -1,7 +1,7 @@
 # CURRENT STATE — AION Flow
 
 **Updated:** 2026-07-29
-**AKES v1.5**
+**AKES v1.6**
 
 ---
 
@@ -26,6 +26,7 @@
 | Portfolio | 1.0 | 🔒 **Frozen** | `portfolio_module` |
 | Retreat | 0.6 | 🟡 Active | `retreat_module` |
 | Locale | 0.7 | 🔄 Planned | `locale_module` |
+| Services (FAQ) | 1.0 | ✅ Stable (83% MMI) | `cms` (monolithic) |
 
 ## Tenants
 
@@ -45,10 +46,11 @@
 | Architecture Patterns | 12/12 | ✅ Complete |
 | Weekly Reports (Portfolio) | 6/6 | ✅ Complete |
 | Weekly Reports (Retreat) | 3/3 | ✅ Complete |
-| AKES Structure | 00-09 folders | ✅ v1.5 Complete |
-| AKES Protocols | SESSION_LOG_TEMPLATE, MEMORY_UPDATE_PROTOCOL, SESSION_OBJECTIVE | ✅ Created Jul 2026 |
+| AKES Structure | 00-09 folders | ✅ v1.6 Complete |
+| AKES Protocols | SESSION_LOG_TEMPLATE, MEMORY_UPDATE_PROTOCOL, SESSION_OBJECTIVE, Knowledge Hydration, Decision History, Memory Persistence, Secure Credential Access | ✅ Created/Updated Jul 2026 |
 | Release Documentation | QA_CHECKLIST, RELEASE_PROCESS, AGENT_PERFORMANCE, release records | ✅ Created Jul 2026 |
 | Metrics | Machine-readable JSON per release, schema v1.0 | ✅ Created Jul 2026 |
+| Credential Security | Three-tier architecture (AKES docs / 1Password vault / runtime secrets), CAL Standard | ✅ Active Jul 2026 |
 | Methods Registry | 0/— | 🔴 Not started |
 
 ## Module Maturity Index
@@ -59,12 +61,13 @@
 | Portfolio | ✅ | ✅ | ✅ | ❌ | 75% | STABLE | ✅ |
 | Retreat | ✅ | ✅ | ✅ | ❌ | 79% | STABLE | ❌ |
 | Media | ✅ | ✅ | ✅ | 🟡 | 83% | PRODUCTION | ❌ |
-| Blog | ✅ | ✅ | ✅ | 🟡 | 83% | PRODUCTION | ❌ (83%, +5% Phase 5 — canonical categories, rich-text hardening) |
+| Blog | ✅ | ✅ | ✅ | 🟡 | 83% | PRODUCTION | ❌ (83%, +5% Phase 5 — canonical categories, rich-text hardening, FAQ JSON-LD) |
+| Services (FAQ) | ✅ | ✅ | ✅ | ❌ | 83% | PRODUCTION | ❌ (8/8 Playwright tests, data-testid pattern) |
 | Bookings | ✅ | ✅ | ✅ | ❌ | 100% | PRODUCTION | ❌ |
 | CRM | ✅ | ✅ | ❌ BLOCKED | ❌ | 33% | BLOCKED | ❌ |
 | Locale | ❌ | ❌ | 🟡 | ❌ | 8% | EARLY | ❌ |
-| AKES | ✅ | ✅ | ✅ | 🟡 | 95% | PRODUCTION | ❌ |
-| **Platform** | | | | | **72%** | **STABLE** | |
+| AKES | ✅ | ✅ | ✅ | 🟡 | 88% | PRODUCTION | ❌ |
+| **Platform** | | | | | **73%** | **STABLE** | |
 
 ## Known Issues & Tech Debt
 
@@ -72,7 +75,8 @@
 |-------|----------|--------|
 | documentation.db.json publicly exposed (now fixed) | 🔴 Resolved | Moved to src/assets/, bundled by Vite |
 | site_settings UNIQUE on key (not per-tenant) | 🟡 Medium | Needs migration |
-| Automated Playwright QA | ✅ Established | 47/47 tests passed; 2 non-blocking manual checks deferred |
+| Automated Playwright QA | ✅ Established | 47/47 (Process Baseline) + 8/8 (PB#1 Service FAQ); 2 non-blocking manual checks deferred |
+| Agent performance telemetry (runtime capture) | 🟡 Medium | Schema defined (AGENT_PERFORMANCE.md) but runtime wall-clock + tool-level capture not implemented |
 | No lazy loading | 🟢 Low | Acceptable |
 | No multi-language support | 🟡 Medium | Locale Module v0.7 |
 | CRM helpers not tenant-filtered | 🔴 Blocked | Blocks CRM tenant rollout |
@@ -85,4 +89,6 @@
 
 See `NEXT_APPROVED_ACTION.md` for the current priority.
 
-**Release 2026-07-29:** Process Baseline established. 47/47 QA tests. See `docs/releases/2026-07-29/RELEASE.md`.
+**Release 2026-07-29 (a):** Process Baseline established. 47/47 QA tests. See `docs/releases/2026-07-29/RELEASE.md`.
+
+**Release 2026-07-29 (b):** Performance Baseline #1 (AKR-KOL-PB-001). Service FAQ + AKES v1.6. 8/8 QA tests in 29.3s. See `docs/releases/2026-07-29b/RELEASE.md`.

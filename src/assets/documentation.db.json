@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generated_at": "2026-07-29T15:36:21.558Z",
-    "git_commit": "48fcdba",
+    "generated_at": "2026-07-29T16:14:42.462Z",
+    "git_commit": "8f75605",
     "index_version": "1.1",
-    "docs_count": 179,
+    "docs_count": 181,
     "stale_docs_count": 0,
     "mmi_modules": [
       {
@@ -1715,6 +1715,20 @@
       "mmi": null
     },
     {
+      "id": "09_AI_MEMORY.SESSION_LOGS.2026-07-29b",
+      "title": "Session Log: 2026-07-29b — Service FAQ (Performance Baseline #1) + AKES v1.6",
+      "path": "09_AI_MEMORY/SESSION_LOGS/2026-07-29b.md",
+      "status": "—",
+      "maturity": "—",
+      "tags": [],
+      "owner": "—",
+      "last_reviewed": null,
+      "review_after": null,
+      "used_by": [],
+      "relationships": null,
+      "mmi": null
+    },
+    {
       "id": "09_AI_MEMORY.SESSION_LOG_TEMPLATE",
       "title": "Session Log Template",
       "path": "09_AI_MEMORY/SESSION_LOG_TEMPLATE.md",
@@ -3096,6 +3110,20 @@
       "id": "releases.2026-07-29.RELEASE",
       "title": "Release — 2026-07-29",
       "path": "releases/2026-07-29/RELEASE.md",
+      "status": "—",
+      "maturity": "—",
+      "tags": [],
+      "owner": "—",
+      "last_reviewed": null,
+      "review_after": null,
+      "used_by": [],
+      "relationships": null,
+      "mmi": null
+    },
+    {
+      "id": "releases.2026-07-29b.RELEASE",
+      "title": "Release — 2026-07-29b",
+      "path": "releases/2026-07-29b/RELEASE.md",
       "status": "—",
       "maturity": "—",
       "tags": [],

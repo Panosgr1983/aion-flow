@@ -1,7 +1,26 @@
 # Credentials Registry
 
 **Security classification:** References only — no secrets stored here.
-**Secrets are stored in:** Vercel Environment Variables, Cloudflare Worker Secrets, Supabase Dashboard.
+**Secrets are stored in:** 1Password Vault (primary), Vercel Environment Variables, Cloudflare Worker Secrets, Supabase Dashboard.
+
+---
+
+## Three-tier Architecture
+
+| Tier | Content | Location |
+|------|---------|----------|
+| **AKES Documentation** (this file) | Describes what credential is needed, its scope, and where it is stored | `08_REFERENCE/CREDENTIALS_REGISTRY.md` |
+| **Secret Vault** | Holds actual values (passwords, tokens, keys) | 1Password Vault `AION Infrastructure`, SOPS-encrypted files, platform secret store |
+| **Runtime Secrets** | Environment variables for build/deploy | Vercel Environment Variables, Cloudflare Worker Secrets, GitHub Secrets |
+
+### Access Protocol
+
+1. Agent reads this file to identify required credential + scope
+2. Agent retrieves the actual value from the 1Password Vault via CLI
+3. Agent uses the credential without printing, logging or documenting its value
+4. Agent requests user input only when the credential is missing, expired or denied
+
+> See AGENTS.md → **Secure Credential Access** for full protocol.
 
 ---
 
