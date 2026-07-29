@@ -426,6 +426,9 @@ export default function SiteSettingsPanel() {
                 </button>
               </div>
               <div className="grid grid-cols-2 gap-4">
+                {renderField('blog_hero_eyebrow', 'Eyebrow επικεφαλίδας blog')}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
                 {renderField('blog_back_button_text', 'Κουμπί πίσω (άρθρα)')}
                 {renderField('announcement_back_button_text', 'Κουμπί πίσω (ανακοινώσεις)')}
               </div>
