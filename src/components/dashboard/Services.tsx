@@ -19,6 +19,23 @@ const modeOptions = [
 
 const emptyForm: Partial<Service> = { tenant_id: null, title: '', slug: '', short_description: '', long_description: '', icon: 'heart', image_url: '', sort_order: 0, is_active: true, meta_title: '', meta_description: '', og_image: '', show_related_articles: false, related_articles_mode: 'manual', related_articles_limit: 6, related_articles_title: 'Σχετικά άρθρα', related_articles_title_en: 'Related Articles' };
 
+function extractPlainText(val: string): string {
+  if (!val) return '';
+  try {
+    const parsed = JSON.parse(val);
+    if (parsed && typeof parsed === 'object' && parsed.type === 'doc') {
+      const texts: string[] = [];
+      function walk(n: any) {
+        if (n.type === 'text') texts.push(n.text || '');
+        if (n.content) n.content.forEach(walk);
+      }
+      walk(parsed);
+      return texts.join(' ').trim();
+    }
+  } catch {}
+  return val;
+}
+
 function slugify(s: string) {
   return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 }
@@ -216,7 +233,7 @@ export default function Services() {
               </div>
             </div>
             <h3 className="font-medium text-sm mb-1">{item.title}</h3>
-            <p className="text-xs text-gray-500 line-clamp-2">{item.short_description}</p>
+            <p className="text-xs text-gray-500 line-clamp-2">{extractPlainText(item.short_description)}</p>
             <div className="flex items-center gap-2 mt-3">
               <span className={`text-xs px-2 py-0.5 rounded-full ${item.is_active ? 'bg-green-500/10 text-green-400' : 'bg-gray-500/10 text-gray-500'}`}>{item.is_active ? 'Ενεργό' : 'Ανενεργό'}</span>
               <span className="text-xs text-gray-600">Σειρά: {item.sort_order}</span>
