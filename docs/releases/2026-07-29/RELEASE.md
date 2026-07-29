@@ -145,3 +145,24 @@ WHERE tenant_id = '00000000-0000-0000-0000-000000000001'
 | Manual QA (deferred) | 🔷 2 checks, non-blocking |
 | Documentation | ✅ Complete |
 | Cleanup | ✅ Demo content removed |
+
+---
+
+### Agent Performance
+
+See `docs/AGENT_PERFORMANCE.md` for full metrics.
+
+| Metric | Value |
+|--------|-------|
+| Active time | ~65 min |
+| Tool calls | ~150 |
+| Retry % | ~3% |
+| Files changed | 31 |
+| Lines +/− | +620 / −104 |
+| Commits | 4 |
+| Automated tests | 47/47 (100%) |
+| Manual (deferred) | 2 |
+| First-pass success | ~85% |
+| Review cycles | 3 |
+
+**Key learning:** Vercel build failed on first attempt due to `@tiptap/extension-underline` peer dependency mismatch (3.29.2 vs 3.26.0). Pin new deps to existing project versions.
