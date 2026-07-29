@@ -159,9 +159,16 @@ export default function AboutPanel() {
 
   const handleSave = async () => {
     setSaving(true);
-    for (const s of await siteSettingsHelper.getAll()) {
+    const existing = await siteSettingsHelper.getAll();
+    const existingKeys = new Set(existing.map(s => s.key));
+    for (const s of existing) {
       if (ALL_KEYS.includes(s.key) && settings[s.key] !== undefined) {
         await siteSettingsHelper.update(s.id, { value: settings[s.key] });
+      }
+    }
+    for (const key of ALL_KEYS) {
+      if (!existingKeys.has(key) && settings[key] !== undefined) {
+        await siteSettingsHelper.create({ key, value: settings[key], category: 'about', tenant_id: effectiveTenantId });
       }
     }
     if (settings['about_books']) {
