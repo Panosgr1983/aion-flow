@@ -11,7 +11,7 @@
   - Product ID confirmed (π.χ. KOL-001, KAR-001)
   - Target DB confirmed
   - Forbidden DB/refs confirmed (repos must never touch)
-- [ ] **Session Objective verified**
+- [ ] **Session Objective verified** (see `docs/00_SESSION/SESSION_OBJECTIVE.md`)
   - Στόχος του session καταγεγραμμένος
   - Scope clearly defined (what is IN and OUT)
 - [ ] **ADR updated** (if architecture change)

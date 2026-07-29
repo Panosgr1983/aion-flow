@@ -1,6 +1,6 @@
 # SEARCH INDEX — AION Knowledge & Engineering System
 
-**Generated:** 2026-07-13
+**Generated:** 2026-07-29
 
 | ID | Title | Path | Status | MMI | Tags |
 |----|-------|------|--------|-----|------|
@@ -9,10 +9,12 @@
 | 00_INDEX.NEXT_APPROVED_ACTION | NEXT APPROVED ACTION | 00_INDEX/NEXT_APPROVED_ACTION.md | — | — |  |
 | 00_INDEX.SEARCH_INDEX | SEARCH INDEX — AION Knowledge & Engineering S | 00_INDEX/SEARCH_INDEX.md | — | — |  |
 | 00_INDEX.START_HERE | START HERE — AION Knowledge & Engineering Sys | 00_INDEX/START_HERE.md | — | — |  |
+| 00_SESSION.SESSION_OBJECTIVE | SESSION OBJECTIVE Protocol | 00_SESSION/SESSION_OBJECTIVE.md | — | — |  |
 | platform.aion-dna | AION DNA | 01_PLATFORM/AION_DNA.md | current | — | dna, identity, platform |
 | 01_PLATFORM.ARCHITECTURE | AION — Platform Architecture Overview | 01_PLATFORM/ARCHITECTURE.md | — | — |  |
 | 01_PLATFORM.CHANGELOG | AION CMS — Changelog | 01_PLATFORM/CHANGELOG.md | — | — |  |
 | 01_PLATFORM.CONSTITUTION | AION Flow Development Constitution | 01_PLATFORM/CONSTITUTION.md | — | — |  |
+| 01_PLATFORM.CREDENTIAL_ABSTRACTION_LAYER | Credential Abstraction Layer (CAL) | 01_PLATFORM/CREDENTIAL_ABSTRACTION_LAYER.md | — | — |  |
 | 01_PLATFORM.DATABASE | AION CMS — Database Schema | 01_PLATFORM/DATABASE.md | — | — |  |
 | 01_PLATFORM.DECISIONS | AION CMS — Architecture Decision Records | 01_PLATFORM/DECISIONS.md | — | — |  |
 | 01_PLATFORM.DEPLOYMENT | AION CMS — Deployment Guide | 01_PLATFORM/DEPLOYMENT.md | — | — |  |
@@ -75,16 +77,21 @@
 | method.core.module-registration | Module Registry Self-Registration | 04_METHODS/Core/module-registration.md | Standard | — | module-registry, architecture |
 | method.core.tenant-resolution | Effective Tenant ID Resolution | 04_METHODS/Core/tenant-resolution.md | Standard | — | multi-tenant, tenant-isolation, rls, pla |
 | 06_PLAYBOOKS.CREATE_MODULE | Playbook: Create Module | 06_PLAYBOOKS/CREATE_MODULE.md | — | — |  |
+| 08_METRICS.AGENT_PERFORMANCE | Agent Performance Metrics | 08_METRICS/AGENT_PERFORMANCE.md | — | — |  |
 | 08_REFERENCE.CREDENTIALS_REGISTRY | Credentials Registry | 08_REFERENCE/CREDENTIALS_REGISTRY.md | — | — |  |
 | 08_REFERENCE.PROJECTS_REGISTRY | Projects Registry | 08_REFERENCE/PROJECTS_REGISTRY.md | — | — |  |
 | 09_AI_MEMORY.AI_MEMORY | AI_MEMORY — How to Think & Work | 09_AI_MEMORY/AI_MEMORY.md | — | — |  |
+| 09_AI_MEMORY.MEMORY_UPDATE_PROTOCOL | AKES Memory Update Protocol | 09_AI_MEMORY/MEMORY_UPDATE_PROTOCOL.md | — | — |  |
 | 09_AI_MEMORY.METHOD_TEMPLATE | Method Template | 09_AI_MEMORY/METHOD_TEMPLATE.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-08-to-2026-07-12 | Session Log — 2026-07-08 to 2026-07-12 | 09_AI_MEMORY/SESSION_LOGS/2026-07-08-to-2026-07-12.md | — | — |  |
 | 09_AI_MEMORY.SESSION_LOGS.2026-07-13 | Session Log: 2026-07-13 — AKES v1.5 Relations | 09_AI_MEMORY/SESSION_LOGS/2026-07-13.md | — | — |  |
+| 09_AI_MEMORY.SESSION_LOGS.2026-07-29 | Session Log: 2026-07-29 — Announcement Taxono | 09_AI_MEMORY/SESSION_LOGS/2026-07-29.md | — | — |  |
+| 09_AI_MEMORY.SESSION_LOG_TEMPLATE | Session Log Template | 09_AI_MEMORY/SESSION_LOG_TEMPLATE.md | — | — |  |
 | vision.aion-ecosystem | AION Ecosystem Vision | 10_VISION/AION_ECOSYSTEM.md | vision | — | ecosystem, vision, flŐW, akes, nexus, cl |
 | vision.nexus | AION NEXUS Vision | 10_VISION/NEXUS_VISION.md | vision | — | nexus, ai, orchestrator, vision |
 | vision.pulse | AION PULSE Vision | 10_VISION/PULSE_VISION.md | vision | — | pulse, telemetry, observability, vision |
 | vision.readme | 10_VISION — Future State Documents | 10_VISION/README.md | vision | — | vision, future, strategy |
+| AGENT_PERFORMANCE | AION Flow — Agent Performance Metrics | AGENT_PERFORMANCE.md | — | — |  |
 | ARCHITECTURE | AION — Platform Architecture Overview | ARCHITECTURE.md | — | — |  |
 | BACKUP | AION CMS — Backup & Disaster Recovery | BACKUP.md | — | — |  |
 | BLUEPRINTS | AION CMS — Blueprint Registry | BLUEPRINTS.md | — | — |  |
@@ -112,7 +119,10 @@
 | PERMISSIONS | AION — Permissions & Access Control | PERMISSIONS.md | — | — |  |
 | PLATFORM_STATUS | AION Flow — Platform Status | PLATFORM_STATUS.md | — | — |  |
 | PRODUCT_PHILOSOPHY | AION CMS — Product Philosophy | PRODUCT_PHILOSOPHY.md | — | — |  |
+| QA_CHECKLIST | AION Flow — QA Checklist | QA_CHECKLIST.md | — | — |  |
 | README | AION — Documentation | README.md | — | — |  |
+| RELEASE_CHECKLIST | AION Release Checklist | RELEASE_CHECKLIST.md | — | — |  |
+| RELEASE_PROCESS | AION Flow — Release Process | RELEASE_PROCESS.md | — | — |  |
 | ROADMAP | AION — Roadmap | ROADMAP.md | — | — |  |
 | TECH_DEBT | AION CMS — Technical Debt | TECH_DEBT.md | — | — |  |
 | TELEMETRY | AION — Telemetry & Usage Events | TELEMETRY.md | — | — |  |
@@ -172,3 +182,4 @@
 | patterns.retreat-module | Retreat Module — AION Flow | patterns/retreat-module.md | — | — |  |
 | patterns.tenant-isolation | Tenant Isolation — AION Flow | patterns/tenant-isolation.md | — | — |  |
 | patterns.timeline-pattern | Timeline Pattern — AION Flow | patterns/timeline-pattern.md | — | — |  |
+| releases.2026-07-29.RELEASE | Release — 2026-07-29 | releases/2026-07-29/RELEASE.md | — | — |  |

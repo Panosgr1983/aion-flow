@@ -178,6 +178,11 @@
 | **Blog Home** | `blog_home_section_visible` | true | Site Settings |
 | | `blog_home_section_title` | Πρόσφατα Άρθρα | Site Settings |
 | | `blog_home_section_count` | 2 | Site Settings |
+| **Announcements** | `announcement_show_dates` | "false" | Site Settings → Announcements & Blog |
+| | `announcement_back_button_text` | Όλες οι ανακοινώσεις | Site Settings → Announcements & Blog |
+| | `announcement_empty_message` | Δεν υπάρχουν ακόμα ανακοινώσεις. | Site Settings → Announcements & Blog |
+| | `blog_back_button_text` | Όλα τα άρθρα | Site Settings → Announcements & Blog |
+| | `blog_empty_message` | Δεν υπάρχουν ακόμα άρθρα. | Site Settings → Announcements & Blog |
 | **Books** | `about_books` | (JSON array) | Site Settings → About |
 | | `about_books_cta_text` | Δείτε όλα τα βιβλία | Site Settings |
 | | `home_books_showcase_enabled` | false | Site Settings |
@@ -288,9 +293,10 @@ Overridable via `nav_links` site setting.
 | Terms of use (5 sections) | `terms.tsx` | Fully hardcoded |
 | 404 page | `__root.tsx` | Fully hardcoded |
 | Error page | `__root.tsx` | Fully hardcoded |
-| Blog categories (filter labels) | `blog.tsx` | Hardcoded map |
+| Blog categories (filter labels) | `blog.tsx` | Hardcoded map (canonical values derived from DB) |
 | "Όλα" filter label | `blog.tsx` | Hardcoded |
-| Empty blog state | `blog.tsx` | Hardcoded |
+| Empty blog state | `blog.tsx` | ✅ Migrated to DB (`blog_empty_message`, `announcement_empty_message`) |
+| Blog back button text | `blog.$slug.tsx` | ✅ Migrated to DB (`blog_back_button_text`, `announcement_back_button_text`) |
 | Contact form labels | `ContactForm.tsx` | Hardcoded |
 | Form validation messages | `ContactForm.tsx` | Hardcoded (Zod) |
 | Toast messages | `ContactForm.tsx` | Hardcoded |
@@ -331,12 +337,13 @@ Overridable via `nav_links` site setting.
 | **Business Info** | `/dashboard/business-info` | Contact, address, hours |
 | **Branding** | `/dashboard/branding` | Logo, colors, favicon |
 | **Pages** | `/dashboard/pages` | Per-route hero content |
-| **Site Settings** | `/dashboard/site-settings` | All ~90 keys |
+| **Site Settings** | `/dashboard/site-settings` | All ~95 keys |
 | **Media** | `/dashboard/media` | Image library |
 | **Inbox** | `/dashboard/inbox` | Contact messages |
 | **Pipeline** | `/dashboard/pipeline` | Lead management |
 
-**Total: 16 CMS panels** — all read from shared Supabase.
+**Total: 16 CMS panels** — all read from shared Supabase.  
+**Site Settings key count:** ~95 (was ~90; 5 added in July 2026 for announcement/blog settings).
 
 ---
 
@@ -353,7 +360,7 @@ Overridable via `nav_links` site setting.
 | CTA | ✅ | Title + button configured |
 | Business Info | ✅ | Address, phone, hours |
 | Branding | ✅ | Logo, favicon, colors |
-| Site Settings | ✅ | 90+ keys configured |
+| Site Settings | ✅ | ~95 keys configured (5 added Jul 2026) |
 | Media | ✅ | Images uploaded |
 
 ---
@@ -373,7 +380,13 @@ Related documents:
 - `docs/CREDENTIALS.md` — login credentials
 - `docs/PLATFORM_STATUS.md` — platform overview
 - `docs/ARCHITECTURE.md` — platform architecture
+- `docs/QA_CHECKLIST.md` — QA standard per release
+- `docs/RELEASE_PROCESS.md` — release workflow
+- `docs/AGENT_PERFORMANCE.md` — agent metrics and KPIs
+- `docs/releases/2026-07-29/RELEASE.md` — July 2026 release record
+- `docs/09_AI_MEMORY/SESSION_LOGS/2026-07-29.md` — July 2026 session log
+- `docs/02_TENANTS/kolokotronis/HISTORY.md` — development history (Phase 5 added)
 
 ---
 
-*Generated: 2026-07-12. Update whenever site content changes.*
+*Generated: 2026-07-12. Last updated: 2026-07-29 (Phase 5 — 5 new site_settings, hardcoded→DB migrations).*

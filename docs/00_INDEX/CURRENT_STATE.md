@@ -1,7 +1,7 @@
 # CURRENT STATE — AION Flow
 
-**Updated:** 2026-07-12
-**AKES v1.0**
+**Updated:** 2026-07-29
+**AKES v1.5**
 
 ---
 
@@ -9,7 +9,8 @@
 
 | Element | Status | Notes |
 |---------|--------|-------|
-| AION Flow CMS | ✅ Live | `https://aion-flowv2.vercel.app` |
+| AION Flow CMS | ✅ Live | `https://aion-flowv2.vercel.app` — Jul 2026 deploy |
+| Kolokotronis Public Site | ✅ Live | `https://kolokotronis-website.choliasmenos-panos.workers.dev` — Jul 2026 deploy |
 | Shared Supabase | ✅ Online | `qhbgptlklsavezxpksao.supabase.co` |
 | Module Registry | ✅ Stable | Self-registering modules |
 | Feature Flags | ✅ Stable | `tenant_features` table |
@@ -44,7 +45,10 @@
 | Architecture Patterns | 12/12 | ✅ Complete |
 | Weekly Reports (Portfolio) | 6/6 | ✅ Complete |
 | Weekly Reports (Retreat) | 3/3 | ✅ Complete |
-| AKES Structure | 00-09 folders | 🟡 Building |
+| AKES Structure | 00-09 folders | ✅ v1.5 Complete |
+| AKES Protocols | SESSION_LOG_TEMPLATE, MEMORY_UPDATE_PROTOCOL, SESSION_OBJECTIVE | ✅ Created Jul 2026 |
+| Release Documentation | QA_CHECKLIST, RELEASE_PROCESS, AGENT_PERFORMANCE, release records | ✅ Created Jul 2026 |
+| Metrics | Machine-readable JSON per release, schema v1.0 | ✅ Created Jul 2026 |
 | Methods Registry | 0/— | 🔴 Not started |
 
 ## Module Maturity Index
@@ -55,7 +59,7 @@
 | Portfolio | ✅ | ✅ | ✅ | ❌ | 75% | STABLE | ✅ |
 | Retreat | ✅ | ✅ | ✅ | ❌ | 79% | STABLE | ❌ |
 | Media | ✅ | ✅ | ✅ | 🟡 | 83% | PRODUCTION | ❌ |
-| Blog | ✅ | ✅ | ✅ | ❌ | 78% | STABLE | ❌ |
+| Blog | ✅ | ✅ | ✅ | 🟡 | 83% | PRODUCTION | ❌ (83%, +5% Phase 5 — canonical categories, rich-text hardening) |
 | Bookings | ✅ | ✅ | ✅ | ❌ | 100% | PRODUCTION | ❌ |
 | CRM | ✅ | ✅ | ❌ BLOCKED | ❌ | 33% | BLOCKED | ❌ |
 | Locale | ❌ | ❌ | 🟡 | ❌ | 8% | EARLY | ❌ |
@@ -68,13 +72,17 @@
 |-------|----------|--------|
 | documentation.db.json publicly exposed (now fixed) | 🔴 Resolved | Moved to src/assets/, bundled by Vite |
 | site_settings UNIQUE on key (not per-tenant) | 🟡 Medium | Needs migration |
-| No automated tests | 🟡 Medium | Planned (v0.8) |
+| Automated Playwright QA | ✅ Established | 47/47 tests passed; 2 non-blocking manual checks deferred |
 | No lazy loading | 🟢 Low | Acceptable |
 | No multi-language support | 🟡 Medium | Locale Module v0.7 |
 | CRM helpers not tenant-filtered | 🔴 Blocked | Blocks CRM tenant rollout |
 | E-commerce helpers not tenant-filtered | 🔴 Blocked | Demo only |
-| No testing infrastructure | 🟡 Medium | Planned (v0.8) |
+| Kolokotronis Vercel secondary HTTP 404 | 🟡 Medium | Pre-existing, needs separate Nitro preset build |
+| CMS save/persist manual check | 🔷 Deferred | Needs Supabase Auth credentials |
+| Word/Google Docs paste manual check | 🔷 Deferred | Not automatable in headless Playwright |
 
 ## Next Approved Action
 
 See `NEXT_APPROVED_ACTION.md` for the current priority.
+
+**Release 2026-07-29:** Process Baseline established. 47/47 QA tests. See `docs/releases/2026-07-29/RELEASE.md`.

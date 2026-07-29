@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "release": "2026-07-29",
+  "release_type": "Process Baseline",
+  "description": "First fully measured AION Flow release lifecycle. Timing metrics not recorded from first command — retroactive estimates only.",
+  "baseline_type": "process",
+  "is_performance_baseline": false,
+  "projects": {
+    "kolokotronis-pshychologist-main": {
+      "commits": 8,
+      "files_changed": 25,
+      "deployments": [
+        {
+          "target": "Cloudflare Workers",
+          "success": true,
+          "url": "https://kolokotronis-website.choliasmenos-panos.workers.dev",
+          "http_status": 200
+        },
+        {
+          "target": "Vercel (secondary)",
+          "success": true,
+          "url": "https://kolokotronis-pshychologist-main.vercel.app",
+          "http_status": 404,
+          "note": "Pre-existing Nitro preset issue"
+        }
+      ],
+      "database_operations": 0
+    },
+    "aion-flow-v2": {
+      "commits": 4,
+      "files_changed": 10,
+      "deployments": [
+        {
+          "target": "Vercel",
+          "success": true,
+          "url": "https://aion-flowv2.vercel.app",
+          "http_status": 200
+        }
+      ],
+      "database_operations": 5,
+      "database_operation_type": "idempotent_seed_upsert"
+    }
+  },
+  "qa": {
+    "automated_tests_total": 47,
+    "automated_tests_passed": 47,
+    "automated_tests_failed": 0,
+    "manual_tests_deferred": 2,
+    "manual_tests_deferred_reasons": [
+      "CMS save/persist requires authenticated Supabase session — not automatable in headless Playwright",
+      "Word/Google Docs paste requires real clipboard — not automatable in headless Playwright"
+    ],
+    "responsive_screenshots": 18,
+    "responsive_viewports": [375, 768, 1024, 1280, 1440, 1920],
+    "responsive_pages": ["/", "/blog", "/services/seminar-omilies"]
+  },
+  "classification": {
+    "baseline_type": "process",
+    "performance_measured": false,
+    "next_performance_baseline_release": "Next release must capture wall-clock from first command"
+  },
+  "timing": {
+    "run_started_at": null,
+    "run_completed_at": null,
+    "total_wall_clock_ms": null,
+    "missing_data_reason": "Telemetry was introduced after execution began; timings were not captured and were not estimated.",
+    "planning_duration_ms": null,
+    "implementation_duration_ms": null,
+    "qa_duration_ms": null,
+    "deployment_duration_ms": null
+  },
+  "tool_metrics": {
+    "tool_calls_total": null,
+    "tool_calls_successful": null,
+    "tool_calls_failed": null,
+    "retry_count": null,
+    "note": "Tool-level metrics not captured for this release"
+  },
+  "tenant_impact": {
+    "kolokotronis_kol_001": {
+      "new_site_settings_keys": 5,
+      "affected_routes": ["/blog", "/blog/:slug", "/", "/services/:slug"],
+      "deployed": true
+    },
+    "kareli_akr_kar_001": {
+      "status": "paused",
+      "note": "Content model migration file exists but not executed"
+    }
+  },
+  "documentation_created": [
+    "docs/QA_CHECKLIST.md",
+    "docs/RELEASE_PROCESS.md",
+    "docs/AGENT_PERFORMANCE.md",
+    "docs/releases/2026-07-29/RELEASE.md",
+    "docs/09_AI_MEMORY/SESSION_LOG_TEMPLATE.md",
+    "docs/09_AI_MEMORY/MEMORY_UPDATE_PROTOCOL.md",
+    "docs/00_SESSION/SESSION_OBJECTIVE.md",
+    "docs/09_AI_MEMORY/METRICS/releases/2026-07-29.json"
+  ],
+  "documentation_updated": [
+    "docs/02_TENANTS/kolokotronis/HISTORY.md",
+    "docs/02_TENANTS/kolokotronis/CONTENT_MAPPING.md",
+    "docs/00_INDEX/CURRENT_STATE.md",
+    "docs/00_INDEX/NEXT_APPROVED_ACTION.md",
+    "docs/04_METHODS/Core/MODULE_MATURITY.md",
+    "docs/08_METRICS/AGENT_PERFORMANCE.md",
+    "~/kolokotronis-pshychologist-main/AGENTS.md"
+  ],
+  "commit_hashes": {
+    "kolokotronis-pshychologist-main": "48fcdba",
+    "aion-flow-v2_feature": "0177fd3",
+    "aion-flow-v2_tiptap_fix": "cbfc284",
+    "aion-flow-v2_docs": "22f6269",
+    "aion-flow-v2_metrics": "07d30fb"
+  },
+  "deferred_items": [
+    "Kareli (AKR-KAR-001) content model upgrade",
+    "Kolokotronis Vercel secondary HTTP 404 fix",
+    "CMS authenticated save/persist manual verification",
+    "Word/Google Docs paste manual verification"
+  ],
+  "classification": {
+    "process_baseline": true,
+    "performance_baseline": false,
+    "next_performance_baseline_release": "Next release must capture wall-clock from first command",
+    "note": "Duplicate of top-level classification — kept for backward compatibility"
+  }
+}

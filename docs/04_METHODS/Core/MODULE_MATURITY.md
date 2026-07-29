@@ -160,16 +160,21 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 | L1 Data | blog_posts table with TipTap content | ✅ |
 | L1 Data | tenant_id present | ✅ |
 | L2 Authoring | BlogPosts CRUD panel | ✅ |
-| L2 Authoring | Categories (ΟΜΙΛΙΕΣ, ΣΕΜΙΝΑΡΙΑ, ΟΜΑΔΕΣ) | ✅ |
+| L2 Authoring | Categories (canonical: ΟΜΙΛΙΕΣ ΣΕΜΙΝΑΡΙΑ, ΟΜΑΔΕΣ, ΑΡΘΡΑ) | ✅ |
+| L2 Authoring | Rich-text editor: Underline, Strike, H3, Clear Formatting | ✅ |
 | L2 Authoring | Permissions (cms.edit) | ✅ |
 | L3 Delivery | Public site renders correctly | ✅ |
+| L3 Delivery | All TipTap node types rendered (12/12) | ✅ |
+| L3 Delivery | XSS sanitization (escapeHtml on all text + attrs) | ✅ |
 | L3 Delivery | withTenant() verified | ✅ |
 | L4 Intelligence | Telemetry | ❌ |
-| L4 Intelligence | Tests | ❌ |
+| L4 Intelligence | Tests (Playwright) | ✅ 47 tests in kolokotronis repo |
 
-**Score:** 7/9 = 78%  
-**Status:** STABLE  
+**Score:** 10/12 = 83%  
+**Status:** PRODUCTION  
 **Verified:** ❌
+
+**Last evidence update:** 2026-07-29 (Phase 5 — canonical categories, rich-text hardening, XSS, editor enhancements).
 
 ---
 
@@ -182,12 +187,21 @@ Until VERIFIED, the module is technically COMPLETE but not owner-approved.
 | Website (public) | 100% | Live, SSR, Cloudflare |
 | CMS panels | 100% | 16 panels operational |
 | Services | 100% | 5 services CRUD |
-| Blog | 100% | 3 categories, posts |
+| Blog | 100% | 3 categories, canonical filters, rich-text hardened |
 | Testimonials | 100% | CRUD with ratings |
 | Bookings | — | Not applicable |
 | Locale | — | GR only, not needed |
 | Analytics | 100% | Pageviews, telemetry |
 | **Overall** | **100%** | Production |
+
+**Verified evidence:**
+- **Last verified:** 2026-07-29
+- **Release:** `docs/releases/2026-07-29/RELEASE.md`
+- **Commit (kolokotronis):** `48fcdba`
+- **Commit (aion-flow-v2):** `0177fd3`
+- **Automated QA:** 47/47 Playwright tests
+- **Manual deferred:** 2 (CMS auth save/persist, Word/Google Docs paste)
+- **Next review:** 2026-10-29 (3-month cycle)
 
 ### Ktima Kareli
 
