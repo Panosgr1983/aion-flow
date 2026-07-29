@@ -6,6 +6,7 @@ import { useTenant } from '../../lib/useTenant';
 import { trackEvent } from '../../lib/analytics';
 import { Service, BlogPost, ServiceFaqEntry } from '../../types/supabase';
 import MediaPicker from './MediaPicker';
+import RichEditor from './RichEditor';
 
 type Tab = 'general' | 'related-articles' | 'faq' | 'seo';
 
@@ -43,6 +44,7 @@ export default function Services() {
 
   const [faqEntries, setFaqEntries] = useState<{ question: string; answer: string }[]>([]);
   const [faqDirty, setFaqDirty] = useState(false);
+  const [richLongDesc, setRichLongDesc] = useState<any>(null);
 
   useEffect(() => { servicesHelper.getAll().then(d => { setItems(d); setLoading(false); }); }, []);
 
@@ -56,12 +58,26 @@ export default function Services() {
     setPostSearch('');
     setFaqEntries([]);
     setFaqDirty(false);
+    setRichLongDesc(null);
     setShowModal(true);
   };
 
   const openEdit = async (item: Service) => {
     setEditing(item);
     setForm(item);
+    try {
+      const raw = item.long_description || '';
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object' && parsed.type === 'doc') {
+        setRichLongDesc(parsed);
+      } else {
+        setRichLongDesc({ type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: raw }] }] });
+      }
+    } catch {
+      setRichLongDesc(raw.trim()
+        ? { type: 'doc', content: raw.split('\n').filter(Boolean).map((p: string) => ({ type: 'paragraph', content: [{ type: 'text', text: p }] })) }
+        : null);
+    }
     setActiveTab('general');
     setSelectedPostIds([]);
     setPostSearch('');
@@ -83,7 +99,7 @@ export default function Services() {
   const handleSave = async () => {
     setSaving(true);
     const slug = form.slug || slugify(form.title || '');
-    const payload = { ...form, slug };
+    const payload = { ...form, slug, long_description: richLongDesc ? JSON.stringify(richLongDesc) : (form.long_description || '') };
 
     if (editing) {
       const updated = await servicesHelper.update(editing.id, payload);
@@ -233,7 +249,16 @@ export default function Services() {
                     <div><label className="text-xs text-gray-500 block mb-1">Εικονίδιο</label><select value={form.icon} onChange={e => setForm(f => ({ ...f, icon: e.target.value }))} className="input">{iconOptions.map(o => <option key={o} value={o}>{o}</option>)}</select></div>
                   </div>
                   <div><label className="text-xs text-gray-500 block mb-1">Σύντομη περιγραφή</label><textarea value={form.short_description} onChange={e => setForm(f => ({ ...f, short_description: e.target.value }))} className="input h-20 resize-none" /></div>
-                  <div><label className="text-xs text-gray-500 block mb-1">Αναλυτική περιγραφή</label><textarea value={form.long_description} onChange={e => setForm(f => ({ ...f, long_description: e.target.value }))} className="input h-24 resize-none" /></div>
+                  <div>
+                    <label className="text-xs text-gray-500 block mb-1">Αναλυτική περιγραφή</label>
+                    <RichEditor
+                      content={richLongDesc}
+                      onChange={(json: any) => {
+                        setRichLongDesc(json);
+                        setForm(f => ({ ...f, long_description: JSON.stringify(json) }));
+                      }}
+                    />
+                  </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div><label className="text-xs text-gray-500 block mb-1">Σειρά</label><input type="number" value={form.sort_order} onChange={e => setForm(f => ({ ...f, sort_order: parseInt(e.target.value) || 0 }))} className="input" /></div>
                     <div><label className="text-xs text-gray-500 block mb-1">Ενεργό</label><select value={form.is_active ? 'true' : 'false'} onChange={e => setForm(f => ({ ...f, is_active: e.target.value === 'true' }))} className="input"><option value="true">Ναι</option><option value="false">Όχι</option></select></div>
