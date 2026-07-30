@@ -46,6 +46,7 @@
 | Portfolio Module | 12/12 | ✅ Complete |
 | Retreat Module | 16/16 | ✅ Complete |
 | Architecture Patterns | 12/12 | ✅ Complete |
+| Engineering Principles | 6/6 | ✅ Complete |
 | Weekly Reports (Portfolio) | 6/6 | ✅ Complete |
 | Weekly Reports (Retreat) | 3/3 | ✅ Complete |
 | AKES Structure | 00-09 folders | ✅ v1.6 Complete |

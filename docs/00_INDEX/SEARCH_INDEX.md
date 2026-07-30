@@ -12,6 +12,7 @@
 | 00_SESSION.SESSION_OBJECTIVE | SESSION OBJECTIVE Protocol | 00_SESSION/SESSION_OBJECTIVE.md | — | — |  |
 | platform.aion-dna | AION DNA | 01_PLATFORM/AION_DNA.md | current | — | dna, identity, platform |
 | 01_PLATFORM.ARCHITECTURE | AION — Platform Architecture Overview | 01_PLATFORM/ARCHITECTURE.md | — | — |  |
+| 01_PLATFORM.ENGINEERING_PRINCIPLES | AION Flow — Engineering Principles | 01_PLATFORM/ENGINEERING_PRINCIPLES.md | — | — | principles, architecture, incident, platform |
 | 01_PLATFORM.CHANGELOG | AION CMS — Changelog | 01_PLATFORM/CHANGELOG.md | — | — |  |
 | 01_PLATFORM.CONSTITUTION | AION Flow Development Constitution | 01_PLATFORM/CONSTITUTION.md | — | — |  |
 | 01_PLATFORM.CREDENTIAL_ABSTRACTION_LAYER | Credential Abstraction Layer (CAL) | 01_PLATFORM/CREDENTIAL_ABSTRACTION_LAYER.md | — | — |  |

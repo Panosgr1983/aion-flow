@@ -22,6 +22,7 @@
 | `CONSTITUTION.md` | Golden Rules, DoD | 🔄 Moving |
 | `ROADMAP.md` | Development roadmap | 🔄 Moving |
 | `FEATURES.md` | Feature catalog | 🔄 Moving |
+| `ENGINEERING_PRINCIPLES.md` | Engineering Principles | ✅ Active |
 | `MODULES.md` | Module inventory | 🔄 Moving |
 | `PERMISSIONS.md` | Permission model | 🔄 Moving |
 | `STATUS.md` | Platform dashboard | 🔄 Moving |

@@ -9,6 +9,7 @@
 | Order | File | Purpose |
 |-------|------|---------|
 | 1 | `../AGENTS.md` | **Entry protocol** — how to work with this system |
+| — | `01_PLATFORM/ENGINEERING_PRINCIPLES.md` | **Platform principles** — architecture, process, priorities |
 | 2 | `CURRENT_STATE.md` | **Where we are** — platform state, modules, tenants |
 | 3 | `NEXT_APPROVED_ACTION.md` | **What's next** — approved next steps |
 
