@@ -92,7 +92,19 @@
 - [ ] **No javascript: URLs** in links
 - [ ] **RLS policies** correct for new tables
 
-## 9. Cleanup
+## 9. Pre-Deploy Smoke Test (Manual)
+
+- [ ] **Homepage** — services section renders Greek text, not raw JSON keys (`type`, `doc`, `content`)
+- [ ] **Service cards** — descriptions show plain text, not serialized TipTap
+- [ ] **Service detail** — full rich content renders correctly (headings, lists, bold, italic)
+- [ ] **About page** — biography renders as formatted text
+- [ ] **Blog list** — article cards show excerpts, no JSON leakage
+- [ ] **Blog article** — full body content renders with correct formatting
+- [ ] **Console** — no errors on any public page
+- [ ] **All automated tests pass** — `npx playwright test`
+- [ ] **`extractPlainText()` used for cards/previews, `renderTipContent()` for full content** — no direct rendering of DB rich-content values
+
+## 10. Cleanup
 
 - [ ] **Demo/test content deleted** from DB
 - [ ] **Temporary settings reverted** to production values
