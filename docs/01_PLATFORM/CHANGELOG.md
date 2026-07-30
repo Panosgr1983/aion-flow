@@ -1,5 +1,32 @@
 # AION CMS — Changelog
 
+## 2026-07-29d — Rich Content Engine Expansion + Incident Closure
+
+**Commits:** `203c2f0` → `d193b82` (aion-flow-v2), `a763384` → `f657161` (kolokotronis)
+
+**New:**
+- TipTap RichEditor for biography (AboutPanel) + service short/long descriptions
+- `renderTipContent()` extracted to shared `content-hooks.ts`
+- Blog hero eyebrow → `blog_hero_eyebrow` setting
+- Category normalization: `ΟΜΙΛΙΕΣ & ΣΕΜΙΝΑΡΙΑ` ampersand variant
+- `extractPlainText()` utility for cards/previews
+- `service_faq_visible` toggle
+- Engineering Principles (5 foundations)
+- ADR-007: Rich Content Pipeline
+- Content Engine vision document
+- Incident record framework
+
+**Fixed:**
+- Homepage TipTap JSON leakage (production regression, no data loss)
+- TipTap editor CSS (paragraph spacing, list markers)
+- `handleSave` in AboutPanel now creates new settings keys
+- `openEdit` scope bug in Services
+- 3 bad slugs cleaned (`365----`, `-------------`, `--`)
+- Title width constraint removed
+- Pre-deploy smoke checklist added
+
+**Tests: 24/24 passed (8 FAQ + 12 manual QA + 3 content pipeline + 1 homepage regression)**
+
 ## v0.3.3 (2026-07-08)
 
 ### Added

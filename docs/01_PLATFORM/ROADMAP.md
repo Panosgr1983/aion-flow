@@ -240,3 +240,15 @@ AIONCLAW (Engineering Intelligence)
 - [ ] 500+ documented decisions/lessons
 - [ ] Reusable components registry populated
 - [ ] All panels pass TENANT_ISOLATION_CHECKLIST
+
+---
+
+### Next Phase (Jul 2026+)
+
+| Priority | Track | Status |
+|----------|-------|--------|
+| 1 | **Content Health Check** — post-deploy safety net scanning for raw JSON, `type`/`doc`/`content` leakage. Automated after every deploy. | 📋 Planned |
+| 2 | **Release Engineering** — Dev → Preview → QA → Smoke → Health Check → Production pipeline with gates | 📋 Planned |
+| 3 | **Content Engine Phases 1-6** — unified content pipeline with registry, normalizer, serialization, validation | 📋 Planned (see `CONTENT_ENGINE.md`) |
+
+**Principle:** *Architecture follows evidence, not speculation.* Each track starts only when a real production need justifies it.

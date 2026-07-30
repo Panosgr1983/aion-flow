@@ -60,6 +60,16 @@ docs/
         └── ... (per-module docs)
 ```
 
+## Documentation Change Methodology
+
+For the process of auditing, updating, consolidating, and maintaining existing documentation, see:
+
+→ `docs/01_PLATFORM/DOCUMENTATION_METHODOLOGY.md`
+
+This document covers Documentation-First *development* (writing docs before code). The methodology covers Documentation *change management* (auditing, updating, and maintaining existing docs).
+
+---
+
 ## Per-Module Documentation
 
 Κάθε module πρέπει να έχει:

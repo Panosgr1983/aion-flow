@@ -34,6 +34,12 @@ In every incident, priority order:
 4. Fix (address root cause)
 5. Refactor (improve system only after the above are complete)
 
+### 6. Documentation is an existing system, not a blank canvas.
+
+Every documentation change starts with inventory, respects the existing structure, and extends the canonical source before creating new documents. Audit first, edit second.
+
+See `DOCUMENTATION_METHODOLOGY.md` for the full process.
+
 ---
 
 ### Derived Rules

@@ -78,7 +78,7 @@
 |-------|----------|--------|
 | documentation.db.json publicly exposed (now fixed) | 🔴 Resolved | Moved to src/assets/, bundled by Vite |
 | site_settings UNIQUE on key (not per-tenant) | 🟡 Medium | Needs migration |
-| Automated Playwright QA | ✅ Established | 47/47 (Process Baseline) + 8/8 (PB#1 Service FAQ) + 12/12 (Manual QA); 2 non-blocking manual checks deferred |
+| Automated Playwright QA | ✅ Established | 47/47 (Process Baseline) + 8/8 (PB#1 Service FAQ) + 12/12 (Manual QA) + 3 (Content Pipeline) + 1 (Homepage JSON regression) = **24/24 active**; 2 non-blocking manual checks deferred |
 | Agent performance telemetry (runtime capture) | 🟡 Medium | Schema defined (AGENT_PERFORMANCE.md) but runtime wall-clock + tool-level capture not implemented |
 | No lazy loading | 🟢 Low | Acceptable |
 | No multi-language support | 🟡 Medium | Locale Module v0.7 |
@@ -90,7 +90,7 @@
 | Empty article `slug: omada-monopati-eytyxias` (content `{}`) | 🟡 Medium | Pending data decision |
 | FAQ ownership: Gen1 vs Gen2 architecture | 🟡 Medium | Pending investigation |
 | CMS authenticated Playwright tests | 🔷 Blocked | TenantSelector overlay intercepts clicks |
-| Homepage TipTap JSON leakage (services short_description) | 🔴 Resolved | `extractPlainText()` fix + regression test in `6f7700d` |
+| Homepage TipTap JSON leakage (services short_description) | 🔴 Resolved | `extractPlainText()` fix + regression test in `6f7700d`. See `INCIDENTS/2026-07-29-rich-content-json-leakage.md` |
 
 ## Next Approved Action
 

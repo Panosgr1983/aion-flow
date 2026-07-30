@@ -68,7 +68,8 @@
 | Doc | Status |
 |-----|--------|
 | ADR Index | ❌ Not created |
-| Content Engine ADR | 🔷 Planned — see AGENTS.md |
+| Content Engine ADR | ADR-007 — see `ADR/ADR-007-content-pipeline.md` | ✅ Active |
+| INCIDENTS/ | `2026-07-29-rich-content-json-leakage.md` | ✅ 1 record |
 
 ## 06_PLAYBOOKS — Complete Procedures
 
