@@ -19,21 +19,19 @@ const modeOptions = [
 
 const emptyForm: Partial<Service> = { tenant_id: null, title: '', slug: '', short_description: '', long_description: '', icon: 'heart', image_url: '', sort_order: 0, is_active: true, meta_title: '', meta_description: '', og_image: '', show_related_articles: false, related_articles_mode: 'manual', related_articles_limit: 6, related_articles_title: 'Σχετικά άρθρα', related_articles_title_en: 'Related Articles' };
 
-function extractPlainText(val: string): string {
+function extractPlainText(val: any): string {
   if (!val) return '';
-  try {
-    const parsed = JSON.parse(val);
-    if (parsed && typeof parsed === 'object' && parsed.type === 'doc') {
-      const texts: string[] = [];
-      function walk(n: any) {
-        if (n.type === 'text') texts.push(n.text || '');
-        if (n.content) n.content.forEach(walk);
-      }
-      walk(parsed);
-      return texts.join(' ').trim();
+  const doc = typeof val === 'string' ? (() => { try { return JSON.parse(val); } catch { return null; } })() : val;
+  if (doc && typeof doc === 'object' && doc.type === 'doc') {
+    const texts: string[] = [];
+    function walk(n: any) {
+      if (n.type === 'text') texts.push(n.text || '');
+      if (n.content) n.content.forEach(walk);
     }
-  } catch {}
-  return val;
+    walk(doc);
+    return texts.join(' ').trim();
+  }
+  return typeof val === 'string' ? val : String(val);
 }
 
 function slugify(s: string) {
