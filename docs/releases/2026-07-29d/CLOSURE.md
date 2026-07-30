@@ -2,18 +2,26 @@
 
 **Status:** CLOSED  
 **Production:** Verified  
-**Incident:** Closed (homepage + CMS Services list — no data loss, scope expanded and re-closed)  
-**Tests:** 24/24 passed  
+**Incident:** Closed after scope expansion (public homepage + CMS Services list — no data loss, full surface audit completed)  
+**Validation:** 24/24 checks passed (11 automated + 13 manual QA)  
 **Documentation:** Complete  
 
 ---
 
 ## Commit Baseline
 
-| Project | Commit |
-|---------|--------|
-| AION Flow CMS | `92a54c4` |
-| Kolokotronis Public | `22ac10e` |
+| Project | Deployed code | Docs HEAD |
+|---------|---------------|-----------|
+| AION Flow CMS | `28cdffa` | `28cdffa` |
+| Kolokotronis Public | `8c1c95f` | `8c1c95f` |
+
+## Validation
+
+| Group | Result |
+|-------|--------|
+| Automated tests (Service FAQ + Content Pipeline) | 11/11 ✅ |
+| Manual QA checks | 13/13 ✅ |
+| **Total** | **24/24 ✅** |
 
 ## Known Issues
 
