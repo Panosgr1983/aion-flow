@@ -89,6 +89,7 @@
 | Empty article `slug: omada-monopati-eytyxias` (content `{}`) | 🟡 Medium | Pending data decision |
 | FAQ ownership: Gen1 vs Gen2 architecture | 🟡 Medium | Pending investigation |
 | CMS authenticated Playwright tests | 🔷 Blocked | TenantSelector overlay intercepts clicks |
+| Homepage TipTap JSON leakage (services short_description) | 🔴 Resolved | `extractPlainText()` fix + regression test in `6f7700d` |
 
 ## Next Approved Action
 
