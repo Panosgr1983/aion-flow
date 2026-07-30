@@ -2,7 +2,7 @@
 
 **Status:** CLOSED  
 **Production:** Verified  
-**Incident:** Closed (homepage JSON leakage — no data loss)  
+**Incident:** Closed (homepage + CMS Services list — no data loss, scope expanded and re-closed)  
 **Tests:** 24/24 passed  
 **Documentation:** Complete  
 
@@ -12,8 +12,8 @@
 
 | Project | Commit |
 |---------|--------|
-| AION Flow CMS | `5660def` |
-| Kolokotronis Public | `f657161` |
+| AION Flow CMS | `92a54c4` |
+| Kolokotronis Public | `22ac10e` |
 
 ## Known Issues
 

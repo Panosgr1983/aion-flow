@@ -1,8 +1,8 @@
 # Incident Report: Homepage TipTap JSON Leakage (2026-07-29)
 
-**Status:** RESOLVED  
+**Status:** RESOLVED (scope expanded and re-closed 2026-07-30)  
 **Severity:** Production presentation regression — no data loss  
-**Detection:** Client report  
+**Detection:** Client report. Scope expanded after CMS Services list showed same regression.  
 
 ---
 
@@ -68,6 +68,21 @@ No data recovery needed — database content was correct. The fix was purely in 
 3. Regression tests must check the exact failure mode (raw JSON keys in visible text).
 4. The pre-deploy checklist now includes: *"no raw JSON on homepage"*.
 
+## Scope Expansion (2026-07-30)
+
+**Discovery:** The same regression existed in the AION Flow CMS Services list — `short_description` rendered as raw TipTap JSON because the Supabase JS client auto-parses JSON strings from TEXT columns into objects.
+
+**Root cause deeper:** `extractPlainText()` only handled the `string` input case. When Supabase returns `short_description` as a parsed JavaScript object, `JSON.parse(object)` throws, and the function returned the raw object.
+
+**Fix:** `extractPlainText()` now handles both:
+- Already-parsed TipTap JSON objects (`typeof val === 'object' && val.type === 'doc'`)
+- JSON strings (`typeof val === 'string'` → `JSON.parse`)
+- Plain text / fallback
+
+**Full surface audit completed:** All rich-content fields across CMS and public site inspected. Only `Services.tsx:236` (CMS list) and `index.tsx:222` (homepage) had direct renderings. Both now use `extractPlainText()`.
+
+**Incident reopened → reclosed.** Scope now covers both public-site and CMS surfaces.
+
 ## Commit References
 
 | Change | Repo | Commit |
@@ -78,3 +93,6 @@ No data recovery needed — database content was correct. The fix was purely in 
 | Pre-deploy checklist | aion-flow-v2 | `329c8e2` |
 | Incident documentation | aion-flow-v2 | `841e409` |
 | Engineering Principles | aion-flow-v2 | `d193b82` |
+| **extractPlainText handle objects fix** | **aion-flow-v2** | **`92a54c4`** |
+| **extractPlainText handle objects fix** | **kolokotronis** | **`22ac10e`** |
+| **Full surface audit** | **both** | **Confirmed: only 2 surfaces affected** |
