@@ -33,3 +33,9 @@
 - [ ] Release record + closure record created
 - [ ] Production baseline updated
 - [ ] No unplanned scope in the release
+- [ ] **Documentation synchronization check passed** — answered explicitly:
+  - Did any architecture decision change? → ADR/DECISION_LOG updated
+  - Did any canonical rule change? → ENGINEERING_PRINCIPLES updated
+  - Did any runbook change? → RUNBOOKS updated
+  - Did any baseline change? → BASELINES updated
+  - If no → no documentation change required (documented as "no change")
