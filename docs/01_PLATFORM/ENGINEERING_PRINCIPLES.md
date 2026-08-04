@@ -50,7 +50,7 @@ Any field that may contain TipTap JSON must go through the shared content pipeli
 - `extractPlainText()` for cards, previews, excerpts, meta descriptions
 - `renderTipContent()` for full rich-content rendering
 
-Direct renderings like `{content}`, `{short_description}`, `String(content)`, or `JSON.stringify(content)` in JSX are forbidden. ADR-007 records this decision.
+Direct renderings like `{content}`, `{short_description}`, `String(content)`, or `JSON.stringify(content)` in JSX are forbidden. ADR-016 records this decision.
 
 ### Decision B: Documentation is extended, never rewritten, unless an ADR explicitly approves a structural change.
 

@@ -1,4 +1,4 @@
-# ADR-007: Rich Content Pipeline
+# ADR-016: Rich Content Pipeline
 
 **Status:** Accepted  
 **Date:** 2026-07-29  

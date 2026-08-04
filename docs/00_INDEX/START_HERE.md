@@ -11,7 +11,7 @@
 | 1 | `../AGENTS.md` | **Entry protocol** — how to work with this system |
 | — | `01_PLATFORM/ENGINEERING_PRINCIPLES.md` | **Platform principles** — architecture, process, priorities |
 | — | `01_PLATFORM/CONTENT_ENGINE.md` | **Content Engine vision** — planned pipeline architecture |
-| — | `01_PLATFORM/ADR/ADR-007-content-pipeline.md` | **ADR-007** — Rich Content Pipeline decision |
+| — | `01_PLATFORM/ADR/ADR-016-content-pipeline.md` | **ADR-016** — Rich Content Pipeline decision |
 | — | `INCIDENTS/2026-07-29-rich-content-json-leakage.md` | **Incident record** — homepage JSON leakage |
 | 2 | `CURRENT_STATE.md` | **Where we are** — platform state, modules, tenants |
 | 3 | `NEXT_APPROVED_ACTION.md` | **What's next** — approved next steps |

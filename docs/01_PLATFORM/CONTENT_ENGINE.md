@@ -61,5 +61,5 @@ content/
 
 ## ADR References
 
-- ADR-007 (planned): Content Pipeline Architecture
+- ADR-016 (planned): Content Pipeline Architecture
 - ADR-008 (planned): Content Health Check

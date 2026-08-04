@@ -68,7 +68,7 @@
 | Doc | Status |
 |-----|--------|
 | ADR Index | ❌ Not created |
-| Content Engine ADR | ADR-007 — see `ADR/ADR-007-content-pipeline.md` | ✅ Active |
+| Content Engine ADR | ADR-016 — see `ADR/ADR-016-content-pipeline.md` | ✅ Active |
 | INCIDENTS/ | `2026-07-29-rich-content-json-leakage.md`, `2026-08-04-cloudflare-www-523.md` | ✅ 2 records |
 | OPERATIONS/ | `SEO_OPERATIONS.md` | ✅ Active |
 | RUNBOOKS/ | `ga4-setup.md`, `search-console-setup.md`, `cloudflare-worker-domains.md` | ✅ Active |

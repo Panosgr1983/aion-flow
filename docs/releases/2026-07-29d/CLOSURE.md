@@ -42,7 +42,7 @@ None.
 | Engineering Principles | `docs/01_PLATFORM/ENGINEERING_PRINCIPLES.md` |
 | Documentation Methodology | `docs/01_PLATFORM/DOCUMENTATION_METHODOLOGY.md` |
 | Content Engine Vision | `docs/01_PLATFORM/CONTENT_ENGINE.md` |
-| ADR-007 (Content Pipeline) | `docs/01_PLATFORM/ADR/ADR-007-content-pipeline.md` |
+| ADR-016 (Content Pipeline) | `docs/01_PLATFORM/ADR/ADR-016-content-pipeline.md` |
 | Incident Record | `docs/INCIDENTS/2026-07-29-rich-content-json-leakage.md` |
 | QA Checklist (pre-deploy) | `docs/QA_CHECKLIST.md` |
 | Release Record | `docs/releases/2026-07-29d/RELEASE.md` |

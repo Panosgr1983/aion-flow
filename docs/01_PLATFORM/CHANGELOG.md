@@ -12,7 +12,7 @@
 - `extractPlainText()` utility for cards/previews
 - `service_faq_visible` toggle
 - Engineering Principles (5 foundations)
-- ADR-007: Rich Content Pipeline
+- ADR-016: Rich Content Pipeline
 - Content Engine vision document
 - Incident record framework
 

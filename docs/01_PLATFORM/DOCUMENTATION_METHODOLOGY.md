@@ -207,4 +207,4 @@ The review must remain evidence-driven. Do not restructure merely because anothe
 
 - Engineering Principle #6 — `01_PLATFORM/ENGINEERING_PRINCIPLES.md`
 - Documentation-First Development — `docs/patterns/documentation-process.md`
-- ADR-007 (Content Pipeline) — `01_PLATFORM/ADR/ADR-007-content-pipeline.md`
+- ADR-016 (Content Pipeline) — `01_PLATFORM/ADR/ADR-016-content-pipeline.md`
