@@ -18,6 +18,11 @@
 | 01_PLATFORM.ENGINEERING_PRINCIPLES (v2) | Engineering Principles (6 foundations) | 01_PLATFORM/ENGINEERING_PRINCIPLES.md | updated | — | principles, architecture, incident, platform, documentation |
 | 01_PLATFORM.ADR.ADR-007-content-pipeline | ADR-007: Rich Content Pipeline | 01_PLATFORM/ADR/ADR-007-content-pipeline.md | — | — | adr, content, pipeline, rendering |
 | INCIDENTS.2026-07-29-rich-content-json-leakage | Incident Report: Homepage TipTap JSON Leakage | INCIDENTS/2026-07-29-rich-content-json-leakage.md | — | — | incident, regression, json-leakage, content |
+| INCIDENTS.2026-08-04-cloudflare-www-523 | Incident Report: Cloudflare www HTTP 523 | INCIDENTS/2026-08-04-cloudflare-www-523.md | — | — | incident, cloudflare, 523, domain, www |
+| OPERATIONS.SEO_OPERATIONS | SEO & Analytics Operations | OPERATIONS/SEO_OPERATIONS.md | — | — | seo, ga4, analytics, sitemap, search-console, canonical |
+| RUNBOOKS.ga4-setup | Runbook: GA4 Setup | RUNBOOKS/ga4-setup.md | — | — | runbook, ga4, analytics, measurement |
+| RUNBOOKS.search-console-setup | Runbook: Search Console Setup | RUNBOOKS/search-console-setup.md | — | — | runbook, google, indexing, sitemap |
+| RUNBOOKS.cloudflare-worker-domains | Runbook: Cloudflare Worker Domains | RUNBOOKS/cloudflare-worker-domains.md | — | — | runbook, cloudflare, worker, domain, www |
 | 01_PLATFORM.CHANGELOG | AION CMS — Changelog | 01_PLATFORM/CHANGELOG.md | — | — |  |
 | 01_PLATFORM.CONSTITUTION | AION Flow Development Constitution | 01_PLATFORM/CONSTITUTION.md | — | — |  |
 | 01_PLATFORM.CREDENTIAL_ABSTRACTION_LAYER | Credential Abstraction Layer (CAL) | 01_PLATFORM/CREDENTIAL_ABSTRACTION_LAYER.md | — | — |  |
