@@ -296,6 +296,7 @@ export interface BlogPost {
   meta_description: string;
   og_image: string;
   show_on_service_page: boolean;
+  show_date: boolean;
   created_by: string | null;
   created_at: string;
   updated_at: string;
