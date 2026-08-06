@@ -59,7 +59,8 @@ export default function Services() {
   const [postSearch, setPostSearch] = useState('');
   const [loadingPosts, setLoadingPosts] = useState(false);
 
-  const [faqEntries, setFaqEntries] = useState<{ question: string; answer: string }[]>([]);
+  const [faqEntries, setFaqEntries] = useState<{ id?: string; question: string; answer: string }[]>([]);
+  const [faqState, setFaqState] = useState<'idle' | 'loading' | 'loaded' | 'error'>('idle');
   const [faqDirty, setFaqDirty] = useState(false);
   const [richLongDesc, setRichLongDesc] = useState<any>(null);
   const [richShortDesc, setRichShortDesc] = useState<any>(null);
@@ -75,6 +76,7 @@ export default function Services() {
     setSelectedPostIds([]);
     setPostSearch('');
     setFaqEntries([]);
+    setFaqState('idle');
     setFaqDirty(false);
     setRichLongDesc(null);
     setRichShortDesc(null);
@@ -103,6 +105,7 @@ export default function Services() {
     setPostSearch('');
     setFaqEntries([]);
     setFaqDirty(false);
+    setFaqState('loading');
     setShowModal(true);
     setLoadingPosts(true);
     try {
@@ -112,8 +115,12 @@ export default function Services() {
     setLoadingPosts(false);
     try {
       const faqs = await serviceFaqHelper.getByService(item.id);
-      setFaqEntries(faqs.map(f => ({ question: f.question, answer: f.answer })));
-    } catch {}
+      setFaqEntries(faqs.map(f => ({ id: f.id, question: f.question, answer: f.answer })));
+      setFaqState('loaded');
+    } catch (err) {
+      console.error('FAQ load failed — FAQ persistence will be skipped for this save:', err);
+      setFaqState('error');
+    }
   };
 
   const handleSave = async () => {
@@ -126,13 +133,20 @@ export default function Services() {
       setItems(prev => prev.map(i => i.id === editing.id ? updated : i));
       trackEvent('cms.service_updated', { service_title: form.title || '', fields_changed: Object.keys(payload) }).catch(() => {});
       await serviceRelatedArticlesHelper.setRelations(editing.id, selectedPostIds);
-      await serviceFaqHelper.setFaq(editing.id, faqEntries);
+      // FAQ persistence contract: only when successfully loaded AND user actually modified.
+      // Empty local state with load_error must NEVER be persisted (would delete all rows).
+      if (faqState === 'loaded' && faqDirty) {
+        await serviceFaqHelper.setFaq(editing.id, faqEntries);
+      }
     } else {
       const created = await servicesHelper.create(payload);
       setItems(prev => [...prev, created]);
       trackEvent('cms.service_created', { service_title: form.title || '' }).catch(() => {});
       await serviceRelatedArticlesHelper.setRelations(created.id, selectedPostIds);
-      await serviceFaqHelper.setFaq(created.id, faqEntries);
+      // New service: persist FAQ only if user added entries (dirty).
+      if (faqState !== 'error' && faqDirty) {
+        await serviceFaqHelper.setFaq(created.id, faqEntries);
+      }
     }
 
     if (form.image_url) {

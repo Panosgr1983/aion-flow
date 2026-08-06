@@ -26,6 +26,7 @@
 */
 
 import { supabase, isSupabaseAvailable } from './supabase';
+import { computeFaqDiff } from './faqDiff';
 import { mockCategories, mockProducts, mockCustomers, mockOrders, mockMedia, mockAnalytics, mockServices, mockBlogPosts, mockTestimonials, mockCredentials, mockCoreValues, mockSiteSettings, mockTenantId, mockContactSubmissions, mockConversations, mockContactMessages, mockFollowUpTasks } from './mockData';
 import { Category, Product, Customer, Order, Media, Service, BlogPost, Testimonial, Credential, CoreValue, SiteSetting, ContactSubmission, Conversation, ContactMessage, FollowUpTask, EmailAccount, EmailDraft, ContentHistory, ServiceRelatedArticle, ServiceFaqEntry } from '../types/supabase';
 import { trackEvent } from './analytics';
@@ -559,26 +560,72 @@ export const serviceFaqHelper = {
     if (error) throw error;
     return data ?? [];
   },
-  async setFaq(serviceId: string, entries: { question: string; answer: string }[]): Promise<ServiceFaqEntry[]> {
+  /**
+   * Safe FAQ sync contract:
+   * - entries are the CURRENT desired state (each with optional id when it maps to an existing row)
+   * - existing rows NOT present in entries are deleted by EXPLICIT id (user removed them)
+   * - rows present in entries WITH id are updated in place (ids/data preserved)
+   * - rows without id are inserted
+   * - sort_order is rewritten by position for surviving rows
+   * - never deletes when load failed — callers must gate on successful load state
+   */
+  async setFaq(serviceId: string, entries: { id?: string; question: string; answer: string }[]): Promise<ServiceFaqEntry[]> {
     if (!isSupabaseAvailable()) return [];
-    const { data: existing } = await supabase.from('service_faq_entries').select('id').eq('service_id', serviceId);
-    const existingIds = (existing ?? []).map(e => e.id);
-    const insertCount = Math.min(entries.length, existingIds.length);
-    for (let i = 0; i < entries.length; i++) {
-      if (i < insertCount) {
-        const { error } = await supabase.from('service_faq_entries').update({ question: entries[i].question, answer: entries[i].answer, sort_order: i }).eq('id', existingIds[i]);
-        if (error) throw error;
-      } else {
-        const { data: svc } = await supabase.from('services').select('tenant_id').eq('id', serviceId).single();
-        const { error } = await supabase.from('service_faq_entries').insert({ service_id: serviceId, question: entries[i].question, answer: entries[i].answer, sort_order: i, tenant_id: svc?.tenant_id ?? '' });
-        if (error) throw error;
-      }
+    const { data: existing, error: existingError } = await supabase
+      .from('service_faq_entries')
+      .select('id, question, answer, sort_order, tenant_id')
+      .eq('service_id', serviceId);
+    if (existingError) throw existingError;
+    const existingRows = existing ?? [];
+
+    const diff = computeFaqDiff(
+      existingRows.map(e => ({ id: e.id, question: e.question, answer: e.answer, sort_order: e.sort_order ?? 0 })),
+      entries,
+    );
+
+    // 1. Delete by EXPLICIT id — rows the user removed from the loaded state.
+    if (diff.idsToDelete.length > 0) {
+      const { error: deleteError } = await supabase
+        .from('service_faq_entries')
+        .delete()
+        .in('id', diff.idsToDelete)
+        .eq('service_id', serviceId);
+      if (deleteError) throw deleteError;
     }
-    if (entries.length < existingIds.length) {
-      const idsToDelete = existingIds.slice(entries.length);
-      const { error } = await supabase.from('service_faq_entries').delete().in('id', idsToDelete);
-      if (error) throw error;
+
+    // 2. Update existing rows by id (preserve ids/data; rewrite sort_order + question/answer).
+    const updatePromises: Promise<void>[] = [];
+    for (const row of diff.toUpdate) {
+      updatePromises.push((async () => {
+        const { error } = await supabase
+          .from('service_faq_entries')
+          .update({ question: row.question, answer: row.answer, sort_order: row.sort_order })
+          .eq('id', row.id)
+          .eq('service_id', serviceId);
+        if (error) throw error;
+      })());
     }
+    await Promise.all(updatePromises);
+
+    // 3. Insert new rows (no id yet).
+    if (diff.toInsert.length > 0) {
+      const { data: svc, error: svcError } = await supabase
+        .from('services')
+        .select('tenant_id')
+        .eq('id', serviceId)
+        .single();
+      if (svcError) throw svcError;
+      const insertRows = diff.toInsert.map(r => ({
+        service_id: serviceId,
+        question: r.question,
+        answer: r.answer,
+        sort_order: r.sort_order,
+        tenant_id: svc?.tenant_id ?? '',
+      }));
+      const { error: insertError } = await supabase.from('service_faq_entries').insert(insertRows);
+      if (insertError) throw insertError;
+    }
+
     return serviceFaqHelper.getByService(serviceId);
   },
 };
